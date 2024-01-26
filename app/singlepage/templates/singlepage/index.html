@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Single Page Application</title>
+    <style>
+
+        #content {
+            text-align: center;
+            font-size: 36px;
+            color: red;
+            background-color: rgb(255, 208, 0); /* Adicione um destaque de fundo se desejar */
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
     <script>
         function showSection(section) {
             fetch(`/sections/${section}`)
@@ -25,9 +36,15 @@
 </head>
 <body>
     <h1>Single Page Application - Transcendence - Test</h1>
-    <button data-section="1">1</button>
-    <button data-section="2">2</button>
-    <button data-section="3">3</button>
+    <button data-section="1">
+        <img src="https://game.42sp.org.br/static/assets/achievements/inceptione.png" data-section="1">
+    </button>
+    <button data-section="2">
+        <img src="https://game.42sp.org.br/static/assets/achievements/webserve.png" data-section="1">
+    </button>
+    <button data-section="3">
+        <img src="https://game.42sp.org.br/static/assets/achievements/ft_transcendencen.png" data-section="1">        
+    </button>
 
     <div id="content"></div>
 </body>
