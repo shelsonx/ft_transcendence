@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page Application</title>
+    <script>
+        function showSection(section) {
+            fetch(`/sections/${section}`)
+            .then(response => response.text())
+            .then(text => {
+                console.log(text);
+                document.querySelector('#content').innerHTML = text
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            document.querySelectorAll('button').forEach(button => {
+                button.onclick = function () {
+                    showSection(this.dataset.section)
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <h1>Single Page Application - Transcendence - Test</h1>
+    <button data-section="1">1</button>
+    <button data-section="2">2</button>
+    <button data-section="3">3</button>
+
+    <div id="content"></div>
+</body>
+</html>
