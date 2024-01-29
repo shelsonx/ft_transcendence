@@ -1,0 +1,25 @@
+GET http://localhost:8000/api/products
+
+###
+GET http://localhost:8000/api/products/1
+
+###
+POST http://localhost:8000/api/products
+Content-Type: application/json
+
+{
+    "title": "headset",
+    "image": "https://m.media-amazon.com/images/I/51RUDt03+XL._AC_SX679_.jpg"
+}
+
+###
+PUT http://localhost:8000/api/products/2
+Content-Type: application/json
+
+{
+    "title": "Monitor Extra",
+    "image": "sem imagem"
+}
+
+###
+DELETE http://localhost:8000/api/products/2

@@ -1,1 +1,5 @@
 app/singlepage/migrations/
+microservices/app/products/migrations/
+microservices/app/.dbdata/
+microservices/app/products/__pycache__/
+microservices/app/app/__pycache__/
