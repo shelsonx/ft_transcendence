@@ -23,3 +23,7 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8000/api/products/2
+
+
+###
+GET http://localhost:8000/api/user
