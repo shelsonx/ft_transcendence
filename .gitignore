@@ -4,6 +4,7 @@ microservices/app/.dbdata/
 microservices/app/products/__pycache__/
 microservices/app/app/__pycache__/
 microservices/app/.env.queue
+microservices/main_app/.env.queue
 microservices/main_app/__pycache__
 microservices/main_app/.dbdata
 microservices/main_app/migrations

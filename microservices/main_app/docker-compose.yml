@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8001:5002
+    env_file:
+      - ./.env.queue
     volumes:
       - .:/app
     depends_on:
