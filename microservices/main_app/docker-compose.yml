@@ -4,12 +4,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: 'python main.py'
     ports:
       - 8001:5002
     env_file:
       - ./.env.queue
     volumes:
       - .:/app
+    depends_on:
+      - db
+  
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'python consumer.py'
+    env_file:
+      - ./.env.queue
     depends_on:
       - db
   
