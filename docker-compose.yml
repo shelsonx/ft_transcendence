@@ -55,6 +55,9 @@ services:
       - 8001:443
     depends_on:
       - auth-api 
+      - user-management-api
+      - game-api
+      - user-stats-api
 
 volumes:
   postgres_data:
