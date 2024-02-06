@@ -14,10 +14,47 @@ services:
       - db
   db:
     image: postgres:15
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - ./.env.db
+ 
+  auth-api:
+    container_name: auth-api
+    environment:
+      JWT_SECRET=${JWT_SECRET}
+    ports:
+      - 8002:443
+
+  user-management-api:
+    container_name: user-management-api
+    environment:
+      JWT_SECRET=${JWT_SECRET}
+    ports:
+      - 8003:443
+
+  game-api:
+    container_name: game-api
+    environment:
+      JWT_SECRET=${JWT_SECRET}
+    ports:
+      - 8004:443
+    
+  user-stats-api:
+    container_name: user-stats-api
+    environment:
+      JWT_SECRET=${JWT_SECRET}
+    ports:
+      - 8005:443
+
+  gateway-api:
+    container_name: gateway-api
+    ports:
+      - 8001:443
+    depends_on:
+      - auth-api 
 
 volumes:
   postgres_data:
