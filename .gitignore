@@ -4,3 +4,4 @@ app/singlepage/migrations/
 
 *__pycache__*
 test
+*db.sqlite3
