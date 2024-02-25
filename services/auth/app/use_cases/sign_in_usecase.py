@@ -14,6 +14,8 @@ class SignInUseCase:
             user = await self.user_repository.get_user_by_email(sign_in_dto.email)
         except ObjectDoesNotExist:
              raise UserNotFoundException()
+        except Exception as e:
+            print(e)
         
         if not user.check_password(sign_in_dto.password):
             raise InvalidPasswordException()
