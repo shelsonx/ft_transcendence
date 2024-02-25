@@ -1,6 +1,5 @@
 
-from . import BaseApiException
-
+from .BaseApiException import BaseApiException
 
 class UserNotFoundException(BaseApiException):
     
