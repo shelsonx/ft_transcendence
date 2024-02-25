@@ -1,16 +1,16 @@
-from ..interfaces.repositories.auth_repository import IAuthRepository
+from ..interfaces.repositories.user_repository import IUserRepository
 from ..interfaces.services import ITokenService
 
 from ..exceptions import UserNotFoundEception, InvalidPasswordException
 
 class SignInUseCase:
 
-    def __init__(self, user_repository: IAuthRepository, token_service: ITokenService):
+    def __init__(self, user_repository: IUserRepository, token_service: ITokenService):
         self.user_repository = user_repository
         self.token_service = token_service
 
-    def execute(self, email, password):
-        user = self.user_repository.get_by_email(email)
+    async def execute(self, email, password):
+        user = await self.user_repository.get_user_by_email(email)
 
         if user is None:
             raise UserNotFoundEception()

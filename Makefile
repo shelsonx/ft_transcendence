@@ -17,6 +17,5 @@ run_first_api:
 run_api:
 	$(DOCKER_CMD) up -d --build
 
-
 exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh

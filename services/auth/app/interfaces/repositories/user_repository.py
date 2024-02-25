@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from ...models.user import User
 
-class IAuthRepository(ABC):
+class IUserRepository(ABC):
 
     @abstractmethod
     async def get_user_by_username(self, username: str) -> User:
@@ -12,6 +12,10 @@ class IAuthRepository(ABC):
 
     @abstractmethod
     async def get_user_by_id(self, id: str) -> User:
+        pass
+
+    @abstractmethod
+    async def get_user_by_email_or_username(self, email: str, username: str) -> User:
         pass
 
     @abstractmethod
