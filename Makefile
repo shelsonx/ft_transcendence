@@ -9,10 +9,14 @@ DOCKER_COMPOSE_BUILD_PATH = ./services/auth # This is the path to the Dockerfile
 create_api:
 	./config_django_project.sh $(DOCKER_COMPOSE_FILE) $(DOCKER_COMPOSE_SERVICE_NAME) $(DOCKER_COMPOSE_PROJECT_NAME) $(DOCKER_COMPOSE_BUILD_PATH)
 
-run_api:
+run_first_api:
 	$(DOCKER_CMD) up -d
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) python manage.py migrate
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) python manage.py createsuperuser
+
+run_api:
+	$(DOCKER_CMD) up -d --build
+
 
 exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh
