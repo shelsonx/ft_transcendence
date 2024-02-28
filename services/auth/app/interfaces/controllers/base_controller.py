@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, JsonResponse
 from ...exceptions.ValidationErrorException import ValidationErrorException
 from ...entities.api_data_response import ApiDataResponse
 from ...exceptions.BaseApiException import BaseApiException
@@ -36,5 +36,5 @@ class BaseController(ABC):
         except Exception as e:
             return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
 
-  def to_json_response(self, data: ApiDataResponse, status=200) -> HttpResponse:
+  def to_json_response(self, data: ApiDataResponse, status=200) -> JsonResponse:
     return JsonResponse(status=status, data=data.to_dict(), safe=False)
