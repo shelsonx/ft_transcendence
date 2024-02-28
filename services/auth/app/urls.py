@@ -6,7 +6,7 @@ from .use_cases.sign_in_usecase import SignInUseCase
 from .use_cases.sign_up_usecase import SignUpUseCase
 from .controllers.sign_in_controller import SignInController
 from .controllers.sign_up_controller import SignUpController
-from .views import SingInView
+from .views import SignInView
 from .views import SignUpView
 
 user_repo = UserRepository()
@@ -18,6 +18,6 @@ sign_in_controller = SignInController(sign_in_use_case)
 sign_up_controller = SignUpController(sign_up_use_case)
 
 urlpatterns = [
-    path("sign-in/", SingInView.as_view(sign_in_controller=sign_in_controller)),
+    path("sign-in/", SignInView.as_view(sign_in_controller=sign_in_controller)),
     path("sign-up/", SignUpView.as_view(sign_up_controller=sign_up_controller)),
 ]

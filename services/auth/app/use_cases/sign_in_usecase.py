@@ -3,6 +3,7 @@ from ..interfaces.services.token_service import ITokenService
 from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.sign_in_dto import SignInDto
+
 class SignInUseCase:
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService):
@@ -14,8 +15,6 @@ class SignInUseCase:
             user = await self.user_repository.get_user_by_email(sign_in_dto.email)
         except ObjectDoesNotExist:
              raise UserNotFoundException()
-        except Exception as e:
-            print(e)
         
         if not user.check_password(sign_in_dto.password):
             raise InvalidPasswordException()

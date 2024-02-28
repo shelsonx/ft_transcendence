@@ -6,7 +6,6 @@ from ..dtos.sign_in_dto import SignInDto, SignInDtoForm
 
 class SignInController(BaseController):
 
-
   def __init__(self, sign_in_usecase: BaseUseCase) -> None:
     super().__init__()
     self.sign_in_usecase = sign_in_usecase

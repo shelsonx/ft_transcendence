@@ -10,7 +10,7 @@ from ..dtos.sign_up_dto import SignUpDtoForm, SignUpDto
 class SignUpController(BaseController):
 
   def __init__(self, sign_up_usecase: BaseUseCase) -> None:
-    super().__init__()                     
+    super().__init__()
     self.sign_up_usecase = sign_up_usecase
 
   def convert_to_form(self, request: HttpRequest) -> dict:
