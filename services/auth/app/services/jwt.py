@@ -1,5 +1,5 @@
 from functools import wraps
-from ..exceptions.Unauthorized import Unauthorized
+from ..exceptions.unauthorized_exception import Unauthorized
 from .jwt_service import JWTService
 from django.http import JsonResponse
 from ..entities.api_data_response import ApiDataResponse

@@ -1,4 +1,4 @@
-from .BaseApiException import BaseApiException
+from .base_api_exception import BaseApiException
 
 class InvalidPasswordException(BaseApiException):
     

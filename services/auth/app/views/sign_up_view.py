@@ -13,5 +13,5 @@ class SignUpView(View):
        self.sign_up_controller = sign_up_controller
        
     async def post(self, request: HttpRequest) -> HttpResponse:
-        data = await self.sign_up_controller.handle(request)
+        data = await self.sign_up_controller.handle_post(request)
         return data

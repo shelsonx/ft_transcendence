@@ -1,3 +1,3 @@
-from .FieldAlreadyExists import FieldAlreadyExists
-from .UserNotFoundException import UserNotFoundException
-from .InvalidPasswordException import InvalidPasswordException
+from .field_already_exists_exception import FieldAlreadyExists
+from .user_not_found_exception import UserNotFoundException
+from .invalid_password_exception import InvalidPasswordException

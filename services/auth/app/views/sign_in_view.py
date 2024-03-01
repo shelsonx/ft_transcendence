@@ -16,9 +16,9 @@ class SignInView(View):
     @ProtectedRoute(roles=['admin', 'user'])
     async def get(self, request: HttpRequest) -> JsonResponse:
         print(request.current_user)
-        data = await self.sign_in_controller.handle(request)
+        data = await self.sign_in_controller.handle_post(request)
         return data
        
     async def post(self, request: HttpRequest) -> JsonResponse:
-        data = await self.sign_in_controller.handle(request)
+        data = await self.sign_in_controller.handle_post(request)
         return data
