@@ -19,5 +19,5 @@ class SignUpController(BaseController):
   def convert_to_dto(self, data: dict) -> SignUpDto:
     return SignUpDto(email=data.get('email'), password=data.get('password'), user_name=data.get('user_name'))
 
-  async def execute(self, dto: SignUpDto):
+  async def execute_post(self, dto: SignUpDto):
     return await self.sign_up_usecase.execute(dto)

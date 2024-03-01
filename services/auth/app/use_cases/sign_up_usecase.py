@@ -6,6 +6,7 @@ from ..exceptions import FieldAlreadyExists, InvalidPasswordException
 from ..models.user import User
 from ..dtos.sign_up_dto import SignUpDto
 from django.core.exceptions import ObjectDoesNotExist
+from ..validators.password_validator import PasswordValidator
 class SignUpUseCase:
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService, login_type_repository: ILoginTypeRepository):
@@ -22,7 +23,11 @@ class SignUpUseCase:
         except ObjectDoesNotExist:    
         
             login_type = await self.login_type_repository.get_login_type_by_name(LoginTypeConstants.AUTH_EMAIL)
+            password_validator = PasswordValidator(sign_up_dto.password)
+            if not password_validator.validation_data.is_success:
+                raise InvalidPasswordException(message=password_validator.validation_data.message)
             new_user = User(user_name=sign_up_dto.user_name, email=sign_up_dto.email, password=sign_up_dto.password, login_type=login_type)
+
             user = await self.user_repository.create_user(new_user)
             token = self.token_service.create_token(user)
 

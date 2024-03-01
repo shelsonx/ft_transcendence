@@ -7,7 +7,7 @@ import json
 import hmac
 import os
 from ..constants.env_variables import EnvVariables
-from ..exceptions.Unauthorized import Unauthorized
+from ..exceptions.unauthorized_exception import Unauthorized
 from ..entities.jwt_payload import JWTPayload
 from ..utils.uuid_encoder import UUIDEncoder
 
