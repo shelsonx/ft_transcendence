@@ -17,4 +17,6 @@ class User(models.Model):
         return self.user_name
 
     def check_password(self, password: str) -> bool:
+        if password is None:
+            return False
         return check_password(password, self.password)
