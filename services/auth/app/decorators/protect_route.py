@@ -1,5 +1,5 @@
 from functools import wraps
-from ..exceptions.unauthorized_exception import Unauthorized
+from ..exceptions.unauthorized_exception import UnauthorizedException
 from ..services.jwt_service import JWTService
 from django.http import JsonResponse
 from ..entities.api_data_response import ApiDataResponse
@@ -33,7 +33,7 @@ class ProtectedRoute:
                 try:
                     data = jwt_service.verify_token(token)
                     request.current_user = data
-                except Unauthorized as e:
+                except UnauthorizedException as e:
                     return self.unauthorized(message=e.message)
             except Exception as e:
                 return self.unauthorized()        

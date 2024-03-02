@@ -23,5 +23,4 @@ class PasswordValidator(BaseValidator):
             validate_password(password, None, password_validators=[min_len, upper_case, lower_case])
             return ValidationData(is_success=True, message="Password is valid")
         except ValidationError as e:
-            print(e.messages)
             raise NotValidPasswordException(e.messages)
