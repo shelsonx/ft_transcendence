@@ -23,9 +23,8 @@ class SignUpUseCase:
         except ObjectDoesNotExist:    
         
             login_type = await self.login_type_repository.get_login_type_by_name(LoginTypeConstants.AUTH_EMAIL)
-            password_validator = PasswordValidator(sign_up_dto.password)
-            if not password_validator.validation_data.is_success:
-                raise InvalidPasswordException(message=password_validator.validation_data.message)
+            password_validator = PasswordValidator()
+            password_validator.validate(password=sign_up_dto.password)
             new_user = User(user_name=sign_up_dto.user_name, email=sign_up_dto.email, password=sign_up_dto.password, login_type=login_type)
 
             user = await self.user_repository.create_user(new_user)

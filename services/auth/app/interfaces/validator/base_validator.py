@@ -6,8 +6,6 @@ from typing import Any
 @dataclass
 class BaseValidator(ABC):
 
-  validation_data: ValidationData
-
   @abstractmethod
   def validate(self, *args, **kwargs) -> ValidationData:
     pass

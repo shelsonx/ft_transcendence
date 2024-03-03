@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-
+from uuid import UUID
 @dataclass
 class JWTPayload:
-    sub: int
+    sub: UUID
     iat: float
     exp: float
 
     @staticmethod
-    def create(sub: int, hours: int = 2):
+    def create(sub: UUID, hours: int = 2):
         iat = datetime.now().timestamp()
         exp = (datetime.now() + timedelta(hours=hours)).timestamp()
         return JWTPayload(sub, iat, exp)

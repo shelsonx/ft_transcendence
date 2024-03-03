@@ -1,5 +1,5 @@
 from typing import Any
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.views import View
 from ..interfaces.controllers.base_controller import BaseController
 from django.utils.decorators import method_decorator
@@ -12,6 +12,6 @@ class SignUpView(View):
     def __init__(self, sign_up_controller: BaseController) -> None:
        self.sign_up_controller = sign_up_controller
        
-    async def post(self, request: HttpRequest) -> HttpResponse:
+    async def post(self, request: HttpRequest) -> JsonResponse:
         data = await self.sign_up_controller.handle_post(request)
         return data

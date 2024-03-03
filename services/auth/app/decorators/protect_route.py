@@ -6,8 +6,9 @@ from ..entities.api_data_response import ApiDataResponse
 
 
 class ProtectedRoute:
-    def __init__(self, roles=[]):
+    def __init__(self, roles=[], func=None):
         self.roles = roles
+        self.func = func
 
     def unauthorized(self, message: str = "Unauthorized"):
         api_data_response = ApiDataResponse(
@@ -33,6 +34,8 @@ class ProtectedRoute:
                 try:
                     data = jwt_service.verify_token(token)
                     request.current_user = data
+                    if self.func:
+                        self.func(*args, **kwargs)
                 except UnauthorizedException as e:
                     return self.unauthorized(message=e.message)
             except Exception as e:
