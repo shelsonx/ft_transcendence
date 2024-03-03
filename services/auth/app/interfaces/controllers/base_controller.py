@@ -5,6 +5,9 @@ from ...entities.api_data_response import ApiDataResponse
 from ...exceptions.base_api_exception import BaseApiException
 from django import forms
 from ...utils.to_json_response import to_json_response
+from asgiref.sync import sync_to_async
+from django.core.exceptions import ValidationError
+
 class BaseController(ABC):
 
   def __init__(self) -> None:
@@ -18,7 +21,7 @@ class BaseController(ABC):
   def convert_to_form(self, request: HttpRequest) -> forms.Form:
     pass
 
-  async def execute_get(self) -> object:
+  async def execute_get(self, id: str) -> object:
     raise NotImplementedError()
   
   async def execute_post(self, dto: object) -> object:
@@ -30,9 +33,9 @@ class BaseController(ABC):
   async def execute_delete(self, id: str) -> object:
     raise NotImplementedError()
   
-  async def handle_get(self, request: HttpRequest) -> JsonResponse:
+  async def handle_get(self, request: HttpRequest, id: str) -> JsonResponse:
     try:
-      data = await self.execute_get()
+      data = await self.execute_get(id)
       return self.to_json_response(data=ApiDataResponse(data=data))
     except BaseApiException as e:
         return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
@@ -63,6 +66,8 @@ class BaseController(ABC):
             dto = self.convert_to_dto(dict_form)
             data = await self.execute_put(id, dto)
             return self.to_json_response(data=ApiDataResponse(data=data))
+        except ValidationError as e:
+            return self.to_json_response(data=ApiDataResponse(message=e.message_dict, is_success=False), status=400)
         except BaseApiException as e:
             return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
         except Exception as e:

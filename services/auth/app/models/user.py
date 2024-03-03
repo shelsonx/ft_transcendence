@@ -20,3 +20,12 @@ class User(models.Model):
         if password is None:
             return False
         return check_password(password, self.password)
+    
+    def to_safe_dict(self):
+        return {
+            'id': self.id,
+            'user_name': self.user_name,
+            'email': self.email,
+            'login_type': self.login_type.to_safe_dict(),
+            'enable_2fa': self.enable_2fa,
+        }

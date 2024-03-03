@@ -6,8 +6,9 @@ token missing
 token expired
 token altered
 
-edit 
+edit and delete
 validate email already exists
 validate user_name already exists
 validate password (min len, max len, special char, number, upper case, lower case)
 token missing
+user_id from bearer token and user_id from request body are different

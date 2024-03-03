@@ -27,5 +27,9 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
+    def update_user_sync(self, user: User) -> User:
+        pass
+
+    @abstractmethod
     async def delete_user(self, username: str) -> bool:
         pass

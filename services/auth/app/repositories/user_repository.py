@@ -1,8 +1,9 @@
 from ..models.user import User
 from ..models.login_type import LoginType
 from ..interfaces.repositories.user_repository import IUserRepository
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import make_password
 from django.db.models import Q
+from asgiref.sync import sync_to_async
 
 class UserRepository(IUserRepository):
 
@@ -29,6 +30,16 @@ class UserRepository(IUserRepository):
   
   async def update_user(self, user: User) -> User:
     await User.objects.filter(id=user.id).aupdate(
+      user_name=user.user_name,
+      email=user.email,
+      login_type=user.login_type,
+      password=user.password,
+      enable_2fa=user.enable_2fa
+    )
+    return user
+  
+  def update_user_sync(self, user: User) -> User:
+    User.objects.filter(id=user.id).update(
       user_name=user.user_name,
       email=user.email,
       login_type=user.login_type,

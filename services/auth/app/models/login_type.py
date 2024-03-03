@@ -7,3 +7,8 @@ class LoginType(models.Model):
 
   def __str__(self) -> str:
     return self.name
+  
+  def to_safe_dict(self):
+    return {
+      'name': self.name
+    }

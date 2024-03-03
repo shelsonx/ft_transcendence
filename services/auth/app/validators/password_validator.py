@@ -11,9 +11,9 @@ from ..exceptions.not_valid_password_exception import NotValidPasswordException
 from ..entities.validation_data import ValidationData
 
 class PasswordValidator(BaseValidator):
-    def __init__(self, password: str):
-        self.password = password
-        self.validation_data = self.validate(password)
+    
+    def __init__(self):
+        super().__init__()
 
     def validate(self, password: str) -> ValidationData:
         try:
