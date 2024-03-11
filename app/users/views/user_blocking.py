@@ -3,13 +3,13 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException
+from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, InvalidFieldException
 from ..models.models import User
 from .user_info import UserInfoView
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserBlockingView(View):
-
+    
     def get(self, request, user_id):
         """
         Get the users that the user with the given user_id has blocked.
@@ -27,12 +27,10 @@ class UserBlockingView(View):
             user = UserInfoView().get_user(user_id)
             blocked_users = user.blocked_users.all()
             blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
-            return JsonResponse({'status': 'success', 'blocked_users': blocked_users_json}, status=200, safe=False)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-        
+            return JsonResponse({'status': 'success', 'blocked_users': blocked_users_json, 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+
     def post(self, request, user_id, blocked_id):
         """
         Add a user to the blocked users of a user.
@@ -52,14 +50,12 @@ class UserBlockingView(View):
             user = UserInfoView().get_user(user_id)
             blocked = UserInfoView().get_user(blocked_id)
             user.blocked_users.add(blocked)
-            return JsonResponse({'status': 'success', 'message': 'Blocked user added successfully'}, status=200)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User or blocked user does not exist'}, status=404)
-        except InvalidUUIDException:
-            return JsonResponse({'status': 'error', 'message': 'Invalid UUID'}, status=400)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-        
+            return JsonResponse({'status': 'success', 'message': 'Blocked user added successfully', 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except InvalidUUIDException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+    
     def delete(self, request, user_id, blocked_id):
         """
         Remove a user from the blocked users of a user.
@@ -80,10 +76,8 @@ class UserBlockingView(View):
             user = UserInfoView().get_user(user_id)
             blocked = UserInfoView().get_user(blocked_id)
             user.blocked_users.remove(blocked)
-            return JsonResponse({'status': 'success', 'message': 'Blocked user removed successfully'}, status=200)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User or blocked user does not exist'}, status=404)
-        except InvalidUUIDException:
-            return JsonResponse({'status': 'error', 'message': 'Invalid UUID'}, status=400)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            return JsonResponse({'status': 'success', 'message': 'Blocked user removed successfully', 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except InvalidUUIDException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)

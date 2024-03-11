@@ -65,4 +65,4 @@ class UserBlockingViewTests(TestCase):
         self.assertEqual(response.status_code, 404)
         data = json.loads(response.content)
         self.assertEqual(data['status'], 'error')
-        self.assertEqual(data['message'], 'User or blocked user does not exist')
+        self.assertEqual(data['message'], 'User does not exist')

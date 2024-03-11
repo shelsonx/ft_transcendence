@@ -28,9 +28,9 @@ class UserFriendshipView(View):
             user = UserInfoView().get_user(user_id)
             friends = user.friends.all()
             friends_json = [friend.as_json() for friend in friends]
-            return JsonResponse({'status': 'success', 'friends': friends_json}, status=200, safe=False)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
+            return JsonResponse({'status': 'success', 'friends': friends_json, 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
 
     def post(self, request, user_id, friend_id=None):
         """
@@ -49,15 +49,15 @@ class UserFriendshipView(View):
         """
         try:
             if friend_id is None:
-                raise MissingParameterException('friend_id')
+                raise MissingParameterException("friend_id")
             user = UserInfoView().get_user(user_id)
             friend = UserInfoView().get_user(friend_id)
             user.friends.add(friend)
-            return JsonResponse({'status': 'success', 'message': 'Friend added successfully'}, status=200)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User or friend does not exist'}, status=404)
+            return JsonResponse({'status': 'success', 'message': 'Friend added successfully', 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
         except MissingParameterException as e:
-            return JsonResponse({'status': 'error', 'message': f'Missing parameter: {e}'}, status=400)
+            return JsonResponse(e.to_dict(), status=e.status_code)
 
     def delete(self, request, user_id, friend_id=None):
         """
@@ -77,13 +77,13 @@ class UserFriendshipView(View):
 
         try:
             if friend_id is None:
-                raise MissingParameterException('friend_id')
+                raise MissingParameterException("friend_id")
             user = UserInfoView().get_user(user_id)
             friend = UserInfoView().get_user(friend_id)
             user.friends.remove(friend)
-            return JsonResponse({'status': 'success', 'message': 'Friend removed successfully'}, status=200)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User or friend does not exist'}, status=404)
+            return JsonResponse({'status': 'success', 'message': 'Friend removed successfully', 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
         except MissingParameterException as e:
-            return JsonResponse({'status': 'error', 'message': f'Missing parameter: {e}'}, status=400)
+            return JsonResponse(e.to_dict(), status=e.status_code)
 

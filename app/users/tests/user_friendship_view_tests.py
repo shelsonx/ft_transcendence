@@ -23,7 +23,7 @@ class UserFriendshipViewTests(TestCase):
         request = self.factory.get('/users/' + user_id + '/friends')
         response = self.view.get(request, user_id)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'status': 'success', 'friends': []})
+        self.assertEqual(json.loads(response.content), {'status': 'success', 'friends': [], 'status_code': 200})
 
         self.user1.friends.add(self.user2)
         self.user1.friends.add(self.user3)
@@ -41,7 +41,7 @@ class UserFriendshipViewTests(TestCase):
         request = self.factory.post('/users/' + user_id + '/friends', {'friend_id': friend_id})
         response = self.view.post(request, user_id, friend_id)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'status': 'success', 'message': 'Friend added successfully'})
+        self.assertEqual(json.loads(response.content), {'status': 'success', 'message': 'Friend added successfully', 'status_code': 200})
         self.assertEqual(self.user1.friends.count(), 1)
         self.assertEqual(self.user1.friends.first(), self.user2)
 
@@ -50,7 +50,7 @@ class UserFriendshipViewTests(TestCase):
         request = self.factory.post('/users/' + user_id + '/friends')
         response = self.view.post(request, user_id)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'Missing parameter: friend_id'})
+        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'Missing parameter: friend_id', 'status_code': 400})
         self.assertEqual(self.user1.friends.count(), 0)
 
     def test_remove_friend(self):
@@ -60,7 +60,7 @@ class UserFriendshipViewTests(TestCase):
         request = self.factory.delete('/users/' + user_id + '/friends', {'friend_id': friend_id})
         response = self.view.delete(request, user_id, friend_id)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'status': 'success', 'message': 'Friend removed successfully'})
+        self.assertEqual(json.loads(response.content), {'status': 'success', 'message': 'Friend removed successfully', 'status_code': 200})
         self.assertEqual(self.user1.friends.count(), 0)
 
     def test_remove_friend_missing_parameter(self):
@@ -69,5 +69,5 @@ class UserFriendshipViewTests(TestCase):
         request = self.factory.delete('/users/' + user_id + '/friends')
         response = self.view.delete(request, user_id)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'Missing parameter: friend_id'})
+        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'Missing parameter: friend_id', 'status_code': 400})
         self.assertEqual(self.user1.friends.count(), 1)

@@ -4,7 +4,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, InvalidFieldException
+from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, InvalidFieldException, InvalidFormDataException, InvalidJSONDataException
 from ..forms import UserForm
 from ..models.models import User
 import json
@@ -71,11 +71,11 @@ class UserInfoView(View):
         try:
             user = self.get_user(user_id)
             user.delete()
-            return JsonResponse({'status': 'success', 'message': 'User deleted successfully'}, status=200)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
-        except InvalidUUIDException:
-            return JsonResponse({'status': 'error', 'message': 'Invalid user id'}, status=400)
+            return JsonResponse({'status': 'success', 'message': 'User deleted successfully', 'status_code': 200}, status=200)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except InvalidUUIDException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
 
     def post(self, request):
         """
@@ -96,13 +96,15 @@ class UserInfoView(View):
             form = UserForm(json.loads(request.body.decode('utf-8')))
             if form.is_valid():
                 form.save()
-                return JsonResponse({'status': 'success', 'message': 'User created successfully'}, status=201)
+                return JsonResponse({'status': 'success', 'message': 'User created successfully', 'status_code': 201}, status=201)
             else:
-                return JsonResponse({'status': 'error', 'message': 'Invalid form data'}, status=400)
+                raise InvalidFormDataException
         except json.JSONDecodeError:
-            return JsonResponse({'status': 'error', 'message': 'Invalid JSON data'}, status=400)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            raise InvalidJSONDataException('Invalid JSON data')
+        except InvalidFormDataException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except InvalidJSONDataException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
 
     def get(self, request, user_id=None):
         """
@@ -121,11 +123,11 @@ class UserInfoView(View):
         if user_id:
             try:
                 user = self.get_user(user_id)
-                return JsonResponse({'status': 'success', 'user': user.as_json()}, status=200)
-            except InvalidUUIDException:
-                return JsonResponse({'status': 'error', 'message': 'Invalid user id'}, status=400)
-            except UserDoesNotExistException:
-                return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
+                return JsonResponse({'status': 'success', 'user': user.as_json(), 'status_code': 200}, status=200)
+            except InvalidUUIDException as e:
+                return JsonResponse(e.to_dict(), status=e.status_code)
+            except UserDoesNotExistException as e:
+                return JsonResponse(e.to_dict(), status=e.status_code)
         else:
             users = User.objects.all()
             users_json = [user.as_json() for user in users]
@@ -156,10 +158,10 @@ class UserInfoView(View):
                 else:
                     raise InvalidFieldException
             user.save()
-            return JsonResponse({'status': 'success', 'message': 'User updated successfully'}, status=200)
-        except InvalidFieldException:
-            return JsonResponse({'status': 'error', 'message': 'Invalid field'}, status=400)
-        except UserDoesNotExistException:
-            return JsonResponse({'status': 'error', 'message': 'User does not exist'}, status=404)
-        except InvalidUUIDException:
-            return JsonResponse({'status': 'error', 'message': 'Invalid user id'}, status=400)
+            return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
+        except InvalidFieldException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except UserDoesNotExistException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
+        except InvalidUUIDException as e:
+            return JsonResponse(e.to_dict(), status=e.status_code)
