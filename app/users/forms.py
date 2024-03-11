@@ -1,11 +1,11 @@
 from django import forms
-from .models import User
+from .models.models import User
 
 
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'avatar', 'nickname', 'two_factor_enabled', 'email', 'chosen_language', 'status']
+        fields = ['name', 'avatar', 'nickname', 'email']
         labels = {
             'name': 'Name',
             'avatar': 'Avatar',

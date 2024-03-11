@@ -25,6 +25,8 @@ class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     chosen_language = models.CharField(max_length=255, default='pt-br')
     status = models.CharField(max_length=255, choices=status_choices, default='inactive')
+    friends = models.ManyToManyField('self', through='Friendship', symmetrical=False, related_name='added_friends')
+    blocked_users = models.ManyToManyField('self', symmetrical=False, related_name='blocked_by')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nickname', 'name']
@@ -46,3 +48,27 @@ class User(AbstractBaseUser):
             'status': self.status
         }
 
+
+class Friendship(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_creator')
+    friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_receiver')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'friend']
+
+    def __str__(self):
+        return f'{self.user} is friends with {self.friend}'
+
+class BlockedUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blocking_user')
+    blocked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blocked_user')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ['user', 'blocked_user']
+
+    def __str__(self):
+        return f'{self.user} has blocked {self.blocked_user}'
