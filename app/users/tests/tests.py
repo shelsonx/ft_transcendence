@@ -1,0 +1,3 @@
+from .user_blocking_view_tests import UserBlockingViewTests
+from .user_friendship_view_tests import UserFriendshipViewTests
+from .user_info_view_tests import UserInfoViewTests
