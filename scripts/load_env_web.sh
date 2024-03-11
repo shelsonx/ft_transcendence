@@ -1,5 +1,7 @@
-#!/bin/bash
-set -a # automatically export all variables
-# .env file is one directory up from the current directory
+# script to export environment variables for web server
+# Usage: source load_env_web.sh
+
+set -a
 source ../.env.web
 set +a
+echo "Environment variables for web server loaded"
