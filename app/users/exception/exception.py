@@ -36,3 +36,7 @@ class InvalidJSONDataException(UserManagementException):
 class InvalidFormDataException(UserManagementException):
     def __init__(self, message='Invalid form data', status_code=400):
         super().__init__(message, status_code)
+
+class FriendshipAlreadyExistsException(UserManagementException):
+    def __init__(self, message='Friendship already exists', status_code=400):
+        super().__init__(message, status_code)
