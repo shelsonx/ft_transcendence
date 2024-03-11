@@ -9,20 +9,15 @@ from .user_info import UserInfoView
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserBlockingView(View):
-    
+    """
+    Handles blocking and unblocking of users.
+
+    - `get`: Retrieves the list of users blocked by the specified user.
+    - `post`: Blocks a user for the specified user.
+    - `delete`: Unblocks a previously blocked user for the specified user.
+    """
+
     def get(self, request, user_id):
-        """
-        Get the users that the user with the given user_id has blocked.
-
-        Args:
-            user_id (str): The user_id to get the blocked users of
-
-        Returns:
-            JsonResponse: A JSON response containing the blocked users of the user with the given user_id
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id does not exist
-        """
         try:
             user = UserInfoView().get_user(user_id)
             blocked_users = user.blocked_users.all()
@@ -32,20 +27,6 @@ class UserBlockingView(View):
             return JsonResponse(e.to_dict(), status=e.status_code)
 
     def post(self, request, user_id, blocked_id):
-        """
-        Add a user to the blocked users of a user.
-
-        Args:
-            user_id (str): The user_id to add the blocked user to
-            blocked_id (str): The blocked_id to add to the user
-
-        Returns:
-            JsonResponse: A JSON response containing the status of the request
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id or the blocked user with the given blocked_id does not exist
-            InvalidUUIDException: If the user_id or blocked_id is not a valid UUID
-        """
         try:
             user = UserInfoView().get_user(user_id)
             blocked = UserInfoView().get_user(blocked_id)
@@ -57,21 +38,6 @@ class UserBlockingView(View):
             return JsonResponse(e.to_dict(), status=e.status_code)
     
     def delete(self, request, user_id, blocked_id):
-        """
-        Remove a user from the blocked users of a user.
-
-        Args:
-            user_id (str): The user_id to remove the blocked user from
-            blocked_id (str): The blocked_id to remove from the user
-
-        Returns:
-            JsonResponse: A JSON response containing the status of the request
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id or the blocked user with the given blocked_id does not exist
-            InvalidUUIDException: If the user_id or blocked_id is not a valid UUID
-        """
-
         try:
             user = UserInfoView().get_user(user_id)
             blocked = UserInfoView().get_user(blocked_id)

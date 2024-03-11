@@ -10,20 +10,14 @@ from ..models.models import User
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserFriendshipView(View):
+    """
+    Handles adding and removing friends for users.
+    `get`: Retrieves the list of friends for the specified user.
+    `post`: Adds a friend for the specified user.
+    `delete`: Removes a previously added friend for the specified user.
+    """
 
     def get(self, request, user_id):
-        """
-        Get the friends of a user.
-
-        Args:
-            user_id (str): The user_id to get the friends of
-
-        Returns:
-            JsonResponse: A JSON response containing the friends of the user with the given user_id
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id does not exist
-        """
         try:
             user = UserInfoView().get_user(user_id)
             friends = user.friends.all()
@@ -33,20 +27,6 @@ class UserFriendshipView(View):
             return JsonResponse(e.to_dict(), status=e.status_code)
 
     def post(self, request, user_id, friend_id=None):
-        """
-        Add a friend to a user.
-
-        Args:
-            user_id (str): The user_id to add the friend to
-            friend_id (str): The friend_id to add to the user
-
-        Returns:
-            JsonResponse: A JSON response containing the status of the request
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id or the friend with the given friend_id does not exist
-            MissingParameterException: If the friend_id is not provided
-        """
         try:
             if friend_id is None:
                 raise MissingParameterException("friend_id")
@@ -60,21 +40,6 @@ class UserFriendshipView(View):
             return JsonResponse(e.to_dict(), status=e.status_code)
 
     def delete(self, request, user_id, friend_id=None):
-        """
-        Remove a friend from a user.
-
-        Args:
-            user_id (str): The user_id to remove the friend from
-            friend_id (str): The friend_id to remove from the user
-
-        Returns:
-            JsonResponse: A JSON response containing the status of the request
-
-        Raises:
-            UserDoesNotExistException: If the user with the given user_id or the friend with the given friend_id does not exist
-            MissingParameterException: If the friend_id is not provided
-        """
-
         try:
             if friend_id is None:
                 raise MissingParameterException("friend_id")
