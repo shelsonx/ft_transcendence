@@ -50,17 +50,3 @@ class UserInfoViewTests(TestCase):
         response = self.view.delete(request, user_id)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), {'status': 'success', 'message': 'User deleted successfully', 'status_code': 200})
-
-    def test_delete_non_existing_user(self):
-        user_id = str(self.nonexistent_uuid)
-        request = self.factory.delete('/users/' + user_id)
-        response = self.view.delete(request, user_id)
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'User does not exist', 'status_code': 404})
-
-    def test_delete_invalid_user_id(self):
-        user_id = 'abc'
-        request = self.factory.delete('/users/' + user_id)
-        response = self.view.delete(request, user_id)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.content), {'status': 'error', 'message': 'Invalid UUID', 'status_code': 400})

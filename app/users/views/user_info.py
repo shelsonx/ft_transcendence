@@ -4,7 +4,8 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, InvalidFieldException, InvalidFormDataException, InvalidJSONDataException
+from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, \
+    InvalidFieldException, InvalidFormDataException, InvalidJSONDataException
 from ..forms import UserForm
 from ..models.models import User
 import json
@@ -21,75 +22,49 @@ class UserInfoView(View):
     """
 
     def is_valid_uuid(self, user_id):
-        if isinstance(user_id, uuid.UUID):
-            return True
         try:
             uuid.UUID(str(user_id), version=4)
             return True
         except ValueError:
-            raise InvalidUUIDException
+            False
 
     def get_user(self, user_id):
-        self.is_valid_uuid(user_id)
+        if not self.is_valid_uuid(user_id):
+            raise InvalidUUIDException
         try:
             return User.objects.get(id=user_id)
         except User.DoesNotExist:
             raise UserDoesNotExistException
 
-
     def delete(self, request, user_id):
-        try:
-            user = self.get_user(user_id)
-            user.delete()
-            return JsonResponse({'status': 'success', 'message': 'User deleted successfully', 'status_code': 200}, status=200)
-        except UserDoesNotExistException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
-        except InvalidUUIDException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
+        user = self.get_user(user_id)
+        user.delete()
+        return JsonResponse({'status': 'success', 'message': 'User deleted successfully', 'status_code': 200}, status=200)
 
     def post(self, request):
-        try:
-            form = UserForm(json.loads(request.body.decode('utf-8')))
-            if form.is_valid():
-                form.save()
-                return JsonResponse({'status': 'success', 'message': 'User created successfully', 'status_code': 201}, status=201)
-            else:
-                raise InvalidFormDataException
-        except json.JSONDecodeError:
-            raise InvalidJSONDataException('Invalid JSON data')
-        except InvalidFormDataException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
-        except InvalidJSONDataException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
+        form = UserForm(json.loads(request.body.decode('utf-8')))
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'status': 'success', 'message': 'User created successfully', 'status_code': 201}, status=201)
+        else:
+            raise InvalidFormDataException
 
     def get(self, request, user_id=None):
         if user_id:
-            try:
-                user = self.get_user(user_id)
-                return JsonResponse({'status': 'success', 'user': user.as_json(), 'status_code': 200}, status=200)
-            except InvalidUUIDException as e:
-                return JsonResponse(e.to_dict(), status=e.status_code)
-            except UserDoesNotExistException as e:
-                return JsonResponse(e.to_dict(), status=e.status_code)
+            user = self.get_user(user_id)
+            return JsonResponse({'status': 'success', 'user': user.as_json(), 'status_code': 200}, status=200)
         else:
             users = User.objects.all()
             users_json = [user.as_json() for user in users]
             return JsonResponse({'status': 'success', 'users': users_json}, status=200, safe=False)
 
     def patch(self, request, user_id):
-        try:
-            user = self.get_user(user_id)
-            data = json.loads(request.body.decode('utf-8'))
-            for field in ['username', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email']:
-                if field in data:
-                    setattr(user, field, data[field])
-                else:
-                    raise InvalidFieldException
-            user.save()
-            return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
-        except InvalidFieldException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
-        except UserDoesNotExistException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
-        except InvalidUUIDException as e:
-            return JsonResponse(e.to_dict(), status=e.status_code)
+        user = self.get_user(user_id)
+        data = json.loads(request.body.decode('utf-8'))
+        for field in ['username', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email']:
+            if field in data:
+                setattr(user, field, data[field])
+            else:
+                raise InvalidFieldException
+        user.save()
+        return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
