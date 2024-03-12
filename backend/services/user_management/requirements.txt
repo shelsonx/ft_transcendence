@@ -3,4 +3,4 @@ Django==3.2.25
 psycopg2-binary==2.9.9
 sqlparse==0.4.4
 typing_extensions==4.7.1
-
+django-cors-headers==3.8.0

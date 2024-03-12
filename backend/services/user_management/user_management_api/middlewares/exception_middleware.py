@@ -25,5 +25,8 @@ class ExceptionMiddleware:
             return JsonResponse(exception.to_dict(), status=exception.status_code)
         elif isinstance(exception, FriendshipAlreadyExistsException):
             return JsonResponse(exception.to_dict(), status=exception.status_code)
+        elif isinstance(exception, Exception):
+            if hasattr(exception, 'status_code'):
+                return JsonResponse({'status': 'error', 'message': str(exception), 'status_code': exception.status_code}, status=exception.status_code)
         else:
             return JsonResponse({'status': 'error', 'message': 'An unexpected error occurred', 'status_code': 500}, status=500)

@@ -37,6 +37,10 @@ class User(AbstractBaseUser):
         return self.email
 
     def as_json(self):
+        friends = self.friends.all()
+        friends_json = [friend.as_json() for friend in friends]
+        blocked_users = self.blocked_users.all()
+        blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
         return {
             'id': self.id,
             'name': self.name,
@@ -45,7 +49,9 @@ class User(AbstractBaseUser):
             'two_factor_enabled': self.two_factor_enabled,
             'email': self.email,
             'chosen_language': self.chosen_language,
-            'status': self.status
+            'status': self.status,
+            'friends': friends_json,
+            'blocked_users': blocked_users_json
         }
 
 
