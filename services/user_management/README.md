@@ -1,0 +1,28 @@
+Directory structure:
+```
+app/
+  users/
+    README.md
+    exception/
+        __init__.py
+        exception.py
+    models/
+        __init__.py
+        user.py
+    services/
+        __init__.py
+        user_service.py
+    tests/
+        __init__.py
+        test_user_service.py
+    views/
+        __init__.py
+        user_view.py
+    middleware/
+        __init__.py
+        user_middleware.py
+    migrations/
+        __init__.py
+    __init__.py
+  manage.py
+  requirements.txt
