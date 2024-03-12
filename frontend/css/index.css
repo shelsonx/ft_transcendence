@@ -1,27 +1,25 @@
 body, html {
-    font-family: 'Press Start 2P', cursive; /* Pixelated font */
-    background-color: #000; /* Black background */
-    color: #fff; /* White text */
+    font-family: 'Press Start 2P', cursive;
+    background-color: #000;
+    color: #fff;
 }
 
 .arcade-theme .navbar, .arcade-theme .footer {
-    background-color: #111; /* Darker background for navbar and footer */
+    background-color: #111; 
 }
 
 .nav-link {
-    color: #00FF00 !important; /* Bright green links */
-    text-shadow: 1px 1px #000; /* Slight shadow for depth */
+    color: #00FF00 !important;
+    text-shadow: 1px 1px #000;
 }
 
 .navbar-brand {
-    color: #FFD700 !important; /* Gold color for the brand */
+    color: #FFD700 !important;
     text-shadow: 1px 1px #000;
 }
 
 h1 {
-    font-size: 2rem; /* Larger font size for the main heading */
-    color: #FF4500; /* Orange-red color */
-    text-shadow: 2px 2px #000; /* More pronounced shadow for heading */
+    font-size: 2rem;
+    color: #FF4500;
+    text-shadow: 2px 2px #000;
 }
-
-/* Add more customizations as needed */
