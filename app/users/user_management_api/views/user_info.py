@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, \
-    InvalidFieldException, InvalidFormDataException, InvalidJSONDataException
+    InvalidFieldException, InvalidFormDataException
 from ..forms import UserForm
 from ..models.models import User
 import json

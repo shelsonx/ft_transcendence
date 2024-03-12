@@ -5,8 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .user_info import UserInfoView
 
-from ..exception.exception import MissingParameterException, UserDoesNotExistException, FriendshipAlreadyExistsException
-from ..models.models import User
+from ..exception.exception import MissingParameterException, FriendshipAlreadyExistsException
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserFriendshipView(View):

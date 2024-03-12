@@ -3,7 +3,6 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, InvalidFieldException
 from ..models.models import User
 from .user_info import UserInfoView
 

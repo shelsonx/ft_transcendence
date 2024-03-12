@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.views import UserInfoView, UserFriendshipView, UserBlockingView
+from user_management_api.views.views import UserInfoView, UserFriendshipView, UserBlockingView
 
 urlpatterns = [
     path('user/', UserInfoView.as_view(), name='user_info'),
