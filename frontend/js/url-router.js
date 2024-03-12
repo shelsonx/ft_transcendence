@@ -14,22 +14,14 @@ const urlRoutes = {
     404: {
         template: "templates/404.html",
         title: "404 - Page Not Found",
-        description: "The page you are looking for does not exist."
-    },
-    "/about": {
-        template: "templates/about.html",
-        title: "About",
-        description: "Learn more about our website."
     },
     "/settings": {
         template: "templates/settings.html",
         title: "Settings",
-        description: "Change your website settings."
     },
     "/profile": {
         template: "templates/profile.html",
         title: "Profile",
-        description: "Your user profile."
     },
 }
 
