@@ -13,10 +13,10 @@ services:
       - "5432:5432"
 
   user_management_api:
-    build: .
+    build: ./services/user_management
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/users
+      - ./services/user_management:/user_management
     ports:
       - "8000:8000"
     depends_on:
