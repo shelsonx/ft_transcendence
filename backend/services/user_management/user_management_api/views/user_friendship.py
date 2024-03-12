@@ -3,9 +3,10 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .user_info import UserInfoView
+from user_management_api.views.user_info import UserInfoView
 
-from ..exception.exception import MissingParameterException, FriendshipAlreadyExistsException
+from user_management_api.exception.exception \
+    import MissingParameterException, FriendshipAlreadyExistsException
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserFriendshipView(View):

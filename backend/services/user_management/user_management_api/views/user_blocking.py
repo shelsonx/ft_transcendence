@@ -3,8 +3,8 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..models.models import User
-from .user_info import UserInfoView
+from user_management_api.models.models import User
+from user_management_api.views.user_info import UserInfoView
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserBlockingView(View):

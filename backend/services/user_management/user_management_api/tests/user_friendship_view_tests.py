@@ -2,8 +2,8 @@ import json
 from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
-from ..models.models import User
-from ..views.views import UserFriendshipView
+from user_management_api.models.models import User
+from user_management_api.views.user_friendship import UserFriendshipView
 import uuid
 
 class UserFriendshipViewTests(TestCase):

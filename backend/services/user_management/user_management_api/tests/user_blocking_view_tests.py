@@ -1,9 +1,8 @@
 import json
-from django.test import RequestFactory
 from django.test import TestCase
 from django.urls import reverse
-from ..models.models import User
-from ..views.views import UserBlockingView
+from user_management_api.models.models import User
+from user_management_api.views.user_blocking import UserBlockingView
 import uuid
 
 

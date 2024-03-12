@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, \
+from user_management_api.exception.exception import UserDoesNotExistException, InvalidUUIDException, \
     InvalidFieldException, InvalidFormDataException, InvalidJSONDataException, \
     UserManagementException, FriendshipAlreadyExistsException
 

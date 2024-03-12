@@ -4,10 +4,11 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from ..exception.exception import UserDoesNotExistException, InvalidUUIDException, \
+from user_management_api.exception.exception \
+    import UserDoesNotExistException, InvalidUUIDException, \
     InvalidFieldException, InvalidFormDataException
-from ..forms import UserForm
-from ..models.models import User
+from user_management_api.forms import UserForm
+from user_management_api.models.models import User
 import json
 
 
