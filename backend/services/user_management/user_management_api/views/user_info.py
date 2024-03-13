@@ -1,4 +1,5 @@
 import uuid
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.http import JsonResponse
@@ -53,7 +54,9 @@ class UserInfoView(View):
     def get(self, request, user_id=None):
         if user_id:
             user = self.get_user(user_id)
-            return JsonResponse({'status': 'success', 'user': user.as_json(), 'status_code': 200}, status=200)
+            if request.headers.get('Content-Type') == 'application/json':
+                return JsonResponse({'status': 'success', 'user': user.as_json()}, status=200)
+            return render(request, 'user_profile.html', {'user': user.as_json()})
         else:
             users = User.objects.all()
             users_json = [user.as_json() for user in users]
@@ -62,7 +65,7 @@ class UserInfoView(View):
     def patch(self, request, user_id):
         user = self.get_user(user_id)
         data = json.loads(request.body.decode('utf-8'))
-        fields = ['name', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email']
+        fields = ['name', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email', 'chosen_language']
         for field in data:
             if field not in fields:
                 raise InvalidFieldException
