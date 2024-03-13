@@ -36,6 +36,9 @@ services:
       # this must be the name of the db service
       - POSTGRES_HOST=auth-db
       - JWT_SECRET=${JWT_SECRET}
+      - OAUTH42_CLIENT_ID=${OAUTH42_CLIENT_ID}
+      - OAUTH42_SECRET_KEY=${OAUTH42_SECRET_KEY}
+      - OAUTH42_REDIRECT_URI=${OAUTH42_REDIRECT_URI}
     depends_on:
       - auth-db
 
