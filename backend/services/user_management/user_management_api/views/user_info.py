@@ -27,7 +27,7 @@ class UserInfoView(View):
             uuid.UUID(str(user_id), version=4)
             return True
         except ValueError:
-            False
+            return False
 
     def get_user(self, user_id):
         if not self.is_valid_uuid(user_id):
@@ -62,10 +62,10 @@ class UserInfoView(View):
     def patch(self, request, user_id):
         user = self.get_user(user_id)
         data = json.loads(request.body.decode('utf-8'))
-        for field in ['username', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email']:
-            if field in data:
-                setattr(user, field, data[field])
-            else:
+        fields = ['name', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email']
+        for field in data:
+            if field not in fields:
                 raise InvalidFieldException
+            setattr(user, field, data[field])
         user.save()
         return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
