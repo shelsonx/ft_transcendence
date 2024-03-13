@@ -38,8 +38,15 @@ class JWTService(ITokenService):
     if len(split_token) != 3:
       raise UnauthorizedException()
     base64header, base64payload, signature = split_token
+    payload = json.loads(base64.b64decode(base64payload).decode("utf-8"))
+    decoded_payload = JWTPayload.decode(payload)
+    if decoded_payload.is_expired():
+      raise UnauthorizedException(message="Token expired")
     generated_signature = self._generate_signature(base64header, base64payload)
     if generated_signature != signature:
       raise UnauthorizedException()
-    payload = json.loads(base64.b64decode(base64payload).decode("utf-8"))
-    return JWTPayload.decode(payload)
+    return decoded_payload
+  
+  def get_token_expiration(self, token: str) -> datetime:
+    payload = self.verify_token(token)
+    return payload.exp
