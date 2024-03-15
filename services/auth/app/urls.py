@@ -3,6 +3,7 @@ from django.urls import path
 from .repositories.user_repository import UserRepository
 from .repositories.login_type_repository import LoginTypeRepository
 from .services.jwt_service import JWTService
+from .services.http_client import HttpClient
 from .use_cases.get_user_usecase import GetUserUseCase
 from .use_cases.edit_user_usecase import EditUserUseCase
 from .use_cases.delete_user_usecase import DeleteUserUseCase
@@ -17,6 +18,7 @@ from .views import SignInView
 from .views import SignUpView
 from .views import UserView
 from .views import GetUserView
+from .views import RedirectOAuth42View
 from .views import SignInOAuth42View
 
 # repositories
@@ -25,6 +27,7 @@ login_type_repo = LoginTypeRepository()
 
 # services
 token_service = JWTService()
+http_client = HttpClient()
 
 # use cases
 sign_in_use_case = SignInUseCase(user_repo, token_service)
@@ -46,8 +49,9 @@ sign_in_oauth42_controller = SignInOAuth42Controller(sign_in_oauth42_usecase)
 
 urlpatterns = [
     path("sign-in/", SignInView.as_view(sign_in_controller=sign_in_controller)),
-    path("sign-in-42", SignInOAuth42View.as_view(sign_in_oauth42_controller=sign_in_oauth42_controller)),
+    path("redirect-42", RedirectOAuth42View.as_view()),
     path("sign-up/", SignUpView.as_view(sign_up_controller=sign_up_controller)),
     path("user/", GetUserView.as_view(user_controller=user_controller)),
     path("user/<uuid:user_id>", UserView.as_view(user_controller=user_controller)),
+    path("sign-in-42/", SignInOAuth42View.as_view(sign_in_oauth42_controller=sign_in_oauth42_controller, http_client=http_client)),
 ]
