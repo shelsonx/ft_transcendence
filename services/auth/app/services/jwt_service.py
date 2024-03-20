@@ -20,12 +20,12 @@ class JWTService(ITokenService):
     base64_url_signature = base64.urlsafe_b64encode(signature).rstrip(b'=')
     return base64_url_signature.decode()
 
-  def create_token(self, user: User) -> str:
+  def create_token(self, user: User,  expires_in_hours: int = 2) -> str:
     header = {
       "alg": "HS256",
       "typ": "JWT",
     }
-    payload = JWTPayload.create(user.id, 2).to_dict()
+    payload = JWTPayload.create(user.id, expires_in_hours).to_dict()
     base64_header = base64.b64encode(json.dumps(header).encode("utf-8")).decode("utf-8")
     base64_payload = base64.b64encode(json.dumps(payload, cls=UUIDEncoder).encode("utf-8")).decode("utf-8")
     signature = self._generate_signature(base64_header, base64_payload)

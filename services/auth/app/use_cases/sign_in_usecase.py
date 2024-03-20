@@ -3,8 +3,9 @@ from ..interfaces.services.token_service import ITokenService
 from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.sign_in_dto import SignInDto
+from ..interfaces.usecase.base_usecase import BaseUseCase
 
-class SignInUseCase:
+class SignInUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService):
         self.user_repository = user_repository

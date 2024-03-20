@@ -7,32 +7,31 @@ from ..interfaces.services.http_client import IHttpClient
 from ..interfaces.controllers.base_controller import BaseController
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from ..constants.env_variables import EnvVariables
+from ..dtos.access_token_42 import AccessToken42
 import os
+from ..interfaces.usecase.base_usecase import BaseUseCase
 @method_decorator(csrf_exempt, name='dispatch')
 
 class SignInOAuth42View(View):
     sign_in_oauth42_controller: BaseController = None
     http_client: IHttpClient = None
+    get_access_token_42_use_case: BaseUseCase = None
+    validate_access_token_42_use_case: BaseUseCase = None
+    get_me_42_use_case: BaseUseCase = None
 
-    def __init__(self, sign_in_oauth42_controller: BaseController, http_client: IHttpClient) -> None:
+    def __init__(self, sign_in_oauth42_controller: BaseController, http_client: IHttpClient, get_access_token_42_use_case: BaseUseCase, validate_access_token_42_use_case: BaseUseCase, get_me_42_use_case: BaseUseCase) -> None:
         self.sign_in_oauth42_controller = sign_in_oauth42_controller
         self.http_client = http_client
+        self.get_access_token_42_use_case = get_access_token_42_use_case
+        self.validate_access_token_42_use_case = validate_access_token_42_use_case
+        self.get_me_42_use_case = get_me_42_use_case
        
     async def get(self, request: HttpRequest) -> JsonResponse:
-        client_id = os.environ.get(EnvVariables.OAUTH42_CLIENT_ID)
-        secret_id = os.environ.get(EnvVariables.OAUTH42_SECRET_KEY)
-        url_redirect = os.environ.get(EnvVariables.OAUTH42_REDIRECT_URI)
         code = request.GET.get('code')
-        data = {
-            'client_id': client_id,
-            'client_secret': secret_id,
-            'redirect_uri': url_redirect.rstrip('/'),
-            'grant_type': 'authorization_code',
-            'code': code
-        }
-        response = self.http_client.post('https://api.intra.42.fr/oauth/token', data=data, headers={"Content-type": "application/x-www-form-urlencoded"})
-        response_data = self.http_client.serialize(response)
-        me_response = self.http_client.get('https://api.intra.42.fr/v2/me', headers={"Authorization": f"Bearer {response_data['access_token']}"})
-        me_data = self.http_client.serialize(me_response)
+        response_data = await self.get_access_token_42_use_case.execute(code)
+        
+        access_token = response_data.access_token
+        await self.validate_access_token_42_use_case.execute(access_token)
+
+        me_data = await self.get_me_42_use_case.execute(access_token)
         return JsonResponse(data=me_data, status=200, safe=False)

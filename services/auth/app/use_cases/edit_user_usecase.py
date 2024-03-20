@@ -10,8 +10,9 @@ from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.user_edit_dto import UserEditDto
 from ..utils.call_async import call_async
 from asgiref.sync import sync_to_async
+from ..interfaces.usecase.base_usecase import BaseUseCase
 
-class EditUserUseCase:
+class EditUserUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
