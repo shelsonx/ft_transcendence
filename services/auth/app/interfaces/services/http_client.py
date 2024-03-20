@@ -14,7 +14,8 @@ class IHttpClient:
     @abstractmethod
     def put(self, url: str, data: dict, headers: dict) -> client.HTTPResponse:
       pass
-
+    
+    @abstractmethod
     def delete(self, url: str, headers: dict) -> client.HTTPResponse:
       pass
 

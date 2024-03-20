@@ -5,29 +5,24 @@ from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.sign_in_oauth42_dto import SignInOAuth42Dto
 from datetime import datetime
+from ..exceptions.token_expired_exception import TokenExpiredException
+from ..interfaces.usecase.base_usecase import BaseUseCase
 
-class SignInOAuth42UseCase:
+class SignInOAuth42UseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService):
         self.user_repository = user_repository
         self.token_service = token_service
 
     async def execute(self, sign_inOAuth42_dto: SignInOAuth42Dto):
-        # try:
-        #     user = await self.user_repository.get_user_by_email(sign_inOAuth42_dto.email)
-        # except ObjectDoesNotExist:
-        #      raise UserNotFoundException()
+        #validate 42 token before sign in/up
+        try:
+            user = await self.user_repository.get_user_by_email(sign_inOAuth42_dto.email)
+        except ObjectDoesNotExist:
+             raise UserNotFoundException()
         
-        # if not user.check_password(sign_inOAuth42_dto.password):
-        #     raise InvalidPasswordException()
-        user = User(
-          user_name = 'hardcoded_username',
-          email = 'hardcoded_email@example.com',
-          enable_2fa = False,
-          password = 'hardcoded_password',
-          created_at = datetime.datetime.now(),
-          updated_at = datetime.datetime.now(),
-        )
-       
-        token = self.token_service.create_token(user)
+        if not sign_inOAuth42_dto.is_valid():
+            raise TokenExpiredException()
+        hours_to_expire = sign_inOAuth42_dto.expire_to_hours()
+        token = self.token_service.create_token(user, hours_to_expire)
         return token

@@ -7,19 +7,24 @@ from ..interfaces.services.http_client import IHttpClient
 class HttpClient(IHttpClient):
     
     def get(self, url: str, headers: dict) -> http.client.HTTPResponse:
-        domain = self._get_domain(url)
-        conn = http.client.HTTPSConnection(domain)
-        path = self._get_path(url)
-        conn.request("GET", f"/{path}", headers=headers)
-        return conn.getresponse()
+        return self._make_request("GET", url, {}, headers)
 
     def post(self, url: str, data: dict, headers: dict) -> http.client.HTTPResponse:
+        return self._make_request("POST", url, data, headers)
+    
+    def put(self, url: str, data: dict, headers: dict) -> http.client.HTTPResponse:
+        return self._make_request("PUT", url, data, headers)
+    
+    def delete(self, url: str, headers: dict) -> http.client.HTTPResponse:
+        return self._make_request("DELETE", url, {}, headers)
+
+    def _make_request(self, method: str, url: str, data: dict, headers: dict) -> http.client.HTTPResponse:
         domain = self._get_domain(url)
         path = self._get_path(url)
         conn = http.client.HTTPSConnection(domain)
-        conn.request("POST", f"/{path}", urlencode(data), headers)
+        conn.request(method, f"/{path}", urlencode(data), headers)
         return conn.getresponse()
-
+    
     def serialize(self, response: http.client.HTTPResponse) -> str:
         data = response.read().decode()
         return json.loads(data)

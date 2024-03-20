@@ -7,7 +7,9 @@ from ..models.user import User
 from ..dtos.sign_up_dto import SignUpDto
 from django.core.exceptions import ObjectDoesNotExist
 from ..validators.password_validator import PasswordValidator
-class SignUpUseCase:
+from ..interfaces.usecase.base_usecase import BaseUseCase
+
+class SignUpUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService, login_type_repository: ILoginTypeRepository):
         self.user_repository = user_repository

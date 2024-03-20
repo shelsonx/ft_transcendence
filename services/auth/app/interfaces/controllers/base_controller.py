@@ -40,7 +40,7 @@ class BaseController(ABC):
     except BaseApiException as e:
         return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
     except Exception as e:
-        return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)  
+        return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
     
 
   async def handle_post(self, request: HttpRequest) -> JsonResponse:
