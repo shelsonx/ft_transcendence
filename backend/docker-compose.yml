@@ -20,32 +20,56 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - ./.env.db
- 
-  auth-api:
-    container_name: auth-api
+
+  auth-db:
+    image: postgres
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
     environment:
-      JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_AUTH_DB}
     ports:
-      - 8002:443
+      - "5433:5432"
+
+  auth-api:
+    build: ./services/auth
+    command: python manage.py runserver 0.0.0.0:80
+    volumes:
+      - ./services/auth:/code
+    ports:
+      - "8002:80"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_NAME=${POSTGRES_AUTH_DB}
+      - POSTGRES_HOST=auth-db
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - auth-db
 
   user-management-api:
     container_name: user-management-api
     environment:
-      JWT_SECRET=${JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - 8003:443
 
   game-api:
     container_name: game-api
     environment:
-      JWT_SECRET=${JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - 8004:443
     
   user-stats-api:
     container_name: user-stats-api
     environment:
-      JWT_SECRET=${JWT_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     ports:
       - 8005:443
 
@@ -53,6 +77,8 @@ services:
     container_name: gateway-api
     ports:
       - 8001:443
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
     depends_on:
       - auth-api 
       - user-management-api
@@ -61,3 +87,4 @@ services:
 
 volumes:
   postgres_data:
+  auth-db-data:

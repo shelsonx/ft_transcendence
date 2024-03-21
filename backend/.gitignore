@@ -1,0 +1,5 @@
+app/singlepage/migrations/
+*.env
+/transcendence_env
+
+*__pycache__*
