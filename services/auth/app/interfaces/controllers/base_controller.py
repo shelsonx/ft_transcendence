@@ -34,54 +34,30 @@ class BaseController(ABC):
     raise NotImplementedError()
   
   async def handle_get(self, request: HttpRequest, id: str) -> JsonResponse:
-    try:
-      data = await self.execute_get(id)
-      return self.to_json_response(data=ApiDataResponse(data=data))
-    except BaseApiException as e:
-        return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
-    except Exception as e:
-        return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
+    data = await self.execute_get(id)
+    return self.to_json_response(data=ApiDataResponse(data=data))
     
-
   async def handle_post(self, request: HttpRequest) -> JsonResponse:
-        try:
-            form = self.convert_to_form(request)
-            if not form.is_valid():
-                raise ValidationErrorException(message=form.errors)
-            dict_form = form.cleaned_data
-            dto = self.convert_to_dto(dict_form)
-            data = await self.execute_post(dto)
-            return self.to_json_response(data=ApiDataResponse(data=data))
-        except BaseApiException as e:
-            return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
-        except Exception as e:
-            return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
+    form = self.convert_to_form(request)
+    if not form.is_valid():
+        raise ValidationErrorException(message=form.errors)
+    dict_form = form.cleaned_data
+    dto = self.convert_to_dto(dict_form)
+    data = await self.execute_post(dto)
+    return self.to_json_response(data=ApiDataResponse(data=data))
         
   async def handle_put(self, request: HttpRequest, id: str) -> JsonResponse:
-        try:
-            form = self.convert_to_form(request)
-            if not form.is_valid():
-                raise ValidationErrorException(message=form.errors)
-            dict_form = form.cleaned_data
-            dto = self.convert_to_dto(dict_form)
-            data = await self.execute_put(id, dto)
-            return self.to_json_response(data=ApiDataResponse(data=data))
-        except ValidationError as e:
-            return self.to_json_response(data=ApiDataResponse(message=e.message_dict, is_success=False), status=400)
-        except BaseApiException as e:
-            return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
-        except Exception as e:
-            return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
-
+    form = self.convert_to_form(request)
+    if not form.is_valid():
+        raise ValidationErrorException(message=form.errors)
+    dict_form = form.cleaned_data
+    dto = self.convert_to_dto(dict_form)
+    data = await self.execute_put(id, dto)
+    return self.to_json_response(data=ApiDataResponse(data=data))
 
   async def handle_delete(self, request: HttpRequest, id: str) -> JsonResponse:
-        try:
-            data = await self.execute_delete(id)
-            return self.to_json_response(data=ApiDataResponse(data=data))
-        except BaseApiException as e:
-            return self.to_json_response(data=ApiDataResponse(message=e.message, is_success=False), status=e.status_code)
-        except Exception as e:
-            return self.to_json_response(data=ApiDataResponse(message=str(e), is_success=False), status=500)
+    data = await self.execute_delete(id)
+    return self.to_json_response(data=ApiDataResponse(data=data))
 
   def to_json_response(self, data: ApiDataResponse, status=200) -> JsonResponse:
     return to_json_response(data, status)

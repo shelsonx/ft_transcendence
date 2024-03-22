@@ -9,7 +9,7 @@ class User(models.Model):
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
     login_type = models.ForeignKey(LoginType, on_delete=models.CASCADE, null=False, blank=False)
     enable_2fa = models.BooleanField(default=False, null=False)
-    password = models.CharField(max_length=100, null=False, blank=False)
+    password = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, null=False)
 

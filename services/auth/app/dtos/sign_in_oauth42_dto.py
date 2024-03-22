@@ -7,10 +7,11 @@ class SignInOAuth42DtoForm(forms.Form):
     access_token = forms.CharField(max_length=100, required=True)
     expires_in = forms.IntegerField(required=True)
 
-class SignInOAuth42Dto(models.Model):
+class SignInUpOAuth42Dto(models.Model):
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
-    acess_token = models.CharField(max_length=100, null=False, blank=False)
+    access_token = models.CharField(max_length=100, null=False, blank=False)
     expires_in = models.IntegerField(null=False, blank=False)
+    user_name = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self) -> str:
         return f"email: {self.email}, acess_token: {self.acess_token}, expires_in: {self.expires_in}"
@@ -23,3 +24,6 @@ class SignInOAuth42Dto(models.Model):
     
     def is_valid(self) -> bool:
         return datetime.now() < self._expire_in_datetime()
+    
+class Meta:
+        managed = False

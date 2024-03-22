@@ -1,3 +1,4 @@
 from .field_already_exists_exception import FieldAlreadyExistsException
 from .user_not_found_exception import UserNotFoundException
 from .invalid_password_exception import InvalidPasswordException
+from .not_valid_password_exception import NotValidPasswordException

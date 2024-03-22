@@ -11,3 +11,6 @@ class SignInDto(models.Model):
 
     def __str__(self) -> str:
         return f"email: {self.email}, password: {self.password}"
+    
+    class Meta:
+        managed = False

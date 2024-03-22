@@ -18,3 +18,6 @@ class UserEditDto(models.Model):
 
     def __str__(self) -> str:
         return f"UserEditDto: user_name={self.user_name}, email={self.email}, enable_2fa={self.enable_2fa}, password={self.password}, old_password={self.old_password}"
+    
+    class Meta:
+        managed = False
