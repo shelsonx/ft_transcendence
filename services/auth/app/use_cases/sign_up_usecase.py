@@ -5,16 +5,19 @@ from ..constants.login_type_constants import LoginTypeConstants
 from ..exceptions import FieldAlreadyExistsException, InvalidPasswordException
 from ..models.user import User
 from ..dtos.sign_up_dto import SignUpDto
+from ..interfaces.dtos.base_sign_up_dto import BaseSignUpDto
 from django.core.exceptions import ObjectDoesNotExist
+
 from ..validators.password_validator import PasswordValidator
 from ..interfaces.usecase.base_usecase import BaseUseCase
+from ..interfaces.usecase.base_signup_usecase  import BaseSignUpUseCase
 
-class SignUpUseCase(BaseUseCase):
+
+class SignUpUseCase(BaseSignUpUseCase):
 
     def __init__(self, user_repository: IUserRepository, token_service: ITokenService, login_type_repository: ILoginTypeRepository):
-        self.user_repository = user_repository
         self.token_service = token_service
-        self.login_type_repository = login_type_repository
+        super().__init__(user_repository, login_type_repository)
 
     async def execute(self, sign_up_dto: SignUpDto):
         try:
@@ -22,15 +25,13 @@ class SignUpUseCase(BaseUseCase):
             if user is not None:
                 duplicated_field = "email" if user.email == sign_up_dto.email else "user_name"
                 raise FieldAlreadyExistsException(duplicated_field)
-        except ObjectDoesNotExist:    
-        
-            login_type = await self.login_type_repository.get_login_type_by_name(LoginTypeConstants.AUTH_EMAIL)
-            password_validator = PasswordValidator()
-            password_validator.validate(password=sign_up_dto.password)
-            new_user = User(user_name=sign_up_dto.user_name, email=sign_up_dto.email, password=sign_up_dto.password, login_type=login_type)
-
-            user = await self.user_repository.create_user(new_user)
-            token = self.token_service.create_token(user)
-
+        except ObjectDoesNotExist:
+            base_sign_up_dto = BaseSignUpDto(email=sign_up_dto.email, user_name=sign_up_dto.user_name)
+            new_user = await super().execute(
+                sign_up_dto=base_sign_up_dto,
+                password=sign_up_dto.password, 
+                login_type=LoginTypeConstants.AUTH_EMAIL
+            )
+            token = self.token_service.create_token(new_user)
             return token
-            
+                
