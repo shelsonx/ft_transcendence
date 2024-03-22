@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from ...models.user import User
+from typing import List
 
 class IUserRepository(ABC):
 
@@ -15,7 +16,7 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_user_by_email_or_username(self, email: str, username: str) -> User:
+    async def get_user_by_email_or_username(self, email: str, username: str) -> List[User]:
         pass
 
     @abstractmethod

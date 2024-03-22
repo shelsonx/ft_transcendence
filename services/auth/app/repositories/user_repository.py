@@ -4,6 +4,7 @@ from ..interfaces.repositories.user_repository import IUserRepository
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from asgiref.sync import sync_to_async
+from typing import List
 
 class UserRepository(IUserRepository):
 
@@ -16,8 +17,13 @@ class UserRepository(IUserRepository):
   async def get_user_by_id(self, id: str) -> User:
     return await User.objects.aget(id=id)
   
-  async def get_user_by_email_or_username(self, email: str, username: str) -> User:
-    return await User.objects.aget(Q(email=email) | Q(user_name=username))
+  async def get_user_by_email_or_username(self, email: str, username: str) -> List[User]:
+    users = []
+    async for user in await sync_to_async(User.objects.filter, thread_sensitive=True)(
+     Q(email=email) | Q(user_name=username),
+    ):
+      users.append(user)
+    return users
 
   async def create_user(self, user: User) -> User:
     hashed_password = make_password(user.password)

@@ -9,7 +9,6 @@ class DeleteUserUseCase(BaseUseCase):
         self.user_repository = user_repository
 
     async def execute(self, id: str) -> bool:
-        
         try:
             user = await self.user_repository.get_user_by_id(id)
             await self.user_repository.delete_user(user.id)
