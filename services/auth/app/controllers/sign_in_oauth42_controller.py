@@ -30,10 +30,3 @@ class SignInOAuth42Controller(BaseOAuth42Controller):
     sign_in_up_oath42 = SignInUpOAuth42Dto(email=me_data['email'], user_name=me_data['login'], access_token=access_token, expires_in=response_data.expires_in)
     data = await self.sign_in_oauth42_service.execute(sign_in_up_oath42)
     return to_json_response(ApiDataResponse(data=data))
-  
-  '''
-  email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
-    acess_token = models.CharField(max_length=100, null=False, blank=False)
-    expires_in = models.IntegerField(null=False, blank=False)
-    user_name = models.CharField(max_length=100, null=False, blank=False)
-  '''

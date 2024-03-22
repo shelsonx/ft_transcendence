@@ -21,15 +21,14 @@ class SignInOAuth42Service(BaseService):
         self.base_sign_up_usecase = base_sign_up_usecase
 
     async def execute(self, sign_in_up_OAuth42_dto: SignInUpOAuth42Dto):
-        token_user = None
         try:
             if not sign_in_up_OAuth42_dto.is_valid():
               raise TokenExpiredException()
-            token_user = await self.user_repository.get_user_by_email_or_username(email=sign_in_up_OAuth42_dto.email, username=sign_in_up_OAuth42_dto.user_name)
+            token_user = await self.user_repository.get_user_by_email(email=sign_in_up_OAuth42_dto.email)
+                      
             login_type = (await sync_to_async(lambda: token_user.login_type)())
             if  login_type.name != LoginTypeConstants.AUTH_42:
-                duplicated_field = "email" if token_user.email == token_user.email else "user_name"
-                raise FieldAlreadyExistsException(duplicated_field)
+                raise FieldAlreadyExistsException("email")
             
         except ObjectDoesNotExist:
              base_signup_dto = BaseSignUpDto(email=sign_in_up_OAuth42_dto.email, user_name=sign_in_up_OAuth42_dto.user_name)

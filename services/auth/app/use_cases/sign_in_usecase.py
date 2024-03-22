@@ -13,7 +13,7 @@ class SignInUseCase(BaseUseCase):
 
     async def execute(self, sign_in_dto: SignInDto):
         try:
-            user = await self.user_repository.get_user_by_email(sign_in_dto.email)
+            user = await self.user_repository.get_user_by_email(email=sign_in_dto.email)
         except ObjectDoesNotExist:
              raise UserNotFoundException()
         

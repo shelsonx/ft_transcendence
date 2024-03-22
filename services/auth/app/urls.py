@@ -12,7 +12,6 @@ from .use_cases.delete_user_usecase import DeleteUserUseCase
 from .use_cases.sign_in_usecase import SignInUseCase
 from .use_cases.sign_up_usecase import SignUpUseCase
 from .interfaces.usecase.base_signup_usecase import BaseSignUpUseCase
-from .use_cases.signin_oauth42_usecase import SignInOAuth42UseCase
 from .use_cases.get_access_token_42_usecase import GetAccessToken42UseCase
 from .use_cases.validate_access_token_42_usecase import ValidateAccessToken42UseCase
 from .use_cases.get_me_42_usecase import GetMe42UseCase
@@ -59,7 +58,6 @@ user_controller = UserController(
     edit_user_usecase=edit_user_usecase, 
     delete_user_usecase=delete_user_usecase
 )
-sign_in_oauth42_usecase = SignInOAuth42UseCase(user_repo, token_service)
 sign_in_oauth42_controller = SignInOAuth42Controller(
     http_client=http_client, 
     get_access_token_42_use_case=get_access_token_42_use_case, 
