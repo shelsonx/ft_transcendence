@@ -17,3 +17,6 @@ class TwoFactorService(ITwoFactorService):
 
   async def delete_two_factor(self, user_id: str):
     pass
+
+  async def validate_code(self, user_id: str, code: str) -> bool:
+    pass

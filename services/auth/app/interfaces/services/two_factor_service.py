@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from ...dtos.two_factor_dto import TwoFactorDto
 
 class ITwoFactorService(ABC):
 
@@ -11,7 +12,11 @@ class ITwoFactorService(ABC):
     pass
 
   @abstractmethod
-  def notify_user(self, user_id: str, code: str) -> None:
+  async def validate_code(self, two_factor_dto: TwoFactorDto) -> bool:
+    pass
+
+  @abstractmethod
+  def notify_user(self, two_factor_dto: TwoFactorDto) -> None:
     pass
 
   @abstractmethod

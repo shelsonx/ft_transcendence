@@ -12,6 +12,7 @@ class User(models.Model):
     password = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, null=False)
+    is_active = models.BooleanField(default=False, null=False)
 
     def __str__(self):
         return self.user_name
@@ -28,4 +29,7 @@ class User(models.Model):
             'email': self.email,
             'login_type': self.login_type.to_safe_dict(),
             'enable_2fa': self.enable_2fa,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+            'is_active': self.is_active
         }

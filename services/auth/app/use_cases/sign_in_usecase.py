@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.sign_in_dto import SignInDto
 from ..interfaces.usecase.base_usecase import BaseUseCase
+from ..exceptions.two_factor_missing_exception import TwoFactorCodeRequiredException
 
 class SignInUseCase(BaseUseCase):
 
@@ -14,11 +15,17 @@ class SignInUseCase(BaseUseCase):
     async def execute(self, sign_in_dto: SignInDto):
         try:
             user = await self.user_repository.get_user_by_email(email=sign_in_dto.email)
+            if user.enable_2fa and not sign_in_dto.two_factor_code:
+                raise TwoFactorCodeRequiredException()
+                
         except ObjectDoesNotExist:
              raise UserNotFoundException()
         
         if not user.check_password(sign_in_dto.password):
             raise InvalidPasswordException()
+        
+        if user.is_active == False:
+            raise UserNotFoundException()
 
         token = self.token_service.create_token(user)
         return token
