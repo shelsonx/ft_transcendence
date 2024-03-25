@@ -24,6 +24,6 @@ class SignInUpOAuth42Dto(models.Model):
     
     def is_valid(self) -> bool:
         return datetime.now() < self._expire_in_datetime()
-    
-class Meta:
-        managed = False
+        
+    class Meta:
+            managed = False

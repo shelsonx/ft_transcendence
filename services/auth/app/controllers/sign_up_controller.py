@@ -1,6 +1,7 @@
 
 
 
+from ..entities.api_data_response import ApiDataResponse
 from ..interfaces.controllers.base_controller import BaseController
 from django.http import HttpRequest
 from ..interfaces.usecase.base_usecase import BaseUseCase
@@ -21,3 +22,7 @@ class SignUpController(BaseController):
 
   async def execute_post(self, dto: SignUpDto):
     return await self.sign_up_usecase.execute(dto)
+  
+  async def handle_post(self, request: HttpRequest):
+    await super().handle_post(request)
+    return self.to_json_response(data=ApiDataResponse(message="User created successfully. Validate code through email"), status=201)

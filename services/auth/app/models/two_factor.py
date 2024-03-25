@@ -8,15 +8,11 @@ from .user import User
 
 class TwoFactor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    code = models.CharField(max_length=32)
+    code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     expiration = models.DateTimeField(default=now() + timedelta(hours=2)) 
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=False, blank=False)
- 
-    def save(self):
-        self.code = self.generate_code()
-        return super().save()
-
+    
     def generate_code(self):
         return str(random.randint(100000, 999999))
     
