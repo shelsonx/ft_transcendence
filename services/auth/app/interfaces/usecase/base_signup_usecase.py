@@ -16,6 +16,7 @@ class BaseSignUpUseCase(BaseUseCase):
         self.login_type_repository = login_type_repository
 
     async def execute(self, sign_up_dto: BaseSignUpDto, password: str = None, login_type: str = LoginTypeConstants.AUTH_EMAIL) -> User:
+        
         if password is None and login_type == LoginTypeConstants.AUTH_EMAIL:
             raise NotValidPasswordException(message="Password is required for email sign up")
         login_type = await self.login_type_repository.get_login_type_by_name(login_type)

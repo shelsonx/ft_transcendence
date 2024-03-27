@@ -40,7 +40,8 @@ class UserRepository(IUserRepository):
       email=user.email,
       login_type=user.login_type,
       password=user.password,
-      enable_2fa=user.enable_2fa
+      enable_2fa=user.enable_2fa,
+      is_active=user.is_active
     )
     return user
   
@@ -50,7 +51,8 @@ class UserRepository(IUserRepository):
       email=user.email,
       login_type=user.login_type,
       password=user.password,
-      enable_2fa=user.enable_2fa
+      enable_2fa=user.enable_2fa,
+      is_active=user.is_active
     )
     return user
   

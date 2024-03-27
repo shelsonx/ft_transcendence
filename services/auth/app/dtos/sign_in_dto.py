@@ -9,7 +9,7 @@ class SignInDtoForm(forms.Form):
 class SignInDto(models.Model):
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
     password = models.CharField(max_length=100, null=False, blank=False)
-    two_factor_code = forms.CharField(max_length=6, required=False)
+    two_factor_code = models.CharField(max_length=6, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"email: {self.email}, password: {self.password}"
