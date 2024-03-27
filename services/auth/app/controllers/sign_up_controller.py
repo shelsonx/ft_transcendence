@@ -18,11 +18,8 @@ class SignUpController(BaseController):
     return SignUpDtoForm(request.POST)
   
   def convert_to_dto(self, data: dict) -> SignUpDto:
-    return SignUpDto(email=data.get('email'), password=data.get('password'), user_name=data.get('user_name'))
+    return SignUpDto(email=data.get('email'), password=data.get('password'), user_name=data.get('user_name'), two_factor_code=data.get('two_factor_code'))
 
   async def execute_post(self, dto: SignUpDto):
     return await self.sign_up_usecase.execute(dto)
-  
-  async def handle_post(self, request: HttpRequest):
-    await super().handle_post(request)
-    return self.to_json_response(data=ApiDataResponse(message="User created successfully. Validate code through email"), status=201)
+

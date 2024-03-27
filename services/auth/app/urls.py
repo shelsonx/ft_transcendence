@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from .repositories.user_repository import UserRepository
 from .repositories.login_type_repository import LoginTypeRepository
 from .repositories.two_factor_repository import TwoFactorRepository
@@ -8,6 +9,7 @@ from .services.jwt_service import JWTService
 from .services.http_client import HttpClient
 from .services.sign_in_up_oauth42 import SignInOAuth42Service
 from .services.two_factor_service import TwoFactorService
+from .services.email_service import EmailService
 
 from .use_cases.get_user_usecase import GetUserUseCase
 from .use_cases.edit_user_usecase import EditUserUseCase
@@ -37,13 +39,14 @@ two_factor_repo = TwoFactorRepository()
 
 # services
 token_service = JWTService()
+email_service = EmailService()
 http_client = HttpClient()
-two_factor_service = TwoFactorService(two_factor_repository=two_factor_repo)
+two_factor_service = TwoFactorService(two_factor_repository=two_factor_repo, email_service=email_service)
 
 # use cases
 sign_in_use_case = SignInUseCase(user_repo, token_service)
 base_sign_up_usecase = BaseSignUpUseCase(user_repo, login_type_repo)
-sign_up_use_case = SignUpUseCase(user_repo, token_service, login_type_repo)
+sign_up_use_case = SignUpUseCase(user_repo, token_service, login_type_repo, two_factor_service)
 get_user_usecase = GetUserUseCase(user_repo)
 edit_user_usecase = EditUserUseCase(user_repo)
 delete_user_usecase = DeleteUserUseCase(user_repo)

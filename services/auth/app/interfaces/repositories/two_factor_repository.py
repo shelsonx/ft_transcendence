@@ -11,3 +11,11 @@ class ITwoFactorRepository(ABC):
   @abstractmethod
   async def delete_two_factor(self, id: str) -> bool:
     pass
+
+  @abstractmethod
+  async def find_two_factor_by_user_id(self, user_id: str) -> TwoFactor:
+    pass
+
+  @abstractmethod
+  async def delete_two_factor_by_user_id(self, user_id: str) -> bool:
+    pass
