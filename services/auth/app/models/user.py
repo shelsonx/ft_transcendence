@@ -2,7 +2,7 @@ from django.db import models
 import uuid
 from .login_type import LoginType
 from django.contrib.auth.hashers import check_password
-
+from asgiref.sync import sync_to_async
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

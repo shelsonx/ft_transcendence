@@ -8,37 +8,138 @@ from ...interfaces.services.two_factor_service import ITwoFactorService
 from ...interfaces.repositories.user_repository import IUserRepository
 from ...interfaces.services.token_service import ITokenService
 from ...dtos.sign_in_dto import SignInDto
-from ...interfaces.usecase.base_usecase import BaseUseCase
 from asgiref.sync import async_to_sync
-
+from django.contrib.auth.hashers import make_password
+from ...exceptions.user_not_found_exception import UserNotFoundException
+from ...exceptions.user_inactive_exception import UserInactiveException
+from ...exceptions.invalid_password_exception import InvalidPasswordException
+from ...exceptions.two_factor_exception import TwoFactorCodeException
+from ...exceptions.forbidden_exception import ForbiddenException
 
 class SignInUseCaseTestCase(TestCase):
 
     @patch("app.interfaces.repositories.user_repository.IUserRepository")
     @patch("app.interfaces.services.token_service.ITokenService")
     @patch("app.interfaces.services.two_factor_service.ITwoFactorService")
+    def setUp(self, user_repository_mock, token_service_mock, two_factor_service_mock):
+        self.user_repository_mock = user_repository_mock
+        self.token_service_mock = token_service_mock
+        self.two_factor_service_mock = two_factor_service_mock
+        self.sign_in_usecase = SignInUseCase(
+            self.user_repository_mock, self.token_service_mock, self.two_factor_service_mock)
+        
     @async_to_sync
-    async def test_sign_in_usecase_return_success(
-        self, user_repository_mock, token_service_mock, two_factor_service_mock
-    ):
+    async def test_sign_in_usecase_return_success(self):
+        password = "123456"
         login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_EMAIL)
         user = User(
             user_name="bruno",
             email="brunobonaldi@gmail.com",
             login_type=login_type,
             enable_2fa=False,
-            password="123456",
+            password=make_password(password),
             is_active=True,
         )
-        user.check_password = Mock(return_value=True)
-        user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
-        token_service_mock.create_token.return_value = "token"
-        two_factor_service_mock.validate_and_delete_two_factor = AsyncMock(
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        self.token_service_mock.create_token.return_value = "token"
+        self.two_factor_service_mock.validate_and_delete_two_factor = AsyncMock(
             return_value=True
         )
-        sign_in_usecase = SignInUseCase(
-            user_repository_mock, token_service_mock, two_factor_service_mock
-        )
-        sign_in_dto = SignInDto(email=user.email, password=user.password)
-        result = await sign_in_usecase.execute(sign_in_dto)
+        sign_in_dto = SignInDto(email=user.email, password=password)
+        result = await self.sign_in_usecase.execute(sign_in_dto)
         self.assertEqual(result, "token")
+
+    @async_to_sync
+    async def test_sign_in_usecase_return_success_with_two_factor(self):
+        password = "123456"
+        login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_EMAIL)
+        user = User(
+            user_name="bruno",
+            email="brunobonaldi@gmail.com",
+            login_type=login_type,
+            enable_2fa=True,
+            password=make_password(password),
+            is_active=True,
+        )
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        self.token_service_mock.create_token.return_value = "token"
+        self.two_factor_service_mock.validate_and_delete_two_factor = AsyncMock(
+            return_value=True)
+        sign_in_dto = SignInDto(email=user.email, password=password, two_factor_code="1234")
+        result = await self.sign_in_usecase.execute(sign_in_dto)
+        self.assertEqual(result, "token")
+
+
+    @async_to_sync
+    async def test_sign_in_usecase_return_user_not_found(self):
+        self.user_repository_mock.get_user_by_email = AsyncMock(side_effect=UserNotFoundException)
+        sign_in_dto = SignInDto(email="brunon@gmail.com", password="123456")
+        with self.assertRaises(UserNotFoundException):
+            await self.sign_in_usecase.execute(sign_in_dto)
+    
+    @async_to_sync
+    async def test_sign_in_usecase_return_user_inactive(self):
+        login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_EMAIL)
+        password = "123"
+        user = User(
+            user_name="bruno",
+            email="bruno@gmail.com",
+            login_type=login_type,
+            enable_2fa=False,
+            password=make_password(password),
+            is_active=False)
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        sign_in_dto = SignInDto(email=user.email, password=password)
+        with self.assertRaises(UserInactiveException):
+            await self.sign_in_usecase.execute(sign_in_dto)
+
+    @async_to_sync
+    async def test_sign_in_usecase_return_invalid_password(self):
+        login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_EMAIL)
+        password = "123"
+        user = User(
+            user_name="bruno",
+            email="bruno@gmail.com",
+            login_type=login_type,
+            enable_2fa=False,
+            password=make_password(password),
+            is_active=True)
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        sign_in_dto = SignInDto(email=user.email, password="1234")
+        with self.assertRaises(InvalidPasswordException):
+            await self.sign_in_usecase.execute(sign_in_dto)
+
+    @async_to_sync
+    async def test_sign_in_usecase_return_two_factor_exception(self):
+        login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_EMAIL)
+        password = "123"
+        user = User(
+            user_name="bruno",
+            email="bruno@gmail.com",
+            login_type=login_type,
+            enable_2fa=True,
+            password=make_password(password),
+            is_active=True)
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        self.two_factor_service_mock.validate_and_delete_two_factor = AsyncMock(
+            side_effect=TwoFactorCodeException
+        )
+
+        with self.assertRaises(TwoFactorCodeException):
+            await self.sign_in_usecase.execute(SignInDto(email=user.email, password=password))
+
+    @async_to_sync
+    async def test_sign_in_usecase_return_forbidden_exception(self):
+        login_type = LoginType(id=1, name=LoginTypeConstants.AUTH_42)
+        password = "123"
+        user = User(
+            user_name="bruno",
+            email="bruno@gmail.com",
+            login_type=login_type,
+            enable_2fa=True,
+            password=make_password(password),
+            is_active=True)
+        self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
+        with self.assertRaises(ForbiddenException):
+            await self.sign_in_usecase.execute(SignInDto(email=user.email, password=password))
+
