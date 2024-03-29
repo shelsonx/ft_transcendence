@@ -34,7 +34,8 @@ class ITwoFactorService(ABC):
 
     async def validate_and_delete_two_factor(self, user_id: str, code: str) -> bool:
         is_valid = await self.validate_code(user_id, code)
-        await self.delete_two_factor(user_id)
+        if is_valid:
+            await self.delete_two_factor(user_id)
         return is_valid
 
     async def delete_two_factor(self, user_id: str) -> None:

@@ -1,16 +1,13 @@
 from ..constants.login_type_constants import LoginTypeConstants
-from ..models.user import User
 from ..interfaces.repositories.user_repository import IUserRepository
 from ..interfaces.services.token_service import ITokenService
 from django.core.exceptions import ObjectDoesNotExist
-from ..exceptions import InvalidPasswordException, UserNotFoundException
 from ..dtos.sign_in_oauth42_dto import SignInUpOAuth42Dto
-from datetime import datetime
 from ..exceptions.token_expired_exception import TokenExpiredException
 from ..interfaces.services.base_service import BaseService
 from ..interfaces.usecase.base_usecase import BaseUseCase
 from ..interfaces.dtos.base_sign_up_dto import BaseSignUpDto
-from ..exceptions import FieldAlreadyExistsException, InvalidPasswordException
+from ..exceptions import FieldAlreadyExistsException
 from asgiref.sync import sync_to_async
 
 
