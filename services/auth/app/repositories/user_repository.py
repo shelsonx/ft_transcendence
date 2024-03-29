@@ -39,7 +39,7 @@ class UserRepository(IUserRepository):
             login_type=user.login_type,
             password=hashed_password,
         )
-    
+
     async def update_user(self, user: User) -> User:
         def upd_fun():
             User.objects.filter(id=user.id).update(

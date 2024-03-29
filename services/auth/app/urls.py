@@ -21,6 +21,7 @@ from .use_cases.get_access_token_42_usecase import GetAccessToken42UseCase
 from .use_cases.validate_access_token_42_usecase import ValidateAccessToken42UseCase
 from .use_cases.get_me_42_usecase import GetMe42UseCase
 from .use_cases.send_2factor_code_usecase import Send2FactorCodeUseCase
+
 from .use_cases.validate_2factor_code_usecase import Validate2FactorCodeUseCase
 from .controllers.sign_in_controller import SignInController
 from .controllers.sign_up_controller import SignUpController
