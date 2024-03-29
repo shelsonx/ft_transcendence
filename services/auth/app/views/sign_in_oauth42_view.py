@@ -1,14 +1,11 @@
 import json
 from typing import Any
-from django.http import HttpResponse, HttpRequest, JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.views import View
-
-from ..interfaces.services.http_client import IHttpClient
 from ..interfaces.controllers.base_oauth42_controller import BaseOAuth42Controller
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from ..dtos.access_token_42 import AccessToken42
-import os
+
 from ..interfaces.usecase.base_usecase import BaseUseCase
 
 
