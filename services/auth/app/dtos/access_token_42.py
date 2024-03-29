@@ -2,6 +2,7 @@ from typing import Any
 from dataclasses import dataclass
 import json
 
+
 @dataclass
 class AccessToken42:
     access_token: str
@@ -13,7 +14,7 @@ class AccessToken42:
     secret_valid_until: int
 
     @staticmethod
-    def from_dict(obj: Any) -> 'AccessToken42':
+    def from_dict(obj: Any) -> "AccessToken42":
         _access_token = str(obj.get("access_token"))
         _token_type = str(obj.get("token_type"))
         _expires_in = int(obj.get("expires_in"))
@@ -21,4 +22,12 @@ class AccessToken42:
         _scope = str(obj.get("scope"))
         _created_at = int(obj.get("created_at"))
         _secret_valid_until = int(obj.get("secret_valid_until"))
-        return AccessToken42(_access_token, _token_type, _expires_in, _refresh_token, _scope, _created_at, _secret_valid_until)
+        return AccessToken42(
+            _access_token,
+            _token_type,
+            _expires_in,
+            _refresh_token,
+            _scope,
+            _created_at,
+            _secret_valid_until,
+        )

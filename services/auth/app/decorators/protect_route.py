@@ -12,9 +12,7 @@ class ProtectedRoute:
 
     def unauthorized(self, message: str = "Unauthorized"):
         api_data_response = ApiDataResponse(
-            message=message,
-            data=None,
-            is_success=False
+            message=message, data=None, is_success=False
         ).to_dict()
         return JsonResponse(data=api_data_response, status=401, safe=False)
 
@@ -24,10 +22,12 @@ class ProtectedRoute:
             token = None
             try:
                 request = args[1]
-                if 'authorization' in request.headers:
-                    auth_type, token = request.headers['authorization'].split(' ')
-                    if auth_type != 'Bearer':
-                        return self.unauthorized("Invalid token type - Bearer token required.")
+                if "authorization" in request.headers:
+                    auth_type, token = request.headers["authorization"].split(" ")
+                    if auth_type != "Bearer":
+                        return self.unauthorized(
+                            "Invalid token type - Bearer token required."
+                        )
                 if not token:
                     return self.unauthorized("Token is missing")
                 jwt_service = JWTService()
@@ -39,6 +39,7 @@ class ProtectedRoute:
                 except UnauthorizedException as e:
                     return self.unauthorized(message=e.message)
             except Exception as e:
-                return self.unauthorized()        
+                return self.unauthorized()
             return await f(*args, **kwargs)
+
         return decorated
