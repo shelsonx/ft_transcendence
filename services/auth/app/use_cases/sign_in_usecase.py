@@ -11,6 +11,7 @@ from ..exceptions.forbidden_exception import ForbiddenException
 from ..constants.login_type_constants import LoginTypeConstants
 from asgiref.sync import sync_to_async
 
+
 class SignInUseCase(BaseUseCase):
 
     def __init__(
