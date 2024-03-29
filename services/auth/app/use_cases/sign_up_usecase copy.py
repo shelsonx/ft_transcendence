@@ -20,16 +20,39 @@ class SignUpUseCase(BaseSignUpUseCase):
     def __init__(
         self,
         user_repository: IUserRepository,
+        token_service: ITokenService,
         login_type_repository: ILoginTypeRepository,
         two_factor_service: ITwoFactorService,
     ):
+        self.token_service = token_service
         self.two_factor_service = two_factor_service
         super().__init__(user_repository, login_type_repository)
 
     async def execute(self, sign_up_dto: SignUpDto):
         try:
-            await self.user_repository.get_user_by_email(email=sign_up_dto.email)
-            raise FieldAlreadyExistsException("email")
+            user = await self.user_repository.get_user_by_email(email=sign_up_dto.email)
+
+            if user.is_active == True:
+                raise FieldAlreadyExistsException("email")
+
+            if user.is_active == False and sign_up_dto.two_factor_code is None:
+                raise UserInactiveException()
+
+            code_is_valid = (
+                await self.two_factor_service.validate_and_delete_two_factor(
+                    user_id=user.id, code=sign_up_dto.two_factor_code
+                )
+            )
+
+            if code_is_valid == False:
+                raise TwoFactorCodeException("Two factor code is invalid")
+
+            user.is_active = True
+            update_user = await self.user_repository.update_user(user)
+
+            token = self.token_service.create_token(update_user)
+            return token
+
         except ObjectDoesNotExist:
             base_sign_up_dto = BaseSignUpDto(
                 email=sign_up_dto.email, user_name=sign_up_dto.user_name

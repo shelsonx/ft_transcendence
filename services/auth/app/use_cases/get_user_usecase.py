@@ -10,6 +10,7 @@ from ..exceptions import UserNotFoundException
 from ..utils.call_async import call_async
 from ..interfaces.usecase.base_usecase import BaseUseCase
 
+
 class GetUserUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository):
@@ -20,4 +21,4 @@ class GetUserUseCase(BaseUseCase):
             user = await self.user_repository.get_user_by_id(id)
             return await call_async(user.to_safe_dict)
         except ObjectDoesNotExist:
-             raise UserNotFoundException()
+            raise UserNotFoundException()

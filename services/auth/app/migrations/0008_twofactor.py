@@ -9,18 +9,45 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0007_alter_signinupoauth42dto_options_user_is_active'),
+        ("app", "0007_alter_signinupoauth42dto_options_user_is_active"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TwoFactor',
+            name="TwoFactor",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('code', models.CharField(max_length=6)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('expiration', models.DateTimeField(default=datetime.datetime(2024, 3, 25, 23, 12, 52, 759277, tzinfo=datetime.timezone.utc))),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.user')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("code", models.CharField(max_length=6)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "expiration",
+                    models.DateTimeField(
+                        default=datetime.datetime(
+                            2024,
+                            3,
+                            25,
+                            23,
+                            12,
+                            52,
+                            759277,
+                            tzinfo=datetime.timezone.utc,
+                        )
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="app.user"
+                    ),
+                ),
             ],
         ),
     ]

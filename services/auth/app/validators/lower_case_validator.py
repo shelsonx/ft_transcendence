@@ -10,7 +10,9 @@ class LowerCaseValidator:
         upper_case_count = sum(1 for c in password if c.islower())
         if upper_case_count < self.lower_case_min:
             raise ValidationError(
-                _("This password must contain at least %(lower_case_min)d character(s) in lowercase."),
+                _(
+                    "This password must contain at least %(lower_case_min)d character(s) in lowercase."
+                ),
                 code="password_too_short",
                 params={"lower_case_min": self.lower_case_min},
             )

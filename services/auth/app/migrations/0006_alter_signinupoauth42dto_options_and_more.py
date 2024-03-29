@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0005_alter_user_password'),
+        ("app", "0005_alter_user_password"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='signinupoauth42dto',
+            name="signinupoauth42dto",
             options={},
         ),
         migrations.AlterField(
-            model_name='user',
-            name='user_name',
+            model_name="user",
+            name="user_name",
             field=models.CharField(max_length=100),
         ),
     ]

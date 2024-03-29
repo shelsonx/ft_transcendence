@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from ...models.user import User
 
+
 class ITokenService(ABC):
 
     @abstractmethod

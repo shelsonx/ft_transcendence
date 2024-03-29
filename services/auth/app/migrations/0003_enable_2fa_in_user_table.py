@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_auto_20240224_2308'),
+        ("app", "0002_auto_20240224_2308"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='enable_2fa',
+            model_name="user",
+            name="enable_2fa",
             field=models.BooleanField(default=False),
         ),
     ]

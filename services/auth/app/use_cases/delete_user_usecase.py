@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions import UserNotFoundException
 from ..interfaces.usecase.base_usecase import BaseUseCase
 
+
 class DeleteUserUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository):
@@ -12,6 +13,6 @@ class DeleteUserUseCase(BaseUseCase):
         try:
             user = await self.user_repository.get_user_by_id(id)
             await self.user_repository.delete_user(user.id)
-            return True 
+            return True
         except ObjectDoesNotExist:
-             raise UserNotFoundException()
+            raise UserNotFoundException()
