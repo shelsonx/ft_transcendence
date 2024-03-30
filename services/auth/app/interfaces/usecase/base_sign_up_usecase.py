@@ -1,13 +1,13 @@
-from ...interfaces.repositories.user_repository import IUserRepository
-from ...interfaces.repositories.login_type_repository import ILoginTypeRepository
-from ...interfaces.services import ITokenService
+from ..repositories.user_repository import IUserRepository
+from ..repositories.login_type_repository import ILoginTypeRepository
+from ..services import ITokenService
 from ...constants.login_type_constants import LoginTypeConstants
 from ...exceptions import FieldAlreadyExistsException, NotValidPasswordException
 from ...models.user import User
-from ...interfaces.dtos.base_sign_up_dto import BaseSignUpDto
+from ..dtos.base_sign_up_dto import BaseSignUpDto
 from django.core.exceptions import ObjectDoesNotExist
 from ...validators.password_validator import PasswordValidator
-from ...interfaces.usecase.base_usecase import BaseUseCase
+from .base_usecase import BaseUseCase
 
 
 class BaseSignUpUseCase(BaseUseCase):

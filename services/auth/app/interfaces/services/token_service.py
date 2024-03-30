@@ -5,9 +5,11 @@ from ...models.user import User
 class ITokenService(ABC):
 
     @abstractmethod
-    def create_token(self, user: User, expires_in_hours: int) -> str:
+    def create_token(
+        self, user: User, expires_in_hours: int, secret: str = None
+    ) -> str:
         pass
 
     @abstractmethod
-    def verify_token(self, token: str) -> User:
+    def verify_token(self, token: str, secret: str = None) -> User:
         pass

@@ -12,7 +12,7 @@ from ..interfaces.dtos.base_sign_up_dto import BaseSignUpDto
 from django.core.exceptions import ObjectDoesNotExist
 from ..utils.call_async import call_async
 
-from ..interfaces.usecase.base_signup_usecase import BaseSignUpUseCase
+from ..interfaces.usecase.base_sign_up_usecase import BaseSignUpUseCase
 
 
 class SignUpUseCase(BaseSignUpUseCase):

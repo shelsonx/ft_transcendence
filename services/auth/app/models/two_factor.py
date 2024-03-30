@@ -17,3 +17,6 @@ class TwoFactor(models.Model):
 
     def is_valid(self, code):
         return self.expiration > now() and self.code == code
+    
+    def can_send_code(self, seconds: int):
+        return self.created_at + timedelta(seconds=seconds) < now()

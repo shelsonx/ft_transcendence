@@ -1,27 +1,26 @@
 from django.test import TestCase
 from unittest.mock import AsyncMock, patch
-from ...models import User
-from ...models.login_type import LoginType
-from ...constants.login_type_constants import LoginTypeConstants
-from ...use_cases.sign_up_usecase import SignUpUseCase
-from ...dtos.sign_up_dto import SignUpDto
+from ....models import User
+from ....models.login_type import LoginType
+from ....constants.login_type_constants import LoginTypeConstants
+from ....use_cases.sign_up_usecase import SignUpUseCase
+from ....dtos.sign_up_dto import SignUpDto
 from asgiref.sync import async_to_sync
-from ...exceptions.field_already_exists_exception import FieldAlreadyExistsException
+from ....exceptions.field_already_exists_exception import FieldAlreadyExistsException
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ObjectDoesNotExist
-from ...interfaces.dtos.base_sign_up_dto import BaseSignUpDto
-from ...interfaces.usecase.base_signup_usecase import BaseSignUpUseCase
-from ...validators.password_validator import PasswordValidator
-from ...entities.validation_data import ValidationData
-from ...exceptions.not_valid_password_exception import NotValidPasswordException
+from ....interfaces.dtos.base_sign_up_dto import BaseSignUpDto
+from ....interfaces.usecase.base_sign_up_usecase import BaseSignUpUseCase
+from ....validators.password_validator import PasswordValidator
+from ....entities.validation_data import ValidationData
+from ....exceptions.not_valid_password_exception import NotValidPasswordException
+
 
 class BaseSignUpUseCaseTests(TestCase):
 
     @patch("app.interfaces.repositories.login_type_repository.ILoginTypeRepository")
     @patch("app.interfaces.repositories.user_repository.IUserRepository")
-    def setUp(
-        self, login_type_repository_mock, user_repository_mock
-    ):
+    def setUp(self, login_type_repository_mock, user_repository_mock):
         self.login_type_repository_mock = login_type_repository_mock
         self.user_repository_mock = user_repository_mock
         self.base_sign_in_usecase = BaseSignUpUseCase(
@@ -54,7 +53,6 @@ class BaseSignUpUseCaseTests(TestCase):
         base_sign_up_dto = BaseSignUpDto(email=user.email, user_name=user.user_name)
         self.user_repository_mock.create_user = AsyncMock(return_value=user)
 
-
         result = await self.base_sign_in_usecase.execute(
             sign_up_dto=base_sign_up_dto,
             password=password,
@@ -79,7 +77,6 @@ class BaseSignUpUseCaseTests(TestCase):
         base_sign_up_dto = BaseSignUpDto(email=user.email, user_name=user.user_name)
         self.user_repository_mock.create_user = AsyncMock(return_value=user)
 
-
         result = await self.base_sign_in_usecase.execute(
             sign_up_dto=base_sign_up_dto,
             password=user.password,
@@ -87,7 +84,6 @@ class BaseSignUpUseCaseTests(TestCase):
             is_active=user.is_active,
         )
         self.assertEqual(result, user)
-
 
     @async_to_sync
     @patch.object(PasswordValidator, "validate")
@@ -137,4 +133,3 @@ class BaseSignUpUseCaseTests(TestCase):
                 password=user.password,
                 login_type=login_type.name,
             )
-    

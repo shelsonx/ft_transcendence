@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from dataclasses import dataclass
 
 
 class SignInDtoForm(forms.Form):
@@ -18,3 +19,18 @@ class SignInDto(models.Model):
 
     class Meta:
         managed = False
+
+
+@dataclass
+class SignInResultDto:
+    token: str
+    is_temporary_token: bool
+
+    def __str__(self) -> str:
+        return f"token: {self.token}, is_temporary_token: {self.is_temporary_token}"
+
+    def to_dict(self):
+        return {
+            "token": self.token,
+            "is_temporary_token": self.is_temporary_token,
+        }

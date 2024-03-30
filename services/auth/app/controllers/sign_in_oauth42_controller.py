@@ -41,4 +41,4 @@ class SignInOAuth42Controller(BaseOAuth42Controller):
             expires_in=response_data.expires_in,
         )
         data = await self.sign_in_oauth42_service.execute(sign_in_up_oath42)
-        return to_json_response(ApiDataResponse(data=data))
+        return to_json_response(ApiDataResponse(data=data.to_dict()), status=200)

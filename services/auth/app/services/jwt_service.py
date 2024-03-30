@@ -13,18 +13,31 @@ from ..utils.uuid_encoder import UUIDEncoder
 
 class JWTService(ITokenService):
 
+    def __init__(self) -> None:
+        self.secret = os.getenv(EnvVariables.JWT_SECRET)
+
+    def _get_secret(self, secret: str) -> str:
+        if secret is None or secret == "":
+            return self.secret
+        return secret
+
     def _generate_signature(
-        self, base64_encoded_header: str, base64_encoded_payload: str
+        self,
+        base64_encoded_header: str,
+        base64_encoded_payload: str,
+        secret: str = None,
     ) -> str:
+        secret = self._get_secret(secret)
         message = f"{base64_encoded_header}.{base64_encoded_payload}"
-        secret = os.getenv(EnvVariables.JWT_SECRET)
         signature = hmac.new(
             secret.encode(), message.encode(), digestmod="SHA256"
         ).digest()
         base64_url_signature = base64.urlsafe_b64encode(signature).rstrip(b"=")
         return base64_url_signature.decode()
 
-    def create_token(self, user: User, expires_in_hours: int = 2) -> str:
+    def create_token(
+        self, user: User, expires_in_hours: int, secret: str = None
+    ) -> str:
         header = {
             "alg": "HS256",
             "typ": "JWT",
@@ -36,10 +49,10 @@ class JWTService(ITokenService):
         base64_payload = base64.b64encode(
             json.dumps(payload, cls=UUIDEncoder).encode("utf-8")
         ).decode("utf-8")
-        signature = self._generate_signature(base64_header, base64_payload)
+        signature = self._generate_signature(base64_header, base64_payload, secret)
         return f"{base64_header}.{base64_payload}.{signature}"
 
-    def verify_token(self, token: str) -> JWTPayload:
+    def verify_token(self, token: str, secret: str = None) -> JWTPayload:
         if token is None:
             raise UnauthorizedException()
         split_token = token.split(".")
@@ -50,11 +63,13 @@ class JWTService(ITokenService):
         decoded_payload = JWTPayload.decode(payload)
         if decoded_payload.is_expired():
             raise UnauthorizedException(message="Token expired")
-        generated_signature = self._generate_signature(base64header, base64payload)
+        generated_signature = self._generate_signature(
+            base64header, base64payload, secret
+        )
         if generated_signature != signature:
             raise UnauthorizedException()
         return decoded_payload
 
-    def get_token_expiration(self, token: str) -> datetime:
-        payload = self.verify_token(token)
+    def get_token_expiration(self, token: str, secret: str = None) -> datetime:
+        payload = self.verify_token(token, secret)
         return payload.exp
