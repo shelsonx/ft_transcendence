@@ -2,7 +2,9 @@ app/singlepage/migrations/
 *.env
 /transcendence_env
 
-**/*__pycache__*
+*__pycache__*
 test
-*db.sqlite3
+*.sqlite3
 vanilla_spa
+
+venv
