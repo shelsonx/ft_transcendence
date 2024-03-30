@@ -6,9 +6,10 @@ from ..entities.api_data_response import ApiDataResponse
 
 
 class ProtectedRoute:
-    def __init__(self, roles=[], func=None):
+    def __init__(self, roles=[], func=None, secret=None):
         self.roles = roles
         self.func = func
+        self.secret = secret
 
     def unauthorized(self, message: str = "Unauthorized"):
         api_data_response = ApiDataResponse(
@@ -32,7 +33,7 @@ class ProtectedRoute:
                     return self.unauthorized("Token is missing")
                 jwt_service = JWTService()
                 try:
-                    data = jwt_service.verify_token(token)
+                    data = jwt_service.verify_token(token, self.secret)
                     request.current_user = data
                     if self.func:
                         self.func(*args, **kwargs)

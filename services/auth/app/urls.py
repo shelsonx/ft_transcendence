@@ -7,11 +7,12 @@ from .repositories.two_factor_repository import TwoFactorRepository
 
 from .services.jwt_service import JWTService
 from .services.http_client import HttpClient
-from .services.sign_in_up_oauth42 import SignInOAuth42Service
+from .services.sign_in_up_oauth42_service import SignInOAuth42Service
 from .services.two_factor_service import TwoFactorService
 from .services.email_service import EmailService
 
-from .interfaces.usecase.base_signup_usecase import BaseSignUpUseCase
+from .interfaces.usecase.base_sign_up_usecase import BaseSignUpUseCase
+from .interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 from .use_cases.get_user_usecase import GetUserUseCase
 from .use_cases.edit_user_usecase import EditUserUseCase
 from .use_cases.delete_user_usecase import DeleteUserUseCase
@@ -57,6 +58,9 @@ sign_in_use_case = SignInUseCase(
     two_factor_service=two_factor_service,
 )
 base_sign_up_usecase = BaseSignUpUseCase(user_repository, login_type_repository)
+base_sign_in_usecase = BaseSignInUseCase(
+    token_service=token_service, two_factor_service=two_factor_service
+)
 sign_up_use_case = SignUpUseCase(
     user_repository, login_type_repository, two_factor_service
 )
@@ -66,13 +70,15 @@ delete_user_usecase = DeleteUserUseCase(user_repository)
 get_access_token_42_use_case = GetAccessToken42UseCase(http_client)
 validate_access_token_42_use_case = ValidateAccessToken42UseCase(http_client)
 get_me_42_use_case = GetMe42UseCase(http_client)
-send_2factor_code_usecase = Send2FactorCodeUseCase(user_repository, two_factor_service)
+send_2factor_code_usecase = Send2FactorCodeUseCase(user_repository, base_sign_in_usecase)
 validate_2factor_code_usecase = Validate2FactorCodeUseCase(
     user_repository, two_factor_service
 )
 # services
 sign_in_oauth42_service = SignInOAuth42Service(
-    user_repository, token_service, base_sign_up_usecase
+    user_repository,
+    base_sign_up_usecase,
+    base_sign_in_usecase,
 )
 
 # controllers

@@ -5,14 +5,15 @@ from ..interfaces.repositories.user_repository import IUserRepository
 from ..services.two_factor_service import ITwoFactorService
 from ..interfaces.repositories.two_factor_repository import ITwoFactorRepository
 from django.core.exceptions import ObjectDoesNotExist
-
+from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 
 class Send2FactorCodeUseCase(BaseUseCase):
     def __init__(
-        self, user_repository: IUserRepository, two_factor_service: ITwoFactorService
+        self, user_repository: IUserRepository, 
+        base_sign_in_use_case: BaseSignInUseCase
     ):
-        self.two_factor_service = two_factor_service
         self.user_repository = user_repository
+        self.base_sign_in_use_case = base_sign_in_use_case
 
     async def execute(self, two_factor_dto: Validate2FactorCodeDto):
         user = None
@@ -21,4 +22,7 @@ class Send2FactorCodeUseCase(BaseUseCase):
         except ObjectDoesNotExist:
             raise UserNotFoundException()
 
-        await self.two_factor_service.send_code_to_user(user.id, email=user.email)
+        result = await self.base_sign_in_use_case.execute(
+            user=user, is_temporary_token=True, expires_in_hours=2
+        )
+        return result.to_dict()
