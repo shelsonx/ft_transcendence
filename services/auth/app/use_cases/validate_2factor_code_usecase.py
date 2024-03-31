@@ -6,14 +6,19 @@ from ..services.two_factor_service import ITwoFactorService
 from ..interfaces.repositories.two_factor_repository import ITwoFactorRepository
 from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions.two_factor_exception import TwoFactorCodeException
+from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 
 
 class Validate2FactorCodeUseCase(BaseUseCase):
     def __init__(
-        self, user_repository: IUserRepository, two_factor_service: ITwoFactorService
+        self,
+        user_repository: IUserRepository,
+        two_factor_service: ITwoFactorService,
+        base_sign_in_usecase: BaseSignInUseCase,
     ):
         self.two_factor_service = two_factor_service
         self.user_repository = user_repository
+        self.base_sign_in_usecase = base_sign_in_usecase
 
     async def execute(self, two_factor_dto: Validate2FactorCodeDto):
         user = None
@@ -30,4 +35,8 @@ class Validate2FactorCodeUseCase(BaseUseCase):
 
         user.is_active = True
         await self.user_repository.update_user(user)
-        return "User is now active"
+        result = await self.base_sign_in_usecase.execute(
+            user=user,
+            is_temporary_token=False,
+        )
+        return result.to_dict()

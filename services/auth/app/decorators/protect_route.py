@@ -3,6 +3,8 @@ from ..exceptions.unauthorized_exception import UnauthorizedException
 from ..services.jwt_service import JWTService
 from django.http import JsonResponse
 from ..entities.api_data_response import ApiDataResponse
+from os import environ
+from ..constants.env_variables import EnvVariables
 
 
 class ProtectedRoute:
@@ -33,7 +35,12 @@ class ProtectedRoute:
                     return self.unauthorized("Token is missing")
                 jwt_service = JWTService()
                 try:
-                    data = jwt_service.verify_token(token, self.secret)
+                    secret = (
+                        environ.get(EnvVariables.JWT_SECRET)
+                        if not self.secret
+                        else self.secret
+                    )
+                    data = jwt_service.verify_token(token, secret)
                     request.current_user = data
                     if self.func:
                         self.func(*args, **kwargs)
