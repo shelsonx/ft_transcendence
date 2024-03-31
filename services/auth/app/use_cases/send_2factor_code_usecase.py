@@ -7,10 +7,10 @@ from ..interfaces.repositories.two_factor_repository import ITwoFactorRepository
 from django.core.exceptions import ObjectDoesNotExist
 from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 
+
 class Send2FactorCodeUseCase(BaseUseCase):
     def __init__(
-        self, user_repository: IUserRepository, 
-        base_sign_in_use_case: BaseSignInUseCase
+        self, user_repository: IUserRepository, base_sign_in_use_case: BaseSignInUseCase
     ):
         self.user_repository = user_repository
         self.base_sign_in_use_case = base_sign_in_use_case

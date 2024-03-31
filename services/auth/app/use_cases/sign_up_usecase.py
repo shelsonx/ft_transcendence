@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from ..utils.call_async import call_async
 
 from ..interfaces.usecase.base_sign_up_usecase import BaseSignUpUseCase
+from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 
 
 class SignUpUseCase(BaseSignUpUseCase):
@@ -22,8 +23,10 @@ class SignUpUseCase(BaseSignUpUseCase):
         user_repository: IUserRepository,
         login_type_repository: ILoginTypeRepository,
         two_factor_service: ITwoFactorService,
+        base_sign_in_use_case: BaseSignInUseCase,
     ):
         self.two_factor_service = two_factor_service
+        self.base_sign_in_use_case = base_sign_in_use_case
         super().__init__(user_repository, login_type_repository)
 
     async def execute(self, sign_up_dto: SignUpDto):
@@ -39,7 +42,7 @@ class SignUpUseCase(BaseSignUpUseCase):
                 password=sign_up_dto.password,
                 login_type=LoginTypeConstants.AUTH_EMAIL,
             )
-            await self.two_factor_service.send_code_to_user(
-                new_user.id, email=new_user.email
+            result = await self.base_sign_in_use_case.execute(
+                user=new_user, is_temporary_token=True
             )
-            return "Two factor code sent to email"
+            return result.to_dict()

@@ -20,7 +20,6 @@ class SignUpController(BaseController):
             email=data.get("email"),
             password=data.get("password"),
             user_name=data.get("user_name"),
-            two_factor_code=data.get("two_factor_code"),
         )
 
     async def execute_post(self, dto: SignUpDto):

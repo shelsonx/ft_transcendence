@@ -62,7 +62,7 @@ base_sign_in_usecase = BaseSignInUseCase(
     token_service=token_service, two_factor_service=two_factor_service
 )
 sign_up_use_case = SignUpUseCase(
-    user_repository, login_type_repository, two_factor_service
+    user_repository, login_type_repository, two_factor_service, base_sign_in_usecase
 )
 get_user_usecase = GetUserUseCase(user_repository)
 edit_user_usecase = EditUserUseCase(user_repository)
@@ -70,9 +70,11 @@ delete_user_usecase = DeleteUserUseCase(user_repository)
 get_access_token_42_use_case = GetAccessToken42UseCase(http_client)
 validate_access_token_42_use_case = ValidateAccessToken42UseCase(http_client)
 get_me_42_use_case = GetMe42UseCase(http_client)
-send_2factor_code_usecase = Send2FactorCodeUseCase(user_repository, base_sign_in_usecase)
+send_2factor_code_usecase = Send2FactorCodeUseCase(
+    user_repository, base_sign_in_usecase
+)
 validate_2factor_code_usecase = Validate2FactorCodeUseCase(
-    user_repository, two_factor_service
+    user_repository, two_factor_service, base_sign_in_usecase
 )
 # services
 sign_in_oauth42_service = SignInOAuth42Service(

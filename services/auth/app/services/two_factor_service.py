@@ -30,8 +30,8 @@ class TwoFactorService(ITwoFactorService):
         if code is None or code == "":
             return False
         try:
-            two_factor_code = await self.two_factor_repository.find_two_factor_by_user_id(
-                user_id
+            two_factor_code = (
+                await self.two_factor_repository.find_two_factor_by_user_id(user_id)
             )
         except TwoFactor.DoesNotExist:
             return False

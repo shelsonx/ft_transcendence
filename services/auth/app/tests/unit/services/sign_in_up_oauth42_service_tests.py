@@ -63,6 +63,7 @@ class SignInOAuth42ServiceTests(TestCase):
         self.base_sign_in_usecase_mock.execute = AsyncMock(
             return_value=sign_in_result_dto
         )
+        self.user_repository_mock.update_user = AsyncMock(return_value=user)
         result = await self.sign_in_oauth42_service.execute(sign_in_up_oath42_dto)
         self.assertEqual(result, sign_in_result_dto)
 

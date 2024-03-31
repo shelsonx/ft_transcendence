@@ -39,7 +39,11 @@ class BaseSignInUseCase(BaseUseCase):
         self, user: User, is_temporary_token: bool, expires_in_hours: int
     ) -> SignInResultDto:
         await self.two_factor_service.send_code_to_user(user.id, email=user.email)
-        token = self._create_token(user, is_temporary_token=is_temporary_token, expires_in_hours=expires_in_hours)
+        token = self._create_token(
+            user,
+            is_temporary_token=is_temporary_token,
+            expires_in_hours=expires_in_hours,
+        )
         return SignInResultDto(token=token, is_temporary_token=is_temporary_token)
 
     async def execute(
@@ -47,7 +51,9 @@ class BaseSignInUseCase(BaseUseCase):
     ) -> SignInResultDto:
 
         if is_temporary_token:
-            return await self._send_code_and_return_token(user, is_temporary_token, expires_in_hours)
+            return await self._send_code_and_return_token(
+                user, is_temporary_token, expires_in_hours
+            )
         token = self._create_token(
             user,
             is_temporary_token=is_temporary_token,

@@ -33,7 +33,7 @@ class EditUserUseCase(BaseUseCase):
         return True
 
     async def execute(self, id: str, user_edit_dto: UserEditDto):
-
+        user = None
         try:
             user = await self.user_repository.get_user_by_id(id)
         except ObjectDoesNotExist:
@@ -51,4 +51,4 @@ class EditUserUseCase(BaseUseCase):
         await validate_model_async(user)
         update_user = await self.user_repository.update_user(user)
 
-        return update_user.to_safe_dict()
+        return await call_async(update_user.to_safe_dict)
