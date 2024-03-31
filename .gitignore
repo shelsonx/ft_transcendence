@@ -5,3 +5,4 @@ app/singlepage/migrations/
 *__pycache__*
 test
 *db.sqlite3
+vanilla_spa
