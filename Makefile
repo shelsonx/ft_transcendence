@@ -18,7 +18,7 @@ up:
 	$(DOCKER_CMD) up -d --build
 
 down:
-	$(DOCKER_CMD) down
+	$(DOCKER_CMD) down --remove-orphans
 
 exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh
