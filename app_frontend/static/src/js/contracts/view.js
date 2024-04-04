@@ -1,12 +1,15 @@
 export default class View {
+  #html;
+  #start;
   constructor(html, start = () => {}) {
-    this.html = html;
-    this.start = start;
+    this.#html = html;
+    this.#start = start;
   }
   renderHtml() {
-    return this.html;
+    return this.#html;
   }
+
   start() {
-    this.start();
+    this.#start();
   }
 }
