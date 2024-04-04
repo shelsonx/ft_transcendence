@@ -1,4 +1,4 @@
-import View from '../contracts/View.js';
+import View from '../contracts/view.js';
 class NotFoundView extends View {
     constructor(html, start) {
        super(html, start);

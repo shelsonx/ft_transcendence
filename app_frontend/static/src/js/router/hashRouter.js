@@ -1,4 +1,4 @@
-import Router from "../contracts/Router.js";
+import Router from "../contracts/router.js";
 import {
   hashRoutes as routes
 } from "./routes.js"; /**

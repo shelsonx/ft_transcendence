@@ -1,4 +1,4 @@
-from ..entities.api_data_response import ApiDataResponse
+import json
 from ..interfaces.controllers.base_controller import BaseController
 from django.http import HttpRequest
 from ..interfaces.usecase.base_usecase import BaseUseCase
@@ -13,7 +13,7 @@ class SignUpController(BaseController):
         self.sign_up_usecase = sign_up_usecase
 
     def convert_to_form(self, request: HttpRequest) -> dict:
-        return SignUpDtoForm(request.POST)
+        return SignUpDtoForm(json.loads(request.body))
 
     def convert_to_dto(self, data: dict) -> SignUpDto:
         return SignUpDto(
