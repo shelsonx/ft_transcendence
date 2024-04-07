@@ -1,3 +1,4 @@
+import json
 from ..interfaces.controllers.base_controller import BaseController
 from django.http import HttpRequest, JsonResponse
 from ..interfaces.usecase.base_usecase import BaseUseCase
@@ -11,7 +12,7 @@ class SignInController(BaseController):
         self.sign_in_usecase = sign_in_usecase
 
     def convert_to_form(self, request: HttpRequest) -> dict:
-        return SignInDtoForm(request.POST)
+        return SignInDtoForm(json.loads(request.body))
 
     def convert_to_dto(self, data: dict) -> SignInDto:
         return SignInDto(email=data.get("email"), password=data.get("password"))

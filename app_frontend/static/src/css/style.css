@@ -4,6 +4,7 @@
     --primary-light: #323B42;
     --primary-normal: #212930;
     --primary-dark: #0F151A;
+    --bs-btn-bg: #0F151A;
     --primary-gradient: linear-gradient(220.94deg, #323B42 14.43%, #0F151A 85.28%);
     --secondary-light: #F5C16E;
     --secondary-normal: #E5BA75;
@@ -42,6 +43,11 @@
     font-size: 16px;
 }
 
+
+html{
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -52,28 +58,46 @@
 
 body {
     color: var(--white-dark);
-    padding: 1rem clamp(1.5rem, 6vw, 3rem);
     background-color: var(--primary-dark);
+    width: 100%;
+    height: 100%;
+    position: relative;
+    scroll-behavior: smooth;
+    min-height: 100vh;
 }
 
-nav {
-    display: flex;
+#app {
+    width: 100%;
+    height: 100%;
 }
 
-nav a {
-    margin-right: .75em;
-    color: var(--accent);
+.btn-primary {
+    background-color: var(--secondary-light) !important;
+    border-color: var(--secondary-dark) !important;
 }
 
-main {
-    margin: 3rem 0;
+.btn-primary:hover {
+    background-color: var(--secondary-dark) !important;
+    border-color: var(--secondary-dark) !important;
 }
 
-h1 {
-    font-size: 2.3rem;
-    margin-bottom: .5rem;
+.form-container {
+    border: 1px solid hsla(0, 0%, 65%, 0.158);
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    z-index: 99;
+    padding: 2rem;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
-p {
-    margin-bottom: 2rem;
+.nav-item {
+    transition: background-color 0.3s;
+}
+.nav-item:hover {
+    background-color: var(--primary-light);
+    border-radius: 8px;
 }
