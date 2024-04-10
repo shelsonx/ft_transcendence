@@ -21,7 +21,7 @@ class Match(models.Model):
         default=MatchStatus.SCHEDULED,
         verbose_name=_("Match status"),
     )
-    duration = models.DurationField()
+    duration = models.DurationField(null=True)
 
     # Players data
     player_a = models.ForeignKey(
