@@ -101,3 +101,45 @@ body {
     background-color: var(--primary-light);
     border-radius: 8px;
 }
+@keyframes space-man-keyframes {
+    0% {
+        transform: translate3d(700px, 0px, 0) rotate(-20deg);
+    }
+    100% {
+        transform: translate3d(-1600px, -60px, 0) rotate(60deg);
+    }
+}
+
+.space-man {
+    max-height: 300px;
+    max-width: 464px;
+    z-index: -2;
+    position: absolute;
+    top: 30%;
+    right: 0;
+    animation: space-man-keyframes 22s ease infinite alternate;
+}
+
+@media (max-width: 1200px) {
+    .space-man {
+        animation: space-man-keyframes 22s ease infinite alternate;
+    }
+}
+
+@media (max-width: 992px) {
+    .space-man {
+        animation: space-man-keyframes 22s ease infinite alternate;
+    }
+}
+
+@media (max-width: 768px) {
+    .space-man {
+        animation: space-man-keyframes 19s ease infinite alternate;
+    }
+}
+
+@media (max-width: 576px) {
+    .space-man {
+        animation: space-man-keyframes 19s ease infinite alternate;
+    }
+}
