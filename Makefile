@@ -4,7 +4,7 @@ DOCKER_COMPOSE_FILE = docker-compose-auth-debug.yml # This is the docker-compose
 DOCKER_CMD = $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE)
 DOCKER_COMPOSE_SERVICE_NAME = auth-api # This is the service name in the docker-compose file
 DOCKER_COMPOSE_PROJECT_NAME = auth_api # This is the app name -> name of the folder
-DOCKER_COMPOSE_BUILD_PATH = ./services/auth # This is the path to the Dockerfile
+DOCKER_COMPOSE_BUILD_PATH = ./backend/services/auth # This is the path to the Dockerfile
 
 create_api:
 	./config_django_project.sh $(DOCKER_COMPOSE_FILE) $(DOCKER_COMPOSE_SERVICE_NAME) $(DOCKER_COMPOSE_PROJECT_NAME) $(DOCKER_COMPOSE_BUILD_PATH)

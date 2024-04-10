@@ -11,8 +11,6 @@ services:
       - "3000:3000"
     env_file:
       - .env.web
-    networks:
-      - transcendence
     depends_on:
       - auth-api
   #change the database name
@@ -29,17 +27,15 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       # add in the .env the name of the db
       - POSTGRES_DB=${POSTGRES_AUTH_DB}
-    networks:
-      - transcendence
     ports:
       - "5433:5432"
 
   auth-api:
-    build: ./services/auth
+    build: ./backend/services/auth
     container_name: auth-api
     command: python manage.py runserver 0.0.0.0:80
     volumes:
-      - ./services/auth:/code
+      - ./backend/services/auth:/code
     ports:
       - "8002:80"
       - 5678:5678
@@ -61,8 +57,6 @@ services:
       - EMAIL_PORT=${EMAIL_PORT}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
-    networks:
-      - transcendence
     depends_on:
       - auth-db
 
@@ -70,6 +64,3 @@ volumes:
   #change the volume name
   auth-db-data:
 
-networks:
-  transcendence:
-    driver: bridge
