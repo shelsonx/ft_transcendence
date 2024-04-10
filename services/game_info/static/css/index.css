@@ -1,0 +1,55 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Escolha uma fonte padrão */
+}
+
+body {
+    /*min-height: 100vh;*/
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body {
+    background-color: #100C1C; 
+    color: whitesmoke; 
+}
+
+a {
+    color: #007bff; 
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; 
+}
+
+.container {
+    padding: 20px;
+}
+
+
+.custom-width {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-picture {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.container {
+    background-color: #1B1926;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
