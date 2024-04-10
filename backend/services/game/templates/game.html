@@ -1,1 +1,23 @@
-<h1>{{ game }}</h1>
+<h1>SUPER PONG</h1>
+
+<p>Duration: {{ match.duration }}</p>
+<p>Status: {{ match.status.label }}</p>
+
+<h2>Rules</h2>
+<ul>
+  <li>Player max points: {{ match.player_reach_points }}</li>
+  <li>Max total points: {{ match.match_total_points }}</li>
+</ul>
+
+<div class="row">
+  <div class="col">
+    <h3>Player A</h3>
+    <p>{{ match.player_a.id_reference }}</p>
+    <p>Points: {{ match.score_a }}</p>
+  </div>
+  <div class="col">
+    <h3>Player B</h3>
+    <p>{{ match.player_b.id_reference }}</p>
+    <p>Points: {{ match.score_b }}</p>
+  </div>
+</div>
