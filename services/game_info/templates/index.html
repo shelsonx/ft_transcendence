@@ -11,7 +11,7 @@
 <body>
 
     <div class="container-fluid main">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <nav class="navbar navbar-expand-lg mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">Dashboard</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,40 +36,54 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="containers">
             <div class="row">
-                <div class="col-lg-12 mb-3 custom-width">
-                    <div class="container text-center">
+                <div class="col-lg-12 mb-3">
+                    <div class="container_details text-center">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4">
-                                <img src="{% static 'images/gold_medal_star_icon.png' %}" alt="Foto do usuário" class="profile-picture">
+                                <img src="{% static 'images/gold_medal_star_icon.png' %}" alt="medalha do usuário" class="profile-picture">
                             </div>
                             <div class="col-md-4">
                                 <img src="{% static 'images/avatar_user_icon.png' %}" alt="Foto do usuário" class="profile-picture">
                             </div>
                             <div class="col-md-4">
-                                <p><strong>Nickname:</strong> JohnDoe</p>
-                                <p><strong>Pontuação:</strong> 1000</p>
-                                <p><strong>Vitórias:</strong> 50</p>
-                                <p><strong>Derrotas:</strong> 20</p>
-                                <p><strong>Posição:</strong> 5º</p>
+                                        <table class="table table-borderless text-white text-start">
+                                          <tbody>
+                                            <tr>
+                                              <th scope="row">Nickname:</th>
+                                              <td>JohnDoe</td>
+                                            </tr>
+                                            <tr>
+                                              <th scope="row">Pontuação:</th>
+                                              <td>1000</td>
+                                            </tr>
+                                            <tr>
+                                              <th scope="row">Vitórias:</th>
+                                              <td>50</td>
+                                            </tr>
+                                            <tr>
+                                              <th scope="row">Derrotas:</th>
+                                              <td>20</td>
+                                            </tr>
+                                            <tr>
+                                              <th scope="row">Posição:</th>
+                                              <td>5º</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-12 mb-3 custom-width">
-                    <div class="card">
-                        <div class="card-header">
-                            Lista de Usuários
-                        </div>
-                        <div class="card-body">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="containers">
+            <div class="col-lg-12 mb-3">
+                <!-- list -->
+                Lista aqui...
+            </div>
+        </div>        
 
   {% block content %}
   {% endblock %}
