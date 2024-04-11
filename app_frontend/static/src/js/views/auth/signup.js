@@ -10,7 +10,7 @@ class LoginView extends BaseAuthView {
 
 const html = /*html*/`
     <div class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
-        <div class="space-man-container"></div>
+        <img class="space-man" src="static/src/img/transcendence-journey.svg" />
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
             <h1>Sign Up</h1>
             <form id="signup-form" class="d-flex flex-column gap-2 g-lg-0">
