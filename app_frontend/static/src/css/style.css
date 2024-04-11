@@ -64,6 +64,7 @@ body {
     position: relative;
     scroll-behavior: smooth;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 #app {
@@ -143,3 +144,4 @@ body {
         animation: space-man-keyframes 19s ease infinite alternate;
     }
 }
+
