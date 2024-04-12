@@ -1,20 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
+
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif; 
 }
+
 
 .navbar a {
     color: whitesmoke;
     text-decoration: none;
 }
 
-.navbar a:hover {
+.navbar-nav .nav-item .nav-link {
+    color: whitesmoke; 
+    text-decoration: none; 
+}
+
+.navbar-nav .nav-item .nav-link:hover {
     color: whitesmoke;
     text-decoration: underline;
 }
 
+
 body {
+    font-family: "Turret Road", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,12 +42,20 @@ a:hover {
     text-decoration: underline; 
 }
 
-.profile-picture {
-    width: 150px;
-    height: 150px;
+.details-profile-picture {
+    width: 200px;
+    height: 200px;
+}
+
+.details-pictures {
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+}
+
+.details-medal-picture {
+    width: 90px;
+    height: 90px;
 }
 
 .containers {
