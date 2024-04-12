@@ -7,6 +7,7 @@
   {% bootstrap_javascript %}
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -28,8 +29,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">User Status</a>
                         </li>
+                    </ul>
+                </div>
+                <div class="ms-auto">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Login</a>
+                            <a class="nav-link" href="#">
+                            Login<i class="ms-2 fa-solid fa-user-astronaut" style="color: #ffffff;"></i>
+                        </a>
                         </li>
                     </ul>
                 </div>
@@ -43,6 +50,7 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4">
                                 <img src="{% static 'images/gold_medal_star_icon.png' %}" alt="medalha do usuário" class="details-pictures details-medal-picture">
+                                <p>Shelson Alves</p>
                             </div>
                             <div class="col-md-4">
                                 <img src="{% static 'images/avatar_user_icon.png' %}" alt="Foto do usuário" class="details-pictures details-profile-picture">
@@ -52,7 +60,7 @@
                                     <tbody>
                                     <tr>
                                         <th scope="row">Nickname:</th>
-                                        <td>JohnDoe</td>
+                                        <td>sjhony-x</td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Pontuação:</th>
