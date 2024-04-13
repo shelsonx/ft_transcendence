@@ -93,3 +93,24 @@ a:hover {
     font-size: 24px;
     margin-right: 10px;
 }
+
+.row-item-list {
+    border: 2px solid #381718;
+    padding: 10px 0;
+}
+
+.list-user-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.list-nickname,
+.list-scores {
+    margin-bottom: 5px;
+}
+
+.list-user-game-status {
+    font-weight: bold;
+}
