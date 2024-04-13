@@ -1,7 +1,7 @@
 import View from '../contracts/view.js';
 class NotFoundView extends View {
     constructor(html, start) {
-       super(html, start);
+       super({html, start});
     }
 }
 
@@ -10,4 +10,4 @@ const html = /*html*/`
 `;
 
 
-export default new NotFoundView(html);
+export default new NotFoundView(html, () => {});

@@ -28,7 +28,7 @@ class HashRouter extends Router {
    * If no matching route is found, redirects to the root ("/").
    */
   route() {
-    let location = window.location.hash.replace(/^#/, "");
+    let location = window.location.hash.replace(/^#/, "").split("?")[0];
     if (location.length === 0) {
       location = "/";
     }
@@ -43,6 +43,7 @@ class HashRouter extends Router {
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
     });
+    this.route();
   }
 }
 

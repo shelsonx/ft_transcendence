@@ -1,3 +1,4 @@
+import { AuthConstants } from '../constants/auth-constants.js';
 import { HttpClient, HttpClientRequestData } from './httpClient.js';
 
 class AuthService {
@@ -5,6 +6,24 @@ class AuthService {
   constructor() {
     this.httpClient = new HttpClient('http://localhost:8002/api/auth/');
   }
+
+  addTokenToLocalStorage(response) {
+    if (response.is_success) {
+      localStorage.setItem(AuthConstants.AUTH_TOKEN, response.data.token);
+    }
+  }
+
+  redirectIfAuthenticated(response, email) {
+    if (typeof response?.data?.is_temporary_token === 'undefined') {
+      return ;
+    }
+    if (response.data.is_temporary_token === false) {
+       window.location.hash = '#';
+    } else {
+       window.location.hash = '#two-factor-auth?email=' + email;
+    }
+  }
+
   async login(formData) {
     const data = {
       email: formData.get('email'),
@@ -14,6 +33,7 @@ class AuthService {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
+
   async register(formData) {
     const data = {
       email: formData.get('email'),
@@ -25,6 +45,7 @@ class AuthService {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
+
 }
 
 export default new AuthService();
