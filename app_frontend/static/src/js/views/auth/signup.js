@@ -1,5 +1,9 @@
 
+
+import { FormValidation } from '../../contracts/validation/formValidation.js';
+import { EmailValidatorInput, PasswordInputValidator } from '../../contracts/validation/validatorInput.js';
 import authService from '../../services/authService.js';
+import wrapperLoadingService from '../../services/wrapperService.js';
 import BaseAuthView from './baseAuthView.js';
 
 class LoginView extends BaseAuthView {
@@ -52,9 +56,23 @@ function start() {
     const form = document.getElementById('signup-form');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const formValidation = new FormValidation([
+            new PasswordInputValidator('password'),
+            new EmailValidatorInput('email')
+        ]);
+        if (!formValidation.isValid()) {
+            return;
+        }
         const formData = new FormData(form);
-        const response = await authService.register(formData);
+        const response = await wrapperLoadingService.execute(
+            authService,
+            authService.register, 
+            formData
+        );
         console.log(response);
+        authService.addTokenToLocalStorage(response)
+        authService.redirectIfAuthenticated(response, formData.get('email'));
     });
 }
 

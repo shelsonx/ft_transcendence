@@ -1,3 +1,4 @@
+import { AuthConstants } from "../constants/auth-constants.js";
 import { getCookie } from "../utils/getCookie.js";
 /**
  * Class representing the data for an HTTP client request.
@@ -45,6 +46,20 @@ export class HttpClient {
    */
   changeBaseUrl(url) {
     this.baseUrl = url;
+  }
+
+  addJwtToken(httpClientRequestData) {
+    const jwtToken = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    if (jwtToken) {
+      httpClientRequestData.headers['Authorization'] = `Bearer ${jwtToken}`;
+    }
+  }
+
+  addCsrfToken(httpClientRequestData) {
+    const csrftoken = getCookie('csrftoken');
+    if (csrftoken) {
+      httpClientRequestData.headers['X-CSRFToken'] = csrftoken;
+    }
   }
 
   /**
@@ -103,16 +118,18 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    * @throws {Error} If the HTTP method is invalid.
    */
+
   async makeRequest(httpClientRequestData) {
-    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this)};
-    const csrftoken = getCookie('csrftoken');
-    if (csrftoken) {
-      httpClientRequestData.headers['X-CSRFToken'] = csrftoken;
+    if (!httpClientRequestData) {
+      throw new Error('Request data is required');
     }
+    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this)};
+    this.addCsrfToken(httpClientRequestData);
     const httpRequest = httpVerb?.[httpClientRequestData.method?.toUpperCase()];
     if (!httpRequest) {
       throw new Error('Invalid HTTP method');
-    } 
+    }
+    this.addJwtToken(httpClientRequestData);
     const response = await httpRequest(httpClientRequestData);
     return response;
   }
