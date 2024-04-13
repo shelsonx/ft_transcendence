@@ -69,3 +69,27 @@ a:hover {
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
+
+.header-row-info {
+    border-top: 2px solid #381718;
+    border-bottom: 2px solid #381718;
+    padding: 10px 0;
+}
+
+.header-info-column {
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.header-scores-column,
+.header-players-column {
+    text-align: right;
+    display: flex;
+    align-items: center;
+}
+
+.header-info-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
