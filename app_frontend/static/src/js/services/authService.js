@@ -18,9 +18,9 @@ class AuthService {
       return ;
     }
     if (response.data.is_temporary_token === false) {
-       window.location.hash = '#';
+      window.location.href = '/#';
     } else {
-       window.location.hash = '#two-factor-auth?email=' + email;
+      window.location.href = '?email=' + email + '#two-factor-auth';
     }
   }
 
@@ -42,6 +42,22 @@ class AuthService {
       confirm_password: formData.get('confirm-password')
     };
     const requestData = new HttpClientRequestData('POST', 'sign-up/', data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async validateTwoFactorCode(formData) {
+    const data = {
+      email: formData.get('email'),
+      two_factor_code: formData.get('two-factor-code')
+    };
+    const requestData = new HttpClientRequestData('PUT', 'validate-2factor-code/', data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async getMe() {
+    const requestData = new HttpClientRequestData('GET', 'user/');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }

@@ -103,3 +103,19 @@ export class EmailValidator extends Validator {
     return this.createValidation(true, 'ok');
   }
 }
+
+export class AllDigitValidator extends Validator {
+  constructor() {
+    super('digit');
+  }
+  validate(value, name = 'This field') {
+    const digitRegex = /\d/;
+    const isAllDigit = value.split('').every(char => digitRegex.test(char));
+    if (!isAllDigit) {
+      return this.createValidation(
+        false,
+        `${name} must be all digits (0-9)`);
+    }
+    return this.createValidation(true, 'ok');
+  }
+}

@@ -9,9 +9,13 @@
         "port": 5678      
       },
       "pathMappings": [{        
-        "localRoot": "${workspaceFolder}/services/auth",        
+        "localRoot": "${workspaceFolder}/backend/services/auth",        
         "remoteRoot": "/code"     
-        }],    
+        }, {
+        "localRoot": "${workspaceFolder}/app_frontend",
+        "remoteRoot": "/code"
+        }
+      ],    
         "django": true,
     }
   ]
