@@ -83,7 +83,10 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #get(httpClientRequestData) {
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint);
+    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+      method: 'GET',
+      headers: httpClientRequestData.headers
+    });
     return await response.json();
   }
 

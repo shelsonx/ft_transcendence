@@ -1,7 +1,10 @@
+import { AuthConstants } from "../constants/auth-constants.js";
 import Router from "../contracts/router.js";
+import authService from "../services/authService.js";
 import {
   hashRoutes as routes
-} from "./routes.js"; /**
+} from "./routes.js";
+/**
 * Class representing a router.
 */
 class HashRouter extends Router {
@@ -23,17 +26,40 @@ class HashRouter extends Router {
     document.querySelector('meta[name="description"]').setAttribute("content", view.description);
   }
 
+  async checkIsAuthenticated() {
+    const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    if (!token) {
+      window.location.href = '/#login';
+      return false;
+    }
+    const response = await authService.getMe();
+    if (response.is_success) {
+      return true;
+    } else {
+      window.location.href = '/#login';
+      return false;
+    }
+  }
+
   /**
    * Route to a view based on the current location.
    * If no matching route is found, redirects to the root ("/").
    */
   route() {
-    let location = window.location.hash.replace(/^#/, "").split("?")[0];
+    let location = window.location.hash.replace(/^#/, "");
     if (location.length === 0) {
       location = "/";
     }
     const route = this.routes[location] || this.routes["404"];
-    this.render(route);
+    if (route?.isProtected === true) {
+      this.checkIsAuthenticated().then((isAuthenticated) => {
+        if (isAuthenticated) {
+          this.render(route);
+        }
+      });
+    } else {
+      this.render(route);
+    }
   }
 
   start() {
@@ -43,7 +69,6 @@ class HashRouter extends Router {
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
     });
-    this.route();
   }
 }
 

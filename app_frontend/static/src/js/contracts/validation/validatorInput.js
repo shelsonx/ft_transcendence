@@ -96,3 +96,13 @@ export class EmailValidatorInput extends ValidatorInput {
     ]);
   }
 }
+
+export class TwoFactorCodeValidatorInput extends ValidatorInput {
+  constructor(id) {
+    super(id, null, 'Two Factor Code', [
+      new RequiredValidator(),
+      new MinLengthValidator(6),
+      new MaxLengthValidator(6),
+    ]);
+  }
+}
