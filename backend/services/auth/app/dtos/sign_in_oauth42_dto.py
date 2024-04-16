@@ -22,7 +22,7 @@ class SignInUpOAuth42Dto(models.Model):
         return datetime.now() + timedelta(seconds=self.expires_in)
 
     def expire_to_hours(self) -> int:
-        return self.expires_in // 3600
+        return self.expires_in / 3600
 
     def is_valid(self) -> bool:
         return datetime.now() < self._expire_in_datetime()

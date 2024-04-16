@@ -29,11 +29,20 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="ms-auto mt-1">
-                    <a href="#sign-up" class="btn btn-success">Sign Up</a>
+                    <a href="#sign-up" class="btn btn-secondary">Sign Up</a>
                     <button class="btn btn-primary" type="submit">Login</button>
                 </div>
-
+                
             </form>
+            <p class="my-2">Or</p>
+            <button 
+                class="btn btn-success w-100 m-0 d-flex justify-content-center align-items-center gap-3" 
+                type="button"
+                id="login-42"
+                >
+                <span>Login with</span> 
+                <img class="button-42" src="static/src/img/42-logo.svg" />
+            </button>
         </div>
 `;
 
@@ -57,6 +66,11 @@ function action() {
         console.log(response);
         authService.addTokenToLocalStorage(response)
         authService.redirectIfAuthenticated(response, formData.get('email'));
+    });
+
+    const login42 = document.getElementById('login-42');
+    login42.addEventListener('click', async () => {
+        authService.login42();
     });
 }
 

@@ -44,7 +44,7 @@ class BaseSignInUseCase(BaseUseCase):
             is_temporary_token=is_temporary_token,
             expires_in_hours=expires_in_hours,
         )
-        return SignInResultDto(token=token, is_temporary_token=is_temporary_token)
+        return SignInResultDto(token=token, is_temporary_token=is_temporary_token, email=user.email)
 
     async def execute(
         self, user: User, is_temporary_token: bool, expires_in_hours: int = 2
@@ -59,4 +59,4 @@ class BaseSignInUseCase(BaseUseCase):
             is_temporary_token=is_temporary_token,
             expires_in_hours=expires_in_hours,
         )
-        return SignInResultDto(token=token, is_temporary_token=is_temporary_token)
+        return SignInResultDto(token=token, is_temporary_token=is_temporary_token, email=user.email)

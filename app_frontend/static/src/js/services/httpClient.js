@@ -1,5 +1,6 @@
 import { AuthConstants } from "../constants/auth-constants.js";
 import { getCookie } from "../utils/getCookie.js";
+import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 /**
  * Class representing the data for an HTTP client request.
  */
@@ -76,7 +77,6 @@ export class HttpClient {
     return await response.json();
   }
 
-
   /**
    * Make a GET request.
    * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
@@ -132,6 +132,7 @@ export class HttpClient {
     if (!httpRequest) {
       throw new Error('Invalid HTTP method');
     }
+    replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
     this.addJwtToken(httpClientRequestData);
     const response = await httpRequest(httpClientRequestData);
     return response;

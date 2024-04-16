@@ -50,8 +50,9 @@ class SignInUseCaseTestCase(TestCase):
         sign_in_dto = SignInDto(email=user.email, password=password)
         result = await self.sign_in_usecase.execute(sign_in_dto)
         self.assertEqual(
-            result, SignInResultDto(token="token", is_temporary_token=False).to_dict()
+            result, SignInResultDto(token="token", is_temporary_token=False, email=user.email).to_dict()
         )
+        
 
     @async_to_sync
     async def test_sign_in_usecase_return_success_with_two_factor(self):
@@ -73,7 +74,7 @@ class SignInUseCaseTestCase(TestCase):
         )
         result = await self.sign_in_usecase.execute(sign_in_dto)
         self.assertEqual(
-            result, SignInResultDto(token="token", is_temporary_token=True).to_dict()
+            result, SignInResultDto(token="token", is_temporary_token=True, email=user.email).to_dict()
         )
 
     @async_to_sync
@@ -106,7 +107,7 @@ class SignInUseCaseTestCase(TestCase):
         result = await self.sign_in_usecase.execute(sign_in_dto)
 
         self.assertEqual(
-            result, SignInResultDto(token="token", is_temporary_token=True).to_dict()
+            result, SignInResultDto(token="token", is_temporary_token=True, email=user.email).to_dict()
         )
 
     @async_to_sync

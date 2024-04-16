@@ -4,7 +4,8 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
 class AuthService {
 
   constructor() {
-    this.httpClient = new HttpClient('http://localhost:8002/api/auth/');
+    this.baseUrl = 'http://localhost:8002/api/auth/';
+    this.httpClient = new HttpClient(this.baseUrl);
   }
 
   addTokenToLocalStorage(response) {
@@ -60,6 +61,10 @@ class AuthService {
     const requestData = new HttpClientRequestData('GET', 'user/');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
+  }
+
+  async login42() {
+   window.location.assign(`${this.baseUrl}redirect-42/`);
   }
 
 }
