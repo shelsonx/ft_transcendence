@@ -105,7 +105,7 @@ validate_2factor_code_controller = Validate2FactorCodeController(
 
 urlpatterns = [
     path("sign-in/", SignInView.as_view(sign_in_controller=sign_in_controller)),
-    path("redirect-42", RedirectOAuth42View.as_view()),
+    path("redirect-42/", RedirectOAuth42View.as_view()),
     path("sign-up/", SignUpView.as_view(sign_up_controller=sign_up_controller)),
     path("user/", GetUserView.as_view(user_controller=user_controller)),
     path("user/<uuid:user_id>", UserView.as_view(user_controller=user_controller)),

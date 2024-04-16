@@ -1,6 +1,7 @@
 import { AuthConstants } from "../constants/auth-constants.js";
 import Router from "../contracts/router.js";
 import authService from "../services/authService.js";
+import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 import {
   hashRoutes as routes
 } from "./routes.js";
@@ -27,6 +28,7 @@ class HashRouter extends Router {
   }
 
   async checkIsAuthenticated() {
+    replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
     const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
     if (!token) {
       window.location.href = '/#login';

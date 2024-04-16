@@ -25,12 +25,14 @@ class SignInDto(models.Model):
 class SignInResultDto:
     token: str
     is_temporary_token: bool
+    email: str
 
     def __str__(self) -> str:
-        return f"token: {self.token}, is_temporary_token: {self.is_temporary_token}"
+        return f"token: {self.token}, is_temporary_token: {self.is_temporary_token}, email: {self.email}"
 
     def to_dict(self):
         return {
             "token": self.token,
             "is_temporary_token": self.is_temporary_token,
+            "email": self.email
         }
