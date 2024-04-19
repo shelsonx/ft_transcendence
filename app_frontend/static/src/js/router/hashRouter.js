@@ -9,7 +9,6 @@ import {
 * Class representing a router.
 */
 class HashRouter extends Router {
-
   /**
    * Create a router.
    * @param {Object.<string, {title: string, render: function, start: function, description: string}>} routes - The routes the router should handle.

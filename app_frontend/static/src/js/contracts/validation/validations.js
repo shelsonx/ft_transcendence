@@ -119,3 +119,22 @@ export class AllDigitValidator extends Validator {
     return this.createValidation(true, 'ok');
   }
 }
+
+export class IsEqualInputValidator extends Validator {
+  constructor(compareToInputId) {
+    super('isEqual');
+    this.compareToInputId = compareToInputId;
+  }
+  validate(value, name = 'This field') {
+    const inputToCompare = document.getElementById(this.compareToInputId);
+    const inputToCompareValue = inputToCompare.value;
+    const inputCompareGroup = inputToCompare.parentElement;
+    const hasInvalidFeedbackChildren = inputCompareGroup.querySelectorAll('.invalid-feedback').length > 0;
+    if (value !== inputToCompareValue || hasInvalidFeedbackChildren) {
+      return this.createValidation(
+        false,
+        `'${name}' must be equal to '${inputToCompare.name}' input`);
+    }
+    return this.createValidation(true, 'ok');
+  }
+}

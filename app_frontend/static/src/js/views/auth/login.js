@@ -44,6 +44,7 @@ const html = /*html*/`
                 <img class="button-42" src="static/src/img/42-logo.svg" />
             </button>
         </div>
+    </div>
 `;
 
 function action() {
