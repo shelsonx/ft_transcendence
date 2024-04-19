@@ -57,6 +57,16 @@ class AuthService {
     return response;
   }
 
+  async resendTwoFactorCode(email) {
+    const data = {
+      email,
+    };
+    const requestData = new HttpClientRequestData('POST', 'validate-2factor-code/', data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+
   async getMe() {
     const requestData = new HttpClientRequestData('GET', 'user/');
     const response = await this.httpClient.makeRequest(requestData);

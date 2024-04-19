@@ -31,6 +31,7 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="ms-auto mt-1">
+                    <button id="resend-2fa" class="btn btn-secondary" type="button">Resend 2FA Code</button>
                     <button class="btn btn-primary" type="submit">Submit</button>
                 </div>
             </form>
@@ -62,6 +63,18 @@ function start() {
       authService.addTokenToLocalStorage(response)
       authService.redirectIfAuthenticated(response, formData.get('email'));
   });
+
+  const buttonResend = document.getElementById("resend-2fa");
+  buttonResend.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const response = await wrapperLoadingService.execute(
+        authService,
+        authService.resendTwoFactorCode, 
+        email
+    );
+    console.log(response);
+  })
+
 }
 
 export default new TwoFactorView({ html, start });

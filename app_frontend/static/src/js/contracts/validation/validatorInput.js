@@ -1,5 +1,5 @@
 
-import { EmailValidator, LowerCaseValidation, MaxLengthValidator, MinLengthValidator, RequiredValidator, UpperCaseValidation } from './validations.js';
+import { EmailValidator, IsEqualInputValidator, LowerCaseValidation, MaxLengthValidator, MinLengthValidator, RequiredValidator, UpperCaseValidation } from './validations.js';
 
 export class ValidatorInput {
   #id
@@ -21,6 +21,10 @@ export class ValidatorInput {
       return this.#input.parentElement;
     } 
     return document.getElementById(this.#displayGroup);
+  }
+
+  setDisplayName(displayName) {
+    this.#displayName = displayName;
   }
 
   #createError(error) {
@@ -103,6 +107,24 @@ export class TwoFactorCodeValidatorInput extends ValidatorInput {
       new RequiredValidator(),
       new MinLengthValidator(6),
       new MaxLengthValidator(6),
+    ]);
+  }
+}
+
+export class ConfirmPasswordInputValidator extends ValidatorInput {
+  constructor(id, compareId) {
+    super(id, null, 'Confirm Password', [
+      new IsEqualInputValidator(compareId)
+    ]);
+  }
+}
+
+export class UsernameValidatorInput extends ValidatorInput {
+  constructor(id) {
+    super(id, null, 'Username', [
+      new RequiredValidator(),
+      new MinLengthValidator(4),
+      new MaxLengthValidator(100),
     ]);
   }
 }
