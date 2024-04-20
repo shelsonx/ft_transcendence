@@ -65,6 +65,4 @@ class SignInOAuth42Service(BaseService):
         token_user.is_active = True
         await self.user_repository.update_user(token_user)
 
-        return await self.base_sign_in_usecase.execute(
-            token_user, False
-        )
+        return await self.base_sign_in_usecase.execute(token_user, False)

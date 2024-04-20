@@ -1,4 +1,5 @@
 import { AuthConstants } from "../constants/auth-constants.js";
+import { User } from "../contracts/User.js";
 import Router from "../contracts/router.js";
 import authService from "../services/authService.js";
 import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
@@ -30,13 +31,22 @@ class HashRouter extends Router {
     replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
     const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
     if (!token) {
+      this.user = null;
       window.location.href = '/#login';
       return false;
     }
+    if (this?.user?.token === token) {
+      return true;
+    }
     const response = await authService.getMe();
     if (response.is_success) {
+      this.user = User.createUserFromObj({
+        ...response.data,
+        token,
+      });
       return true;
     } else {
+      this.user = null;
       window.location.href = '/#login';
       return false;
     }

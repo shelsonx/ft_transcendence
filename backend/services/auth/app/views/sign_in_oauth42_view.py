@@ -9,6 +9,7 @@ from ..constants.oauth_urls import OAuthUrls
 from ..interfaces.usecase.base_usecase import BaseUseCase
 from django.shortcuts import redirect
 
+
 @method_decorator(csrf_exempt, name="dispatch")
 class SignInOAuth42View(View):
     sign_in_oauth42_controller: BaseOAuth42Controller = None
@@ -26,5 +27,5 @@ class SignInOAuth42View(View):
         if is_temporary:
             frontend_url += f"?email={email}#two-factor-auth"
         response = redirect(frontend_url)
-        response.set_cookie('transcendence-auth_token', token)
+        response.set_cookie("transcendence-auth_token", token)
         return response

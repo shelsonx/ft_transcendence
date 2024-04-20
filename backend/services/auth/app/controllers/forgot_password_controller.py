@@ -15,7 +15,11 @@ class ForgotPasswordController(BaseController):
         return ForgotPasswordDtoForm(json.loads(request.body))
 
     def convert_to_dto(self, data: dict) -> ForgotPasswordDto:
-        return ForgotPasswordDto(email=data.get("email"), two_factor_code=data.get("two_factor_code"), password=data.get("password"))
+        return ForgotPasswordDto(
+            email=data.get("email"),
+            two_factor_code=data.get("two_factor_code"),
+            password=data.get("password"),
+        )
 
     async def execute_post(self, dto: ForgotPasswordDto) -> JsonResponse:
         return await self.forgot_password_usecase.execute(dto)
