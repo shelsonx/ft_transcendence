@@ -7,7 +7,9 @@ import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.j
 import BaseAuthView from './baseAuthView.js';
 class LoginView extends BaseAuthView {
     constructor(html, start) {
-        super(html, start);
+        super({
+            html, start
+        });
     }
 }
 
@@ -30,7 +32,7 @@ const html = /*html*/`
                         <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
                     </div>
                 </div>
-                <a id="forgot-password" href="#forgot-password" class="text-warning p-2 rounded-1 cursor-pointer">Forgot password?</a>
+                <a id="forgot-password-link" href="#forgot-password" class="text-warning p-2 rounded-1 cursor-pointer">Forgot password?</a>
                 <div class="ms-auto mt-1">
                     <a href="#sign-up" class="btn btn-secondary">Sign Up</a>
                     <button class="btn btn-primary" type="submit">Login</button>
@@ -83,5 +85,5 @@ function action() {
 
 
 
-export default new LoginView({ html, start: action });
+export default new LoginView(html, action);
 

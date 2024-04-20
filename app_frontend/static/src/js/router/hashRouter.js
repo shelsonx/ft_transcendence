@@ -1,6 +1,6 @@
 import { AuthConstants } from "../constants/auth-constants.js";
-import { User } from "../contracts/User.js";
 import Router from "../contracts/router.js";
+import { User } from "../contracts/user.js";
 import authService from "../services/authService.js";
 import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 import {

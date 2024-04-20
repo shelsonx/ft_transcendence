@@ -7,7 +7,7 @@ import BaseAuthView from './baseAuthView.js';
 
 class TwoFactorView extends BaseAuthView {
     constructor(html, start) {
-        super(html, start);
+        super({ html, start });
     }
 }
 
@@ -77,4 +77,4 @@ function start() {
 
 }
 
-export default new TwoFactorView({ html, start });
+export default new TwoFactorView(html, start);
