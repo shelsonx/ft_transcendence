@@ -80,9 +80,9 @@ validate_2factor_code_usecase = Validate2FactorCodeUseCase(
     user_repository, two_factor_service, base_sign_in_usecase
 )
 forgot_password_usecase = ForgotPasswordUseCase(
-  base_sign_in_usecase=base_sign_in_usecase,
-  two_factor_service=two_factor_service,
-  user_repository=user_repository
+    base_sign_in_usecase=base_sign_in_usecase,
+    two_factor_service=two_factor_service,
+    user_repository=user_repository,
 )
 
 
@@ -114,7 +114,7 @@ validate_2factor_code_controller = Validate2FactorCodeController(
 )
 
 forgot_password_controller = ForgotPasswordController(
-  forgot_password_usecase=forgot_password_usecase
+    forgot_password_usecase=forgot_password_usecase
 )
 
 urlpatterns = [

@@ -9,6 +9,7 @@ from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 from ..validators.password_validator import PasswordValidator
 from django.contrib.auth.hashers import make_password
 
+
 class ForgotPasswordUseCase(BaseUseCase):
     def __init__(
         self,
@@ -23,7 +24,9 @@ class ForgotPasswordUseCase(BaseUseCase):
     async def execute(self, forgot_password_dto: ForgotPasswordDto):
         user = None
         try:
-            user = await self.user_repository.get_user_by_email(forgot_password_dto.email)
+            user = await self.user_repository.get_user_by_email(
+                forgot_password_dto.email
+            )
         except ObjectDoesNotExist:
             raise UserNotFoundException()
 
@@ -32,7 +35,7 @@ class ForgotPasswordUseCase(BaseUseCase):
         )
         if not is_valid:
             raise TwoFactorCodeException("Invalid two factor code")
-        
+
         password_validator = PasswordValidator()
         password_validator.validate(forgot_password_dto.password)
         user.password = make_password(forgot_password_dto.password)

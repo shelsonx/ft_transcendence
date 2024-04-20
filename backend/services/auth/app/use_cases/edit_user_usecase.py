@@ -13,6 +13,7 @@ from asgiref.sync import sync_to_async
 from ..interfaces.usecase.base_usecase import BaseUseCase
 from django.contrib.auth.hashers import make_password
 
+
 class EditUserUseCase(BaseUseCase):
 
     def __init__(self, user_repository: IUserRepository):
@@ -40,7 +41,7 @@ class EditUserUseCase(BaseUseCase):
             raise UserNotFoundException()
 
         self.validate_password(user, user_edit_dto.old_password, user_edit_dto.password)
-        
+
         if has_value(user_edit_dto.password):
             user_edit_dto.password = make_password(user_edit_dto.password)
 

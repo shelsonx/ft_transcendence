@@ -61,7 +61,9 @@ class SignUpUseCaseTests(TestCase):
         base_sign_up_dto = BaseSignUpDto(email=user.email, user_name=user.user_name)
         execute_mock.return_value = mock_execute
         self.two_factor_service_mock.send_code_to_user = AsyncMock(return_value=None)
-        sign_in_result = SignInResultDto(token="token", is_temporary_token=True, email=user.email)
+        sign_in_result = SignInResultDto(
+            token="token", is_temporary_token=True, email=user.email
+        )
         self.base_sign_in_use_case_mock.execute = AsyncMock(return_value=sign_in_result)
         result = await self.sign_in_usecase.execute(
             SignUpDto(email=user.email, password=password, user_name=user.user_name)

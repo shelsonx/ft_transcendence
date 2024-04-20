@@ -34,5 +34,5 @@ class SignInResultDto:
         return {
             "token": self.token,
             "is_temporary_token": self.is_temporary_token,
-            "email": self.email
+            "email": self.email,
         }

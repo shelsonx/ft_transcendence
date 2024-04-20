@@ -89,6 +89,11 @@ class AuthService {
     return response;
   }
 
+  logout() {
+    localStorage.removeItem(AuthConstants.AUTH_TOKEN);
+    window.location.href = '/#login';
+  }
+
 }
 
 export default new AuthService();

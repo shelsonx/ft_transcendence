@@ -9,6 +9,7 @@ from ..dtos.validate_2factor_code_dto import (
 )
 import json
 
+
 class Validate2FactorCodeController(BaseController):
 
     def __init__(

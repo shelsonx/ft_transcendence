@@ -7,6 +7,7 @@ class ForgotPasswordDtoForm(forms.Form):
     two_factor_code = forms.CharField(max_length=6, required=True)
     password = forms.CharField(max_length=100, required=True)
 
+
 class ForgotPasswordDto(models.Model):
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
     two_factor_code = models.CharField(max_length=6, null=False, blank=False)
