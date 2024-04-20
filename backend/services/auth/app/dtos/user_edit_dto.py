@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 
+
 class UserEditDtoForm(forms.Form):
     user_name = forms.CharField(max_length=100, required=False)
     email = forms.EmailField(max_length=100, required=False)
@@ -18,3 +19,6 @@ class UserEditDto(models.Model):
 
     def __str__(self) -> str:
         return f"UserEditDto: user_name={self.user_name}, email={self.email}, enable_2fa={self.enable_2fa}, password={self.password}, old_password={self.old_password}"
+
+    class Meta:
+        managed = False

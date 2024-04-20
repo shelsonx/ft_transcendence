@@ -3,17 +3,17 @@
 from django.db import migrations
 from ..constants.login_type_constants import LoginTypeConstants
 
+
 def create_login_type(apps, schema_editor):
-    LoginType = apps.get_model('app', 'LoginType')
+    LoginType = apps.get_model("app", "LoginType")
     LoginType.objects.create(name=LoginTypeConstants.AUTH_EMAIL)
     LoginType.objects.create(name=LoginTypeConstants.AUTH_42)
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(create_login_type)
-    ]
+    operations = [migrations.RunPython(create_login_type)]

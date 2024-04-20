@@ -10,7 +10,9 @@ class UpperCaseValidator:
         upper_case_count = sum(1 for c in password if c.isupper())
         if upper_case_count < self.upper_case_min:
             raise ValidationError(
-                _("This password must contain at least %(upper_case_min)d character(s) in uppercase."),
+                _(
+                    "This password must contain at least %(upper_case_min)d character(s) in uppercase."
+                ),
                 code="password_too_short",
                 params={"upper_case_min": self.upper_case_min},
             )

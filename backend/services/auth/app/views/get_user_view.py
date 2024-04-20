@@ -7,12 +7,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from ..decorators.protect_route import ProtectedRoute
 
-@method_decorator(csrf_exempt, name='dispatch')
+
+@method_decorator(csrf_exempt, name="dispatch")
 class GetUserView(View):
     user_controller: BaseController = None
 
     def __init__(self, user_controller: BaseController) -> None:
-       self.user_controller = user_controller
+        self.user_controller = user_controller
 
     @ProtectedRoute()
     async def get(self, request: HttpRequest) -> JsonResponse:
