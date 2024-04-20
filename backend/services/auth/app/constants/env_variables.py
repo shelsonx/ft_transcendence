@@ -1,7 +1,3 @@
-
-class EnvVariables():
-    JWT_SECRET = 'JWT_SECRET'
-
 class EnvVariables:
     JWT_SECRET = "JWT_SECRET"
     TEMPORARY_JWT_SECRET = "TEMPORARY_JWT_SECRET"
