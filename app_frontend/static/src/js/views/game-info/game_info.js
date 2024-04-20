@@ -33,30 +33,30 @@ const html = /*html*/`
                                 <img src="static/src/img/avatar_user_icon.png" alt="Foto do usuário" class="details-pictures details-profile-picture">
                             </div>
                             <div class="col-md-4">
-                                <table class="table table-borderless text-white text-end">
-                                    <tbody>
-                                    <tr>
-                                        <th scope="row">Nickname:</th>
-                                        <td>sjhony-x</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Pontuação:</th>
-                                        <td>1000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Vitórias:</th>
-                                        <td>50</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Derrotas:</th>
-                                        <td>20</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Posição:</th>
-                                        <td>5º</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row mb-2">
+                                            <div class="col-6 text-white">Nickname:</div>
+                                            <div class="col-6 text-white">sjhony-x</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 text-white">Pontuação:</div>
+                                            <div class="col-6 text-white">1000</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 text-white">Vitórias:</div>
+                                            <div class="col-6 text-white">50</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 text-white">Derrotas:</div>
+                                            <div class="col-6 text-white">20</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 text-white">Posição:</div>
+                                            <div class="col-6 text-white">5º</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
