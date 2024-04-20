@@ -7,9 +7,11 @@ import wrapperLoadingService from '../../services/wrapperService.js';
 import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.js';
 import BaseAuthView from './baseAuthView.js';
 
-class LoginView extends BaseAuthView {
+class SignUpView extends BaseAuthView {
     constructor(html, start) {
-        super(html, start);
+        super({
+            html, start
+        });
     }
 }
 
@@ -97,5 +99,5 @@ function start() {
     togglePasswordVisibility('confirm-password', 'show-confirm-password-icon');
 }
 
-export default new LoginView({ html, start });
+export default new SignUpView(html, start);
 

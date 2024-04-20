@@ -8,7 +8,9 @@ import BaseAuthView from './baseAuthView.js';
 
 class ForgotPassword extends BaseAuthView {
     constructor(html, start) {
-        super(html, start);
+        super({
+            html, start
+        });
     }
 }
 
@@ -104,4 +106,4 @@ function start() {
 
 }
 
-export default new ForgotPassword({ html, start });
+export default new ForgotPassword( html, start );
