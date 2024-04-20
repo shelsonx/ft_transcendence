@@ -36,6 +36,8 @@ class ForgotPasswordUseCase(BaseUseCase):
         password_validator = PasswordValidator()
         password_validator.validate(forgot_password_dto.password)
         user.password = make_password(forgot_password_dto.password)
+        if not user.is_active:
+            user.is_active = True
         updated_user = await self.user_repository.update_user(user)
 
         result = await self.base_sign_in_usecase.execute(
