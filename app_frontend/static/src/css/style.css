@@ -172,3 +172,14 @@ body {
 .button-42 {
     width: 32px;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+.z-999 {
+    z-index: 999;
+}
+
+#forgot-password {
+    font-size: 12px;
+}

@@ -22,6 +22,7 @@ from .use_cases.get_access_token_42_usecase import GetAccessToken42UseCase
 from .use_cases.validate_access_token_42_usecase import ValidateAccessToken42UseCase
 from .use_cases.get_me_42_usecase import GetMe42UseCase
 from .use_cases.send_2factor_code_usecase import Send2FactorCodeUseCase
+from .use_cases.forgot_password_usecase import ForgotPasswordUseCase
 
 from .use_cases.validate_2factor_code_usecase import Validate2FactorCodeUseCase
 from .controllers.sign_in_controller import SignInController
@@ -29,6 +30,7 @@ from .controllers.sign_up_controller import SignUpController
 from .controllers.user_controller import UserController
 from .controllers.sign_in_oauth42_controller import SignInOAuth42Controller
 from .controllers.validate_2factor_code_controller import Validate2FactorCodeController
+from .controllers.forgot_password_controller import ForgotPasswordController
 
 from .views import SignInView
 from .views import SignUpView
@@ -37,6 +39,7 @@ from .views import GetUserView
 from .views import RedirectOAuth42View
 from .views import SignInOAuth42View
 from .views import Validate2FactorCodeView
+from .views import ForgotPasswordView
 
 # repositories
 user_repository = UserRepository()
@@ -76,6 +79,13 @@ send_2factor_code_usecase = Send2FactorCodeUseCase(
 validate_2factor_code_usecase = Validate2FactorCodeUseCase(
     user_repository, two_factor_service, base_sign_in_usecase
 )
+forgot_password_usecase = ForgotPasswordUseCase(
+  base_sign_in_usecase=base_sign_in_usecase,
+  two_factor_service=two_factor_service,
+  user_repository=user_repository
+)
+
+
 # services
 sign_in_oauth42_service = SignInOAuth42Service(
     user_repository,
@@ -103,6 +113,10 @@ validate_2factor_code_controller = Validate2FactorCodeController(
     validate_2factor_code_usecase=validate_2factor_code_usecase,
 )
 
+forgot_password_controller = ForgotPasswordController(
+  forgot_password_usecase=forgot_password_usecase
+)
+
 urlpatterns = [
     path("sign-in/", SignInView.as_view(sign_in_controller=sign_in_controller)),
     path("redirect-42/", RedirectOAuth42View.as_view()),
@@ -119,6 +133,12 @@ urlpatterns = [
         "validate-2factor-code/",
         Validate2FactorCodeView.as_view(
             validate_2factor_code_controller=validate_2factor_code_controller
+        ),
+    ),
+    path(
+        "forgot-password/",
+        ForgotPasswordView.as_view(
+            forgot_password_controller=forgot_password_controller
         ),
     ),
 ]
