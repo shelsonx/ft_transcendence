@@ -1,0 +1,8 @@
+app/singlepage/migrations/
+*.env
+/transcendence_env
+
+**/*__pycache__*
+test
+*db.sqlite3
+vanilla_spa
