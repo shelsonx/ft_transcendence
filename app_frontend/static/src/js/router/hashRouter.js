@@ -80,6 +80,12 @@ class HashRouter extends Router {
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
     });
+    const logout = document.getElementById('logout-button');
+    if (logout) {
+      logout.addEventListener('click', () => {
+        authService.logout();
+      });
+    }
   }
 }
 
