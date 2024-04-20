@@ -183,3 +183,8 @@ body {
 #forgot-password {
     font-size: 12px;
 }
+
+.logout-icon{
+    font-size: 1.1rem;
+    line-height: 1.1rem;
+}
