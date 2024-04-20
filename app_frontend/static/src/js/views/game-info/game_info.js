@@ -19,49 +19,18 @@ class GameInfoView extends View {
 
 const html = /*html*/`
   <div class="container-fluid main">
-        <nav class="navbar navbar-expand-lg mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Dashboard</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">User Status</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="ms-auto">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            Login<i class="ms-2 fa-solid fa-user-astronaut" style="color: #ffffff;"></i>
-                        </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
         <div class="containers">
             <div class="row">
                 <div class="col-lg-12 mb-3">
                     <div class="container_details text-center">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4">
-                                <img src="{% static 'images/gold_medal_star_icon.png' %}" alt="medalha do usuário" class="details-pictures details-medal-picture">
+                                <img src="static/src/img/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
                                 <p class="mb-1">Shelson Alves</p>
                                 <p><i class="fa-solid fa-circle me-2" style="color: green;"></i>Online</p>
                             </div>
                             <div class="col-md-4">
-                                <img src="{% static 'images/avatar_user_icon.png' %}" alt="Foto do usuário" class="details-pictures details-profile-picture">
+                                <img src="static/src/img/avatar_user_icon.png" alt="Foto do usuário" class="details-pictures details-profile-picture">
                             </div>
                             <div class="col-md-4">
                                 <table class="table table-borderless text-white text-end">
@@ -123,7 +92,7 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="{% static 'images/avatar_girl_icon.png' %}" alt="User Photo" class="list-user-photo">
+                        <img src="static/src/img/avatar_girl_icon.png" alt="User Photo" class="list-user-photo">
                     </div>
                     <div class="col-5">
                         <p class="list-nickname"><strong class="p-3 shadow">sguilher</strong></p>
@@ -145,7 +114,7 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="{% static 'images/avatar_girl_icon2.png' %}" alt="User Photo" class="list-user-photo">
+                        <img src="static/src/img/avatar_girl_icon2.png" alt="User Photo" class="list-user-photo">
                     </div>
                     <div class="col-5">
                         <p class="list-nickname"><strong class="p-3 shadow">elraira-</strong></p>
@@ -167,7 +136,7 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="{% static 'images/avatar_user_icon.png' %}" alt="User Photo" class="list-user-photo">
+                        <img src="static/src/img/avatar_user_icon.png" alt="User Photo" class="list-user-photo">
                     </div>
                     <div class="col-5">
                         <p class="list-nickname"><strong class="p-3 shadow">sjhony-x</strong></p>
@@ -189,7 +158,7 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="{% static 'images/avatar_user_icon2.png' %}" alt="User Photo" class="list-user-photo">
+                        <img src="static/src/img/avatar_user_icon2.png" alt="User Photo" class="list-user-photo">
                     </div>
                     <div class="col-5">
                         <p class="list-nickname"><strong class="p-3 shadow">bbonaldi</strong></p>
@@ -211,7 +180,7 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="{% static 'images/avatar_user_icon3.png' %}" alt="User Photo" class="list-user-photo">
+                        <img src="static/src/img/avatar_user_icon3.png" alt="User Photo" class="list-user-photo">
                     </div>
                     <div class="col-5">
                         <p class="list-nickname"><strong class="p-3 shadow">harndt</strong></p>
