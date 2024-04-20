@@ -77,6 +77,18 @@ class AuthService {
    window.location.assign(`${this.baseUrl}redirect-42/`);
   }
 
+  async forgotPassword(formData) {
+    const data = {
+      email: formData.get('email'),
+      two_factor_code: formData.get('two-factor-code'),
+      password: formData.get('password'),
+      confirm_password: formData.get('confirm-password')
+    };
+    const requestData = new HttpClientRequestData('POST', 'forgot-password/', data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
 }
 
 export default new AuthService();

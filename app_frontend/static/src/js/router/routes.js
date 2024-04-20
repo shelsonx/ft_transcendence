@@ -1,4 +1,5 @@
 import notFound from "../views/404.js";
+import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
@@ -20,6 +21,7 @@ const hashRoutes = {
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
+  "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
 };
 
 export {

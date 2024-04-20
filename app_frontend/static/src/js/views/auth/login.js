@@ -3,6 +3,7 @@ import { FormValidation } from '../../contracts/validation/formValidation.js';
 import { EmailValidatorInput, PasswordInputValidator } from '../../contracts/validation/validatorInput.js';
 import authService from '../../services/authService.js';
 import wrapperLoadingService from '../../services/wrapperService.js';
+import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.js';
 import BaseAuthView from './baseAuthView.js';
 class LoginView extends BaseAuthView {
     constructor(html, start) {
@@ -24,15 +25,16 @@ const html = /*html*/`
                 </div>
                 <div>
                     <label for="password">Password</label>
-                    <div class="input-group input-group-custom">
+                    <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
+                        <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
                     </div>
                 </div>
+                <a id="forgot-password" href="#forgot-password" class="text-warning p-2 rounded-1 cursor-pointer">Forgot password?</a>
                 <div class="ms-auto mt-1">
                     <a href="#sign-up" class="btn btn-secondary">Sign Up</a>
                     <button class="btn btn-primary" type="submit">Login</button>
                 </div>
-                
             </form>
             <p class="my-2">Or</p>
             <button 
@@ -73,6 +75,8 @@ function action() {
     login42.addEventListener('click', async () => {
         authService.login42();
     });
+    
+    togglePasswordVisibility('password', 'show-password-icon')
 }
 
 

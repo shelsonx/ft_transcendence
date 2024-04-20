@@ -4,6 +4,7 @@ import { FormValidation } from '../../contracts/validation/formValidation.js';
 import { ConfirmPasswordInputValidator, EmailValidatorInput, PasswordInputValidator, UsernameValidatorInput } from '../../contracts/validation/validatorInput.js';
 import authService from '../../services/authService.js';
 import wrapperLoadingService from '../../services/wrapperService.js';
+import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.js';
 import BaseAuthView from './baseAuthView.js';
 
 class LoginView extends BaseAuthView {
@@ -32,14 +33,16 @@ const html = /*html*/`
                 </div>
                 <div>
                     <label for="password">Password</label>
-                    <div class="input-group input-group-custom">
+                    <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
+                        <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
                     </div>
                 </div>
                 <div>
                     <label for="confirm-password">Confirm Password</label>
-                    <div class="input-group input-group-custom">
+                    <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
+                        <i id="show-confirm-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
                     </div>
                 </div>
                 <div class="ms-auto mt-1">
@@ -89,6 +92,9 @@ function start() {
     login42.addEventListener('click', async () => {
         authService.login42();
     });
+
+    togglePasswordVisibility('password', 'show-password-icon');
+    togglePasswordVisibility('confirm-password', 'show-confirm-password-icon');
 }
 
 export default new LoginView({ html, start });
