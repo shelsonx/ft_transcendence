@@ -45,25 +45,11 @@ class Match(models.Model):
         default=0, verbose_name=_("Player B Score")
     )
 
-    # Rules
-    # original pong
-    # for each player to reach eleven points before the opponent;
-    # if self.score_a == 11 or self.score_b == 11 -> ended
-    player_reach_points = models.PositiveSmallIntegerField(default=11)  # min=5
-
-    # different:
-    # - sum of points == 11
-    # if self.score_a + self.score_b == 11
-    match_total_points = models.PositiveSmallIntegerField(
-        default=None, null=True, blank=True
-    )  # min=11
-    max_duration = models.DurationField()
-
-    @property
-    def tournament(self):
-        if hasattr(self, "tournament"):
-            return self.tournament
-        return None
+    # @property
+    # def tournament(self):
+    #     if hasattr(self, "tournament"):
+    #         return self.tournament
+    #     return None
 
     @property
     def winner(self) -> User | None:

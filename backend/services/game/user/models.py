@@ -1,10 +1,12 @@
 from django.db import models
 from itertools import chain
+import uuid
 
 # Create your models here.
 
 class User(models.Model):
-    id_reference = models.IntegerField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id_reference = models.UUIDField(editable=False, default=uuid.uuid4)
 
     @property
     def matchs(self) -> list:
