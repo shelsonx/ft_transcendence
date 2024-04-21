@@ -1,6 +1,8 @@
 import notFound from "../views/404.js";
+import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
+import twoFactorAuth from "../views/auth/validate2Factor.js";
 import userManagement from "../views/user_management/user_management.js";
 /**
  * An object representing the routes in the application.
@@ -14,11 +16,12 @@ const pathRoutes = {
 };
 
 const hashRoutes = {
-  "/": { title: "Login", render: login, description: "Login to your account."},
+  "/": { title: "User Management", render: userManagement, description: "Manage users.", isProtected: true },
   "login": { title: "Login", render: login, description: "Login to your account."},
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
-  "user-management": { title: "User Management", render: userManagement, description: "Manage users."}
+  "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
+  "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
 };
 
 export {

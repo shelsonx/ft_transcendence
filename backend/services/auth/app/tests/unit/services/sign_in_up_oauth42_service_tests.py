@@ -56,7 +56,9 @@ class SignInOAuth42ServiceTests(TestCase):
             expires_in=3600,
             user_name="bruno",
         )
-        sign_in_result_dto = SignInResultDto(token="token", is_temporary_token=False)
+        sign_in_result_dto = SignInResultDto(
+            token="token", is_temporary_token=False, email=user.email
+        )
 
         self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
         self.base_sign_up_usecase_mock.execute = AsyncMock(return_value=user)
@@ -84,7 +86,9 @@ class SignInOAuth42ServiceTests(TestCase):
             expires_in=3600,
             user_name="bruno",
         )
-        sign_in_result_dto = SignInResultDto(token="token", is_temporary_token=True)
+        sign_in_result_dto = SignInResultDto(
+            token="token", is_temporary_token=True, email=user.email
+        )
 
         self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
         self.base_sign_in_usecase_mock.execute = AsyncMock(
@@ -122,7 +126,9 @@ class SignInOAuth42ServiceTests(TestCase):
             expires_in=3600,
             user_name="bruno",
         )
-        sign_in_result_dto = SignInResultDto(token="token", is_temporary_token=True)
+        sign_in_result_dto = SignInResultDto(
+            token="token", is_temporary_token=True, email=user.email
+        )
 
         self.user_repository_mock.get_user_by_email = AsyncMock(return_value=user)
         with self.assertRaises(FieldAlreadyExistsException):

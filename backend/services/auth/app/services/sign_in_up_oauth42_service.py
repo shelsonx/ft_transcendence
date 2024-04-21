@@ -65,7 +65,4 @@ class SignInOAuth42Service(BaseService):
         token_user.is_active = True
         await self.user_repository.update_user(token_user)
 
-        hours_to_expire = sign_in_up_OAuth42_dto.expire_to_hours()
-        return await self.base_sign_in_usecase.execute(
-            token_user, False, hours_to_expire
-        )
+        return await self.base_sign_in_usecase.execute(token_user, False)

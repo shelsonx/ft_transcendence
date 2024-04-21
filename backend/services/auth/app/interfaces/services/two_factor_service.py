@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
-
+from datetime import timedelta
 from ..repositories.two_factor_repository import ITwoFactorRepository
 from ...exceptions.two_factor_exception import TwoFactorCodeException
 from ...models.two_factor import TwoFactor
-from ...dtos.two_factor_dto import TwoFactorDto
-
+from django.utils.timezone import now
 
 class ITwoFactorService(ABC):
 

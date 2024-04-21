@@ -26,9 +26,9 @@ export default class View {
    * @param {ViewOptions} viewOptions - The options for the view.
    */
   constructor(viewOptions) {
-    this.#html = viewOptions.html;
-    this.#start = viewOptions.start;
-    this.#navHandler = viewOptions.navHandler;
+    this.#html = viewOptions.html ?? '';
+    this.#start = viewOptions.start ?? (() => {});
+    this.#navHandler = viewOptions.navHandler ?? new NavHandler();
   }
     /**
    * Render the HTML for the view.
