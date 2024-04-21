@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from django.utils.timezone import now
 
 
 class SignInOAuth42DtoForm(forms.Form):
@@ -19,13 +20,13 @@ class SignInUpOAuth42Dto(models.Model):
         return f"email: {self.email}, acess_token: {self.acess_token}, expires_in: {self.expires_in}"
 
     def _expire_in_datetime(self) -> datetime:
-        return datetime.now() + timedelta(seconds=self.expires_in)
+        return now() + timedelta(seconds=self.expires_in)
 
     def expire_to_hours(self) -> int:
-        return self.expires_in // 3600
+        return self.expires_in / 3600
 
     def is_valid(self) -> bool:
-        return datetime.now() < self._expire_in_datetime()
+        return now() < self._expire_in_datetime()
 
     class Meta:
         managed = False

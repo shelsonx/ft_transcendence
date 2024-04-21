@@ -1,11 +1,15 @@
+import { AuthConstants } from "../constants/auth-constants.js";
 import Router from "../contracts/router.js";
+import { User } from "../contracts/user.js";
+import authService from "../services/authService.js";
+import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 import {
   hashRoutes as routes
-} from "./routes.js"; /**
+} from "./routes.js";
+/**
 * Class representing a router.
 */
 class HashRouter extends Router {
-
   /**
    * Create a router.
    * @param {Object.<string, {title: string, render: function, start: function, description: string}>} routes - The routes the router should handle.
@@ -23,6 +27,31 @@ class HashRouter extends Router {
     document.querySelector('meta[name="description"]').setAttribute("content", view.description);
   }
 
+  async checkIsAuthenticated() {
+    replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
+    const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    if (!token) {
+      this.user = null;
+      window.location.href = '/#login';
+      return false;
+    }
+    if (this?.user?.token === token) {
+      return true;
+    }
+    const response = await authService.getMe();
+    if (response.is_success) {
+      this.user = User.createUserFromObj({
+        ...response.data,
+        token,
+      });
+      return true;
+    } else {
+      this.user = null;
+      window.location.href = '/#login';
+      return false;
+    }
+  }
+
   /**
    * Route to a view based on the current location.
    * If no matching route is found, redirects to the root ("/").
@@ -33,7 +62,15 @@ class HashRouter extends Router {
       location = "/";
     }
     const route = this.routes[location] || this.routes["404"];
-    this.render(route);
+    if (route?.isProtected === true) {
+      this.checkIsAuthenticated().then((isAuthenticated) => {
+        if (isAuthenticated) {
+          this.render(route);
+        }
+      });
+    } else {
+      this.render(route);
+    }
   }
 
   start() {
@@ -43,6 +80,12 @@ class HashRouter extends Router {
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
     });
+    const logout = document.getElementById('logout-button');
+    if (logout) {
+      logout.addEventListener('click', () => {
+        authService.logout();
+      });
+    }
   }
 }
 

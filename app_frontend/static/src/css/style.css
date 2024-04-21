@@ -64,11 +64,14 @@ body {
     position: relative;
     scroll-behavior: smooth;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 #app {
     width: 100%;
     height: 100%;
+    min-height: 100vh;
+
 }
 
 .btn-primary {
@@ -142,4 +145,46 @@ body {
     .space-man {
         animation: space-man-keyframes 19s ease infinite alternate;
     }
+}
+
+.input-group-custom {
+    max-width: 450px;
+}
+
+@media screen and (max-width: 768px) {
+    .input-group-custom {
+        max-width: 100%;
+    }
+}
+
+.valid-feedback, .invalid-feedback {
+    font-size: 8px;
+    border:1px solid hsla(0, 0%, 65%, 0.158);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.form-control:disabled {
+    background-color: var(--primary-light);
+    color: var(--white-dark);
+}
+
+.button-42 {
+    width: 32px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+.z-999 {
+    z-index: 999;
+}
+
+#forgot-password {
+    font-size: 12px;
+}
+
+.logout-icon{
+    font-size: 1.1rem;
+    line-height: 1.1rem;
 }

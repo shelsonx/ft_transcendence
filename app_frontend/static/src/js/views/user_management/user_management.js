@@ -1,11 +1,11 @@
-import View from '../../contracts/view.js';
-
+import View from "../../contracts/view.js";
 class UserManagementView extends View {
   constructor(html, start) {
     super({
       html,
       start
-    });
+    },
+  );
   }
 }
 

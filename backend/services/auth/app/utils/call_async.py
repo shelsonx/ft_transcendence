@@ -1,5 +1,5 @@
 from asgiref.sync import sync_to_async
-from typing import Callable, Coroutine, Any, TypeVar, ParamSpec
+from typing import Callable, TypeVar, ParamSpec
 
 _P = ParamSpec("_P")
 _R = TypeVar("_R")
