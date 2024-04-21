@@ -3,7 +3,7 @@ version: '3.8'
 services:
   game-db:
     container_name: game-db
-    image: postgres
+    image: postgres:bullseye
     volumes:
       - game-db-data:/var/lib/postgresql/data
     env_file:
@@ -16,13 +16,14 @@ services:
     ports:
       - "5434:5432"
 
-  game-api:
+  api:
     container_name: game-api
+    image: game-api
     build: ./
     volumes:
       - ./:/api
     ports:
-      - "8003:8000"
+      - 8003:8003
     env_file:
       - .env
     environment:
