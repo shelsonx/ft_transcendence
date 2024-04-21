@@ -4,17 +4,23 @@
       "name": "Python: Remote Attach",     
       "type": "debugpy",     
       "request": "attach",
-      "connect": {         
+      "connect":  {         
         "host": "0.0.0.0",         
-        "port": 5678      
+        "port": 5678    
       },
-      "pathMappings": [{        
+      "pathMappings": [
+        {        
         "localRoot": "${workspaceFolder}/backend/services/auth",        
         "remoteRoot": "/code"     
-        }, {
+        },
+        {
         "localRoot": "${workspaceFolder}/app_frontend",
         "remoteRoot": "/code"
-        }
+        },
+        {
+        "localRoot": "${workspaceFolder}/backend/api_gateway",
+        "remoteRoot": "/code"
+        },
       ],    
         "django": true,
     }

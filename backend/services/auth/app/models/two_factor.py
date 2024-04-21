@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.timezone import now
-from datetime import timedelta
+from datetime import timedelta, timezone
 from django.core.mail import send_mail
 import random
 import uuid
 from .user import User
+
 
 
 class TwoFactor(models.Model):

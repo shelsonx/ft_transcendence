@@ -60,6 +60,26 @@ services:
     depends_on:
       - auth-db
 
+  api-gateway:
+    build: ./backend/api_gateway
+    container_name: api-gateway
+    command: python manage.py runserver 0.0.0.0:80
+    volumes:
+      - ./backend/api_gateway:/code
+    ports:
+      - "8010:80"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - TEMPORARY_JWT_SECRET=${TEMPORARY_JWT_SECRET}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    depends_on:
+      - auth-api
+
 volumes:
   #change the volume name
   auth-db-data:
