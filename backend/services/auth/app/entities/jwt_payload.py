@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from uuid import UUID
-
+from django.utils.timezone import now
 
 @dataclass
 class JWTPayload:
@@ -11,8 +11,8 @@ class JWTPayload:
 
     @staticmethod
     def create(sub: UUID, hours: int = 2):
-        iat = datetime.now().timestamp()
-        exp = (datetime.now() + timedelta(hours=hours)).timestamp()
+        iat = now().timestamp()
+        exp = (now() + timedelta(hours=hours)).timestamp()
         return JWTPayload(sub, iat, exp)
 
     @staticmethod
@@ -20,7 +20,7 @@ class JWTPayload:
         return JWTPayload(sub=payload["sub"], iat=payload["iat"], exp=payload["exp"])
 
     def is_expired(self):
-        return datetime.now().timestamp() > self.exp
+        return now().timestamp() > self.exp
 
     def is_valid(self):
         return not self.is_expired()

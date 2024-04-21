@@ -34,6 +34,7 @@ services:
     build: ./backend/services/auth
     container_name: auth-api
     command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:80"]
+    #command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./backend/services/auth:/code
     ports:
@@ -59,6 +60,28 @@ services:
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     depends_on:
       - auth-db
+
+  api-gateway:
+    build: ./backend/api_gateway
+    container_name: api-gateway
+    #command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5679 ./manage.py runserver 0.0.0.0:80"]
+    command: python manage.py runserver 0.0.0.0:80
+    volumes:
+      - ./backend/api_gateway:/code
+    ports:
+      - "8010:80"
+      - 5679:5679
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - TEMPORARY_JWT_SECRET=${TEMPORARY_JWT_SECRET}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    depends_on:
+      - auth-api
 
 volumes:
   #change the volume name

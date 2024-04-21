@@ -4,7 +4,7 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
 class AuthService {
 
   constructor() {
-    this.baseUrl = 'http://localhost:8002/api/auth/';
+    this.baseUrl = 'http://localhost:8010/api/auth/';
     this.httpClient = new HttpClient(this.baseUrl);
   }
 
