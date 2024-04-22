@@ -27,14 +27,21 @@ class Tournament(models.Model):
         verbose_name=_("Tournament Type"),
     )
     rules = models.OneToOneField(
-        to=MatchRules, on_delete=models.RESTRICT, related_name="tournament"
+        to=MatchRules,
+        on_delete=models.RESTRICT,
+        related_name="tournament",
+        verbose_name=_("Matches Rules"),
     )
 
     number_of_players = models.PositiveSmallIntegerField(default=2)
-    players = models.ManyToManyField(to=User, related_name="tournaments")
+    players = models.ManyToManyField(
+        to=User, related_name="tournaments", verbose_name=_("Players")
+    )
 
     # number_of_matches
-    matches = models.ManyToManyField(to=Match, related_name="tournament")
+    matches = models.ManyToManyField(
+        to=Match, related_name="tournament", verbose_name=_("Matches")
+    )
 
     def generate_matches(self):
         self.__get_proxy().generate_matches()
