@@ -3,7 +3,7 @@
       "model": "core.matchrules",
       "pk": 1,
       "fields": {
-          "player_reach_points": 11,
+          "points_to_win": 11,
           "match_total_points": null,
           "max_duration": null
       }
@@ -12,7 +12,7 @@
       "model": "core.matchrules",
       "pk": 2,
       "fields": {
-          "player_reach_points": null,
+          "points_to_win": null,
           "match_total_points": 11,
           "max_duration": null
       }
@@ -21,7 +21,7 @@
       "model": "core.matchrules",
       "pk": 3,
       "fields": {
-          "player_reach_points": null,
+          "points_to_win": null,
           "match_total_points": null,
           "max_duration": "00:05:00"
       }
