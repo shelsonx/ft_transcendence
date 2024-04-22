@@ -16,7 +16,7 @@ class MatchRules(models.Model):
             # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
             models.CheckConstraint(
                 check=Q(
-                    ~Q(player_reach_points__isnull=True)
+                    ~Q(points_to_win__isnull=True)
                     | ~Q(match_total_points__isnull=True)
                     | ~Q(max_duration__isnull=True)
                 ),
@@ -28,7 +28,7 @@ class MatchRules(models.Model):
     # original pong
     # for each player to reach eleven points before the opponent;
     # if self.score_a == 11 or self.score_b == 11 -> ended
-    player_reach_points = models.PositiveSmallIntegerField(
+    points_to_win = models.PositiveSmallIntegerField(
         default=11,
         null=True,
         blank=True,
@@ -54,7 +54,7 @@ class MatchRules(models.Model):
 
     def validate_constraints(self, exclude: Collection[str] | None = ...) -> None:
         if (
-            self.player_reach_points is None
+            self.points_to_win is None
             and self.match_total_points is None
             and self.max_duration is None
         ):
