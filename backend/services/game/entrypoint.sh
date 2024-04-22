@@ -4,5 +4,6 @@
 # python manage.py collectstatic --noinput
 
 python manage.py migrate
+python manage.py loaddata match_rules
 
-python manage.py runserver 0.0.0.0:8003
+exec $@
