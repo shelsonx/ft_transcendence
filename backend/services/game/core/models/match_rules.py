@@ -6,24 +6,22 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
+# from core.validators.numbers import validate_odd
+
+
+class MatchRuleType(models.IntegerChoices):
+    PLAYER_POINTS = 0, _("Player winner points")
+    MATCH_TOTAL_POINTS = 1, _("Match total points")
+    MATCH_DURATION = 2, _("Match duartion")
+    MIXED_RULES = 3, _("Mixed rules")
 
 class MatchRules(models.Model):
-
-    class Meta:
-        verbose_name_plural = _("Match Rules")
-        db_table = "core_match_rules"
-        constraints = [
-            # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
-            models.CheckConstraint(
-                check=Q(
-                    ~Q(points_to_win__isnull=True)
-                    | ~Q(match_total_points__isnull=True)
-                    | ~Q(max_duration__isnull=True)
-                ),
-                name="all_rules_null",
-                violation_error_message="At least one rule parameter must be setted",
-            ),
-        ]
+    rule_type = models.CharField(
+        max_length=1,
+        choices=MatchRuleType.choices,
+        default=MatchRuleType.PLAYER_POINTS,
+        verbose_name=_("Match rule type"),
+    )
 
     # original pong
     # for each player to reach eleven points before the opponent;
@@ -43,6 +41,7 @@ class MatchRules(models.Model):
         null=True,
         blank=True,
         verbose_name=_("Match total points"),
+        # validators=[validate_odd],
     )  # min=11
 
     max_duration = models.DurationField(
@@ -51,6 +50,58 @@ class MatchRules(models.Model):
         blank=True,
         verbose_name=_("Match maximum duration"),
     )
+
+    # paddle speed
+
+    class Meta:
+        verbose_name_plural = _("Match Rules")
+        db_table = "core_match_rules"
+        constraints = [
+            # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
+            models.CheckConstraint(
+                check=Q(
+                    ~Q(points_to_win__isnull=True)
+                    | ~Q(match_total_points__isnull=True)
+                    | ~Q(max_duration__isnull=True)
+                ),
+                name="all_rules_null",
+                violation_error_message="At least one rule parameter must be setted",
+            ),
+        ]
+
+    # class Meta:
+    #     verbose_name_plural = _("Match Rules")
+    #     db_table = "core_match_rules"
+    #     constraints = [
+    #         # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
+    #         models.CheckConstraint(
+    #             check=Q(
+    #                 ~Q(points_to_win__isnull=True)
+    #                 | ~Q(match_total_points__isnull=True)
+    #                 | ~Q(max_duration__isnull=True)
+    #             ),
+    #             name="all_rules_null",
+    #             violation_error_message="At least one rule parameter must be setted",
+    #         ),
+    #         models.CheckConstraint(
+    #             check=Q(Q(points_to_win__gte=5) | Q(points_to_win__isnull=True)),
+    #             name="points_to_win_validation",
+    #         ),
+    #         models.CheckConstraint(
+    #             check=Q(
+    #                 Q(match_total_points__gte=7) | Q(match_total_points__isnull=True)
+    #             ),
+    #             name="match_total_points_validation",
+    #         ),
+    #         models.CheckConstraint(
+    #             check=Q(
+    #                 Q(max_duration__gte=timedelta(minutes=3))
+    #                 | Q(max_duration__isnull=True)  # verificar se precisa do isnull...
+    #                 # e pode ser que ele tenha que ser antes...
+    #             ),
+    #             name="max_duration_validation",
+    #         ),
+    #     ]
 
     def validate_constraints(self, exclude: Collection[str] | None = ...) -> None:
         if (
