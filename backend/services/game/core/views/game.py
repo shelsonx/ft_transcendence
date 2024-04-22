@@ -23,7 +23,7 @@ class GameView(generic.DetailView):
 
     def get(self, request: HttpRequest) -> HttpResponse:
         game_match = Match(
-            datetime=timezone.now(),
+            match_datetime=timezone.now(),
             status=MatchStatus.SCHEDULED,
             duration=timedelta(minutes=5, seconds=33),
             player_a=User(id_reference=1),

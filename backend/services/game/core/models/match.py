@@ -7,16 +7,17 @@ from user.models import User
 
 # Local Folder
 from .match_status import MatchStatus
+from .match_rules import MatchRules
 
 
 class Match(models.Model):
 
     class Meta:
-        verbose_name_plural = _("matchs")
+        verbose_name_plural = _("Matches")
+        ordering = ["match_datetime"]
 
-    datetime = models.DateTimeField(verbose_name=_("Match date"))
-    status = models.CharField(
-        max_length=1,
+    match_datetime = models.DateTimeField(verbose_name=_("Match date"))
+    status = models.SmallIntegerField(
         choices=MatchStatus,
         default=MatchStatus.SCHEDULED,
         verbose_name=_("Match status"),
@@ -25,14 +26,14 @@ class Match(models.Model):
 
     # Players data
     player_a = models.ForeignKey(
-        User,
+        to=User,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("Player A"),
         related_name=_("matchs_a"),
     )
     player_b = models.ForeignKey(
-        User,
+        to=User,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("Player B"),
@@ -44,6 +45,10 @@ class Match(models.Model):
     score_b = models.PositiveSmallIntegerField(
         default=0, verbose_name=_("Player B Score")
     )
+
+    rules = models.ForeignKey(to=MatchRules, on_delete=models.RESTRICT, null=True)  # remover null
+
+    # round - para torneio
 
     # @property
     # def tournament(self):
