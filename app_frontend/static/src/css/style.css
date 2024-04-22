@@ -40,7 +40,7 @@
     --yellow-normal: #FFCE52;
     --yellow-dark: #D9B043;
     --gradient-main: linear-gradient(90deg, rgba(245, 193, 110, 0.08) -0.86%, rgba(229, 186, 117, 0.94) 97.95%);
-    font-size: 16px;
+    font-size: 17px;
 }
 
 
@@ -53,7 +53,7 @@ html{
     padding: 0;
     font-size: 1rem;
     box-sizing: border-box;
-    font-family: "Press Start 2P", sans-serif;
+    font-family: "Turret Road", sans-serif;
 }
 
 body {
