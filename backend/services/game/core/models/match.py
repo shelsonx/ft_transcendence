@@ -46,7 +46,7 @@ class Match(models.Model):
         default=0, verbose_name=_("Player B Score")
     )
 
-    rules = models.ForeignKey(to=MatchRules, on_delete=models.RESTRICT, null=True)  # remover null
+    rules = models.ForeignKey(to=MatchRules, on_delete=models.RESTRICT)
 
     # round - para torneio
 

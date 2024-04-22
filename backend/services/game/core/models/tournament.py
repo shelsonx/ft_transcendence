@@ -27,7 +27,8 @@ class Tournament(models.Model):
         verbose_name=_("Tournament Type"),
     )
     rules = models.OneToOneField(
-        to=MatchRules, on_delete=models.RESTRICT, related_name="tournament", null=True)  # remover null
+        to=MatchRules, on_delete=models.RESTRICT, related_name="tournament"
+    )
 
     number_of_players = models.PositiveSmallIntegerField(default=2)
     players = models.ManyToManyField(to=User, related_name="tournaments")
