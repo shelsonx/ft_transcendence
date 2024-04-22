@@ -8,13 +8,14 @@ services:
       - game-db-data:/var/lib/postgresql/data
     env_file:
       - .env
-    environment:
-      - POSTGRES_USER=${GAME_DB_USER}
-      - POSTGRES_PASSWORD=${GAME_DB_PASSWORD}
-      - POSTGRES_DB=${GAME_DB}
     restart: unless-stopped
     ports:
       - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 4s
+      timeout: 2s
+      retries: 5
 
   api:
     container_name: game-api
@@ -22,18 +23,14 @@ services:
     build: ./
     volumes:
       - ./:/api
+    restart: unless-stopped
     ports:
       - 8003:8003
     env_file:
       - .env
-    environment:
-      - POSTGRES_USER=${GAME_DB_USER}
-      - POSTGRES_PASSWORD=${GAME_DB_PASSWORD}
-      - POSTGRES_DB=${GAME_DB}
-      - POSTGRES_HOST=game-db
-      # - JWT_SECRET=${JWT_SECRET}
     depends_on:
-      - game-db
+      game-db:
+        condition: service_healthy
 
 volumes:
   game-db-data:
