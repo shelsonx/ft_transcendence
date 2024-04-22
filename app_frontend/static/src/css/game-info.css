@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
-
 html, body {
     margin: 0;
     padding: 0;
 }
-
 
 .navbar a {
     color: whitesmoke;
@@ -21,9 +18,7 @@ html, body {
     text-decoration: underline;
 }
 
-
 body {
-    font-family: "Turret Road", sans-serif;
     font-weight: 400;
     font-style: normal;
     display: flex;
@@ -59,6 +54,7 @@ a:hover {
 }
 
 .containers {
+    font-family: "Turret Road", sans-serif;
     width: 80%;
     margin-right: auto;
     margin-left: auto;
