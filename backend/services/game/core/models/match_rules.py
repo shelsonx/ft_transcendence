@@ -25,22 +25,31 @@ class MatchRules(models.Model):
             ),
         ]
 
-    # Rules
     # original pong
     # for each player to reach eleven points before the opponent;
     # if self.score_a == 11 or self.score_b == 11 -> ended
     player_reach_points = models.PositiveSmallIntegerField(
-        default=11, null=True, blank=True
+        default=11,
+        null=True,
+        blank=True,
+        verbose_name=_("Points to win"),
     )  # min=5
 
     # different:
     # - sum of points == 11
     # if self.score_a + self.score_b == 11
     match_total_points = models.PositiveSmallIntegerField(
-        default=None, null=True, blank=True
+        default=None,
+        null=True,
+        blank=True,
+        verbose_name=_("Match total points"),
     )  # min=11
+
     max_duration = models.DurationField(
-        default=timedelta(minutes=3), null=True, blank=True
+        default=timedelta(minutes=3),
+        null=True,
+        blank=True,
+        verbose_name=_("Match maximum duration"),
     )
 
     def validate_constraints(self, exclude: Collection[str] | None = ...) -> None:
