@@ -54,7 +54,9 @@ MIDDLEWARE = [
     'app.middlewares.error_handler_middleware.ErrorHandlerMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # If you want to allow all origins
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8010",
+]
 
 
 ROOT_URLCONF = 'auth_api.urls'

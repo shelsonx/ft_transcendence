@@ -38,7 +38,7 @@ class Route:
       return deepcopy(self)
     path_split = path.split('/')
     if len(path_split) != self.len:
-      return False 
+      return None 
     counter = 0     
     for i, each_path in enumerate(path_split):
       if each_path == self.split[i] or self.path_converter(each_path, self.split[i]):
