@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/42_Logo.svg/2048px-42_Logo.svg.png">
+    <style>
+        body, html {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #000 !important; /* Override */
+            color: #fff !important; /* Override */
+            text-align: center;
+        }
+        .profile-container {
+            padding: 20px;
+        }
+        .avatar img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #00ff00;
+            margin: 20px auto;
+        }
+        h1, h2 {
+            margin: 5px 0;
+            color: #faf8f7 !important; /* Override */
+        }
+        .lists-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+        .friends-list, .blocked-list {
+            background-color: #111 !important; /* Override */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .friends-list h3, .blocked-list h3 {
+            color: #00ff00 !important; /* Override */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        .status-active {
+            color: #00FF00 !important; /* Green for active */
+        }
+        .status-inactive {
+            color: #FF0000 !important; /* Red for inactive */
+        }
+    </style>
+</head>
+<body>
+    <div class="container profile-container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                {% if user.avatar %}
+                <div class="avatar">
+                    <img src="{{ user.avatar }}" alt="User Avatar" class="img-fluid">
+                </div>
+                {% endif %}
+                <h1>{{ user.username }}</h1>
+                <h2>@{{ user.nickname }}</h2>
+                <h3 class="status-inactive">Status: {{ user.status.capitalize }}</h3>
+                <p>Chosen Language: {{ user.chosen_language.upper }}</p>
+                <p>Two Factor Authentication: {{ user.two_factor_enabled }}</p>
+                <div class="lists-container d-flex flex-wrap justify-content-around">
+                    <div class="friends-list">
+                        <h3>Friends:</h3>
+                        <ul>
+                            {% for friend in user.friends %}
+                            <li>{{ friend.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="blocked-list">
+                        <h3>Blocked Users:</h3>
+                        <ul>
+                            {% for blocked in user.blocked_users %}
+                            <li>{{ blocked.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
