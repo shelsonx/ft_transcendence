@@ -92,119 +92,45 @@ const html = /*html*/`
             <div class="container">
                 <div class="row row-item-list d-flex align-items-center mb-3">
                     <div class="col-2">
-                        <img src="static/src/img/avatar_girl_icon.png" alt="User Photo" class="list-user-photo">
+                        <img src="" alt="User Photo" class="list-user-photo" id="user-foto">
                     </div>
                     <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow">sguilher</strong></p>
+                        <p class="list-nickname"><strong class="p-3 shadow" id="nickname"></strong></p>
                     </div>
                     <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                        <p class="list-scores"><strong class="p-3 shadow" id="user-scores"></strong></p>
                     </div>
                     <div class="col-2">
                         <p class="list-user-game-status">
-                            <strong class="p-3 shadow">
-                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
-                                Free
-                            </strong>
+                            <strong class="p-3 shadow" id="user-playing"></strong>
                         </p>
                     </div>
                 </div>
             </div>
-
-            <div class="container">
-                <div class="row row-item-list d-flex align-items-center mb-3">
-                    <div class="col-2">
-                        <img src="static/src/img/avatar_girl_icon2.png" alt="User Photo" class="list-user-photo">
-                    </div>
-                    <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow">elraira-</strong></p>
-                    </div>
-                    <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
-                    </div>
-                    <div class="col-2">
-                        <p class="list-user-game-status">
-                            <strong class="p-3 shadow">
-                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
-                                Free
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row row-item-list d-flex align-items-center mb-3">
-                    <div class="col-2">
-                        <img src="static/src/img/avatar_user_icon.png" alt="User Photo" class="list-user-photo">
-                    </div>
-                    <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow">sjhony-x</strong></p>
-                    </div>
-                    <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
-                    </div>
-                    <div class="col-2">
-                        <p class="list-user-game-status">
-                            <strong class="p-3 shadow">
-                                <i class="fa-solid fa-circle me-2 mt-2" style="color: green;"></i>
-                                In Game
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row row-item-list d-flex align-items-center mb-3">
-                    <div class="col-2">
-                        <img src="static/src/img/avatar_user_icon2.png" alt="User Photo" class="list-user-photo">
-                    </div>
-                    <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow">bbonaldi</strong></p>
-                    </div>
-                    <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
-                    </div>
-                    <div class="col-2">
-                        <p class="list-user-game-status">
-                            <strong class="p-3 shadow">
-                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
-                                Free
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="row row-item-list d-flex align-items-center mb-3">
-                    <div class="col-2">
-                        <img src="static/src/img/avatar_user_icon3.png" alt="User Photo" class="list-user-photo">
-                    </div>
-                    <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow">harndt</strong></p>
-                    </div>
-                    <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
-                    </div>
-                    <div class="col-2">
-                        <p class="list-user-game-status">
-                            <strong class="p-3 shadow">
-                                <i class="fa-solid fa-circle me-2 mt-2" style="color: green;"></i>
-                                In Game
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
 </div>
+
 ` 
 
 const start = () => {
-  gameInfoService.gameInfo().then(res => console.log(res));
-  console.log('GameInfo View')
-}
+    gameInfoService.gameInfo().then(
+      res => {
+            document.getElementById('nickname').innerHTML = res[0].nickname;
+            document.getElementById('user-foto').src = `http://localhost:8003/${res[0].photo}`;
+            document.getElementById('user-scores').innerHTML = `Scores: ${res[0].scores}`;
+            
+            const userPlaying = document.getElementById('user-playing');
+            const icon = document.createElement('i');
+            icon.classList.add('fa-solid', 'fa-circle', 'me-2', 'mt-2');
+            icon.style.color = res[0].playing ? 'green' : 'yellow';
+            userPlaying.appendChild(icon);
+
+            const labelPlaying = document.createElement('strong');
+            labelPlaying.setAttribute('id', 'user-playing-label');
+            labelPlaying.textContent = res[0].playing ? 'In Game' : 'Free';
+            userPlaying.appendChild(labelPlaying);
+      });
+    console.log('GameInfo View');
+  }
 
 export default new GameInfoView(html, start);
