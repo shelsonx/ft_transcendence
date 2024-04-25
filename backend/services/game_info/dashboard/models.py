@@ -12,4 +12,4 @@ class UserInfo(models.Model):
     playing = models.BooleanField(default=False)
     photo = models.ImageField(upload_to='static/images/%Y/%m/%d/',
                         blank=True, null=True, 
-                        default='static/images/avatar_user_icon2.png')
+                        default='static/src/img/avatar_user_icon2.png')
