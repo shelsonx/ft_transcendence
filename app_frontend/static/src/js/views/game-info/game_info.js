@@ -88,49 +88,88 @@ const html = /*html*/`
             </div>
         </div>
         
-        <div class="containers">
-            <div class="container">
-                <div class="row row-item-list d-flex align-items-center mb-3">
-                    <div class="col-2">
-                        <img src="" alt="User Photo" class="list-user-photo" id="user-foto">
-                    </div>
-                    <div class="col-5">
-                        <p class="list-nickname"><strong class="p-3 shadow" id="nickname"></strong></p>
-                    </div>
-                    <div class="col-3">
-                        <p class="list-scores"><strong class="p-3 shadow" id="user-scores"></strong></p>
-                    </div>
-                    <div class="col-2">
-                        <p class="list-user-game-status">
-                            <strong class="p-3 shadow" id="user-playing"></strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div class="containers" id="containers"></div>
     </div>
-</div>
 
 ` 
+
+function setData(container, data) {
+    const nickname = container.querySelector('.list-nickname');
+    nickname.textContent = data.nickname;
+
+    const userPhoto = container.querySelector('.list-user-photo');
+    userPhoto.src = `http://localhost:8003/${data.photo}`;
+
+    const scores = container.querySelector('.list-scores');
+    scores.textContent = `Scores: ${data.scores}`;
+    
+    const userPlaying = container.querySelector('.list-user-game-status');
+
+    const icon = document.createElement('i');
+    icon.classList.add('fa-solid', 'fa-circle', 'me-2', 'mt-2');
+    icon.style.color = data.playing ? 'green' : 'yellow';
+    userPlaying.appendChild(icon);
+
+    const labelPlaying = document.createElement('strong');
+    labelPlaying.textContent = data.playing ? 'In Game' : 'Free';
+    userPlaying.appendChild(labelPlaying);
+}
+
+function AddUserInList(data) {
+    let containers = document.getElementById('containers');
+    
+    const container = document.createElement('div');
+    container.classList.add('container');
+    containers.appendChild(container);
+
+    const row = document.createElement('div');
+    row.classList.add('row', 'row-item-list', 'd-flex', 'align-items-center', 'mb-3');
+    container.appendChild(row);
+
+    const col1 = document.createElement('div');
+    col1.classList.add('col-2');
+    row.appendChild(col1);
+
+    const userPhoto = document.createElement('img');
+    userPhoto.classList.add('list-user-photo');
+    col1.appendChild(userPhoto);
+
+    const col2 = document.createElement('div');
+    col2.classList.add('col-5');
+    row.appendChild(col2);
+
+    const nickname = document.createElement('p');
+    nickname.classList.add('list-nickname', 'p-3', 'shadow');
+    col2.appendChild(nickname);
+
+    const col3 = document.createElement('div');
+    col3.classList.add('col-3');
+    row.appendChild(col3);
+    
+    const scores = document.createElement('p');
+    scores.classList.add('list-scores', 'p-3', 'shadow');
+    col3.appendChild(scores);
+
+    const col4 = document.createElement('div');
+    col4.classList.add('col-2');
+    row.appendChild(col4);
+
+    const userGameStatus = document.createElement('p');
+    userGameStatus.classList.add('list-user-game-status', 'p-3', 'shadow');
+    col4.appendChild(userGameStatus);
+
+    setData(container, data);       
+}
 
 const start = () => {
     gameInfoService.gameInfo().then(
       res => {
-            document.getElementById('nickname').innerHTML = res[0].nickname;
-            document.getElementById('user-foto').src = `http://localhost:8003/${res[0].photo}`;
-            document.getElementById('user-scores').innerHTML = `Scores: ${res[0].scores}`;
-            
-            const userPlaying = document.getElementById('user-playing');
-            const icon = document.createElement('i');
-            icon.classList.add('fa-solid', 'fa-circle', 'me-2', 'mt-2');
-            icon.style.color = res[0].playing ? 'green' : 'yellow';
-            userPlaying.appendChild(icon);
-
-            const labelPlaying = document.createElement('strong');
-            labelPlaying.setAttribute('id', 'user-playing-label');
-            labelPlaying.textContent = res[0].playing ? 'In Game' : 'Free';
-            userPlaying.appendChild(labelPlaying);
+        res.forEach(data => {
+          AddUserInList(data);
+        });
       });
     console.log('GameInfo View');
-  }
+}
+
 
 export default new GameInfoView(html, start);
