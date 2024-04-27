@@ -67,9 +67,7 @@ a:hover {
     padding: 20px;
     border: 1px dashed #381718;
     border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    max-height: calc(100vh - 500px); 
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); 
 }
 
 .header-row-info {
@@ -120,4 +118,9 @@ a:hover {
 .container:hover {
     background-color: #171520;
     cursor: pointer;
+}
+
+.users-list {
+    overflow-y: auto;
+    max-height: calc(100vh - 500px);
 }

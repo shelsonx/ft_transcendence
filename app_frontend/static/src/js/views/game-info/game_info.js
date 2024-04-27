@@ -90,7 +90,7 @@ const html = /*html*/`
                 </div>
             </div>
         </div>    
-        <div class="containers" id="containers"></div>
+        <div class="containers users-list" id="containers"></div>
     </div>
 
 `
