@@ -15,6 +15,11 @@ class GameInfoService {
 		const response = await this.httpClient.makeRequest(total_infos);
 		return response;
 	}
+	async get_user(id){
+		const user = new HttpClientRequestData('GET', `user/${id}/`);
+		const response = await this.httpClient.makeRequest(user);
+		return response;
+	}
 }
 
 export default new GameInfoService();
