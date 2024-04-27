@@ -5,6 +5,7 @@ import authService from '../../services/authService.js';
 import wrapperLoadingService from '../../services/wrapperService.js';
 import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.js';
 import BaseAuthView from './baseAuthView.js';
+
 class LoginView extends BaseAuthView {
     constructor(html, start) {
         super({
@@ -29,7 +30,9 @@ const html = /*html*/`
                     <label for="password">Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
-                        <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
+                        <span class="input-group-text cursor-pointer">
+                            <i id="show-password-icon" class="bi bi-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
                 <a id="forgot-password-link" href="#forgot-password" class="text-warning p-2 rounded-1 cursor-pointer">Forgot password?</a>
@@ -80,10 +83,6 @@ function action() {
     
     togglePasswordVisibility('password', 'show-password-icon')
 }
-
-
-
-
 
 export default new LoginView(html, action);
 
