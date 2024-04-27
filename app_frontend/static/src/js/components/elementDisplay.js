@@ -1,9 +1,11 @@
+
 export class ElementDisplay {
   #id
   #className
   #html
   constructor(className, html) {
-    this.#id = crypto.randomUUID();
+    const randomId = Math.random().toString(36).substring(2) + Date.now().toString(36) + Math.random().toString(36).substring(2);
+    this.#id = randomId;
     this.#className = className;
     this.#html = html;
   }
