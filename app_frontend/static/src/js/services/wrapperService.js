@@ -1,5 +1,6 @@
 import { ElementDisplay } from "../components/elementDisplay.js";
 import Toast from "../components/toast.js";
+import { ApiResonse } from '../contracts/apiResponse.js';
 
 const loader = new ElementDisplay(
   'loader-container',
@@ -30,8 +31,7 @@ class WrapperLoadingService {
       result = await (serviceFunction.bind(service))(...args);
     } catch (error) {
       result = new ApiResonse(null, error?.message ?? "Something went wrong!", false);
-    }
-    finally {
+    } finally {
       this.#loader.remove();
       const isError = !result.is_success;
       this.#toast.display(
