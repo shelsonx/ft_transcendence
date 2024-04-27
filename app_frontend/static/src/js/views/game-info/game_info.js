@@ -26,34 +26,37 @@ const html = /*html*/`
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4">
                                 <img src="static/src/img/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
-                                <p class="mb-1">Shelson Alves</p>
-                                <p><i class="fa-solid fa-circle me-2" style="color: green;"></i>Online</p>
+                                <p class="mb-1" id="details-fullname">FT_TRANSCENDENCE 42 SP</p>
+                                <p id="details-status">
+                                     <i class="fa-solid fa-circle me-2" id="details-status-icon" style="color: #4B0082"></i>
+                                    <strong id="details-status-label"></strong>
+                                </p>
                             </div>
                             <div class="col-md-4">
-                                <img src="static/src/img/avatar_user_icon.png" alt="Foto do usuário" class="details-pictures details-profile-picture">
+                                <img src="static/src/img/astronaut4.jpeg" alt="Foto do usuário" class="details-pictures details-profile-picture" id="details-photo">
                             </div>
                             <div class="col-md-4">
                                 <div class="row">
                                     <div class="col">
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Nickname:</div>
-                                            <div class="col-6 text-white">sjhony-x</div>
+                                            <div class="col-6 text-white" id="details-nickname">transcendence-ft</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Pontuação:</div>
-                                            <div class="col-6 text-white">1000</div>
+                                            <div class="col-6 text-white" id="details-scores">42</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Vitórias:</div>
-                                            <div class="col-6 text-white">50</div>
+                                            <div class="col-6 text-white" id="details-winnings">42</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Derrotas:</div>
-                                            <div class="col-6 text-white">20</div>
+                                            <div class="col-6 text-white" id="details-losses">0</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Posição:</div>
-                                            <div class="col-6 text-white">5º</div>
+                                            <div class="col-6 text-white" id="details-position">1º</div>
                                         </div>
                                     </div>
                                 </div>
@@ -92,9 +95,6 @@ const html = /*html*/`
 
 `
 
-
-
-
 function setData(container, data) {
     const nickname = container.querySelector('.list-nickname');
     nickname.textContent = data.nickname;
@@ -109,7 +109,7 @@ function setData(container, data) {
 
     const icon = document.createElement('i');
     icon.classList.add('fa-solid', 'fa-circle', 'me-2', 'mt-2');
-    icon.style.color = data.playing ? 'green' : 'yellow';
+    icon.style.color = data.playing ? 'red' : 'green';
     userPlaying.appendChild(icon);
 
     const labelPlaying = document.createElement('strong');
@@ -179,6 +179,18 @@ function createUserGameStatus() {
     return userGameStatus;
 }
 
+function setDetailsStatus(data) {
+    document.getElementById('details-fullname').textContent = data.user.full_name;
+    document.getElementById('details-nickname').textContent = data.user.nickname;
+    document.getElementById('details-scores').textContent = data.user.scores;
+    document.getElementById('details-winnings').textContent = data.user.winnings;
+    document.getElementById('details-losses').textContent = data.user.losses;
+    document.getElementById('details-position').textContent = `${data.user.position}º`;
+    document.getElementById('details-photo').src = `http://localhost:8003/${data.user.photo}`;
+    document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'red';
+    document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
+}
+
 function AddUserInList(data) {
     let containers = document.getElementById('containers');
     
@@ -202,7 +214,15 @@ function AddUserInList(data) {
     row.appendChild(col4);
     const userGameStatus = createUserGameStatus();
     col4.appendChild(userGameStatus);
-    setData(container, data);       
+    setData(container, data);
+    container.addEventListener('click', function() {
+        gameInfoService.get_user(data.id).then(
+            res => {
+                setDetailsStatus(res);
+            }
+        );
+    });
+    
 }
 
 const start = () => {
