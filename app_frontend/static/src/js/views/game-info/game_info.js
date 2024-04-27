@@ -40,7 +40,7 @@ const html = /*html*/`
                                     <div class="col">
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Nickname:</div>
-                                            <div class="col-6 text-white" id="details-nickname">transcendence-ft</div>
+                                            <div class="col-6 text-white" id="details-nickname">transcdc-ft</div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Scores:</div>
