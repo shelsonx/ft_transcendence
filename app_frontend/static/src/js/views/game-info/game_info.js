@@ -75,14 +75,14 @@ const html = /*html*/`
                     <i class="fas fa-chart-bar me-2"></i>
                     <div>
                         <p class="mb-0">Scores</p>
-                        <p class="mb-0">500</p>
+                        <p class="mb-0" id="total_scores"></p>
                     </div>
                 </div>
                 <div class="col-2 header-players-column">
                     <i class="fas fa-users me-2"></i>
                     <div>
                         <p class="mb-0">Players</p>
-                        <p class="mb-0">5</p>
+                        <p class="mb-0" id="total_players"></p>
                     </div>
                 </div>
             </div>
@@ -91,6 +91,9 @@ const html = /*html*/`
     </div>
 
 `
+
+
+
 
 function setData(container, data) {
     const nickname = container.querySelector('.list-nickname');
@@ -206,9 +209,18 @@ const start = () => {
     gameInfoService.gameInfo().then(
       res => {
         res.forEach(data => {
-          AddUserInList(data);
+            AddUserInList(data);
         });
-      });
+    });
+    
+    gameInfoService.totalInfos().then(
+        res => {
+            const totalScores = document.getElementById('total_scores');
+            totalScores.textContent = res.total_scores;
+
+            const totalPlayers = document.getElementById('total_players');
+            totalPlayers.textContent = res.total_players;
+    });
 }
 
 export default new GameInfoView(html, start);
