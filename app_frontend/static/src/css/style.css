@@ -188,3 +188,9 @@ body {
     font-size: 1.1rem;
     line-height: 1.1rem;
 }
+
+@media screen and (max-width: 576px){
+    .reduce-font-size {
+        font-size: 12px;
+    }
+}
