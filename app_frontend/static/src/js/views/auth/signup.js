@@ -37,14 +37,18 @@ const html = /*html*/`
                     <label for="password">Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
-                        <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
+                        <span class="input-group-text cursor-pointer">
+                            <i id="show-password-icon" class="bi bi-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
                 <div>
                     <label for="confirm-password">Confirm Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
-                        <i id="show-confirm-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
+                        <span class="input-group-text cursor-pointer">
+                            <i id="show-confirm-password-icon" class="bi bi-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="ms-auto mt-1">

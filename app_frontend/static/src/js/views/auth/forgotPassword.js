@@ -21,15 +21,15 @@ const html = /*html*/`
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
             <h3>Forgot Password</h3>
             <form id="forgot-password-form" class="d-flex flex-column gap-2 g-lg-0 w-100" novalidate>
-                <div class="w-100">
+                <div>
                     <label for="email">Email</label>
-                    <div class="input-group">
+                    <div class="input-group input-group-custom">
                         <input class="form-control" type="email" id="email" name="email">
                     </div>
                 </div>
-                <div class="w-100 d-none">
+                <div class="d-none">
                     <label for="two-factor-code">Two Factor Code</label>
-                    <div class="input-group">
+                    <div class="input-group input-group-custom">
                         <input class="form-control" type="number" id="two-factor-code" name="two-factor-code" required>
                     </div>
                 </div>
@@ -37,19 +37,23 @@ const html = /*html*/`
                     <label for="password">Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
-                        <i id="show-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
+                        <span class="input-group-text cursor-pointer">
+                            <i id="show-password-icon" class="bi bi-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
                 <div class="d-none">
                     <label for="confirm-password">Confirm Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
-                        <i id="show-confirm-password-icon" class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y text-secondary p-2 cursor-pointer z-999"></i>
+                        <span class="input-group-text cursor-pointer">
+                            <i id="show-confirm-password-icon" class="bi bi-eye-slash"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="ms-auto mt-1">
-                    <button id="resend-2fa" class="btn btn-secondary" type="button">Send 2FA Code</button>
-                    <button class="btn btn-primary d-none" type="submit">Submit</button>
+                <div class="ms-auto mt-1 d-flex gap-2">
+                    <button id="resend-2fa" class="btn btn-secondary reduce-font-size" type="button">Send 2FA Code</button>
+                    <button class="btn btn-primary d-none reduce-font-size" type="submit">Submit</button>
                 </div>
             </form>
         </div>
