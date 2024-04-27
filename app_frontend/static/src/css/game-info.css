@@ -110,3 +110,8 @@ a:hover {
 .list-user-game-status {
     font-weight: bold;
 }
+
+.container:hover {
+    background-color: #171520;
+    cursor: pointer;
+}
