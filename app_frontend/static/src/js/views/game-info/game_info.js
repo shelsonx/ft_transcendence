@@ -43,19 +43,19 @@ const html = /*html*/`
                                             <div class="col-6 text-white" id="details-nickname">transcendence-ft</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Pontuação:</div>
+                                            <div class="col-6 text-white">Scores:</div>
                                             <div class="col-6 text-white" id="details-scores">42</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Vitórias:</div>
+                                            <div class="col-6 text-white">Winnings:</div>
                                             <div class="col-6 text-white" id="details-winnings">42</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Derrotas:</div>
+                                            <div class="col-6 text-white">Losses:</div>
                                             <div class="col-6 text-white" id="details-losses">0</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Posição:</div>
+                                            <div class="col-6 text-white">Ranking:</div>
                                             <div class="col-6 text-white" id="details-position">1º</div>
                                         </div>
                                     </div>
