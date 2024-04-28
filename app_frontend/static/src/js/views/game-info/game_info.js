@@ -109,11 +109,23 @@ function setData(container, data) {
 
     const icon = document.createElement('i');
     icon.classList.add('fa-solid', 'fa-circle', 'me-2', 'mt-2');
-    icon.style.color = data.playing ? 'red' : 'green';
+    let colorPlaying = 'white';
+    let textPlaying = 'Offline';
+    if (data.status) {
+        if (data.playing) {
+            colorPlaying = 'red';
+            textPlaying = 'In Game';
+        }
+        else {
+            colorPlaying = 'green';
+            textPlaying = 'Free';
+        }
+    }
+    icon.style.color = colorPlaying;
     userPlaying.appendChild(icon);
 
     const labelPlaying = document.createElement('strong');
-    labelPlaying.textContent = data.playing ? 'In Game' : 'Free';
+    labelPlaying.textContent = textPlaying;
     userPlaying.appendChild(labelPlaying);
 }
 
@@ -187,7 +199,7 @@ function setDetailsStatus(data) {
     document.getElementById('details-losses').textContent = data.user.losses;
     document.getElementById('details-position').textContent = `${data.user.position}º`;
     document.getElementById('details-photo').src = `http://localhost:8003/${data.user.photo}`;
-    document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'red';
+    document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'white';
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
 
