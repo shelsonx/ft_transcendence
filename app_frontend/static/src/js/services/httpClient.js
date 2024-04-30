@@ -6,7 +6,7 @@ import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCooki
  */
 export class HttpClientRequestData {
   #defaultHeaders;
-  
+
   /**
    * Create a new HttpClientRequestData.
    * @param {string} method - The HTTP method.
@@ -32,7 +32,7 @@ export class HttpClientRequestData {
  * Class representing an HTTP client.
  */
 export class HttpClient {
-  
+
   /**
    * Create a new HttpClient.
    * @param {string} baseUrl - The base URL for the HTTP client.
@@ -87,6 +87,12 @@ export class HttpClient {
       method: 'GET',
       headers: httpClientRequestData.headers
     });
+
+    const content_type = await response.headers.get("content-type")
+    if (content_type.includes("text/html")) {
+      return await response;
+    }
+
     return await response.json();
   }
 
