@@ -13,10 +13,10 @@ down:
 	docker-compose -f $(GAME_FILE) --project-name $(PROJECT_NAME) down --remove-orphans
 
 migrations:
-	docker exec -it game-api bash -c "python manage.py makemigrations"
+	docker exec -t game-api bash -c "python manage.py makemigrations"
 
 migrate:
-	docker exec -it game-api bash -c "python manage.py migrate"
+	docker exec -t game-api bash -c "python manage.py migrate"
 
 logs:
 	docker logs -f game-api
@@ -25,15 +25,28 @@ db-logs:
 	docker logs -f game-db
 
 runscript:
-	docker exec -it game-api bash -c "python manage.py shell < test.py"
+	docker exec -t game-api bash -c "python manage.py shell < test.py"
 
 shell:
 	docker exec -it game-api bash -c "python manage.py shell"
 
 requirements:
-	docker exec -it game-api bash -c "pip freeze > requirements.txt"
+	docker exec -t game-api bash -c "pip install -r requirements.txt"
+
+freeze:
+	docker exec -t game-api bash -c "pip freeze > requirements.txt"
 
 dump:
 	docker exec -it game-api bash -c "python manage.py dumpdata --indent=4 core.MatchRules"
+
+exec-api:
+	docker exec -it game-api bash
+
+# change this
+# exec-db:
+# 	docker exec -it game-db psql -d game_db -U pong_user
+
+clean:
+	docker volume prune
 
 .PHONY: dump
