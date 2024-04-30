@@ -5,6 +5,11 @@ import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
+import PongGameView from "../views/game/pong.js";
+import TournamentsView from "../views/game/tournaments.js";
+import TournamentDetailView from "../views/game/tournament-detail.js";
+
+
 /**
  * An object representing the routes in the application.
  * Each key is a path, and the value is an object with a title and a render function.
@@ -24,7 +29,10 @@ const hashRoutes = {
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
-  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."}
+  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
+  "play": { title: "Play Pong", render: PongGameView, description: "Play pong"},  // posso receber um id da match...?
+  "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page."},
+  "tournament-detail": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page."},
 };
 
 export {
