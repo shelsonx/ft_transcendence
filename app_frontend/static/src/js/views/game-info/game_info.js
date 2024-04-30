@@ -1,19 +1,14 @@
 import gameInfoService from '../../services/gameInfoService.js';
 
-import View, { ViewOptions } from '../../contracts/view.js';
-import NavHandler from '../../router/navigation/navHandler.js';
-import { NavItems } from '../../router/navigation/navItem.js';
+import BaseLoggedView from '../baseLoggedView.js';
 
-class GameInfoView extends View {
-  constructor(
-    html,
-    start
-  ) {
-    const navItems = [
-      new NavItems('#game-info', 'Dahboard'),
-    ];
-    const navHandler = new NavHandler(navItems);
-    super(new ViewOptions(html, start, navHandler));
+class GameInfoView extends BaseLoggedView {
+  constructor(html, start) {
+    super({
+      html,
+      start
+    },
+  );
   }
 }
 
@@ -89,7 +84,7 @@ const html = /*html*/`
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>
         <div class="containers users-list" id="containers"></div>
     </div>
 
@@ -104,7 +99,7 @@ function setData(container, data) {
 
     const scores = container.querySelector('.list-scores');
     scores.textContent = `Scores: ${data.scores}`;
-    
+
     const userPlaying = container.querySelector('.list-user-game-status');
 
     const icon = document.createElement('i');
@@ -205,10 +200,10 @@ function setDetailsStatus(data) {
 
 function AddUserInList(data) {
     let containers = document.getElementById('containers');
-    
+
     const container = createMainContainer();
     containers.appendChild(container);
-    
+
     const row = createRow(container);
     const col1 = createCol1();
     row.appendChild(col1);
@@ -234,7 +229,7 @@ function AddUserInList(data) {
             }
         );
     });
-    
+
 }
 
 const start = () => {
@@ -244,7 +239,7 @@ const start = () => {
             AddUserInList(data);
         });
     });
-    
+
     gameInfoService.totalInfos().then(
         res => {
             const totalScores = document.getElementById('total_scores');
