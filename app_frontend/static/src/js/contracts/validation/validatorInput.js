@@ -80,6 +80,15 @@ export class ValidatorInput {
   }
 }
 
+export class RequiredInputValidator extends ValidatorInput {
+  constructor(id, inputName) {
+    super(id, null, inputName, [
+      new RequiredValidator(),
+    ]);
+  }
+
+}
+
 export class PasswordInputValidator extends ValidatorInput {
   constructor(id) {
     super(id, null, 'Password', [

@@ -20,7 +20,7 @@ const html = /*html*/`
         <img class="space-man" src="static/src/img/transcendence-journey.svg" />
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
             <h3>Forgot Password</h3>
-            <form id="forgot-password-form" class="d-flex flex-column gap-2 g-lg-0 w-100" novalidate>
+            <form id="forgot-password-form" class="auth-form d-flex flex-column gap-2 g-lg-0 w-100" novalidate>
                 <div>
                     <label for="email">Email</label>
                     <div class="input-group input-group-custom">
