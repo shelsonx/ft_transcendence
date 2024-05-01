@@ -20,7 +20,7 @@ def get_login_type_id(name):
 login_type_email = get_login_type_id(LoginTypeConstants.AUTH_EMAIL)
 users = [
     {
-        "email":"sheela@gmail.com",
+        "email":"sheela.khusal.08@gmail.com",
         "user_name":"sheela",
         "login_type_id":login_type_email,
         "enable_2fa":False,

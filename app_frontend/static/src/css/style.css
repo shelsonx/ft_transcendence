@@ -89,6 +89,11 @@ body {
     border-color: var(--secondary-dark) !important;
 }
 
+.dropdown-item.active, .dropdown-item:active {
+    background-color: var(--secondary-dark) !important;
+    border-color: var(--secondary-dark) !important;
+}
+
 .form-container {
     border: 1px solid hsla(0, 0%, 65%, 0.158);
     box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
@@ -202,7 +207,7 @@ body {
     font-size: 12px;
 }
 
-.logout-icon{
+.nav-icons{
     font-size: 1.1rem;
     line-height: 1.1rem;
 }
