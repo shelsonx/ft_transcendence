@@ -9,11 +9,14 @@ from django.utils.translation import gettext_lazy as _
 # from core.validators.numbers import validate_odd
 
 
-class MatchRuleType(models.IntegerChoices):
-    PLAYER_POINTS = 0, _("Player winner points")
-    MATCH_TOTAL_POINTS = 1, _("Match total points")
-    MATCH_DURATION = 2, _("Match duartion")
-    MIXED_RULES = 3, _("Mixed rules")
+class MatchRuleType(models.TextChoices):
+    PLAYER_POINTS = "0", _("Player winner points")
+    MATCH_TOTAL_POINTS = "1", _("Match total points")
+    MATCH_DURATION = "2", _("Match duartion")
+    # MIXED_RULES = "3", _("Mixed rules")
+
+    # __empty__ = _("(Unknown)")
+
 
 class MatchRules(models.Model):
     rule_type = models.CharField(
@@ -56,6 +59,9 @@ class MatchRules(models.Model):
     class Meta:
         verbose_name_plural = _("Match Rules")
         db_table = "core_match_rules"
+        # unique_together = [
+        #     ["rule_type", "points_to_win", "match_total_points", "max_duration"]
+        # ]  # we don't wanna duplicated rules ---> usar UniqueConstraint
         constraints = [
             # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
             models.CheckConstraint(
@@ -67,41 +73,25 @@ class MatchRules(models.Model):
                 name="all_rules_null",
                 violation_error_message="At least one rule parameter must be setted",
             ),
+            # models.CheckConstraint(
+            #     check=Q(Q(points_to_win__gte=5) | Q(points_to_win__isnull=True)),
+            #     name="points_to_win_validation",
+            # ),
+            # models.CheckConstraint(
+            #     check=Q(
+            #         Q(match_total_points__gte=7) | Q(match_total_points__isnull=True)
+            #     ),
+            #     name="match_total_points_validation",
+            # ),
+            # models.CheckConstraint(
+            #     check=Q(
+            #         Q(max_duration__gte=timedelta(minutes=3))
+            #         | Q(max_duration__isnull=True)  # verificar se precisa do isnull...
+            #         # e pode ser que ele tenha que ser antes...
+            #     ),
+            #     name="max_duration_validation",
+            # ),
         ]
-
-    # class Meta:
-    #     verbose_name_plural = _("Match Rules")
-    #     db_table = "core_match_rules"
-    #     constraints = [
-    #         # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
-    #         models.CheckConstraint(
-    #             check=Q(
-    #                 ~Q(points_to_win__isnull=True)
-    #                 | ~Q(match_total_points__isnull=True)
-    #                 | ~Q(max_duration__isnull=True)
-    #             ),
-    #             name="all_rules_null",
-    #             violation_error_message="At least one rule parameter must be setted",
-    #         ),
-    #         models.CheckConstraint(
-    #             check=Q(Q(points_to_win__gte=5) | Q(points_to_win__isnull=True)),
-    #             name="points_to_win_validation",
-    #         ),
-    #         models.CheckConstraint(
-    #             check=Q(
-    #                 Q(match_total_points__gte=7) | Q(match_total_points__isnull=True)
-    #             ),
-    #             name="match_total_points_validation",
-    #         ),
-    #         models.CheckConstraint(
-    #             check=Q(
-    #                 Q(max_duration__gte=timedelta(minutes=3))
-    #                 | Q(max_duration__isnull=True)  # verificar se precisa do isnull...
-    #                 # e pode ser que ele tenha que ser antes...
-    #             ),
-    #             name="max_duration_validation",
-    #         ),
-    #     ]
 
     def validate_constraints(self, exclude: Collection[str] | None = ...) -> None:
         if (
