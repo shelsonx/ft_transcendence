@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("app", "0003_enable_2fa_in_user_table"),
+        ("app", "0002_enable_2fa_in_user_table"),
     ]
 
     operations = [
