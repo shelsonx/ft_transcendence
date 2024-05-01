@@ -33,7 +33,6 @@ services:
   auth-api:
     build: ./backend/services/auth
     container_name: auth-api
-    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./backend/services/auth:/code
     ports:
@@ -87,7 +86,6 @@ services:
   api-gateway:
     build: ./backend/api_gateway
     container_name: api-gateway
-    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./backend/api_gateway:/code
     ports:
