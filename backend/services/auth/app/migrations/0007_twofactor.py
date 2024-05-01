@@ -9,7 +9,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("app", "0007_alter_signinupoauth42dto_options_user_is_active"),
+        ("app", "0006_alter_signinupoauth42dto_options_user_is_active"),
     ]
 
     operations = [
