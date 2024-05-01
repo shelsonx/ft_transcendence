@@ -35,13 +35,13 @@ const html = /*html*/`
   <button class="btn btn-primary" id="button">Click me</button>
 `
 
-const swap = async (response) => {
+const swap = (response) => {
   const test = document.getElementById("test")
   // console.log(response)
   // const headers = await response.headers
   // console.log(...headers)
   // console.log(response.body)
-  test.innerHTML += await response.text()
+  test.innerHTML += response
   // test.innerHTML = await response.text()
 }
 

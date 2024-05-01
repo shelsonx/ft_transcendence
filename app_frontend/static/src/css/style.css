@@ -59,10 +59,10 @@ html{
     padding: 0;
     font-size: 1rem;
     box-sizing: border-box;
-    font-family: "Press Start 2P", sans-serif;
 }
 
 body {
+    font-family: "Press Start 2P", sans-serif;
     color: var(--white-dark);
     background-color: var(--primary-dark);
     width: 100%;
