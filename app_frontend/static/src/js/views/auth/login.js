@@ -1,11 +1,11 @@
 
 import { FormValidation } from '../../contracts/validation/formValidation.js';
 import { EmailValidatorInput, RequiredInputValidator } from '../../contracts/validation/validatorInput.js';
+import authLocale from '../../locale/auth/authLocale.js';
 import authService from '../../services/authService.js';
 import wrapperLoadingService from '../../services/wrapperService.js';
 import { togglePasswordVisibility } from '../../utils/togglePasswordVisibility.js';
 import BaseAuthView from './baseAuthView.js';
-
 class LoginView extends BaseAuthView {
     constructor(html, start) {
         super({
@@ -19,6 +19,7 @@ const html = /*html*/`
         <img class="space-man" src="static/src/img/transcendence-journey.svg" />
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
             <h2>Login</h2>
+            <p id="selected-language"></p>
             <form id="login-form" class="auth-form d-flex flex-column gap-2 g-lg-0" novalidate>
                 <div>
                     <label for="email">Email</label>
@@ -75,13 +76,15 @@ function action() {
         authService.addTokenToLocalStorage(response)
         authService.redirectIfAuthenticated(response, formData.get('email'));
     });
-
     const login42 = document.getElementById('login-42');
     login42.addEventListener('click', async () => {
         authService.login42();
     });
-    
-    togglePasswordVisibility('password', 'show-password-icon')
+    togglePasswordVisibility('password', 'show-password-icon');
+    document.getElementById('selected-language').addEventListener('custom:onLanguageChange', (e) => {
+        const selectedLanguage = e.detail.language;
+        e.target.textContent = authLocale[selectedLanguage]['Login'];
+      });
 }
 
 export default new LoginView(html, action);
