@@ -4,13 +4,12 @@ from random import randint
 
 from django.utils import timezone
 
-from backend.services.game.core.models.game_rules import GameRules
 from user.models import User
 from core.models import *
 
 
 class Generator:
-    def user(self, **fields):
+    def user(self, **fields) -> dict:
         data = {
             "id": uuid.uuid4(),
             # "nickname": "nickname",
@@ -22,33 +21,56 @@ class Generator:
     def seedUser(self, **fields) -> User:
         return User.objects.create(**(self.user(**fields)))
 
-    def game_rules(self, **fields):
-        data = {
-            "player_reach_points": randint(5, 11),
-        }
-        data.update(**fields)
+    def seedGameRules(self, **fields) -> GameRules:
+        rules = None
+        size = len(fields)
+        if size >= 1:
+            rules = GameRules.objects.filter(**fields).first()
 
-        return data
+        if rules:
+            return rules
 
-    def seedGameRules(self, **fields):
-        return GameRules.objects.create(self.user(**fields))
+        if size >= 2 or (size == 1 and fields.get("points_to_win")):
+            # TODO: talvez passar um full clean?
+            return GameRules.objects.create(**fields)
 
-    def game(self, **fields):
-        player_a = fields.get("player_a") or self.seedUser()
-        player_b = fields.get("player_b") or self.seedUser()
+        return GameRules.objects.get(pk=1)
 
+    def game(self, **fields) -> dict:
         data = {
             "game_datetime": timezone.now(),
             "status": GameStatus.ENDED,
             "duration": timedelta(minutes=randint(1, 5), seconds=randint(0, 59)),
-            "player_a": player_a,
-            "player_b": player_b,
-            "score_a": randint(0, 11),
-            "score_b": randint(0, 11),
+            "rules": self.seedGameRules(),
         }
         data.update(**fields)
 
         return data
 
-    def seedGame(self, **fields):
-        return User.objects.create(self.user(**fields))
+    def seedGame(self, **fields) -> Game:
+        players = fields.pop("players", None)
+        game = Game.objects.create(**(self.game(**fields)))
+
+        if players:
+            for player in players:
+                self.seedGamePlayer(game=game, user=player)
+        return game
+
+    def gamePlayer(self, **fields) -> dict:
+        game = fields.pop("game", None) or self.seedGame()
+        user = fields.pop("user", None) or self.seedUser()
+        score = 0
+        if game.status in [GameStatus.ENDED, GameStatus.ONGOING]:
+            score = randint(1, 21)
+
+        data = {
+            "game": game,
+            "user": user,
+            "score": score,
+        }
+
+        data.update(**fields)
+        return data
+
+    def seedGamePlayer(self, **fields) -> GamePlayer:
+        return GamePlayer(self.gamePlayer(**fields))
