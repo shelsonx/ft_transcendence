@@ -1,0 +1,12 @@
+<h1>User Games</h1>
+  {% if game_list %}
+    <ul>
+      {% for game in game_list %}
+      <li>
+          {{ game.game_datetime.date }} - {{ game.duration }} - {{ game.players.all }}
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no games in the library.</p>
+{% endif %}
