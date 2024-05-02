@@ -1,6 +1,7 @@
 import { AuthConstants } from "../constants/auth-constants.js";
 import Router from "../contracts/router.js";
 import { User } from "../contracts/user.js";
+import languageHandler from "../locale/languageHandler.js";
 import authService from "../services/authService.js";
 import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 import {
@@ -72,13 +73,14 @@ class HashRouter extends Router {
       this.render(route);
     }
   }
-
+  
   start() {
     window.addEventListener("hashchange", () => {
       this.route();
     });
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
+      languageHandler.onInit();
     });
     const logout = document.getElementById('logout-button');
     if (logout) {

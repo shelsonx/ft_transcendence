@@ -31,7 +31,9 @@ class SignUpUseCase(BaseSignUpUseCase):
 
     async def execute(self, sign_up_dto: SignUpDto):
         try:
-            await self.user_repository.get_user_by_email(email=sign_up_dto.email)
+            user = await self.user_repository.get_user_by_email(email=sign_up_dto.email)
+            if sign_up_dto.user_name == user.user_name:
+                raise FieldAlreadyExistsException("user_name")
             raise FieldAlreadyExistsException("email")
         except ObjectDoesNotExist:
             base_sign_up_dto = BaseSignUpDto(
