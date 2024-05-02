@@ -80,6 +80,7 @@ class HashRouter extends Router {
     });
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
+      languageHandler.onInit();
     });
     const logout = document.getElementById('logout-button');
     if (logout) {
@@ -87,7 +88,6 @@ class HashRouter extends Router {
         authService.logout();
       });
     }
-    languageHandler.onLanguageChange();
   }
 }
 

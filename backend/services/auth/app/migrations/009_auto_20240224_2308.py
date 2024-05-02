@@ -52,7 +52,7 @@ users = [
         "is_active":True
     },
     {
-        "email":"humberto@gmail.com",
+        "email":"humberto.arndt@gmail.com",
         "user_name":"humberto",
         "login_type_id":login_type_email,
         "enable_2fa":False,

@@ -1,0 +1,52 @@
+---json example
+{
+  "app-title": "My Appy Apperson",
+  "lead": "Welcome to my little spot on the interwebs, {username}!",
+  "home": "Home",
+  "about": "About",
+  "article-plural": {
+    "one": "{count} article and counting",
+    "other": "{count} articles and counting"
+  },
+  "nyan-cat-price": "Nyan Cat (Official) NFT: {price}",
+  "publish-date": "Published {publishDate}"
+}
+
+#usage-------------------------
+
+<h1 data-i18n-key="app-title">My Appy Apperson</h1>
+<p
+  data-i18n-key="lead"
+  data-i18n-opt='{"username": "Swoodesh"}'
+>
+  Welcome to my little spot on the interwebs, {username}!
+</p>
+<p
+  data-i18n-key="article-plural"
+  data-i18n-opt='{"count": 2}'
+>
+  {count} articles written and counting.
+</p>
+
+<p
+  data-i18n-key="nyan-cat-price"
+  data-i18n-opt='{"price": {
+    "number" : 5300,
+    "style": "currency",
+    "currency": "EUR"
+  }}'
+>
+  Nyan Cat (Official) NFT: {price}
+</p>
+
+<p
+  data-i18n-key="publish-date"
+  data-i18n-opt='{"publishDate": {
+    "date": "2021-12-05 15:29:00",
+    "dateStyle": "long",
+    "timeStyle": "short"
+  }}'
+>
+  Published on {publishDate}
+</p>
+</div>
