@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  game-db:
+    container_name: game-db
+    image: postgres:bullseye
+    volumes:
+      - game-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 4s
+      timeout: 2s
+      retries: 5
+
+  api:
+    container_name: game-api
+    image: game-api
+    build: ./
+    volumes:
+      - ./:/api
+    restart: unless-stopped
+    ports:
+      - 8020:8000
+    env_file:
+      - .env
+    depends_on:
+      game-db:
+        condition: service_healthy
+
+volumes:
+  game-db-data:
