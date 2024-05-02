@@ -7,7 +7,7 @@ from asgiref.sync import sync_to_async
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_name = models.CharField(max_length=100, null=False, blank=False)
+    user_name = models.CharField(max_length=100, unique=True, null=False, blank=False)
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
     login_type = models.ForeignKey(
         LoginType, on_delete=models.CASCADE, null=False, blank=False
