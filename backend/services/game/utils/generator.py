@@ -12,14 +12,15 @@ from core.models import *
 class Generator:
     def user(self, **fields):
         data = {
-            "id_reference": uuid.uuid4(),
+            "id": uuid.uuid4(),
+            # "nickname": "nickname",
         }
         data.update(**fields)
 
         return data
 
-    def seedUser(self, **fields):
-        return User.objects.create(self.user(**fields))
+    def seedUser(self, **fields) -> User:
+        return User.objects.create(**(self.user(**fields)))
 
     def game_rules(self, **fields):
         data = {
