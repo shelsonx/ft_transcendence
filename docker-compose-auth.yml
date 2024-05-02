@@ -71,7 +71,6 @@ services:
   game-info:
     build: ./backend/services/game_info
     container_name: game-info
-    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./backend/services/game_info:/usr/src/app
     ports:
