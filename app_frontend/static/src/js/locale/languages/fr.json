@@ -1,0 +1,14 @@
+{
+  "auth-login--login": "Connexion",
+  "auth-login--password": "Mot de passe",
+  "auth-login--forgot-password": "Mot de passe oublié?",
+  "auth-login--sign-up": "S'inscrire",
+  "auth-login--or": "Ou",
+  "auth-login--login-with": "Se connecter avec",
+  "auth-login--oi-plural": {
+    "one": "{count} bienvenue",
+    "other": "{count} bienvenues"
+  },
+  "auth-login--price": "Nyan Cat (Officiel) NFT : {price}",
+  "auth-login--date": "Publié le {publishDate}"
+}
