@@ -42,7 +42,11 @@ class Game(models.Model):
     def winner(self) -> User | None:
         if self.status != GameStatus.ENDED:
             return None
-        raise NotImplementedError("property not implemented")
+
+        players = self.game_players.order_by("-score")
+        if not players.exists():
+            return None
+        return players.first().user
 
     #     if self.score_a > self.score_b:
     #         return self.player_a
@@ -57,6 +61,11 @@ class Game(models.Model):
     #     if self.status == GameStatus.ENDED:
     #         return self.score_a == self.score_b
     #     return False
+
+    def __str__(self) -> str:
+        # players =
+        # name = " x ".join([])
+        return str(self.game_datetime.date())
 
 
 # class Pong(Game):
