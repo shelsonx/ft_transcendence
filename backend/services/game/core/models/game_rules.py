@@ -9,21 +9,21 @@ from django.utils.translation import gettext_lazy as _
 # from core.validators.numbers import validate_odd
 
 
-class MatchRuleType(models.TextChoices):
+class GameRuleType(models.TextChoices):
     PLAYER_POINTS = "0", _("Player winner points")
-    MATCH_TOTAL_POINTS = "1", _("Match total points")
-    MATCH_DURATION = "2", _("Match duartion")
+    GAME_TOTAL_POINTS = "1", _("Game total points")
+    GAME_DURATION = "2", _("Game duration")
     # MIXED_RULES = "3", _("Mixed rules")
 
     # __empty__ = _("(Unknown)")
 
 
-class MatchRules(models.Model):
+class GameRules(models.Model):
     rule_type = models.CharField(
         max_length=1,
-        choices=MatchRuleType.choices,
-        default=MatchRuleType.PLAYER_POINTS,
-        verbose_name=_("Match rule type"),
+        choices=GameRuleType.choices,
+        default=GameRuleType.PLAYER_POINTS,
+        verbose_name=_("Game rule type"),
     )
 
     # original pong
@@ -39,11 +39,11 @@ class MatchRules(models.Model):
     # different:
     # - sum of points == 11
     # if self.score_a + self.score_b == 11
-    match_total_points = models.PositiveSmallIntegerField(
+    game_total_points = models.PositiveSmallIntegerField(
         default=None,
         null=True,
         blank=True,
-        verbose_name=_("Match total points"),
+        verbose_name=_("Game total points"),
         # validators=[validate_odd],
     )  # min=11
 
@@ -51,23 +51,23 @@ class MatchRules(models.Model):
         default=timedelta(minutes=3),
         null=True,
         blank=True,
-        verbose_name=_("Match maximum duration"),
+        verbose_name=_("Game maximum duration"),
     )
 
     # paddle speed
 
     class Meta:
-        verbose_name_plural = _("Match Rules")
-        db_table = "core_match_rules"
+        verbose_name_plural = _("Game Rules")
+        db_table = "core_game_rules"
         # unique_together = [
-        #     ["rule_type", "points_to_win", "match_total_points", "max_duration"]
+        #     ["rule_type", "points_to_win", "game_total_points", "max_duration"]
         # ]  # we don't wanna duplicated rules ---> usar UniqueConstraint
         constraints = [
             # models.CheckConstraint(check=models.Q(age__gte=18), name="age_gte_18"),
             models.CheckConstraint(
                 check=Q(
                     ~Q(points_to_win__isnull=True)
-                    | ~Q(match_total_points__isnull=True)
+                    | ~Q(game_total_points__isnull=True)
                     | ~Q(max_duration__isnull=True)
                 ),
                 name="all_rules_null",
@@ -79,14 +79,14 @@ class MatchRules(models.Model):
             # ),
             # models.CheckConstraint(
             #     check=Q(
-            #         Q(match_total_points__gte=7) | Q(match_total_points__isnull=True)
+            #         Q(game_total_points__gte=7) | Q(game_total_points__isnull=True)
             #     ),
-            #     name="match_total_points_validation",
+            #     name="game_total_points_validation",
             # ),
             # models.CheckConstraint(
             #     check=Q(
             #         Q(max_duration__gte=timedelta(minutes=3))
-            #         | Q(max_duration__isnull=True)  # verificar se precisa do isnull...
+            #         | Q(max_duration__isnull=True)  # verificar se precisa do isnull..
             #         # e pode ser que ele tenha que ser antes...
             #     ),
             #     name="max_duration_validation",
@@ -96,7 +96,7 @@ class MatchRules(models.Model):
     def validate_constraints(self, exclude: Collection[str] | None = ...) -> None:
         if (
             self.points_to_win is None
-            and self.match_total_points is None
+            and self.game_total_points is None
             and self.max_duration is None
         ):
             pass
