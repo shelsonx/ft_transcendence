@@ -6,8 +6,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Local Folder
-from .match_rules import MatchRules
-from .match import Match
+from .game_rules import GameRules
+from .game import Game
 
 # First Party
 from user.models import User
@@ -27,24 +27,25 @@ class Tournament(models.Model):
         verbose_name=_("Tournament Type"),
     )
     rules = models.OneToOneField(
-        to=MatchRules,
+        to=GameRules,
         on_delete=models.RESTRICT,
         related_name="tournament",
-        verbose_name=_("Matches Rules"),
+        verbose_name=_("Games Rules"),
     )
 
-    number_of_players = models.PositiveSmallIntegerField(default=2)
-    players = models.ManyToManyField(
-        to=User, related_name="tournaments", verbose_name=_("Players")
+    # number_of_players = models.PositiveSmallIntegerField(default=2)
+    # players = models.ManyToManyField(
+    #     to=User, related_name="tournaments", verbose_name=_("Tournament Players")
+    # )
+
+    # number_of_games
+    number_of_games = models.PositiveSmallIntegerField(default=0)
+    games = models.ManyToManyField(
+        to=Game, related_name="tournament", verbose_name=_("Games")
     )
 
-    # number_of_matches
-    matches = models.ManyToManyField(
-        to=Match, related_name="tournament", verbose_name=_("Matches")
-    )
-
-    def generate_matches(self):
-        self.__get_proxy().generate_matches()
+    def generate_games(self):
+        self.__get_proxy().generate_games()
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -84,7 +85,7 @@ class Challenge(Tournament):
     class Meta:
         proxy = True
 
-    def generate_matches(self):
+    def generate_games(self):
         print("challenge")
 
 
@@ -100,7 +101,7 @@ class RoundRobin(Tournament):
     class Meta:
         proxy = True
 
-    def generate_matches(self):
+    def generate_games(self):
         print("round-robin")
 
 
@@ -116,7 +117,7 @@ class Elimination(Tournament):
     class Meta:
         proxy = True
 
-    def generate_matches(self):
+    def generate_games(self):
         print("elimination")
 
 
@@ -131,5 +132,5 @@ class LeaguePlayoff(Tournament):
     class Meta:
         proxy = True
 
-    def generate_matches(self):
+    def generate_games(self):
         print("league with playoff")
