@@ -4,3 +4,4 @@ from .game import Game
 from .game_player import GamePlayer
 from .tournament_status import TournamentStatus
 from .tournament import Tournament, TournamentType
+from .tounament_player import TournamentPlayer
