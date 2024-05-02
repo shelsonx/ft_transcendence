@@ -28,6 +28,10 @@ class Game(models.Model):
         to=GameRules, on_delete=models.RESTRICT, verbose_name=_("Game Rules")
     )
 
+    players = models.ManyToManyField(
+        to=User, through="GamePlayer", related_name="games"
+    )
+
     # @property
     # def tournament(self):
     #     if hasattr(self, "tournament"):
@@ -36,10 +40,10 @@ class Game(models.Model):
 
     @property
     def winner(self) -> User | None:
+        if self.status != GameStatus.ENDED:
+            return None
         raise NotImplementedError("property not implemented")
 
-    #     if self.status != GameStatus.ENDED:
-    #         return None
     #     if self.score_a > self.score_b:
     #         return self.player_a
     #     elif self.score_b > self.score_a:
@@ -55,5 +59,5 @@ class Game(models.Model):
     #     return False
 
 
-# class PongGame(Game):
+# class Pong(Game):
 #     pass
