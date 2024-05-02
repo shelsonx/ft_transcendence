@@ -1,0 +1,42 @@
+[
+  {
+    "model": "core.gamerules",
+    "pk": 1,
+    "fields": {
+      "rule_type": "0",
+      "points_to_win": 11,
+      "game_total_points": null,
+      "max_duration": null
+    }
+  },
+  {
+    "model": "core.gamerules",
+    "pk": 2,
+    "fields": {
+      "rule_type": "1",
+      "points_to_win": null,
+      "game_total_points": 11,
+      "max_duration": null
+    }
+  },
+  {
+    "model": "core.gamerules",
+    "pk": 3,
+    "fields": {
+      "rule_type": "2",
+      "points_to_win": null,
+      "game_total_points": null,
+      "max_duration": "00:05:00"
+    }
+  },
+  {
+    "model": "core.gamerules",
+    "pk": 4,
+    "fields": {
+      "rule_type": "3",
+      "points_to_win": 11,
+      "game_total_points": 21,
+      "max_duration": "00:05:00"
+    }
+  }
+]

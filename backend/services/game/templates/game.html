@@ -1,21 +1,23 @@
 <h1>PLAY PONG SSR Test</h1>
 
-<p>Duration: {{ match.duration }}</p>
-<p>Status: {{ match.status.label }}</p>
+<p>Duration: {{ game.duration }}</p>
+<p>Status: {{ game.status.label }}</p>
 
-{% comment %} <h2>Rules</h2>
+{% comment %}
+<h2>Rules</h2>
 <ul>
-  <li>Player max points: {{ match.player_reach_points }}</li>
-  <li>Max total points: {{ match.match_total_points }}</li>
-</ul> {% endcomment %}
+  <li>Player max points: {{ game.player_reach_points }}</li>
+  <li>Max total points: {{ game.game_total_points }}</li>
+</ul>
+{% endcomment %}
 
 <div class="row">
   <div class="col">
     <h3>Player A</h3>
-    <p>Points: {{ match.score_a }}</p>
+    <p>Points: {{ game.score_a }}</p>
   </div>
   <div class="col">
     <h3>Player B</h3>
-    <p>Points: {{ match.score_b }}</p>
+    <p>Points: {{ game.score_b }}</p>
   </div>
 </div>
