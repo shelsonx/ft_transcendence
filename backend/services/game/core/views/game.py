@@ -1,7 +1,8 @@
 # Create your views here.
 # Standard Library
-import logging
 from datetime import timedelta
+import logging
+import uuid
 
 # Third Party
 from django.http import HttpRequest, HttpResponse
@@ -26,9 +27,9 @@ class GameView(generic.DetailView):
             game_datetime=timezone.now(),
             status=GameStatus.SCHEDULED,
             duration=timedelta(minutes=5, seconds=33),
-            player_a=User(id_reference=1),
-            player_b=User(id_reference=2),
         )
+        # game.players.add(User(id=uuid.uuid4))
+        # game.players.add(User(id=uuid.uuid4))
 
         context = {
             "game": game,
