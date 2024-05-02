@@ -1,13 +1,15 @@
+from django.db import models
 # from itertools import chain
+import uuid
 
-# django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
 class User(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     # nickname = models.CharField(max_length=50)
+    # score = models.IntegerField(default=0)
 
     # @property
     # def matchs(self) -> list:
