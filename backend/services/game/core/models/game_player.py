@@ -22,3 +22,4 @@ class GamePlayer(models.Model):
 
     class Meta:
         db_table = "game_player"
+        unique_together = [["game", "user"]]

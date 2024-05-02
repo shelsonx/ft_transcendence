@@ -26,6 +26,7 @@ class Tournament(models.Model):
         default=TournamentType.CHALLENGE,
         verbose_name=_("Tournament Type"),
     )
+    # All players must adhere to the same rules
     rules = models.OneToOneField(
         to=GameRules,
         on_delete=models.RESTRICT,
@@ -33,10 +34,13 @@ class Tournament(models.Model):
         verbose_name=_("Games Rules"),
     )
 
-    # number_of_players = models.PositiveSmallIntegerField(default=2)
-    # players = models.ManyToManyField(
-    #     to=User, related_name="tournaments", verbose_name=_("Tournament Players")
-    # )
+    number_of_players = models.PositiveSmallIntegerField(default=2)
+    players = models.ManyToManyField(
+        to=User,
+        through="core.TournamentPlayer",
+        related_name="tournaments",
+        verbose_name=_("Tournament Players"),
+    )
 
     # number_of_games
     number_of_games = models.PositiveSmallIntegerField(default=0)
@@ -44,6 +48,8 @@ class Tournament(models.Model):
         to=Game, related_name="tournament", verbose_name=_("Games")
     )
 
+    # There must be a matchmaking system: the tournament system organize the
+    # matchmaking of the participants, and announce the next fight
     def generate_games(self):
         self.__get_proxy().generate_games()
 
