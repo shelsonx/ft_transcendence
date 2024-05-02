@@ -4,6 +4,6 @@
 # python manage.py collectstatic --noinput
 
 python manage.py migrate
-python manage.py loaddata match_rules
+python manage.py loaddata game_rules
 
 exec $@

@@ -37,7 +37,7 @@ freeze:
 	docker exec -t game-api bash -c "pip freeze > requirements.txt"
 
 dump:
-	docker exec -it game-api bash -c "python manage.py dumpdata --indent=4 core.MatchRules"
+	docker exec -it game-api bash -c "python manage.py dumpdata --indent=4 core.GameRules"
 
 exec-api:
 	docker exec -it game-api bash
