@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 # Local Folder
 from .game_rules import GameRules
 from .game import Game
+from .tournament_status import TournamentStatus
 
 # First Party
 from user.models import User
@@ -26,12 +27,17 @@ class Tournament(models.Model):
         default=TournamentType.CHALLENGE,
         verbose_name=_("Tournament Type"),
     )
-    # All players must adhere to the same rules
-    rules = models.OneToOneField(
+    status = models.IntegerField(
+        choices=TournamentStatus.choices,
+        default=TournamentStatus.INVITATION,
+        verbose_name=_("Tournament Status"),
+    )
+
+    # All players and games must adhere to the same game rules
+    rules = models.ForeignKey(
         to=GameRules,
         on_delete=models.RESTRICT,
-        related_name="tournament",
-        verbose_name=_("Games Rules"),
+        verbose_name=_("Tournament Rules"),
     )
 
     number_of_players = models.PositiveSmallIntegerField(default=2)
