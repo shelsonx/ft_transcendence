@@ -29,3 +29,12 @@ class UserGamesView(generic.ListView):
 
     def get_queryset(self) -> QuerySet[Game]:
         return self.user.games.all()
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.user
+
+        # import pprint
+        # pprint.pprint(context, indent=4)
+        # pprint.pprint(vars(context["paginator"]), indent=4)
+        return context
