@@ -48,11 +48,12 @@ class Generator:
         return data
 
     def seedGame(self, **fields) -> Game:
-        players = fields.pop("players", None)
+        players = fields.pop("players", None) or [self.seedUser(), self.seedUser()]
         game = Game.objects.create(**(self.game(**fields)))
 
         if players:
             for player in players:
+                # game.players.add(player)
                 self.seedGamePlayer(game=game, user=player)
         return game
 
@@ -61,7 +62,7 @@ class Generator:
         user = fields.pop("user", None) or self.seedUser()
         score = 0
         if game.status in [GameStatus.ENDED, GameStatus.ONGOING]:
-            score = randint(1, 21)
+            score = randint(1, game.rules.points_to_win or 21)
 
         data = {
             "game": game,
@@ -73,4 +74,5 @@ class Generator:
         return data
 
     def seedGamePlayer(self, **fields) -> GamePlayer:
-        return GamePlayer(self.gamePlayer(**fields))
+        data = self.gamePlayer(**fields)
+        return GamePlayer.objects.create(**data)
