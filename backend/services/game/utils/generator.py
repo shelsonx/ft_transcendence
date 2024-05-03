@@ -51,14 +51,16 @@ class Generator:
         players = fields.pop("players", None) or [self.seedUser(), self.seedUser()]
         game = Game.objects.create(**(self.game(**fields)))
 
-        if players:
-            for player in players:
-                # game.players.add(player)
-                self.seedGamePlayer(game=game, user=player)
+        for player in players:
+            # game.players.add(player)
+            self.seedGamePlayer(game=game, user=player)
         return game
 
     def gamePlayer(self, **fields) -> dict:
-        game = fields.pop("game", None) or self.seedGame()
+        game = fields.pop("game", None)
+        if not game:
+            raise ValueError("you need to pass the game")
+
         user = fields.pop("user", None) or self.seedUser()
         score = 0
         if game.status in [GameStatus.ENDED, GameStatus.ONGOING]:
@@ -76,3 +78,56 @@ class Generator:
     def seedGamePlayer(self, **fields) -> GamePlayer:
         data = self.gamePlayer(**fields)
         return GamePlayer.objects.create(**data)
+
+    def tournament(self, **fields) -> dict:
+        rules = fields.pop("rules", None) or self.seedGameRules()
+        data = {
+            "tournament_type": TournamentType.CHALLENGE,
+            "status": TournamentStatus.INVITATION,
+            "rules": rules,
+            "number_of_players": 2,
+            "number_of_games": 3 * 2,
+        }
+        data.update(**fields)
+        return data
+
+    def seedTournament(self, **fields) -> Tournament:
+        players = fields.pop("players", None)
+        tournament = Tournament.objects.create(**(self.tournament(**fields)))
+
+        if players and len(players) != tournament.number_of_players:
+            raise ValueError(
+                "mismatch in players sent and tournament's number of players"
+            )
+
+        if not players:
+            players = []
+            for _ in range(len(tournament.players.all())):
+                players.append[self.seedUser()]
+
+        for player in players:
+            # tournament.players.add(player)
+            self.seedTournamentPlayer(tournament=tournament, user=player)
+
+        return tournament
+
+    def tournamentPlayer(self, **fields) -> dict:
+        tournament = fields.pop("tournament", None)
+        if not tournament:
+            raise ValueError("you need to pass the tournament")
+
+        user = fields.pop("user", None) or self.seedUser()
+        data = {
+            "tournament": tournament,
+            "user": user,
+            "alias_name": "alias_name",
+            "score": 0,
+            "rating": 0,
+        }
+
+        data.update(**fields)
+        return data
+
+    def seedTournamentPlayer(self, **fields) -> TournamentPlayer:
+        data = self.tournamentPlayer(**fields)
+        return TournamentPlayer.objects.create(**data)

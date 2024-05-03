@@ -149,24 +149,41 @@ game2 = gen.seedGame(
     rules=rule5,
     players=[user1, user2]
 )
+
 pprint(vars(game2))
-
 print()
-print(" Deleting all objects - users:")
-user1.delete()
-user2.delete()
-print(users)
+print(" Tournament model test ".center(80, "-"))
+tournaments = Tournament.objects.all()
+print(len(tournaments))
+tournament1 = gen.seedTournament()
+pprint(vars(tournament1))
 
-print(" Deleting all objects - games:")
-game1.delete()
-game2.delete()
-games = Game.objects.all()
-print(len(games))
+tournament2 = gen.seedTournament(
+    tournament_type=TournamentType.ELIMINATION,
+    status=TournamentStatus.SCHEDULED,
+    rules=rule5,
+    players=[user1, user2, gen.seedUser(), gen.seedUser()],
+    number_of_players=4,
+    number_of_games=3,
+)
+pprint(vars(tournament2))
 
-print(" Deleting all objects - rules:")
-rule5.delete()
-rule6.delete()
-rule7.delete()
-rule8.delete()
-rules = GameRules.objects.all()
-print(len(rules))
+# print()
+# print(" Deleting all objects - users:")
+# user1.delete()
+# user2.delete()
+# print(users)
+
+# print(" Deleting all objects - games:")
+# game1.delete()
+# game2.delete()
+# games = Game.objects.all()
+# print(len(games))
+
+# print(" Deleting all objects - rules:")
+# rule5.delete()
+# rule6.delete()
+# rule7.delete()
+# rule8.delete()
+# rules = GameRules.objects.all()
+# print(len(rules))
