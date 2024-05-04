@@ -1,3 +1,4 @@
+import pprint
 import uuid
 from datetime import timedelta
 from random import randint
@@ -86,7 +87,7 @@ class Generator:
             "status": TournamentStatus.INVITATION,
             "rules": rules,
             "number_of_players": 2,
-            "number_of_games": 3 * 2,
+            "number_of_games": 3,
         }
         data.update(**fields)
         return data
@@ -100,15 +101,16 @@ class Generator:
                 "mismatch in players sent and tournament's number of players"
             )
 
-        if not players:
+        if players is None:
             players = []
-            for _ in range(len(tournament.players.all())):
-                players.append[self.seedUser()]
+            for _ in range(tournament.number_of_players):
+                players.append(self.seedUser())
 
         for player in players:
             # tournament.players.add(player)
             self.seedTournamentPlayer(tournament=tournament, user=player)
 
+        tournament.generate_games()
         return tournament
 
     def tournamentPlayer(self, **fields) -> dict:
