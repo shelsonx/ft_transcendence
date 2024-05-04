@@ -6,7 +6,9 @@ class NotFoundView extends View {
 }
 
 const html = /*html*/`
-    <h1>Page Not Found</h1>  
+    <h1
+      data-i18n-key="page-not-found--title"
+    >Page Not Found</h1>
 `;
 
 

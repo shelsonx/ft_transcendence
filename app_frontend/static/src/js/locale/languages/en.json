@@ -1,17 +1,23 @@
 {
   "nav-language":"Language",
-  "nav-register":"Sign Up",
   "nav-logout":"Logout",
-  "auth-login--login": "Login",
-  "auth-login--password": "Password",
-  "auth-login--forgot-password": "Forgot password?",
-  "auth-login--sign-up": "Sign Up",
-  "auth-login--or": "Or",
-  "auth-login--login-with": "Login with",
-  "auth-login--oi-plural": {
+  "auth--login": "Login",
+  "auth--password": "Password",
+  "auth--confirm-password": "Confirm Password",
+  "auth--forgot-password": "Forgot password?",
+  "auth--sign-up": "Sign Up",
+  "auth--or": "Or",
+  "auth--login-with": "Login with",
+  "auth--username": "Username",
+  "auth--oi-plural": {
     "one": "{count} hello",
     "other": "{count} hellos"
   },
-  "auth-login--price": "Nyan Cat (Official) NFT: {price}",
-  "auth-login--date": "Published {publishDate}"
+  "auth--price": "Nyan Cat (Official) NFT: {price}",
+  "auth--date": "Published {publishDate}",
+  "page-not-found--title": "Page Not Found",
+  "two-factor-auth--title": "Two Factor Authentication",
+  "two-factor-auth--resend": "Resend code",
+  "two-factor-auth--two-factor-code": "Two Factor Code",
+  "two-factor-auth--submit": "Submit"
 }
