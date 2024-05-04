@@ -19,7 +19,9 @@ const html = /*html*/`
     <div class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
         <img class="space-man" src="static/src/img/transcendence-journey.svg" />
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
-            <h3>Forgot Password</h3>
+            <h3
+              data-i18n-key="auth--forgot-password"
+            >Forgot Password</h3>
             <form id="forgot-password-form" class="auth-form d-flex flex-column gap-2 g-lg-0 w-100" novalidate>
                 <div>
                     <label for="email">Email</label>
@@ -28,13 +30,17 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="d-none">
-                    <label for="two-factor-code">Two Factor Code</label>
+                    <label for="two-factor-code"
+                    data-i18n-key="two-factor-auth--two-factor-code"
+                    >Two Factor Code</label>
                     <div class="input-group input-group-custom">
                         <input class="form-control" type="number" id="two-factor-code" name="two-factor-code" required>
                     </div>
                 </div>
                 <div class="d-none">
-                    <label for="password">Password</label>
+                    <label for="password"
+                    data-i18n-key="auth--password"
+                    >Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
                         <span class="input-group-text cursor-pointer">
@@ -43,7 +49,9 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="d-none">
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="confirm-password"
+                    data-i18n-key="auth--confirm-password"
+                    >Confirm Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
                         <span class="input-group-text cursor-pointer">
@@ -52,8 +60,12 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="ms-auto mt-1 d-flex gap-2">
-                    <button id="resend-2fa" class="btn btn-secondary reduce-font-size" type="button">Send 2FA Code</button>
-                    <button class="btn btn-primary d-none reduce-font-size" type="submit">Submit</button>
+                    <button id="resend-2fa" class="btn btn-secondary reduce-font-size" type="button"
+                      data-i18n-key="two-factor-auth--resend"
+                    >Resend code</button>
+                    <button class="btn btn-primary d-none reduce-font-size" type="submit"
+                      data-i18n-key="two-factor-auth--submit"
+                    >Submit</button>
                 </div>
             </form>
         </div>
@@ -75,7 +87,7 @@ function start() {
       const formData = new FormData(form);
       const response = await wrapperLoadingService.execute(
           authService,
-          authService.forgotPassword, 
+          authService.forgotPassword,
           formData
       );
       console.log(response);
@@ -93,7 +105,7 @@ function start() {
     }
     const response = await wrapperLoadingService.execute(
         authService,
-        authService.resendTwoFactorCode, 
+        authService.resendTwoFactorCode,
         email
     );
     console.log(response);
