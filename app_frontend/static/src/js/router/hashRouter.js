@@ -73,10 +73,11 @@ class HashRouter extends Router {
       this.render(route);
     }
   }
-  
+
   start() {
     window.addEventListener("hashchange", () => {
       this.route();
+      languageHandler.onInit(true);
     });
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
