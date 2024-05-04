@@ -144,11 +144,7 @@ print(len(games))
 game1 = gen.seedGame()
 pprint(vars(game1))
 
-game2 = gen.seedGame(
-    status=GameStatus.WAITING,
-    rules=rule5,
-    players=[user1, user2]
-)
+game2 = gen.seedGame(status=GameStatus.WAITING, rules=rule5, players=[user1, user2])
 
 pprint(vars(game2))
 print()
@@ -164,7 +160,6 @@ tournament2 = gen.seedTournament(
     rules=rule5,
     players=[user1, user2, gen.seedUser(), gen.seedUser()],
     number_of_players=4,
-    number_of_games=3,
 )
 pprint(vars(tournament2))
 

@@ -87,7 +87,7 @@ class Generator:
             "status": TournamentStatus.INVITATION,
             "rules": rules,
             "number_of_players": 2,
-            "number_of_games": 3,
+            "number_of_rounds": 3,
         }
         data.update(**fields)
         return data
