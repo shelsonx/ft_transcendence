@@ -1,4 +1,7 @@
 {
+  "nav-language":"Language",
+  "nav-register":"Sign Up",
+  "nav-logout":"Logout",
   "auth-login--login": "Login",
   "auth-login--password": "Password",
   "auth-login--forgot-password": "Forgot password?",

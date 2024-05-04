@@ -1,4 +1,7 @@
 {
+  "nav-language":"Langue",
+  "nav-register":"S'inscrire",
+  "nav-logout":"Déconnexion",
   "auth-login--login": "Connexion",
   "auth-login--password": "Mot de passe",
   "auth-login--forgot-password": "Mot de passe oublié?",

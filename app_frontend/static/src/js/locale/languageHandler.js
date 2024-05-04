@@ -3,6 +3,7 @@ class LanguageHandler {
   constructor() {
     this.#locale = 'en';
     this.dropDownMenu = document.getElementById('change-language-menu');
+    this.hasSetup = false;
     this.translations = {};
     this.buttonsRef = [];
     this.supportedLanguages = {
@@ -23,7 +24,7 @@ class LanguageHandler {
         }
       }
     };
-  
+
   getLocaleDetails() {
     return Object.values(this.supportedLanguages).find(sl => sl.code === this.#locale) || this.supportedLanguages['English'];
   }
@@ -37,6 +38,9 @@ class LanguageHandler {
   }
 
   addLanguagesToDropdown() {
+    if (this.hasSetup) {
+      return;
+    }
     Object.keys(this.supportedLanguages).forEach((language) => {
       const li = document.createElement('li');
       const button = document.createElement('button', { type: 'button' });
@@ -50,6 +54,7 @@ class LanguageHandler {
       li.appendChild(button);
       this.dropDownMenu.appendChild(li);
     })
+    this.hasSetup = true;
   }
 
 
@@ -71,12 +76,12 @@ class LanguageHandler {
       let { date, ...options } = value;
 
       if (typeof date === "string" && !date.includes("T")) {
-        date += "T00:00:00"; 
+        date += "T00:00:00";
       }
 
       const parsedDate =
         typeof date === "string" ? Date.parse(date) : date;
-      
+
       const fullyQualifiedLocaleDefaults = this.getLocaleDetails().fullCode;
       return new Intl.DateTimeFormat(
         fullyQualifiedLocaleDefaults,
@@ -92,7 +97,7 @@ class LanguageHandler {
     const matchingForm = new Intl.PluralRules(this.#locale).select(
       count,
     );
-  
+
     return forms[matchingForm];
   }
 
@@ -103,7 +108,7 @@ class LanguageHandler {
         const value = this.formatDate(
           this.formatNumber(interpolations[key]),
         );
-  
+
         return interpolated.replace(
           new RegExp(`{\s*${key}\s*}`, "g"),
           value,
@@ -116,23 +121,23 @@ class LanguageHandler {
 
   translate(key, interpolations = {}) {
     const message = this.translations[key];
-  
+
     if (key.endsWith("-plural")) {
       return this.interpolate(
         this.pluralFormFor(message, interpolations.count),
         interpolations,
       );
     }
-  
+
     return this.interpolate(message, interpolations);
   }
 
   translateElement(element) {
     const key = element.getAttribute("data-i18n-key");
-  
+
     const options =
       JSON.parse(element.getAttribute("data-i18n-opt")) || {};
-  
+
     element.innerText = this.translate(key, options);
   }
 
@@ -146,10 +151,10 @@ class LanguageHandler {
     const response = await fetch(`static/src/js/locale/languages/${newLocale}.json`);
     return await response.json();
   }
-  
+
   async handleLocation(newLocale, isFirstLoad = false) {
     if (newLocale === this.#locale && !isFirstLoad) return;
-  
+
     this.setLocale(newLocale);
 
     const newTranslations = await this.fetchTranslationsFor(
@@ -177,9 +182,9 @@ class LanguageHandler {
     this.handleLocation(newLanguageSelected.code);
   }
 
-  onInit() {
+  onInit(isFirstLoad = false) {
     this.addLanguagesToDropdown();
-    this.handleLocation(this.#locale, true);
+    this.handleLocation(this.#locale, isFirstLoad);
   }
 }
 
