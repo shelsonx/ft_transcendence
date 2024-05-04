@@ -99,7 +99,21 @@ function drawChart(chartDiv, response) {
     ]);
 
     var options = {
-        title: 'User Performance'
+        title: 'User Performance',
+        legend: { 
+            textStyle: { 
+                color: 'white',
+            } 
+        },
+        backgroundColor: 'none', 
+        titleTextStyle: {
+            color: 'white', 
+            fontSize: 10
+        },
+        pieStartAngle: 100,
+        colors: ['#652417', '#381718'],
+        fontName: 'Turret Road',
+        is3D: true,
     };
 
     var chart = new google.visualization.PieChart(chartDiv);
