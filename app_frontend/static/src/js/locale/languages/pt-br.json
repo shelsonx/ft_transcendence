@@ -1,17 +1,23 @@
 {
   "nav-language":"Idioma",
-  "nav-register":"Registrar",
   "nav-logout":"Sair",
-  "auth-login--login": "Entrar",
-  "auth-login--password": "Senha",
-  "auth-login--forgot-password": "Esqueceu a senha?",
-  "auth-login--sign-up": "Inscrever-se",
-  "auth-login--or": "Ou",
-  "auth-login--login-with": "Entrar com",
-  "auth-login--oi-plural": {
+  "auth--login": "Entrar",
+  "auth--password": "Senha",
+  "auth--confirm-password": "Confirmar senha",
+  "auth--forgot-password": "Esqueceu a senha?",
+  "auth--sign-up": "Inscrever-se",
+  "auth--or": "Ou",
+  "auth--login-with": "Entrar com",
+  "auth--username": "Nome de usuário",
+  "auth--oi-plural": {
     "one": "{count} Oi",
     "other": "{count} Ois"
   },
-  "auth-login--price": "Nyan Cat (Oficial) NFT: {price}",
-  "auth-login--date": "Publicado em {publishDate}"
+  "auth--price": "Nyan Cat (Oficial) NFT: {price}",
+  "auth--date": "Publicado em {publishDate}",
+  "two-factor-auth--title": "Autenticação de dois fatores",
+  "two-factor-auth--resend": "Reenviar código",
+  "two-factor-auth--submit": "Enviar",
+  "two-factor-auth--two-factor-code": "Código de autenticação de dois fatores",
+  "page-not-found--title": "Página não encontrada"
 }

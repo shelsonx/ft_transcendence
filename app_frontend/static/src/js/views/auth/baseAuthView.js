@@ -8,8 +8,8 @@ class BaseAuthView extends View {
     start
   }) {
     const navItems = [
-      new NavItems('#login', 'Login', { 'data-i18n-key': 'auth-login--login',}),
-      new NavItems('#sign-up', 'Sign Up', { 'data-i18n-key': 'nav-register',}),
+      new NavItems('#login', 'Login', { 'data-i18n-key': 'auth--login',}),
+      new NavItems('#sign-up', 'Sign Up', { 'data-i18n-key': 'auth--sign-up',}),
     ];
     const navHandler = new NavHandler(navItems);
     super(new ViewOptions(html, start, navHandler));
