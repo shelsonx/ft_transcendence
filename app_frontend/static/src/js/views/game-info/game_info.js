@@ -32,7 +32,7 @@ const html = /*html*/`
                             </div>
                             <div class="col-md-4">
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col"  id="details-infos-user">
                                         <div class="row mb-2">
                                             <div class="col-6 text-white">Nickname:</div>
                                             <div class="col-6 text-white" id="details-nickname">transcdc-ft</div>
@@ -90,6 +90,37 @@ const html = /*html*/`
 
 `
 
+google.charts.load('current', {'packages':['corechart']});
+function drawChart(chartDiv, response) {
+    var data = google.visualization.arrayToDataTable([
+        ['User', 'Performance'],
+        ['Winnings', response.user.winnings],
+        ['Losses', response.user.losses],
+    ]);
+
+    var options = {
+        title: 'User Performance',
+        legend: { 
+            textStyle: { 
+                color: 'white',
+            } 
+        },
+        backgroundColor: 'none', 
+        titleTextStyle: {
+            color: 'white', 
+            fontSize: 10
+        },
+        pieStartAngle: 100,
+        colors: ['#652417', '#381718'],
+        fontName: 'Turret Road',
+        is3D: true,
+    };
+
+    var chart = new google.visualization.PieChart(chartDiv);
+
+    chart.draw(data, options);
+}
+
 function setData(container, data) {
     const nickname = container.querySelector('.list-nickname');
     nickname.textContent = data.nickname;
@@ -144,9 +175,26 @@ function createCol1(){
     return col1;
 }
 
-function createUserPhoto() {
+function createUserPhoto(data) {
     const userPhoto = document.createElement('img');
+    const detailsInfosUser = document.getElementById('details-infos-user');
     userPhoto.classList.add('list-user-photo');
+
+    let oldValuesUser = ``;
+    userPhoto.addEventListener('mouseover', function() {
+        oldValuesUser = document.getElementById('details-infos-user').innerHTML;
+        var detailsInfosUser = document.getElementById('details-infos-user');
+        gameInfoService.get_user(data.id).then(
+            res => {
+                setDetailsStatus(res);
+                drawChart(detailsInfosUser, res);
+            }
+        );
+    });
+    userPhoto.addEventListener('mouseleave', function() {
+        detailsInfosUser.innerHTML = oldValuesUser;
+    });
+
     return userPhoto;
 }
 
@@ -207,7 +255,7 @@ function AddUserInList(data) {
     const row = createRow(container);
     const col1 = createCol1();
     row.appendChild(col1);
-    const userPhoto = createUserPhoto();
+    const userPhoto = createUserPhoto(data);
     col1.appendChild(userPhoto);
     const col2 = createCol2();
     row.appendChild(col2);
