@@ -161,8 +161,8 @@ body {
     font-size: 14px;
 }
 
-.input-group-custom {
-    max-width: 500px;
+.input-group-custom, .form-container-max-width {
+    max-width: 550px;
 }
 
 @media screen and (max-width: 768px) {

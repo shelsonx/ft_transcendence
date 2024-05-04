@@ -19,7 +19,9 @@ const html = /*html*/`
     <div class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
         <img class="space-man" src="static/src/img/transcendence-journey.svg" />
         <div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
-            <h2>Sign Up</h1>
+            <h2
+            data-i18n-key="auth--sign-up"
+            >Sign Up</h1>
             <form id="signup-form" class="d-flex auth-form flex-column gap-2 g-lg-0" novalidate>
                 <div>
                     <label for="email">Email</label>
@@ -28,13 +30,15 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div>
-                    <label for="username">User Name</label>
+                    <label for="username"
+                      data-i18n-key="auth--username"
+                    >User Name</label>
                     <div class="input-group input-group-custom">
                         <input class="form-control" type="text" id="username" name="username" required>
                     </div>
                 </div>
                 <div>
-                    <label for="password">Password</label>
+                    <label for="password" data-i18n-key="auth--password">Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="password" name="password" required>
                         <span class="input-group-text cursor-pointer">
@@ -43,7 +47,7 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div>
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="confirm-password" data-i18n-key="auth--confirm-password">Confirm Password</label>
                     <div class="input-group input-group-custom position-relative">
                         <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
                         <span class="input-group-text cursor-pointer">
@@ -52,17 +56,25 @@ const html = /*html*/`
                     </div>
                 </div>
                 <div class="ms-auto mt-1">
-                    <a href="#login" class="btn btn-secondary">Sign In</a>
-                    <button class="btn btn-primary" type="submit">Sign Up</button>
+                    <a href="#login" class="btn btn-secondary"
+                      data-i18n-key="auth--login"
+                    >Login</a>
+                    <button class="btn btn-primary" type="submit"
+                      data-i18n-key="auth--sign-up"
+                    >Sign Up</button>
                 </div>
             </form>
-            <p class="my-2">Or</p>
-            <button 
-                class="btn btn-success w-100 m-0 d-flex justify-content-center align-items-center gap-3" 
+            <p class="my-2"
+              data-i18n-key="auth--or"
+            >Or</p>
+            <button
+                class="btn btn-success w-100 m-0 d-flex justify-content-center align-items-center gap-3"
                 type="button"
                 id="login-42"
                 >
-                <span>Login with</span> 
+                <span
+                    data-i18n-key="auth--login-with"
+                >Login with</span>
                 <img class="button-42" src="static/src/img/42-logo.svg" />
             </button>
         </div>
