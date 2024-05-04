@@ -1,24 +1,18 @@
-# python std library
-from typing import Any
-
 # django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 # Local Folder
 from .game_rules import GameRules
+from .game_status import GameStatus
 from .game import Game
+from .round import Round
 from .tournament_status import TournamentStatus
+from .tournament_type import TournamentType
 
 # First Party
 from user.models import User
-
-
-class TournamentType(models.IntegerChoices):
-    CHALLENGE = 0, _("Challenge")  # e.g: best of 3
-    ROUND_ROBIN = 1, _("Round-robin")  # pontos corridos
-    ELIMINATION = 2, _("Elimination")  # mata-mata - número par?
-    # LEAGUE_WITH_PLAYOFF = 3, _("League with Playoff")  # misto
 
 
 class Tournament(models.Model):
@@ -49,19 +43,31 @@ class Tournament(models.Model):
     )
 
     # total games in CHALLENGE (is the same as total games for each player) - inputed
-    # total games for each player in ROUND_ROBIN - inputed
-    # total games in ELIMINATION (it is calculated)
-    number_of_games = models.PositiveSmallIntegerField(default=0)
-    games = models.ManyToManyField(
-        to=Game, related_name="tournament", verbose_name=_("Games")
+    # total games for each player against each other in ROUND_ROBIN - inputed
+    # total games in ELIMINATION (it is calculated based on number_of_players)
+    # number_of_games = models.PositiveSmallIntegerField(default=0)
+    number_of_rounds = models.PositiveSmallIntegerField(default=1)
+    rounds = models.ManyToManyField(
+        to=Round, related_name="tournament", verbose_name=_("Rounds")
     )
 
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight
-    def generate_games(self, *args, **kwargs):
+    def generate_games(self, *args, **kwargs) -> None:
+        self.validate_number_of_players()
         self.__get_proxy().generate_games(*args, **kwargs)
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def validate_number_of_players(self) -> None:
+        current_number_of_players = self.players.all().count()
+
+        if current_number_of_players != self.number_of_players:
+            raise ValueError(
+                "mismatch between registered number of players and associated players"
+            )
+
+        self.__get_proxy().validate_number_of_players(current_number_of_players)
+
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self._proxy = None
 
@@ -84,6 +90,10 @@ class Tournament(models.Model):
 
         return self._proxy
 
+    def delete(self, using=None, keep_parents=False) -> tuple[int, dict[str, int]]:
+        self.rounds.all().delete()
+        return super().delete(using, keep_parents)
+
 
 # critério de desempate: a soma de pontos feitos
 # se ainda assim tiver empate, uma última partida no formato do pong original
@@ -99,32 +109,35 @@ class Challenge(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs):
-        players = self.players.all()
-        number_of_players = len(players)
-        if len(players) != 2:
-            raise ValueError(
-                "For Tournament Challenge the number of players must be 2, "
-                f"but {number_of_players} players were associated to it"
-            )
-
-        games = self.games.all()
-        total_existing_games = len(games)
-        if total_existing_games > self.number_of_games:
-            raise ValueError("Can not delete pre-existing games")
-
-        if total_existing_games == self.number_of_games:
+    def generate_games(self, *args, **kwargs) -> None:
+        rounds = self.rounds.all()
+        total_existing_rounds = rounds.count()
+        if total_existing_rounds == self.number_of_rounds:
             return
 
-        missing_games = self.number_of_games - total_existing_games
-        for i in range(missing_games):
-            game = Game.objects.create(
-                rules=self.rules,
-                # game_datetime=
-            )
-            game.players.add(*players)
-            self.games.add(game)
+        if total_existing_rounds > self.number_of_rounds:
+            raise ValueError("mismatch between actual rounds and registered rounds")
 
+        # since for Challenge Tournament a winner may win before all rounds happen
+        # we just generate a round at time
+        round = Round.objects.create(
+            round_number=(total_existing_rounds + 1),
+            number_of_games=1
+        )
+        game = Game.objects.create(
+            status=GameStatus.SCHEDULED,
+            rules=self.rules,
+        )
+        game.players.add(*self.players.all())
+        round.games.add(game)
+        self.rounds.add(round)
+
+    def validate_number_of_players(self, current_number_of_players: int) -> None:
+        if current_number_of_players != 2:
+            raise ValueError(
+                "For Tournament Challenge the number of players must be 2, "
+                f"but {current_number_of_players} players were associated to it"
+            )
 
 # 1) pontos corridos
 # - todos têm o mesmo número de jogos e todos enfrentam todos - deixar 2x padrão?
@@ -138,8 +151,15 @@ class RoundRobin(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs):
+    def generate_games(self, *args, **kwargs) -> None:
         print("round-robin")
+
+    def validate_number_of_players(self, current_number_of_players: int) -> None:
+        if current_number_of_players < 3:
+            raise ValueError(
+                "For Tournament Round Robin the number of players must be greater than"
+                f"3, but {current_number_of_players} players were associated to it"
+            )
 
 
 # 2) mata-mata
@@ -154,8 +174,20 @@ class Elimination(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs):
+    def generate_games(self, *args, **kwargs) -> None:
         print("elimination")
+
+    def validate_number_of_players(self, current_number_of_players: int):
+        if current_number_of_players < 4:
+            raise ValueError(
+                "For Tournament Round Robin the number of players must be greater than"
+                f"3, but {current_number_of_players} players were associated to it"
+            )
+
+        if current_number_of_players % 2:
+            raise ValueError(
+                "For Tournament Round Robin the number of players must be even"
+            )
 
 
 # 3) grupos + mata-mata
