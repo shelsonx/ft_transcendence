@@ -1,11 +1,11 @@
 import { AuthConstants } from '../constants/auth-constants.js';
-import { HttpClient, HttpClientRequestData } from './httpClient.js';
+import { HttpClientRequestData } from './httpClient.js';
+import { LanguageService } from './languageService.js';
 
-class AuthService {
+class AuthService extends LanguageService{
 
   constructor() {
-    this.baseUrl = 'http://localhost:8010/api/auth/';
-    this.httpClient = new HttpClient(this.baseUrl);
+    super('http://localhost:8010/api/auth/');
   }
 
   addTokenToLocalStorage(response) {
@@ -31,7 +31,7 @@ class AuthService {
       password: formData.get('password'),
     };
     const requestData = new HttpClientRequestData('POST', 'sign-in/', data);
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
@@ -43,7 +43,7 @@ class AuthService {
       confirm_password: formData.get('confirm-password')
     };
     const requestData = new HttpClientRequestData('POST', 'sign-up/', data);
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
@@ -53,7 +53,7 @@ class AuthService {
       two_factor_code: formData.get('two-factor-code')
     };
     const requestData = new HttpClientRequestData('PUT', 'validate-2factor-code/', data);
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
@@ -62,19 +62,19 @@ class AuthService {
       email,
     };
     const requestData = new HttpClientRequestData('POST', 'validate-2factor-code/', data);
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
 
   async getMe() {
     const requestData = new HttpClientRequestData('GET', 'user/');
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
   async login42() {
-   window.location.assign(`${this.baseUrl}redirect-42/`);
+   window.location.assign(`${this.baseApi}redirect-42/`);
   }
 
   async forgotPassword(formData) {
@@ -85,7 +85,7 @@ class AuthService {
       confirm_password: formData.get('confirm-password')
     };
     const requestData = new HttpClientRequestData('POST', 'forgot-password/', data);
-    const response = await this.httpClient.makeRequest(requestData);
+    const response = await this.makeRequest(requestData);
     return response;
   }
 
