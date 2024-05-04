@@ -17,8 +17,8 @@ from user.models import User
 class TournamentType(models.IntegerChoices):
     CHALLENGE = 0, _("Challenge")  # e.g: best of 3
     ROUND_ROBIN = 1, _("Round-robin")  # pontos corridos
-    ELIMINATION = 2, _("Elimination")  # mata-mata
-    LEAGUE_WITH_PLAYOFF = 3, _("League with Playoff")  # misto
+    ELIMINATION = 2, _("Elimination")  # mata-mata - número par?
+    # LEAGUE_WITH_PLAYOFF = 3, _("League with Playoff")  # misto
 
 
 class Tournament(models.Model):
@@ -48,7 +48,9 @@ class Tournament(models.Model):
         verbose_name=_("Tournament Players"),
     )
 
-    # number_of_games
+    # total games in CHALLENGE (is the same as total games for each player) - inputed
+    # total games for each player in ROUND_ROBIN - inputed
+    # total games in ELIMINATION (it is calculated)
     number_of_games = models.PositiveSmallIntegerField(default=0)
     games = models.ManyToManyField(
         to=Game, related_name="tournament", verbose_name=_("Games")
@@ -56,8 +58,8 @@ class Tournament(models.Model):
 
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight
-    def generate_games(self):
-        self.__get_proxy().generate_games()
+    def generate_games(self, *args, **kwargs):
+        self.__get_proxy().generate_games(*args, **kwargs)
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -97,8 +99,31 @@ class Challenge(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self):
-        print("challenge")
+    def generate_games(self, *args, **kwargs):
+        players = self.players.all()
+        number_of_players = len(players)
+        if len(players) != 2:
+            raise ValueError(
+                "For Tournament Challenge the number of players must be 2, "
+                f"but {number_of_players} players were associated to it"
+            )
+
+        games = self.games.all()
+        total_existing_games = len(games)
+        if total_existing_games > self.number_of_games:
+            raise ValueError("Can not delete pre-existing games")
+
+        if total_existing_games == self.number_of_games:
+            return
+
+        missing_games = self.number_of_games - total_existing_games
+        for i in range(missing_games):
+            game = Game.objects.create(
+                rules=self.rules,
+                # game_datetime=
+            )
+            game.players.add(*players)
+            self.games.add(game)
 
 
 # 1) pontos corridos
@@ -113,7 +138,7 @@ class RoundRobin(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self):
+    def generate_games(self, *args, **kwargs):
         print("round-robin")
 
 
@@ -129,7 +154,7 @@ class Elimination(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self):
+    def generate_games(self, *args, **kwargs):
         print("elimination")
 
 
@@ -144,5 +169,5 @@ class LeaguePlayoff(Tournament):
     class Meta:
         proxy = True
 
-    def generate_games(self):
+    def generate_games(self, *args, **kwargs):
         print("league with playoff")
