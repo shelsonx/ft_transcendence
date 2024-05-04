@@ -1,4 +1,7 @@
 {
+  "nav-language":"Idioma",
+  "nav-register":"Registrar",
+  "nav-logout":"Sair",
   "auth-login--login": "Entrar",
   "auth-login--password": "Senha",
   "auth-login--forgot-password": "Esqueceu a senha?",
