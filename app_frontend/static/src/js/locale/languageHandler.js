@@ -1,6 +1,8 @@
 class LanguageHandler {
   #locale;
+  #defaultLocale;
   constructor() {
+    this.#defaultLocale = 'en';
     this.#locale = 'en';
     this.dropDownMenu = document.getElementById('change-language-menu');
     this.hasSetup = false;
@@ -36,6 +38,15 @@ class LanguageHandler {
   getLocale() {
     return this.#locale;
   }
+
+  setDefaultLocale(locale) {
+    this.#defaultLocale = locale;
+  }
+
+  getDefaultLocale() {
+    return this.#defaultLocale;
+  }
+
 
   addLanguagesToDropdown() {
     if (this.hasSetup) {

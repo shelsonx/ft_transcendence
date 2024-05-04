@@ -6,14 +6,15 @@ import random
 import uuid
 from .user import User
 
-
+def default_expiration():
+    return now() + timedelta(hours=2)
 
 class TwoFactor(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
-    expiration = models.DateTimeField(default=now() + timedelta(hours=2))
+    expiration = models.DateTimeField(default=default_expiration)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=False, blank=False)
 
     def is_valid(self, code):

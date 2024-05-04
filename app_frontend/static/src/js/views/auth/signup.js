@@ -108,7 +108,7 @@ function start() {
 
     const login42 = document.getElementById('login-42');
     login42.addEventListener('click', async () => {
-        authService.login42();
+      authService.login42();
     });
 
     togglePasswordVisibility('password', 'show-password-icon');
