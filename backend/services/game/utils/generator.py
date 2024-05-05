@@ -110,7 +110,7 @@ class Generator:
             # tournament.players.add(player)
             self.seedTournamentPlayer(tournament=tournament, user=player)
 
-        tournament.generate_games()
+        tournament.generate_rounds()
         return tournament
 
     def tournamentPlayer(self, **fields) -> dict:

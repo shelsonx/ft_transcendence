@@ -1,3 +1,7 @@
+# python std library
+from pprint import pprint
+import random
+
 # django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -17,9 +21,9 @@ from user.models import User
 
 class Tournament(models.Model):
     """
-        - Score in Tournament: winner wins 3 points, tie, 1 point
-        - Score in platform: sum(score per game * points in game)
-        - The winner wins a bonus of 10 points in platform score
+    - Score in Tournament: winner wins 3 points, tie, 1 point
+    - Score in platform: sum(score per game * points in game)
+    - The winner wins a bonus of 10 points in platform score
     """
 
     tournament_type = models.SmallIntegerField(
@@ -133,16 +137,28 @@ class Tournament(models.Model):
         self.rounds.all().delete()
         return super().delete(using, keep_parents)
 
+    def save(self, *args, **kwargs) -> None:
+        if (
+            self.number_of_players
+            and self.tournament_type == TournamentType.ROUND_ROBIN
+        ):
+            self.number_of_rounds = (
+                self.number_of_players - 1 + self.number_of_players % 2
+            )
+
+        return super().save(*args, **kwargs)
+
 
 # critério de desempate: a soma de pontos feitos
 # se ainda assim tiver empate, uma última partida no formato do pong original?
 
+
 class Challenge(Tournament):
     """
-        A Challenge Tournament is between 2 players only, in a style 'best of x',
-        with x = the number of matches\n
-        Each round has only one game between the players, i.e, the number of rounds
-        and number of games are the same.\n
+    A Challenge Tournament is between 2 players only, in a style 'best of x',
+    with x = the number of matches\n
+    Each round has only one game between the players, i.e, the number of rounds
+    and number of games are the same.\n
     """
 
     class Meta:
@@ -150,9 +166,7 @@ class Challenge(Tournament):
 
     def generate_rounds(self, *args, **kwargs) -> None:
         for i in range(self.number_of_rounds):
-            round = Round.objects.create(
-                round_number=(i + 1), number_of_games=1
-            )
+            round = Round.objects.create(round_number=(i + 1), number_of_games=1)
             game = Game.objects.create(
                 status=GameStatus.SCHEDULED,
                 rules=self.rules,
@@ -171,18 +185,70 @@ class Challenge(Tournament):
 
 class RoundRobin(Tournament):
     """
-        In a Round Robin Tournament:
-        - all players play the same number of games
-        - all players play against all other players at least one time (3 times maximum)
-        - The number of rounds is (number_of_players - 1) * number of games against the
-        same player
+    In a Round Robin Tournament:
+    - all players play the same number of games
+    - all players play against all other players at least one time (3 times maximum)
+    - The number of rounds is (number_of_players - 1) * number of games against the
+    same player
     """
 
     class Meta:
         proxy = True
 
     def generate_rounds(self, *args, **kwargs) -> None:
-        print("round-robin")
+        number_of_games = self.number_of_players / 2
+        is_odd = self.number_of_players % 2
+        rounds_base = self.number_of_players - 1 + is_odd
+        repeatead_plays = int(rounds_base / self.number_of_rounds)
+
+        for i in range(repeatead_plays):
+            matches_scheduling = self.generate_matches_scheduling()
+
+            for j in range(rounds_base):
+                round = Round.objects.create(
+                    round_number=(j + i * rounds_base + 1),
+                    number_of_games=number_of_games,
+                )
+
+                for players_match in matches_scheduling[j]:
+                    if all(isinstance(p, User) for p in players_match):
+                        game = Game.objects.create(
+                            status=GameStatus.SCHEDULED,
+                            rules=self.rules,
+                        )
+                        game.players.add(*players_match)
+                        round.games.add(game)
+
+                self.rounds.add(round)
+
+    def generate_matches_scheduling(self) -> list[list[User | str]]:
+        """
+        Implements the scheduling algorithm for round robin tournament
+
+        It rotates the players list for each round and gets the pairs for each match in
+        the round:
+        - the first element is always fixed in rotation
+        - for each rotation, the last element goes to second place in the list and all
+        other elements are moved one index forward
+        """
+        rotation = list(self.players.all())
+        if self.number_of_players % 2:
+            rotation.append("Player dummy")
+        random.shuffle(rotation)
+
+        # generate the rotated players list for each round
+        rounds = []
+        for i in range(0, len(rotation) - 1):
+            rounds.append(rotation)
+            rotation = [rotation[0]] + [rotation[-1]] + rotation[1:-1]
+
+        # generate the pairs for each match
+        scheduling = []
+        for round in rounds:
+            # scheduling.append(list[zip(*[iter(round)]*2)])
+            scheduling.append(zip(*[iter(round)] * 2))
+
+        return scheduling
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
         if current_number_of_players < 3:
@@ -194,11 +260,11 @@ class RoundRobin(Tournament):
 
 class Elimination(Tournament):
     """
-        In a Elimination Tournament:
-        - who wins in each round pass to the next round
-        - number_of_players must be even
-        - maximum of 32 players?
-        - The number of rounds is n for 2 ** n = number_of_players
+    In a Elimination Tournament:
+    - who wins in each round pass to the next round
+    - number_of_players must be even
+    - maximum of 32 players?
+    - The number of rounds is n for 2 ** n = number_of_players
     """
 
     class Meta:
