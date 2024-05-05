@@ -1,6 +1,7 @@
 # python std library
 from pprint import pprint
 import random
+import math
 
 # django
 from django.db import models
@@ -138,13 +139,14 @@ class Tournament(models.Model):
         return super().delete(using, keep_parents)
 
     def save(self, *args, **kwargs) -> None:
-        if (
-            self.number_of_players
-            and self.tournament_type == TournamentType.ROUND_ROBIN
-        ):
-            self.number_of_rounds = (
-                self.number_of_players - 1 + self.number_of_players % 2
-            )
+        if self.number_of_players:
+            match self.tournament_type:
+                case TournamentType.ROUND_ROBIN:
+                    self.number_of_rounds = (
+                        self.number_of_players - 1 + self.number_of_players % 2
+                    )
+                case TournamentType.ELIMINATION:
+                    self.number_of_rounds = math.ceil(math.log2(self.number_of_players))
 
         return super().save(*args, **kwargs)
 
@@ -199,9 +201,9 @@ class RoundRobin(Tournament):
         number_of_games = self.number_of_players / 2
         is_odd = self.number_of_players % 2
         rounds_base = self.number_of_players - 1 + is_odd
-        repeatead_plays = int(rounds_base / self.number_of_rounds)
+        repeatead_games = int(rounds_base / self.number_of_rounds)
 
-        for i in range(repeatead_plays):
+        for i in range(repeatead_games):
             matches_scheduling = self.generate_matches_scheduling()
 
             for j in range(rounds_base):
@@ -211,7 +213,7 @@ class RoundRobin(Tournament):
                 )
 
                 for players_match in matches_scheduling[j]:
-                    if all(isinstance(p, User) for p in players_match):
+                    if all(p for p in players_match):
                         game = Game.objects.create(
                             status=GameStatus.SCHEDULED,
                             rules=self.rules,
@@ -233,7 +235,7 @@ class RoundRobin(Tournament):
         """
         rotation = list(self.players.all())
         if self.number_of_players % 2:
-            rotation.append("Player dummy")
+            rotation.append(None)
         random.shuffle(rotation)
 
         # generate the rotated players list for each round
@@ -271,18 +273,47 @@ class Elimination(Tournament):
         proxy = True
 
     def generate_rounds(self, *args, **kwargs) -> None:
-        print("elimination")
+        perfect_players_number = int(math.pow(2, self.number_of_rounds))
+        first_round_missing_players = perfect_players_number - self.number_of_players
+
+        players_list = list(self.players.all())
+        random.shuffle(players_list)  # blind
+        players_list.extend([None] * first_round_missing_players)
+        half = int(perfect_players_number / 2)
+        players_pairs = list(zip(players_list[:half], players_list[half:]))
+
+        rounds = []
+        for i in range(self.number_of_rounds):
+            number_of_games = int(math.pow(2, self.number_of_rounds - i - 1))
+            # first round may be different
+
+            round = Round.objects.create(
+                round_number=(i + 1),
+                number_of_games=number_of_games,
+            )
+            for j in range(number_of_games):
+                game = Game.objects.create(
+                    status=GameStatus.SCHEDULED,
+                    rules=self.rules,
+                )
+                if i == 0:
+                    pprint(map(lambda p: game.players.add(p), players_pairs[j]))
+                round.games.add(game)
+
+            self.rounds.add(round)
+            rounds.append(round)
+
+        # for round 1 and 2 we may add some players
+        for players_match in players_pairs:
+            if all(p for p in players_match):
+                game.players.add(*players_match)
+        # we also need to link the next game
 
     def validate_number_of_players(self, current_number_of_players: int):
         if current_number_of_players < 4:
             raise ValueError(
                 "For Tournament Round Robin the number of players must be greater than"
                 f"3, but {current_number_of_players} players were associated to it"
-            )
-
-        if current_number_of_players % 2:
-            raise ValueError(
-                "For Tournament Round Robin the number of players must be even"
             )
 
 
