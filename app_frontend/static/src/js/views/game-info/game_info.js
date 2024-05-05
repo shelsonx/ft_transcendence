@@ -105,7 +105,7 @@ function drawChart(chartDiv, response) {
                 color: 'white',
             } 
         },
-        backgroundColor: 'none', 
+        backgroundColor: '#1B1926', 
         titleTextStyle: {
             color: 'white', 
             fontSize: 10
@@ -125,10 +125,12 @@ function drawChartMedalRaking(chartDiv, response) {
     var data = google.visualization.arrayToDataTable([
         ["Medals", "Scores", { role: "style" } ],
         ["Bronze", 500, "#CD7F32"],
-        ["Silver", 2000, "silver"],
-        [response.user.nickname, 2500, "color: #652417"],
-        ["Gold", 5000, "gold"],
+        ["Silver", 2000, "#d7ded9"],
+        ["Gold", 5000, "#daa520"],
     ]);
+
+    data.addRow([response.user.nickname, response.user.scores, "#652417"]);
+    data.sort([{column: 1}]);
     
     var view = new google.visualization.DataView(data);
     view.setColumns([0, 1,
@@ -154,7 +156,7 @@ function drawChartMedalRaking(chartDiv, response) {
             color: 'white', 
         },
         legend: { position: "none" },
-        backgroundColor: 'none',
+        backgroundColor: '#1B1926',
         fontName: 'Turret Road',
         hAxis: {
             textStyle: {
