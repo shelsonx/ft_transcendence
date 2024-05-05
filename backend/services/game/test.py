@@ -153,15 +153,35 @@ tournaments = Tournament.objects.all()
 print(len(tournaments))
 tournament1 = gen.seedTournament()
 pprint(vars(tournament1))
+for r in tournament1.rounds.all():
+    pprint(vars(r))
+    for g in r.games.all():
+        pprint(vars(g))
 
+print()
+print("Round Robin Tournament:")
 tournament2 = gen.seedTournament(
-    tournament_type=TournamentType.ELIMINATION,
+    tournament_type=TournamentType.ROUND_ROBIN,
     status=TournamentStatus.SCHEDULED,
     rules=rule5,
-    players=[user1, user2, gen.seedUser(), gen.seedUser()],
-    number_of_players=4,
+    # players=[user1, user2, gen.seedUser(), gen.seedUser(), gen.seedUser()],
+    players=[*User.objects.all()[:5]],
+    number_of_players=5,
 )
 pprint(vars(tournament2))
+# for r in tournament2.rounds.all():
+#     pprint(vars(r))
+#     for g in r.games.all():
+#         pprint(vars(g))
+
+# tournament3 = gen.seedTournament(
+#     tournament_type=TournamentType.ELIMINATION,
+#     status=TournamentStatus.SCHEDULED,
+#     rules=rule5,
+#     players=[user1, user2, gen.seedUser(), gen.seedUser()],
+#     number_of_players=4,
+# )
+# pprint(vars(tournament3))
 
 # print()
 # print(" Deleting all objects - users:")
