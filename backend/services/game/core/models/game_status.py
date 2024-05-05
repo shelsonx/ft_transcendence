@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class GameStatus(models.IntegerChoices):
-    SCHEDULED = 0, _("Scheduled")
-    WAITING = 1, _("Waiting players confirmation to beggin")
+    PENDING = 0, _("Pending confirmation")
+    SCHEDULED = 1, _("Scheduled")
     ONGOING = 2, _("Ongoing")
     ENDED = 3, _("Ended")
