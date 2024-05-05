@@ -8,7 +8,7 @@ class BaseLoggedView extends View {
     start
   }) {
     const navItems = [
-      // new NavItems('#settings', 'Settings'),  // user-management
+      new NavItems('#user-management', 'Settings'),
       new NavItems('#game-info', 'Ranking'),
       new NavItems('#play', 'Play'),
       new NavItems('#tournaments', 'Tournaments'),

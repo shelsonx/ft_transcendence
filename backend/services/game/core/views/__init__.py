@@ -1,2 +1,2 @@
 from .game import GameView
-from .user_games import UserGamesView
+from .user_games import GamesView
