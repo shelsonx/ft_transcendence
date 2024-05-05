@@ -11,6 +11,9 @@ from .game_rules import GameRules
 
 
 class Game(models.Model):
+    """
+    - Score in platform: points in game
+    """
 
     class Meta:
         verbose_name_plural = _("Games")
@@ -31,6 +34,15 @@ class Game(models.Model):
     players = models.ManyToManyField(
         to=User, through="GamePlayer", related_name="games"
     )
+
+    # field to link Elimination Tournament Games
+    # result_to = models.ForeignKey(
+    #     "self",
+    #     on_delete=models.SET_NULL,
+    #     related_name="depends_on",
+    #     null=True,
+    #     blank=True,
+    # )
 
     # @property
     # def tournament(self):
@@ -61,6 +73,12 @@ class Game(models.Model):
     #     if self.status == GameStatus.ENDED:
     #         return self.score_a == self.score_b
     #     return False
+
+    def add_score(self) -> None:
+        # tournament is other rule
+        if hasattr(self, "round"):
+            pass
+        pass
 
     def __str__(self) -> str:
         # players =
