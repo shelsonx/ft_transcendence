@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Local Folder
-from .game_rules import GameRules
+from .game_rules import GameRules, GameRuleType
 from .game_status import GameStatus
 from .game import Game
 from .round import Round
@@ -16,6 +16,12 @@ from user.models import User
 
 
 class Tournament(models.Model):
+    """
+        - Score in Tournament: winner wins 3 points, tie, 1 point
+        - Score in platform: sum(score per game * points in game)
+        - The winner wins a bonus of 10 points in platform score
+    """
+
     tournament_type = models.SmallIntegerField(
         choices=TournamentType.choices,
         default=TournamentType.CHALLENGE,
@@ -53,9 +59,37 @@ class Tournament(models.Model):
 
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight
-    def generate_games(self, *args, **kwargs) -> None:
+    def generate_rounds(self, *args, **kwargs) -> None:
+        if self.status == TournamentStatus.ENDED:
+            return
+
+        if self.rounds.all().count():
+            raise ValueError("Can't regenerate games if there are preexisting rounds")
+
         self.validate_number_of_players()
-        self.__get_proxy().generate_games(*args, **kwargs)
+        self.__get_proxy().generate_rounds(*args, **kwargs)
+
+    def generate_tiebreaker_game(self, player_a: User, player_b: User) -> Game:
+        """
+        The tiebraker game will be with the GameRuleType.PLAYER_POINTS default
+        (wins who makes 11 points first)
+        """
+
+        round = Round.objects.create(
+            round_number=(self.number_of_rounds + 1), number_of_games=1
+        )
+        game = Game.objects.create(
+            status=GameStatus.SCHEDULED,
+            rules=GameRules.objects.get(
+                rule_type=GameRuleType.PLAYER_POINTS,
+                points_to_win=11,
+            ),
+        )
+        game.players.add(*[player_a, player_b])
+        round.games.add(game)
+        self.rounds.add(round)
+
+        return game
 
     def validate_number_of_players(self) -> None:
         current_number_of_players = self.players.all().count()
@@ -66,6 +100,11 @@ class Tournament(models.Model):
             )
 
         self.__get_proxy().validate_number_of_players(current_number_of_players)
+
+    def delete_rounds(self) -> None:
+        if self.status == TournamentStatus.ENDED:
+            raise ValueError("An Ended tournament can't have its rounds deleted")
+        self.rounds.all().delete()
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -85,8 +124,8 @@ class Tournament(models.Model):
                 self._proxy = RoundRobin.objects.get(pk=self.pk)
             case TournamentType.ELIMINATION:
                 self._proxy = Elimination.objects.get(pk=self.pk)
-            case TournamentType.LEAGUE_WITH_PLAYOFF:
-                self._proxy = LeaguePlayoff.objects.get(pk=self.pk)
+            # case TournamentType.LEAGUE_WITH_PLAYOFF:
+            #     self._proxy = LeaguePlayoff.objects.get(pk=self.pk)
 
         return self._proxy
 
@@ -96,41 +135,31 @@ class Tournament(models.Model):
 
 
 # critério de desempate: a soma de pontos feitos
-# se ainda assim tiver empate, uma última partida no formato do pong original
+# se ainda assim tiver empate, uma última partida no formato do pong original?
 
-# tipos de campeonatos:
-
-
-# 0) challenge
-# - entre 2 jogadores
-# - melhor de 3, 5 etc
 class Challenge(Tournament):
+    """
+        A Challenge Tournament is between 2 players only, in a style 'best of x',
+        with x = the number of matches\n
+        Each round has only one game between the players, i.e, the number of rounds
+        and number of games are the same.\n
+    """
 
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs) -> None:
-        rounds = self.rounds.all()
-        total_existing_rounds = rounds.count()
-        if total_existing_rounds == self.number_of_rounds:
-            return
-
-        if total_existing_rounds > self.number_of_rounds:
-            raise ValueError("mismatch between actual rounds and registered rounds")
-
-        # since for Challenge Tournament a winner may win before all rounds happen
-        # we just generate a round at time
-        round = Round.objects.create(
-            round_number=(total_existing_rounds + 1),
-            number_of_games=1
-        )
-        game = Game.objects.create(
-            status=GameStatus.SCHEDULED,
-            rules=self.rules,
-        )
-        game.players.add(*self.players.all())
-        round.games.add(game)
-        self.rounds.add(round)
+    def generate_rounds(self, *args, **kwargs) -> None:
+        for i in range(self.number_of_rounds):
+            round = Round.objects.create(
+                round_number=(i + 1), number_of_games=1
+            )
+            game = Game.objects.create(
+                status=GameStatus.SCHEDULED,
+                rules=self.rules,
+            )
+            game.players.add(*self.players.all())
+            round.games.add(game)
+            self.rounds.add(round)
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
         if current_number_of_players != 2:
@@ -139,19 +168,20 @@ class Challenge(Tournament):
                 f"but {current_number_of_players} players were associated to it"
             )
 
-# 1) pontos corridos
-# - todos têm o mesmo número de jogos e todos enfrentam todos - deixar 2x padrão?
-# - o vencedor ganha 3 pontos
-# - empate cada um ganha 1 ponto
-# - customizável: quantidade de jogos
-
 
 class RoundRobin(Tournament):
+    """
+        In a Round Robin Tournament:
+        - all players play the same number of games
+        - all players play against all other players at least one time (3 times maximum)
+        - The number of rounds is (number_of_players - 1) * number of games against the
+        same player
+    """
 
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs) -> None:
+    def generate_rounds(self, *args, **kwargs) -> None:
         print("round-robin")
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
@@ -162,19 +192,19 @@ class RoundRobin(Tournament):
             )
 
 
-# 2) mata-mata
-# quem ganhar segue pra próxima fase
-# separado em fases
-# precisa de um número par de equipes ?
-# estrturar as chaves: Final, Semi-Final (4), quartas de final (8), oitavas de final 16
-
-
 class Elimination(Tournament):
+    """
+        In a Elimination Tournament:
+        - who wins in each round pass to the next round
+        - number_of_players must be even
+        - maximum of 32 players?
+        - The number of rounds is n for 2 ** n = number_of_players
+    """
 
     class Meta:
         proxy = True
 
-    def generate_games(self, *args, **kwargs) -> None:
+    def generate_rounds(self, *args, **kwargs) -> None:
         print("elimination")
 
     def validate_number_of_players(self, current_number_of_players: int):
@@ -194,12 +224,10 @@ class Elimination(Tournament):
 # - group size - aplica pontos corridos
 # regra de classificação
 # mata-mata
+# class LeaguePlayoff(Tournament):
 
+#     class Meta:
+#         proxy = True
 
-class LeaguePlayoff(Tournament):
-
-    class Meta:
-        proxy = True
-
-    def generate_games(self, *args, **kwargs):
-        print("league with playoff")
+#     def generate_rounds(self, *args, **kwargs):
+#         print("league with playoff")
