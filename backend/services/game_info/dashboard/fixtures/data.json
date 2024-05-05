@@ -1,107 +1,107 @@
 [
-{
-    "model": "dashboard.userinfo",
-    "pk": 1,
-    "fields": {
-        "full_name": "Shelson Jhony Xavier Alves",
-        "nickname": "sjhony-x",
-        "scores": 3,
-        "winnings": 2,
-        "losses": 1,
-        "position": 1,
-        "status": true,
-        "playing": true,
-        "photo": "static/images/2024/05/01/photo3.jpeg"
+    {
+        "model": "dashboard.userinfo",
+        "pk": 1,
+        "fields": {
+            "full_name": "Shelson Jhony Xavier Alves",
+            "nickname": "sjhony-x",
+            "scores": 300,
+            "winnings": 2,
+            "losses": 1,
+            "position": 7,
+            "status": true,
+            "playing": true,
+            "photo": "static/images/2024/05/01/photo3.jpeg"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 2,
+        "fields": {
+            "full_name": "Sheela Guilhermino Khusal",
+            "nickname": "sguilher",
+            "scores": 7000,
+            "winnings": 6,
+            "losses": 1,
+            "position": 5,
+            "status": true,
+            "playing": true,
+            "photo": "static/images/2024/05/01/sheela.png"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 3,
+        "fields": {
+            "full_name": "Eliaris Raíra De Godoy Alvares",
+            "nickname": "elraira-",
+            "scores": 3500,
+            "winnings": 11,
+            "losses": 2,
+            "position": 2,
+            "status": false,
+            "playing": false,
+            "photo": "static/images/2024/05/01/elraira-.jpeg"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 4,
+        "fields": {
+            "full_name": "Bruno Bonaldi Ramos Silva",
+            "nickname": "bbonaldi",
+            "scores": 4000,
+            "winnings": 1,
+            "losses": 1,
+            "position": 6,
+            "status": true,
+            "playing": false,
+            "photo": "static/images/2024/05/01/brunobonaldi.jpeg"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 5,
+        "fields": {
+            "full_name": "Humberto Arndt",
+            "nickname": "harndt",
+            "scores": 300,
+            "winnings": 1,
+            "losses": 4,
+            "position": 4,
+            "status": false,
+            "playing": true,
+            "photo": "static/images/2024/05/01/humberto.jpeg"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 6,
+        "fields": {
+            "full_name": "Davi Lucca Viana Alves",
+            "nickname": "davi-lc",
+            "scores": 3000,
+            "winnings": 1,
+            "losses": 1,
+            "position": 2,
+            "status": true,
+            "playing": false,
+            "photo": "static/images/astronaut3.jpeg"
+        }
+    },
+    {
+        "model": "dashboard.userinfo",
+        "pk": 7,
+        "fields": {
+            "full_name": "Doriane  Viana Alves",
+            "nickname": "dory-vi",
+            "scores": 3000,
+            "winnings": 15,
+            "losses": 1,
+            "position": 1,
+            "status": true,
+            "playing": false,
+            "photo": "static/images/astronaut3.jpeg"
+        }
     }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 2,
-    "fields": {
-        "full_name": "Sheela Guilhermino Khusal",
-        "nickname": "sguilher",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 1,
-        "position": 1,
-        "status": true,
-        "playing": true,
-        "photo": "static/images/2024/05/01/sheela.png"
-    }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 3,
-    "fields": {
-        "full_name": "Eliaris Raíra De Godoy Alvares",
-        "nickname": "elraira-",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 0,
-        "position": 1,
-        "status": false,
-        "playing": false,
-        "photo": "static/images/2024/05/01/elraira-.jpeg"
-    }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 4,
-    "fields": {
-        "full_name": "Bruno Bonaldi Ramos Silva",
-        "nickname": "bbonaldi",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 0,
-        "position": 1,
-        "status": true,
-        "playing": false,
-        "photo": "static/images/2024/05/01/brunobonaldi.jpeg"
-    }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 5,
-    "fields": {
-        "full_name": "Humberto Arndt",
-        "nickname": "harndt",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 1,
-        "position": 1,
-        "status": false,
-        "playing": true,
-        "photo": "static/images/2024/05/01/humberto.jpeg"
-    }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 6,
-    "fields": {
-        "full_name": "Davi Lucca Viana Alves",
-        "nickname": "davi-lc",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 1,
-        "position": 1,
-        "status": true,
-        "playing": false,
-        "photo": "static/images/astronaut3.jpeg"
-    }
-},
-{
-    "model": "dashboard.userinfo",
-    "pk": 7,
-    "fields": {
-        "full_name": "Doriane  Viana Alves",
-        "nickname": "dory-vi",
-        "scores": 1,
-        "winnings": 1,
-        "losses": 1,
-        "position": 1,
-        "status": true,
-        "playing": false,
-        "photo": "static/images/astronaut3.jpeg"
-    }
-}
 ]
