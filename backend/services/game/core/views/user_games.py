@@ -16,25 +16,27 @@ from user.models import User
 logger = logging.getLogger("eqlog")
 
 
-class UserGamesView(generic.ListView):
+class GamesView(generic.ListView):
     model = Game
     ordering = "game_datetime"
     template_name = "user_games.html"
     paginate_by = 20
 
     # TODO SHEELA: proteger a rota - somente o usuário pode acessar?
-    def get(self, request: HttpRequest, pk: uuid, *args, **kwargs) -> HttpResponse:
-        self.user = get_object_or_404(User, pk=pk)
+    def get(
+        self, request: HttpRequest, pk: uuid = None, *args, **kwargs
+    ) -> HttpResponse:
+        self.user = None
+        if pk:
+            self.user = get_object_or_404(User, pk=pk)
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet[Game]:
-        return self.user.games.all()
+        if self.user:
+            return self.user.games.all()
+        return super().get_queryset()
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["user"] = self.user
-
-        # import pprint
-        # pprint.pprint(context, indent=4)
-        # pprint.pprint(vars(context["paginator"]), indent=4)
         return context
