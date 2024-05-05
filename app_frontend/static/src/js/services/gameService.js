@@ -14,6 +14,13 @@ class GameService {
     return response;
   }
 
+  async allGames() {
+    const requestData = new HttpClientRequestData('GET', '/games');
+    // const requestData = new HttpClientRequestData('GET', '/games/8cd4dcd1-3055-459a-8c67-b7bdc7194b85');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
   // async login(formData) {
   //   const data = {
   //     email: formData.get('email'),

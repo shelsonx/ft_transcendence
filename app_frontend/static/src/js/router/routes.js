@@ -3,6 +3,7 @@ import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
+import home from "../views/home.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import PongGameView from "../views/game/pong.js";
@@ -22,7 +23,7 @@ const pathRoutes = {
 };
 
 const hashRoutes = {
-  "/": { title: "User Management", render: userManagement, description: "Manage users.", isProtected: true },
+  "/": { title: "Home", render: home, description: "Pong games" },  // isProtected: true },
   "login": { title: "Login", render: login, description: "Login to your account."},
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},

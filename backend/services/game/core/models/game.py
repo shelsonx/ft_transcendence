@@ -17,7 +17,7 @@ class Game(models.Model):
 
     class Meta:
         verbose_name_plural = _("Games")
-        ordering = ["game_datetime"]
+        ordering = ["-game_datetime"]
 
     game_datetime = models.DateTimeField(verbose_name=_("Game date"), null=True)
     status = models.SmallIntegerField(
