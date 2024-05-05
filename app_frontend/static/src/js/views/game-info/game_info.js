@@ -19,7 +19,7 @@ const html = /*html*/`
                 <div class="col-lg-12 mb-3">
                     <div class="container_details text-center">
                         <div class="row align-items-center justify-content-center">
-                            <div class="col-md-4">
+                            <div class="col-md-4" id="details-medal-user">
                                 <img src="static/src/img/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
                                 <p class="mb-1" id="details-fullname">FT_TRANSCENDENCE 42 SP</p>
                                 <p id="details-status">
@@ -27,7 +27,7 @@ const html = /*html*/`
                                     <strong id="details-status-label"></strong>
                                 </p>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" id="details-photo-user">
                                 <img src="static/src/img/astronaut4.jpeg" alt="Foto do usuário" class="details-pictures details-profile-picture" id="details-photo">
                             </div>
                             <div class="col-md-4">
@@ -121,6 +121,63 @@ function drawChart(chartDiv, response) {
     chart.draw(data, options);
 }
 
+function drawChartMedalRaking(chartDiv, response) {
+    var data = google.visualization.arrayToDataTable([
+        ["Medals", "Scores", { role: "style" } ],
+        ["Bronze", 500, "#CD7F32"],
+        ["Silver", 2000, "silver"],
+        [response.user.nickname, 2500, "color: #652417"],
+        ["Gold", 5000, "gold"],
+    ]);
+    
+    var view = new google.visualization.DataView(data);
+    view.setColumns([0, 1,
+        { 
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation" 
+        },
+        2
+    ]);
+    
+    var options = {
+        width: 400,
+        height: 220,
+        bar: {groupWidth: "95%"},
+        legend: { 
+            textStyle: { 
+                color: 'white',
+            } 
+        },
+        titleTextStyle: {
+            color: 'white', 
+        },
+        legend: { position: "none" },
+        backgroundColor: 'none',
+        fontName: 'Turret Road',
+        hAxis: {
+            textStyle: {
+                color: 'white'
+            }
+        },
+        vAxis: {
+            textStyle: {
+                color: 'white'
+            }
+        },
+        chartArea: {
+            textStyle: {
+                color: 'white'
+            }
+        }
+    };
+    
+    var chart = new google.visualization.ColumnChart(chartDiv);
+    chart.draw(view, options);
+    
+}
+
 function setData(container, data) {
     const nickname = container.querySelector('.list-nickname');
     nickname.textContent = data.nickname;
@@ -178,21 +235,29 @@ function createCol1(){
 function createUserPhoto(data) {
     const userPhoto = document.createElement('img');
     const detailsInfosUser = document.getElementById('details-infos-user');
+    const detailsMedalUser = document.getElementById('details-medal-user');
+    const detailsPhotoUser = document.getElementById('details-photo-user');
     userPhoto.classList.add('list-user-photo');
 
     let oldValuesUser = ``;
+    let oldMedalUser = ``;
+    let oldPhotoUser = ``;
     userPhoto.addEventListener('mouseover', function() {
         oldValuesUser = document.getElementById('details-infos-user').innerHTML;
-        var detailsInfosUser = document.getElementById('details-infos-user');
+        oldMedalUser = document.getElementById('details-medal-user').innerHTML;
+        oldPhotoUser = document.getElementById('details-photo-user').innerHTML;
         gameInfoService.get_user(data.id).then(
             res => {
                 setDetailsStatus(res);
                 drawChart(detailsInfosUser, res);
+                drawChartMedalRaking(detailsMedalUser, res);
             }
         );
     });
     userPhoto.addEventListener('mouseleave', function() {
         detailsInfosUser.innerHTML = oldValuesUser;
+        detailsMedalUser.innerHTML = oldMedalUser;
+        detailsPhotoUser.innerHTML = oldPhotoUser;
     });
 
     return userPhoto;
