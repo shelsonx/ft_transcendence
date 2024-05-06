@@ -12,16 +12,26 @@ class HomeView extends BaseLoggedView {
 }
 
 const html = /*html*/`
+  <h1>Hello, user!</h1>
   <div id="swap-container" class="container-fluid main"></div>
 `
+
+let matchesRows = document.getElementsByClassName("match-row");
 
 const swap = (response) => {
   const swapContainer = document.getElementById("swap-container");
   swapContainer.innerHTML = response;
+
+  matchesRows = document.getElementsByClassName("match-row");
+  matchesRows.array.forEach(match => {
+    match.addEventListener("click", () => {
+      window.location = '#pong';
+    })
+  });
 }
 
 const start = async () => {
-  gameService.allGames().then(swap);
+  gameService.userGames().then(swap);
 
   // const tbody = document.getElementsByTagName("tbody");
   // tbody.className = "main";

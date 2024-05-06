@@ -6,6 +6,7 @@ import twoFactorAuth from "../views/auth/validate2Factor.js";
 import home from "../views/home.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
+import NewGameView from "../views/game/new_game.js";
 import PongGameView from "../views/game/pong.js";
 import TournamentsView from "../views/game/tournaments.js";
 import TournamentDetailView from "../views/game/tournament-detail.js";
@@ -31,7 +32,8 @@ const hashRoutes = {
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
-  "play": { title: "Play Pong", render: PongGameView, description: "Play pong"},  // posso receber um id da match...?
+  "play": { title: "Play Pong", render: NewGameView, description: "Play pong"},
+  "pong": { title: "Play Pong", render: PongGameView, description: "Play pong"},  // posso receber um id da match...?
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page."},
   "tournament-detail": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page."},
 };

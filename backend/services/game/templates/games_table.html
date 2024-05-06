@@ -25,7 +25,7 @@
     <tbody>
       {% for game in game_list %}
         {% comment %} {% if game.status == GameStatus.ENDED or user %} {% endcomment %}
-          <tr>
+          <tr class="match-row" id="game_{{game.pk}}" onclick="window.location='#pong';">
             {% if game.status == GameStatus.ENDED %}
               <td>{{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}</td>
             {% else %}

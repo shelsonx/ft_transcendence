@@ -40,7 +40,7 @@ class UserView(generic.View):
         if not form.is_valid():
             return HttpResponseBadRequest()
 
-        user = form.save()
+        user: User = form.save()
         print("User created: ", user)
         return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
@@ -52,7 +52,7 @@ class UserView(generic.View):
         if not form.is_valid():
             return HttpResponseBadRequest
 
-        user = form.save()
+        user: User = form.save()
         print("User deleted: ", user)
         return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
