@@ -1,6 +1,7 @@
 # Create your views here.
 # Standard Library
 import logging
+# import pprint
 import uuid
 
 # Third Party
@@ -26,6 +27,8 @@ class GamesView(generic.ListView):
     def get(
         self, request: HttpRequest, pk: uuid = None, *args, **kwargs
     ) -> HttpResponse:
+        # pprint.pprint(request, indent=4)
+        # pprint.pprint(request.headers, indent=4)
         self.user = None
         if pk:
             self.user = get_object_or_404(User, pk=pk)

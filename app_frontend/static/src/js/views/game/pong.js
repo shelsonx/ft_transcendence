@@ -15,45 +15,27 @@ class PongGameView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <h3 class="row justify-content-center">Duration: 00:00</h3>
-  <div class="row justify-content-center">
-    <div class="col">
-      <h3 class="row justify-content-center">Player A</h3>
-      <h2 class="row justify-content-center">0</h2>
-      <!-- <p>{{ match.player_a.id_reference }}</p>
-      <p>Points: {{ match.score_a }}</p> -->
-    </div>
-    <canvas id="canvas" class="col"></canvas>
-    <div class="col">
-      <h3 class="row justify-content-center">Player B</h3>
-      <h2 class="row justify-content-center">0</h2>
-      <!-- <p>{{ match.player_b.id_reference }}</p>
-      <p>Points: {{ match.score_b }}</p> -->
+  <div id="pong-game" class="">
+    <h3 class="row justify-content-center">Duration: 00:00</h3>
+    <div class="row justify-content-center">
+      <div class="col">
+        <h3 class="row justify-content-center">Player A</h3>
+        <h2 class="row justify-content-center">0</h2>
+        <!-- <p>{{ match.player_a.id_reference }}</p>
+        <p>Points: {{ match.score_a }}</p> -->
+      </div>
+      <canvas id="canvas" class="col"></canvas>
+      <div class="col">
+        <h3 class="row justify-content-center">Player B</h3>
+        <h2 class="row justify-content-center">0</h2>
+        <!-- <p>{{ match.player_b.id_reference }}</p>
+        <p>Points: {{ match.score_b }}</p> -->
+      </div>
     </div>
   </div>
-  <div id="test"></div>
-  <button class="btn btn-primary" id="button">Click me</button>
 `
 
-const swap = (response) => {
-  const test = document.getElementById("test")
-  // console.log(response)
-  // const headers = await response.headers
-  // console.log(...headers)
-  // console.log(response.body)
-  test.innerHTML += response
-  // test.innerHTML = await response.text()
-}
-
 const start = async () => {
-  gameService.gameTest().then(swap);
-  console.log('Pong Game View');
-
-  const button = document.getElementById("button");
-  button.addEventListener("click", () => {
-    gameService.gameTest().then(swap);
-  })
-
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   canvas.width = innerWidth / 2;
