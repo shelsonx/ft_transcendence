@@ -17,6 +17,9 @@ run_first_api:
 up:
 	$(DOCKER_CMD) up -d --build
 
+stop:
+	$(DOCKER_CMD) stop
+
 down:
 	$(DOCKER_CMD) down --remove-orphans
 
