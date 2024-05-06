@@ -8,3 +8,4 @@ class GameStatus(models.IntegerChoices):
     SCHEDULED = 1, _("Scheduled")
     ONGOING = 2, _("Ongoing")
     ENDED = 3, _("Ended")
+    CANCELED = 4, _("Canceled")
