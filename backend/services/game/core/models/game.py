@@ -19,7 +19,7 @@ class Game(models.Model):
         verbose_name_plural = _("Games")
         ordering = ["-game_datetime"]
 
-    game_datetime = models.DateTimeField(verbose_name=_("Game date"), null=True)
+    game_datetime = models.DateTimeField(verbose_name=_("Game date"), null=True)  # remove null
     status = models.SmallIntegerField(
         choices=GameStatus,
         default=GameStatus.SCHEDULED,
