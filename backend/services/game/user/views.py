@@ -33,7 +33,10 @@ class UserView(generic.View):
 
     # TODO: SHEELA - protect route to only gateway
     def post(self, request: HttpRequest) -> HttpResponse:
-        form = self.form_class(request.POST)
+        id = request.POST.get("id")  # TODO: validate uuid
+        # id = uuid.uuid4()
+
+        form = self.form_class(request.POST, instance=User(id=id))
         if not form.is_valid():
             return HttpResponseBadRequest()
 
