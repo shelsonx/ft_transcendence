@@ -144,7 +144,7 @@ print(len(games))
 game1 = gen.seedGame()
 pprint(vars(game1))
 
-game2 = gen.seedGame(status=GameStatus.WAITING, rules=rule5, players=[user1, user2])
+game2 = gen.seedGame(status=GameStatus.PENDING, rules=rule5, players=[user1, user2])
 
 pprint(vars(game2))
 print()
