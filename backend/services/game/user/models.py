@@ -1,4 +1,3 @@
-from django.db import models
 # from itertools import chain
 import uuid
 
@@ -8,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    username = models.CharField(max_length=100, unique=True, null=False, blank=False)
     # nickname = models.CharField(max_length=50)
     # score = models.IntegerField(default=0)
 
