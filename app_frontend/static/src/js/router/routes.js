@@ -35,7 +35,7 @@ const hashRoutes = {
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong"},
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong"},  // posso receber um id da match...?
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page."},
-  "tournament-detail": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page."},
+  "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page."},
 };
 
 export {
