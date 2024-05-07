@@ -10,13 +10,13 @@ from django.http import (
     HttpResponseBadRequest,
 )
 from django.shortcuts import get_object_or_404, render
-from django.utils.decorators import method_decorator
 from django.views import generic
 
 # First Party
 from core.models import Game, GameStatus, GameRules, GameRuleType
 from core.forms import GameForm, GameEditForm, GameRulesForm
 from user.decorators import logged_permission
+from user.forms import UserSearchForm
 from user.models import User
 
 
@@ -25,6 +25,7 @@ class GameView(generic.View):
     game = None
     game_form = None
     rules_form = None
+    user_form = None
 
     @logged_permission()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
@@ -50,7 +51,7 @@ class GameView(generic.View):
 
         self.set_forms(request.POST)
         context = self.get_context_data()
-        if not self.game_form.is_valid() or not self.rules_form.is_valid():
+        if not self.rules_form.is_valid():
             return render(request, self.template_name, context)
 
         rules: GameRules = self.rules_form.save()
@@ -98,6 +99,7 @@ class GameView(generic.View):
             "GameStatus": GameStatus,
             "game_form": self.game_form,
             "rules_form": self.rules_form,
+            "user_form": self.user_form,
         }
 
     def set_forms(self, data=None) -> None:
@@ -106,3 +108,4 @@ class GameView(generic.View):
         }
         self.game_form = GameForm(data, initial=initial, instance=self.game)
         self.rules_form = GameRulesForm(data)
+        self.user_form = UserSearchForm(data)
