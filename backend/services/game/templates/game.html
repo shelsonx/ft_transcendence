@@ -1,27 +1,22 @@
 {% load i18n %}
-<h1>{% translate "Let's Play Pong!" %}</h1>
 
-{{ game_form.as_table }}
-{{ rules_form.as_table }}
+<form action="http://localhost:8020/{% url 'core:create_game' %}" method="post">
+  <div class="main pb-5">
+    <h5>{% translate "Set the game rules:" %}</h5>
 
-{% comment %} <p>Duration: {{ game.duration }}</p>
-<p>Status: {{ game.status.label }}</p> {% endcomment %}
+    {% csrf_token %}
+    {{ rules_form }}
 
-{% comment %}
-<h2>Rules</h2>
-<ul>
-  <li>Player max points: {{ game.player_reach_points }}</li>
-  <li>Max total points: {{ game.game_total_points }}</li>
-</ul>
-{% endcomment %}
+    <h5 class="pt-5">{% translate "Choose an oponent:" %}</h5>
+    {{ user_form }}
 
-{% comment %} <div class="row">
-  <div class="col">
-    <h3>Player A</h3>
-    <p>Points: {{ game.score_a }}</p>
   </div>
-  <div class="col">
-    <h3>Player B</h3>
-    <p>Points: {{ game.score_b }}</p>
-  </div>
-</div> {% endcomment %}
+
+  <button class="btn btn-primary w-100" type="submit" id="button">
+    {% translate "Let's play pong!" %}
+  </button>
+  {% comment %} <i id="spinner"
+    class="fa fa-spinner fa-spin text-white htmx-indicator"
+    aria-hidden="true">
+  </i> {% endcomment %}
+</form>
