@@ -85,6 +85,7 @@ class Generator:
         data = {
             "tournament_type": TournamentType.CHALLENGE,
             "status": TournamentStatus.INVITATION,
+            "tournament_date": timezone.now().date() - timedelta(days=15),
             "rules": rules,
             "number_of_players": 2,
             "number_of_rounds": 3,

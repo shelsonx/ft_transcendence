@@ -37,6 +37,7 @@ class Tournament(models.Model):
         default=TournamentStatus.INVITATION,
         verbose_name=_("Tournament Status"),
     )
+    tournament_date = models.DateField(verbose_name=_("Tournament date"))
 
     # All players and games must adhere to the same game rules
     rules = models.ForeignKey(
