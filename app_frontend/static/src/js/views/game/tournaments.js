@@ -1,4 +1,5 @@
 import BaseLoggedView from '../baseLoggedView.js';
+import gameService from '../../services/gameService.js';
 
 
 class TournamentsView extends BaseLoggedView {
@@ -12,11 +13,29 @@ class TournamentsView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <h1 class="text-bg-dark">Tournaments View</h1>
+  <div id="swap-container" class="container-fluid main"></div>
 `
 
-const start = () => {
-  console.log('Tournaments View')
+let tournamentsRows = document.getElementsByClassName("tournament-row");
+
+const swap = (response) => {
+  const swapContainer = document.getElementById("swap-container");
+  swapContainer.innerHTML = response;
+
+  tournamentsRows = document.getElementsByClassName("tournament-row");
+  tournamentsRows.array.forEach(match => {
+    match.addEventListener("click", () => {
+      // check if we do this without changing route because we gonna need to
+      window.location = '#tournament';
+    })
+  });
+}
+
+const start = async () => {
+  gameService.userTournaments().then(swap);
+
+  // const tbody = document.getElementsByTagName("tbody");
+  // tbody.className = "main";
 }
 
 export default new TournamentsView(html, start);

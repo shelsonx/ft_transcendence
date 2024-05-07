@@ -55,25 +55,52 @@ class GameService {
     return response;
   }
 
-  // async login(formData) {
-  //   const data = {
-  //     email: formData.get('email'),
-  //     password: formData.get('password'),
-  //   };
-  //   const requestData = new HttpClientRequestData('POST', 'sign-in/', data);
-  //   const response = await this.httpClient.makeRequest(requestData);
-  //   return response;
-  // }
+  async allTournaments() {
+    const requestData = new HttpClientRequestData('GET', '/tournaments');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
 
-  // async validateTwoFactorCode(formData) {
-  //   const data = {
-  //     email: formData.get('email'),
-  //     two_factor_code: formData.get('two-factor-code')
-  //   };
-  //   const requestData = new HttpClientRequestData('PUT', 'validate-2factor-code/', data);
-  //   const response = await this.httpClient.makeRequest(requestData);
-  //   return response;
-  // }
+  async userTournaments() {
+    const jwtToken = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    console.log(jwtToken)
+    const requestData = new HttpClientRequestData('GET', '/tournaments');
+    // const requestData = new HttpClientRequestData('GET', '/user/<uuid:pk>/tournaments');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async getFormTournament() {
+    const requestData = new HttpClientRequestData('GET', '/tournament');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async addTournament() {
+    data = {}
+    const requestData = new HttpClientRequestData('POST', '/tournament');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async tournament(id) {
+    const requestData = new HttpClientRequestData('GET', `tournament/${id}`, data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async updateTournament(id) {
+    data = {}
+    const requestData = new HttpClientRequestData('PATCH', `tournament/${id}`, data);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async deleteTournament(id) {
+    const requestData = new HttpClientRequestData('DELETE', `tournament/${id}`);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
 
 }
 
