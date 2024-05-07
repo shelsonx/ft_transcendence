@@ -12,12 +12,14 @@ class NewGameView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-<div id="swap-container" class="container-fluid main"></div>
-  <div id="add-game" class="row justify-content-center">
-    <button class="btn btn-primary col-3" id="button">
-      Let's play pong!
-    </button>
+<div class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  <div
+    id="swap-container"
+    class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container"
+    >
+
   </div>
+</div>
 `
 
 let idTarget = "swap-container";
@@ -34,14 +36,11 @@ const swap = (response) => {
 
 const start = async () => {
   gameService.getFormGame().then(swap);
-  console.log('Pong Game View');
-
-  const button = document.getElementById("button");
-  button.addEventListener("click", () => {
-    idTarget = "add-game";
-    gameService.getFormGame().then(swap);
-  })
-
+  // const button = document.getElementById("button");
+  // button.addEventListener("click", () => {
+  //   idTarget = "add-game";
+  //   gameService.getFormGame().then(swap);
+  // })
 }
 
 export default new NewGameView(html, start);
