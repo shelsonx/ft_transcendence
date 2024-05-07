@@ -13,7 +13,7 @@ down:
 	docker-compose -f $(GAME_FILE) --project-name $(PROJECT_NAME) down --remove-orphans
 
 migrations:
-	docker exec -t game-api bash -c "python manage.py makemigrations"
+	docker exec -it game-api bash -c "python manage.py makemigrations"
 
 migrate:
 	docker exec -t game-api bash -c "python manage.py migrate"
@@ -25,7 +25,7 @@ db-logs:
 	docker logs -f game-db
 
 runscript:
-	docker exec -t game-api bash -c "python manage.py shell < test.py"
+	docker exec -it game-api bash -c "python manage.py shell < test.py"
 
 shell:
 	docker exec -it game-api bash -c "python manage.py shell"
