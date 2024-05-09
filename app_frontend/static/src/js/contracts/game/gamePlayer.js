@@ -19,7 +19,7 @@ class GamePlayer {
   static mustHaveKeys = ["user", "score"];
 
   constructor(user, score) {
-    this.user = GameUser.createGameUserFromObj(user);
+    this.user = GameUser.createGameUserFromObj(user);  // pode ser anônimo?
     this.score = score;
   }
 
@@ -31,5 +31,7 @@ class GamePlayer {
   draw() {};
   update() {};
 }
+
+// const player = new GamePlayer()
 
 export { GamePlayer };
