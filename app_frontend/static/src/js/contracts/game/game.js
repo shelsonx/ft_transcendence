@@ -9,7 +9,7 @@ class Game {
     "game_datetime",
     "status",
     "duration",
-    // "rules",
+    "rules",
     "player_left",
     "player_right",
   ];
@@ -19,7 +19,7 @@ class Game {
     game_datetime,
     status,
     duration,
-    // rules,
+    rules,
     player_left,
     player_right
   ) {
@@ -27,8 +27,7 @@ class Game {
     this.game_datetime = game_datetime;
     this.status = status;
     this.duration = duration;
-    this.rules = new GameRules();
-    // this.rules = GameRules.createGameRulesFromObj(rules);
+    this.rules = GameRules.createGameRulesFromObj(rules);
     this.player_left = GamePlayer.createGamePlayerFromObj(player_left);
     this.player_right = GamePlayer.createGamePlayerFromObj(player_right);
   }
@@ -40,7 +39,7 @@ class Game {
       obj.game_datetime,
       obj.status,
       obj.duration,
-      // obj.rules,
+      obj.rules,
       obj.player_left,
       obj.player_right
     );
