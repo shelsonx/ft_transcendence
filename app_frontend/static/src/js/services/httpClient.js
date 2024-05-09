@@ -68,7 +68,11 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #get(httpClientRequestData) {
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint);
+    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint,
+      {
+        method: 'GET',
+        headers: httpClientRequestData.headers,
+      });
     return await response.json();
   }
 
@@ -97,6 +101,44 @@ export class HttpClient {
     });
     return await response.json();
   }
+
+  /**
+   * Make a PATCH request.
+   * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
+   * @returns {Promise<Object>} The response data.
+   * @throws {Error} If the HTTP method is invalid.
+   */
+  async #patch(httpClientRequestData) {
+    const formData = new FormData();
+  
+    // Append data to formData, skip null values
+    for (const key in httpClientRequestData.data) {
+      if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
+        formData.append(key, httpClientRequestData.data[key]);
+      }
+    }
+  
+    try {
+      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+        method: 'PATCH',
+        headers: {
+          ...httpClientRequestData.headers, // Make sure not to set 'Content-Type' manually
+        },
+        body: formData
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      return await response.json(); // Assuming the server responds with JSON
+    } catch (error) {
+      console.error('Failed to execute PATCH request:', error);
+      throw error; // Rethrow or handle as necessary
+    }
+  }
+  
+
   /**
    * Make an HTTP request.
    * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
@@ -104,7 +146,7 @@ export class HttpClient {
    * @throws {Error} If the HTTP method is invalid.
    */
   async makeRequest(httpClientRequestData) {
-    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this)};
+    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this), 'PATCH': this.#patch.bind(this)};
     const csrftoken = getCookie('csrftoken');
     if (csrftoken) {
       httpClientRequestData.headers['X-CSRFToken'] = csrftoken;

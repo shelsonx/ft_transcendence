@@ -64,11 +64,18 @@ class UserInfoView(View):
 
     def patch(self, request, user_id):
         user = self.get_user(user_id)
-        data = json.loads(request.body.decode('utf-8'))
-        fields = ['name', 'status', 'avatar', 'nickname', 'two_factor_enabled', 'email', 'chosen_language']
-        for field in data:
-            if field not in fields:
-                raise InvalidFieldException
-            setattr(user, field, data[field])
+        avatar = request.FILES.get('avatar')
+
+        print(request.POST)
+
+        if avatar:
+            avatar_name = f'{str(user_id)}_avatar'
+            user.avatar = avatar
+            user.avatar_name = avatar_name
+
+        for key in request.POST:
+            if hasattr(user, key):
+                setattr(user, key, request.POST[key])
+
         user.save()
-        return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
+        return JsonResponse({'status': 'success', 'message': 'User updated successfully.', 'status_code': 200}, status=200)
