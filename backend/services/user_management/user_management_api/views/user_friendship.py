@@ -19,19 +19,11 @@ class UserFriendshipView(View):
 
     def get(self, request, user_id):
         user = UserInfoView().get_user(user_id)
+        blocked_users = user.blocked_users.all()
         friends = user.friends.all()
         friends_json = [friend.as_json() for friend in friends]
+        friends_json = [friend for friend in friends_json if friend not in blocked_users]
         return JsonResponse({'status': 'success', 'friends': friends_json, 'status_code': 200}, status=200)
-
-    def post(self, request, user_id, friend_id=None):
-        if friend_id is None:
-            raise MissingParameterException("friend_id")
-        user = UserInfoView().get_user(user_id)
-        friend = UserInfoView().get_user(friend_id)
-        if friend in user.friends.all():
-            raise FriendshipAlreadyExistsException
-        user.friends.add(friend)
-        return JsonResponse({'status': 'success', 'message': 'Friend added successfully', 'status_code': 200}, status=200)
 
     def delete(self, request, user_id, friend_id=None):
         if friend_id is None:

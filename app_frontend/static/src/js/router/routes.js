@@ -4,6 +4,8 @@ import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
 import home from "../views/home.js";
+import userProfile from "../views/user_management/user-profile.js";
+import userSettings from "../views/user_management/user-settings.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import NewGameView from "../views/game/new_game.js";
@@ -30,10 +32,12 @@ const hashRoutes = {
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
-  "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
+  "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
+  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},,
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
+  "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page.", isProtected: true },
   "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page.", isProtected: true },
 };

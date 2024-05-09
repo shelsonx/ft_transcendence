@@ -1,6 +1,19 @@
 version: '3.7'
 
 services:
+  frontend:
+    build: ./app_frontend
+    container_name: frontend
+    command: python manage.py runserver 0.0.0.0:3000
+    volumes:
+      - ./app_frontend:/code
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.web
+    depends_on:
+      - user_management_api
+
   db:
     image: postgres
     volumes:
