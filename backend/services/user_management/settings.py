@@ -19,6 +19,7 @@ WSGI_APPLICATION = 'wsgi.application'
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'urls'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DATABASES = {
     'default': {
@@ -39,11 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_management_api',
+    'corsheaders',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://0.0.0.0:3000",
+]
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'user_management_api.middlewares.exception_middleware.ExceptionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 TEMPLATES = [
