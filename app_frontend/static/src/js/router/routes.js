@@ -1,11 +1,13 @@
 import notFound from "../views/404.js";
 import forgotPassword from "../views/auth/forgotPassword.js";
+import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
 import home from "../views/home.js";
 import userProfile from "../views/user_management/user-profile.js";
 import userSettings from "../views/user_management/user-settings.js";
+import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import NewGameView from "../views/game/new_game.js";
 import PongGameView from "../views/game/pong.js";
@@ -27,6 +29,7 @@ const pathRoutes = {
 
 const hashRoutes = {
   "/": { title: "Home", render: home, description: "Pong games", isProtected: true },
+  "/": { title: "Home", render: home, description: "Pong games", isProtected: true },
   "login": { title: "Login", render: login, description: "Login to your account."},
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
@@ -34,6 +37,10 @@ const hashRoutes = {
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
   "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},,
+  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
+  "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
+  "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
+  "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
