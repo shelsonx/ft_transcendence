@@ -1,15 +1,6 @@
 import View, { ViewOptions } from '../../contracts/view.js';
 import NavHandler from '../../router/navigation/navHandler.js';
 import { NavItems } from '../../router/navigation/navItem.js';
-import { loadImage } from '../../utils/loadImage.js';
-
-const createSpaceMan = (data) => {
-  const svg = document.createElement('svg');
-  svg.innerHTML = data;
-  svg.classList.add('space-man')
-  const div = document.querySelector('.space-man-container');
-  div.appendChild(svg);
-}
 
 class BaseAuthView extends View {
   constructor({
@@ -17,17 +8,11 @@ class BaseAuthView extends View {
     start
   }) {
     const navItems = [
-      new NavItems('#login', 'Login'),
-      new NavItems('#sign-up', 'Sign Up',),
-      new NavItems('#user-profile', 'Profile'),
-      new NavItems('#user-settings', 'Settings',),
+      new NavItems('#login', 'Login', { 'data-i18n-key': 'auth--login',}),
+      new NavItems('#sign-up', 'Sign Up', { 'data-i18n-key': 'auth--sign-up',}),
     ];
-    const addStart = () => {
-      start();
-      loadImage('transcendence-journey.svg', createSpaceMan);
-    };
     const navHandler = new NavHandler(navItems);
-    super(new ViewOptions(html, addStart, navHandler));
+    super(new ViewOptions(html, start, navHandler));
   }
 }
 

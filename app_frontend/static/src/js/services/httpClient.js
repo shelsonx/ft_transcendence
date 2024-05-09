@@ -1,10 +1,12 @@
+import { AuthConstants } from "../constants/auth-constants.js";
 import { getCookie } from "../utils/getCookie.js";
+import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 /**
  * Class representing the data for an HTTP client request.
  */
 export class HttpClientRequestData {
   #defaultHeaders;
-  
+
   /**
    * Create a new HttpClientRequestData.
    * @param {string} method - The HTTP method.
@@ -30,7 +32,7 @@ export class HttpClientRequestData {
  * Class representing an HTTP client.
  */
 export class HttpClient {
-  
+
   /**
    * Create a new HttpClient.
    * @param {string} baseUrl - The base URL for the HTTP client.
@@ -47,6 +49,20 @@ export class HttpClient {
     this.baseUrl = url;
   }
 
+  addJwtToken(httpClientRequestData) {
+    const jwtToken = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    if (jwtToken) {
+      httpClientRequestData.headers['Authorization'] = `Bearer ${jwtToken}`;
+    }
+  }
+
+  addCsrfToken(httpClientRequestData) {
+    const csrftoken = getCookie('csrftoken');
+    if (csrftoken) {
+      httpClientRequestData.headers['X-CSRFToken'] = csrftoken;
+    }
+  }
+
   /**
    * Make a POST request.
    * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
@@ -61,18 +77,22 @@ export class HttpClient {
     return await response.json();
   }
 
-
   /**
    * Make a GET request.
    * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
    * @returns {Promise<Object>} The response data.
    */
   async #get(httpClientRequestData) {
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint,
-      {
-        method: 'GET',
-        headers: httpClientRequestData.headers,
-      });
+    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+      method: 'GET',
+      headers: httpClientRequestData.headers
+    });
+
+    const content_type = response.headers.get("content-type")
+    if (content_type.includes("text/html")) {
+      return await response.text();
+    }
+
     return await response.json();
   }
 
@@ -145,16 +165,19 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    * @throws {Error} If the HTTP method is invalid.
    */
+
   async makeRequest(httpClientRequestData) {
-    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this), 'PATCH': this.#patch.bind(this)};
-    const csrftoken = getCookie('csrftoken');
-    if (csrftoken) {
-      httpClientRequestData.headers['X-CSRFToken'] = csrftoken;
+    if (!httpClientRequestData) {
+      throw new Error('Request data is required');
     }
+    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this)};
+    this.addCsrfToken(httpClientRequestData);
     const httpRequest = httpVerb?.[httpClientRequestData.method?.toUpperCase()];
     if (!httpRequest) {
       throw new Error('Invalid HTTP method');
-    } 
+    }
+    replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
+    this.addJwtToken(httpClientRequestData);
     const response = await httpRequest(httpClientRequestData);
     return response;
   }

@@ -1,8 +1,18 @@
 import notFound from "../views/404.js";
+import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
+import twoFactorAuth from "../views/auth/validate2Factor.js";
+import home from "../views/home.js";
 import userProfile from "../views/user_management/user-profile.js";
 import userSettings from "../views/user_management/user-settings.js";
+import GameInfoView from "../views/game-info/game_info.js";
+import NewGameView from "../views/game/new_game.js";
+import PongGameView from "../views/game/pong.js";
+import TournamentsView from "../views/game/tournaments.js";
+import TournamentDetailView from "../views/game/tournament-detail.js";
+
+
 
 /**
  * An object representing the routes in the application.
@@ -16,12 +26,19 @@ const pathRoutes = {
 };
 
 const hashRoutes = {
-  "/": { title: "Login", render: login, description: "Login to your account."},
+  "/": { title: "Home", render: home, description: "Pong games", isProtected: true },
   "login": { title: "Login", render: login, description: "Login to your account."},
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
+  "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
+  "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
-  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},
+  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},,
+  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
+  "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
+  "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
+  "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page.", isProtected: true },
+  "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page.", isProtected: true },
 };
 
 export {

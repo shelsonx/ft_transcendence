@@ -42,7 +42,12 @@ class BaseSignInUseCaseTests(TestCase):
             is_temporary_token=False,
         )
         self.assertEqual(
-            vars(result), vars(SignInResultDto(token="token", is_temporary_token=False))
+            vars(result),
+            vars(
+                SignInResultDto(
+                    token="token", is_temporary_token=False, email=user.email
+                )
+            ),
         )
 
     @async_to_sync
@@ -67,5 +72,10 @@ class BaseSignInUseCaseTests(TestCase):
             is_temporary_token=True,
         )
         self.assertEqual(
-            vars(result), vars(SignInResultDto(token="token", is_temporary_token=True))
+            vars(result),
+            vars(
+                SignInResultDto(
+                    token="token", is_temporary_token=True, email=user.email
+                )
+            ),
         )

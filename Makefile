@@ -1,6 +1,6 @@
 # This Makefile is used to create the Django project and the Django app
 DOCKER_COMPOSE = docker-compose
-DOCKER_COMPOSE_FILE = docker-compose-auth-debug.yml # This is the docker-compose file # refer to the docker-compose example inside template_config folder
+DOCKER_COMPOSE_FILE = docker-compose-auth.yml # This is the docker-compose file # refer to the docker-compose example inside template_config folder
 DOCKER_CMD = $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE)
 DOCKER_COMPOSE_SERVICE_NAME = auth-api # This is the service name in the docker-compose file
 DOCKER_COMPOSE_PROJECT_NAME = auth_api # This is the app name -> name of the folder
@@ -17,6 +17,9 @@ run_first_api:
 up:
 	$(DOCKER_CMD) up -d --build
 
+stop:
+	$(DOCKER_CMD) stop
+
 down:
 	$(DOCKER_CMD) down --remove-orphans
 
@@ -24,7 +27,7 @@ exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh
 
 logs:
-	$(DOCKER_CMD) logs $(filter-out $@,$(MAKECMDGOALS)) -f 
+	$(DOCKER_CMD) logs $(filter-out $@,$(MAKECMDGOALS)) -f
 
 test:
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) ./manage.py test app.tests

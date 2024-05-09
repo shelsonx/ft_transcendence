@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Dashboard{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <div class="container-fluid main">
+        <nav class="navbar navbar-expand-lg mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Dashboard</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">List</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">User Status</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ms-auto">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            Login<i class="ms-2 fa-solid fa-user-astronaut" style="color: #ffffff;"></i>
+                        </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="containers">
+            <div class="row">
+                <div class="col-lg-12 mb-3">
+                    <div class="container_details text-center">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-md-4">
+                                <img src="{% static 'images/gold_medal_star_icon.png' %}" alt="medalha do usuário" class="details-pictures details-medal-picture">
+                                <p class="mb-1">Shelson Alves</p>
+                                <p><i class="fa-solid fa-circle me-2" style="color: green;"></i>Online</p>
+                            </div>
+                            <div class="col-md-4">
+                                <img src="{% static 'images/avatar_user_icon.png' %}" alt="Foto do usuário" class="details-pictures details-profile-picture">
+                            </div>
+                            <div class="col-md-4">
+                                <table class="table table-borderless text-white text-end">
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Nickname:</th>
+                                        <td>sjhony-x</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Pontuação:</th>
+                                        <td>1000</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Vitórias:</th>
+                                        <td>50</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Derrotas:</th>
+                                        <td>20</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Posição:</th>
+                                        <td>5º</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="containers">
+            <div class="row header-row-info">
+                <div class="col-8 header-info-column">
+                    <i class="fas fa-info-circle header-info-icon"></i>
+                    <div>
+                        <p class="mb-0">Info</p>
+                    </div>
+                </div>
+                <div class="col-2 header-scores-column">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    <div>
+                        <p class="mb-0">Scores</p>
+                        <p class="mb-0">500</p>
+                    </div>
+                </div>
+                <div class="col-2 header-players-column">
+                    <i class="fas fa-users me-2"></i>
+                    <div>
+                        <p class="mb-0">Players</p>
+                        <p class="mb-0">5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="containers">
+            <div class="container">
+                <div class="row row-item-list d-flex align-items-center mb-3">
+                    <div class="col-2">
+                        <img src="{% static 'images/avatar_girl_icon.png' %}" alt="User Photo" class="list-user-photo">
+                    </div>
+                    <div class="col-5">
+                        <p class="list-nickname"><strong class="p-3 shadow">sguilher</strong></p>
+                    </div>
+                    <div class="col-3">
+                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                    </div>
+                    <div class="col-2">
+                        <p class="list-user-game-status">
+                            <strong class="p-3 shadow">
+                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
+                                Free
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-item-list d-flex align-items-center mb-3">
+                    <div class="col-2">
+                        <img src="{% static 'images/avatar_girl_icon2.png' %}" alt="User Photo" class="list-user-photo">
+                    </div>
+                    <div class="col-5">
+                        <p class="list-nickname"><strong class="p-3 shadow">elraira-</strong></p>
+                    </div>
+                    <div class="col-3">
+                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                    </div>
+                    <div class="col-2">
+                        <p class="list-user-game-status">
+                            <strong class="p-3 shadow">
+                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
+                                Free
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-item-list d-flex align-items-center mb-3">
+                    <div class="col-2">
+                        <img src="{% static 'images/avatar_user_icon.png' %}" alt="User Photo" class="list-user-photo">
+                    </div>
+                    <div class="col-5">
+                        <p class="list-nickname"><strong class="p-3 shadow">sjhony-x</strong></p>
+                    </div>
+                    <div class="col-3">
+                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                    </div>
+                    <div class="col-2">
+                        <p class="list-user-game-status">
+                            <strong class="p-3 shadow">
+                                <i class="fa-solid fa-circle me-2 mt-2" style="color: green;"></i>
+                                In Game
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-item-list d-flex align-items-center mb-3">
+                    <div class="col-2">
+                        <img src="{% static 'images/avatar_user_icon2.png' %}" alt="User Photo" class="list-user-photo">
+                    </div>
+                    <div class="col-5">
+                        <p class="list-nickname"><strong class="p-3 shadow">bbonaldi</strong></p>
+                    </div>
+                    <div class="col-3">
+                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                    </div>
+                    <div class="col-2">
+                        <p class="list-user-game-status">
+                            <strong class="p-3 shadow">
+                                <i class="fa-solid fa-circle me-2 mt-2" style="color: yellow;"></i>
+                                Free
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-item-list d-flex align-items-center mb-3">
+                    <div class="col-2">
+                        <img src="{% static 'images/avatar_user_icon3.png' %}" alt="User Photo" class="list-user-photo">
+                    </div>
+                    <div class="col-5">
+                        <p class="list-nickname"><strong class="p-3 shadow">harndt</strong></p>
+                    </div>
+                    <div class="col-3">
+                        <p class="list-scores"><strong class="p-3 shadow">Scores: 100</strong></p>
+                    </div>
+                    <div class="col-2">
+                        <p class="list-user-game-status">
+                            <strong class="p-3 shadow">
+                                <i class="fa-solid fa-circle me-2 mt-2" style="color: green;"></i>
+                                In Game
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  {% block content %}
+  {% endblock %}
+</div>
+</body>
+</html>

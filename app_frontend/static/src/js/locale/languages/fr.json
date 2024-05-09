@@ -1,0 +1,24 @@
+{
+  "nav-language":"Langue",
+  "nav-register":"S'inscrire",
+  "nav-logout":"Déconnexion",
+  "auth--login": "Connexion",
+  "auth--password": "Mot de passe",
+  "auth--confirm-password": "Confirmer le mot de passe",
+  "auth--forgot-password": "Mot de passe oublié?",
+  "auth--sign-up": "S'inscrire",
+  "auth--or": "Ou",
+  "auth--login-with": "Se connecter avec",
+  "auth--username": "Nom d'utilisateur",
+  "auth--oi-plural": {
+    "one": "{count} bienvenue",
+    "other": "{count} bienvenues"
+  },
+  "auth--price": "Nyan Cat (Officiel) NFT : {price}",
+  "auth--date": "Publié le {publishDate}",
+  "two-factor-auth--title": "Authentification à deux facteurs",
+  "two-factor-auth--resend": "Renvoyer le code",
+  "two-factor-auth--submit": "Soumettre",
+  "two-factor-auth--two-factor-code": "Code à deux facteurs",
+  "page-not-found--title": "Page non trouvée"
+}
