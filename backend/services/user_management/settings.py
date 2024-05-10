@@ -19,6 +19,7 @@ WSGI_APPLICATION = 'wsgi.application'
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'urls'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DATABASES = {
