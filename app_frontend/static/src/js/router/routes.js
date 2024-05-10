@@ -33,7 +33,7 @@ const hashRoutes = {
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
-  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},,
+  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
