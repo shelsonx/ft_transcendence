@@ -105,7 +105,7 @@ function drawChart(chartDiv, response) {
                 color: 'white',
             } 
         },
-        backgroundColor: '#1B1926', 
+        backgroundColor: 'none', 
         titleTextStyle: {
             color: 'white', 
             fontSize: 10
@@ -156,7 +156,7 @@ function drawChartMedalRaking(chartDiv, response) {
             color: 'white', 
         },
         legend: { position: "none" },
-        backgroundColor: '#1B1926',
+        backgroundColor: 'none',
         fontName: 'Turret Road',
         hAxis: {
             textStyle: {
