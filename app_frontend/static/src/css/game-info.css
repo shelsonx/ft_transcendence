@@ -64,7 +64,7 @@ a:hover {
     margin-right: auto;
     margin-left: auto;
     margin-top: -20px;
-    background-color: #1B1926;
+    background-color: rgba(0, 0, 0, 0.1);
     padding: 10px;
     border: 1px dashed #381718;
     border-radius: 10px;
@@ -116,7 +116,7 @@ a:hover {
 }
 
 .container:hover {
-    background-color: #171520;
+    background-color: #381718;
     cursor: pointer;
 }
 
