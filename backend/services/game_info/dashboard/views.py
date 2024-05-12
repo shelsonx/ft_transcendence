@@ -1,5 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import UUIDField
+from django.http import HttpResponse
+from django.db import IntegrityError
+from django.core.serializers import serialize
+import json
 
 from .models import UserInfo
 
@@ -17,8 +22,6 @@ def total_infos(request):
         'total_players': total_players}, 
         safe=False)
 
-from django.core.serializers import serialize
-import json
 def get_user(request, id):
     user = get_object_or_404(UserInfo, id=id)
     serialized_data = serialize('json', [user])
