@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import UUIDField
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.db import IntegrityError
 from django.core.serializers import serialize
 import json
@@ -27,3 +27,15 @@ def get_user(request, id):
     serialized_data = serialize('json', [user])
     user_dict = json.loads(serialized_data)[0]['fields']
     return JsonResponse({'user': user_dict}, safe=False)
+
+def register_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        full_name = payload.get('full_name')
+        nickname = payload.get('nickname')
+
+        user = UserInfo.objects.create(id_msc=id_msc, full_name=full_name, nickname=nickname)
+        return HttpResponse("OK", status=200)
+    except IntegrityError:
+        return HttpResponse("Error: Failed to register user", status=400)
