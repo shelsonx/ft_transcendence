@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.models import UUIDField
 from django.http import HttpResponse, HttpRequest
 from django.db import IntegrityError
@@ -39,3 +39,46 @@ def register_user(request: HttpRequest) -> HttpResponse:
         return HttpResponse("OK", status=200)
     except IntegrityError:
         return HttpResponse("Error: Failed to register user", status=400)
+
+
+def set_status_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        status = payload.get('status')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        print(f'user: {user}')
+        user.status = status
+        user.save()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to set status", status=400)
+
+def set_playing_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        playing = payload.get('playing')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.playing = playing
+        user.save()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to set playing", status=400) 
+
+def update_scores_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        score = payload.get('score')
+        match_result = payload.get('match_result')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.scores += score
+        if match_result == 'win':
+            user.winnings += 1
+        else:
+            user.losses += 1
+        user.save()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to update scores", status=400)
