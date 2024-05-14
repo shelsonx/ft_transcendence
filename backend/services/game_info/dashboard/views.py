@@ -5,6 +5,9 @@ from django.http import HttpResponse, HttpRequest
 from django.db import IntegrityError
 from django.core.serializers import serialize
 import json
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
 
 from .models import UserInfo
 
@@ -28,6 +31,8 @@ def get_user(request, id):
     user_dict = json.loads(serialized_data)[0]['fields']
     return JsonResponse({'user': user_dict}, safe=False)
 
+@require_POST
+@csrf_exempt
 def register_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
@@ -40,7 +45,8 @@ def register_user(request: HttpRequest) -> HttpResponse:
     except IntegrityError:
         return HttpResponse("Error: Failed to register user", status=400)
 
-
+@require_POST
+@csrf_exempt
 def set_status_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
@@ -54,6 +60,8 @@ def set_status_user(request: HttpRequest) -> HttpResponse:
     except Http404:
         return HttpResponse("Error: Failed to set status", status=400)
 
+@require_POST
+@csrf_exempt
 def set_playing_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
@@ -66,6 +74,8 @@ def set_playing_user(request: HttpRequest) -> HttpResponse:
     except Http404:
         return HttpResponse("Error: Failed to set playing", status=400) 
 
+@require_POST
+@csrf_exempt
 def update_scores_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
@@ -76,8 +86,10 @@ def update_scores_user(request: HttpRequest) -> HttpResponse:
         user.scores += score
         if match_result == 'win':
             user.winnings += 1
-        else:
+        elif match_result == 'loss':
             user.losses += 1
+        else:
+            return HttpResponse("Error: Invalid match result", status=400)
         user.save()
         return HttpResponse("OK", status=200)
     except Http404:
