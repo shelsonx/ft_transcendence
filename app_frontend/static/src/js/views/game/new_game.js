@@ -1,19 +1,19 @@
-import BaseLoggedView from '../baseLoggedView.js';
-import gameService from '../../services/gameService.js';
-import PongBall from '../../models/pongBall.js';
-import PongTable from '../../models/pongTable.js';
-import PongPlayer from '../../models/pongPlayer.js';
+import BaseLoggedView from "../baseLoggedView.js";
+import gameService from "../../services/gameService.js";
+import PongBall from "../../models/ball.js";
+import PongTable from "../../models/pongTable.js";
+import PlayerManager from "../../models/playerManager.js";
+import { Game } from "../../contracts/game/game.js";
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
-      start
-    },
-  );
+      start,
+    });
   }
 }
 
-const html = /*html*/`
+const html = /*html*/ `
   <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
   <div id="pong-game" class="d-none">
@@ -34,49 +34,60 @@ const html = /*html*/`
       </div>
     </div>
   </div>
-`
+`;
 
+let addGameForm;
+let game;
+// let gameFormSwap = document.getElementById("swap-container");
 // window.addEventListener("load", () => console.log("load"));
 
-let test = "test"
-console.log("init")
-console.log(test)
-console.log(('b' + 'a' + + + 'a' + 'a').toLowerCase());
-
-const handleRequest = (response) => {
-  // gameFormSwap.innerHTML = response
-  console.log(response);
-}
-const getGameForm = async (response) => {
-  // console.log(response)
-  // const headers = await response.headers
-  // console.log(...headers)
-  // console.log(response.body)
-  // test.innerHTML = await response.text()
+const swapGameForm = async (response) => {
   const gameFormSwap = document.getElementById("swap-container");
-  gameFormSwap.innerHTML = response
-  buttonInvite = document.getElementById("button-invite");
-  return buttonInvite
-}
+  gameFormSwap.innerHTML = response;
 
+  return document.getElementById('match-form');
+};
 
+const addGameResult = async (response) => {
+  console.log(typeof response);
+  if (typeof response == "string") {
+    const gameFormSwap = document.getElementById("swap-container");
+    gameFormSwap.innerHTML = response; // precisa adicionar o listen de novo...
+  } else {
+    game = Game.createGameFromObj(response);
+
+    const element = document.getElementById("pong-game");
+    element.classList.remove("d-none");
+  }
+  // const gameFormSwap = document.getElementById("swap-container");
+  // gameFormSwap.innerHTML = response;
+
+  // return document.getElementById("button-invite");
+};
+
+// new URLSearchParams(obj).toString();
+// document.addEventListener("DOMContentLoaded", (event) => {
+//   console.log("DOM fully loaded and parsed");
+//   console.log(buttonInvite);
+// });
+// document.addEventListener("load", (event) => {
+//   console.log("load event");
+//   console.log(buttonInvite);
+// });
 
 const start = async () => {
-  console.log("start")
-  console.log(test)
-  buttonInvite = await gameService.getFormGame().then(getGameForm);
+  addGameForm = await gameService.getFormGame().then(swapGameForm);
+  console.log(addGameForm);
 
-  buttonInvite.addEventListener("submit", async (e) => {
+  addGameForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const element = document.getElementById("pong-game")
-    element.classList.remove('d-none');
-    gameService.addGame().then(handleRequest);
-    console.log("evento")
-    // gameService.getFormGame().then(swap);
-  })
+    console.log("entrou?");
 
-  test = "mudou"
-  console.log(test)
+    // await gameService.addGame().then(addGameResult);
+
+    console.log("evento");
+    // gameService.getFormGame().then(swap);
+  });
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -84,8 +95,7 @@ const start = async () => {
   canvas.height = innerHeight / 2;
 
   const table = new PongTable(0, 0, canvas.width, canvas.height);
-  table.draw()
-
+  table.draw(ctx);
 
   // class PongPlayer {
   //   constructor(x, y) {
@@ -108,10 +118,10 @@ const start = async () => {
   //   }
   // }
 
-  const player1 = new PongPlayer(10, 80);
-  player1.draw()
-  const player2 = new PongPlayer(canvas.width - 20, canvas.height - 80);
-  player2.draw()
+  const player1 = new PlayerManager(10, 80);
+  player1.draw(ctx);
+  const player2 = new PlayerManager(canvas.width - 20, canvas.height - 80);
+  player2.draw(ctx);
 
   // class PongBall {
   //   constructor(x, y) {
@@ -135,10 +145,7 @@ const start = async () => {
   // }
 
   const ball = new PongBall(canvas.width / 2, canvas.height / 2);
-  ball.draw()
-}
-
-let gameFormSwap = document.getElementById("swap-container");
-let buttonInvite;
+  ball.draw(ctx);
+};
 
 export default new NewGameView(html, start);
