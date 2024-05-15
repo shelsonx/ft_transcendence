@@ -12,12 +12,13 @@ from urllib.parse import urlparse, parse_qs
 
 class Route:
 
-  def __init__(self, route_key, allowed_verbs, is_redirect = False) -> None:
+  def __init__(self, route_key, allowed_verbs, is_redirect = False, handler_function = None) -> None:
     self.route_key = route_key
     self.allowed_verbs = allowed_verbs
     self.split = route_key.split('/')
     self.len = len(self.split)
     self.is_redirect = is_redirect
+    self.handler_function = handler_function
 
     self.path_converters = {
       "<str:": lambda x: str(x),
@@ -101,8 +102,12 @@ class IRouter(ABC):
       raise ValueError(f"verb '{verb}' not allowed for path '{path}'")
     if route.is_redirect:
       return HttpResponseRedirect(redirect_to=self.http_client.base_url.localhost + path.lstrip('/'))
+
+    http_client_data = HttpClientData(url=route.route_key, data=request.body, headers=request.headers)
+    if route.handler_function:
+        return route.handler_function(http_client_data, request, *args, **kwargs)
     method = getattr(self.http_client, verb.lower(), None)
     if method is None:
         raise ValueError(f"verb '{verb}' not supported by http_client")
-    reponse = method(HttpClientData(url=route.route_key, data=request.body, headers=request.headers))
+    reponse = method(http_client_data)
     return convert_to_json_response(reponse)

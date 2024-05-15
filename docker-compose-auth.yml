@@ -58,7 +58,7 @@ services:
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     depends_on:
       - auth-db
-  
+
   game-info-db:
     image: postgres:16
     volumes:
@@ -67,7 +67,7 @@ services:
       - ./.env.db
     ports:
       - "5434:5432"
-  
+
   game-info:
     build: ./backend/services/game_info
     container_name: game-info
@@ -101,8 +101,31 @@ services:
     depends_on:
       - auth-api
 
+
+  user-management-api:
+    build: ./backend/services/user_management
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/services/user_management:/user_management
+    ports:
+      - "8006:8000"
+    depends_on:
+      - user-management-db
+
+  user-management-db:
+    image: postgres
+    volumes:
+      - user-management-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: '1234'
+    ports:
+      - "5435:5432"
+
 volumes:
   #change the volume name
   auth-db-data:
   game-info-db-data:
+  user-management-db:
 

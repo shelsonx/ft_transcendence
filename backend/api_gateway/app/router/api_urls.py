@@ -22,3 +22,4 @@ class ApiUrl:
 
 class ApiUrls:
   AUTH = ApiUrl("http", "localhost:8002", "auth-api:80", "api/auth/")
+  USER_MANAGEMENT = ApiUrl("http", "localhost:8006", "user-management-api:8000", "user/")
