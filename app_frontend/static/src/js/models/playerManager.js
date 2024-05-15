@@ -1,8 +1,8 @@
-import { GamePlayer } from "../contracts/game/gamePlayer";
+// import { GamePlayer } from "../contracts/game/gamePlayer.js";
 
-class PongPlayer extends GamePlayer {
-  constructor(gameWidth, gameHeight, x, ...args) {
-    super(...args);
+class PlayerManager {
+  constructor(player, gameWidth, gameHeight, x) {
+    this.player = player;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.states = [];
@@ -20,9 +20,9 @@ class PongPlayer extends GamePlayer {
       y: 0,
     };
   }
-  
+
   draw(ctx) {
-    ctx.fillStyle = "#99c9ff";  // receber o ctx no constructor?
+    ctx.fillStyle = "#99c9ff"; // receber o ctx no constructor?
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
@@ -51,4 +51,4 @@ class PongPlayer extends GamePlayer {
   }
 }
 
-export default PongPlayer;
+export default PlayerManager;
