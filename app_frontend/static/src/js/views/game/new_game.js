@@ -38,56 +38,60 @@ const html = /*html*/ `
 
 let addGameForm;
 let game;
-// let gameFormSwap = document.getElementById("swap-container");
+
 // window.addEventListener("load", () => console.log("load"));
 
 const swapGameForm = async (response) => {
   const gameFormSwap = document.getElementById("swap-container");
   gameFormSwap.innerHTML = response;
 
-  return document.getElementById('match-form');
+  addGameForm = document.getElementById('match-form');
+  addGameForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(addGameForm);
+
+    console.log("submit form");
+    await gameService.addGame(formData).then(addGameResult);
+    console.log("final");
+  });
 };
 
 const addGameResult = async (response) => {
   console.log(typeof response);
   if (typeof response == "string") {
-    const gameFormSwap = document.getElementById("swap-container");
-    gameFormSwap.innerHTML = response; // precisa adicionar o listen de novo...
+    swapGameForm(response);
   } else {
     game = Game.createGameFromObj(response);
 
-    const element = document.getElementById("pong-game");
-    element.classList.remove("d-none");
-  }
-  // const gameFormSwap = document.getElementById("swap-container");
-  // gameFormSwap.innerHTML = response;
+    const gameForm = document.getElementById("match-form");
+    gameForm.classList.add("d-none");
+    const rulesElement = document.getElementById("game-rules");
+    rulesElement.classList.remove("d-none");
 
-  // return document.getElementById("button-invite");
+    const startButton = document.getElementById("button-start");
+    startButton.addEventListener("click", (e) => {
+      const pongElement = document.getElementById("pong-game");
+      pongElement.classList.remove("d-none");
+      const gameFormSwap = document.getElementById("swap-container");
+      gameFormSwap.classList.add("d-none");
+    })
+  }
 };
 
 // new URLSearchParams(obj).toString();
-// document.addEventListener("DOMContentLoaded", (event) => {
-//   console.log("DOM fully loaded and parsed");
-//   console.log(buttonInvite);
-// });
-// document.addEventListener("load", (event) => {
-//   console.log("load event");
-//   console.log(buttonInvite);
-// });
 
 const start = async () => {
-  addGameForm = await gameService.getFormGame().then(swapGameForm);
-  console.log(addGameForm);
+  await gameService.getFormGame().then(swapGameForm);
+  // console.log(addGameForm);
 
-  addGameForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    console.log("entrou?");
+  // addGameForm.addEventListener("submit", async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(addGameForm);
 
-    // await gameService.addGame().then(addGameResult);
-
-    console.log("evento");
-    // gameService.getFormGame().then(swap);
-  });
+  //   console.log("submit form");
+  //   await gameService.addGame(formData).then(addGameResult);
+  //   console.log("final");
+  // });
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -97,52 +101,10 @@ const start = async () => {
   const table = new PongTable(0, 0, canvas.width, canvas.height);
   table.draw(ctx);
 
-  // class PongPlayer {
-  //   constructor(x, y) {
-  //     this.position = {
-  //       x,
-  //       y,
-  //     };
-  //     this.velocity = {
-  //       x: 0,
-  //       y: 0,
-  //     };
-  //     // this.width = proportionalSize(40);
-  //     // this.height = proportionalSize(40);
-  //     this.width = 10;
-  //     this.height = 40;
-  //   }
-  //   draw() {
-  //     ctx.fillStyle = "#99c9ff";
-  //     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  //   }
-  // }
-
   const player1 = new PlayerManager(10, 80);
   player1.draw(ctx);
   const player2 = new PlayerManager(canvas.width - 20, canvas.height - 80);
   player2.draw(ctx);
-
-  // class PongBall {
-  //   constructor(x, y) {
-  //     this.position = {
-  //       x,
-  //       y,
-  //     };
-  //     this.velocity = {
-  //       x: 0,
-  //       y: 0,
-  //     };
-  //     // this.width = proportionalSize(40);
-  //     // this.height = proportionalSize(40);
-  //     this.width = 10;
-  //     this.height = 10;
-  //   }
-  //   draw() {
-  //     ctx.fillStyle = "#99c9ff";
-  //     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  //   }
-  // }
 
   const ball = new PongBall(canvas.width / 2, canvas.height / 2);
   ball.draw(ctx);
