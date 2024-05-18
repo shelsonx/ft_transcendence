@@ -36,7 +36,7 @@ const html = /*html*/`
             <label for="nickname">Nickname:</label>
             <input type="text" id="nickname" name="nickname" required>
         </div>
-        <!-- T97e30085-8d7a-49b9-8a98-aabf2dfe3105wo Factor Authentication -->
+        <!-- Two Factor Authentication -->
         <div class="form-group">
             <label for="two-factor-enabled">Two Factor Authentication:</label>
             <input type="checkbox" id="two-factor-enabled" name="two-factor-enabled">
