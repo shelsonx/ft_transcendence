@@ -27,3 +27,4 @@ class IHttpClient:
 
     def serialize(self, data: dict) -> str:
         pass
+

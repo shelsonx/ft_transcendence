@@ -1,14 +1,17 @@
 
-from ..services.http_client import IHttpClient
+from ...utils.http_response_to_json import http_response_to_json
 from abc import ABC, abstractmethod
 from typing import List
 from copy import deepcopy
 import uuid
+from ...services.http_client import HttpClient
+
 from django.http import Http404, HttpRequest
 from ...interfaces.services.http_client import IHttpClient, HttpClientData
 from ...utils.convert_to_json_response import convert_to_json_response
 from django.http import HttpResponseRedirect
 from urllib.parse import urlparse, parse_qs
+from django.http.request import HttpHeaders
 
 class Route:
 
@@ -61,6 +64,23 @@ class IRouter(ABC):
     self.http_client = http_client
     self.routes = { route.route_key: route for route in routes }
 
+  def clone_header(self, headers: HttpHeaders):
+    headers_dict = {k: headers[k] for k in headers}
+    return headers_dict
+
+  def clone_header_with_auth(self, headers: HttpHeaders, token: str):
+    headers_dict = self.clone_header(headers)
+    headers_dict['Authorization'] = f"Bearer {token}"
+    return headers_dict
+
+  def notify_microservices(self, verb:str, api_url: str, http_client_data: HttpClientData):
+    http_client = HttpClient(api_url)
+    method = getattr(http_client, verb.lower(), None)
+    if not method:
+      raise Exception(f"Method {verb} not found")
+    data = method(http_client_data)
+    data_json = http_response_to_json(data)
+    return data_json
 
   def path_resolver(self, path: str):
     for route in self.routes.values():
