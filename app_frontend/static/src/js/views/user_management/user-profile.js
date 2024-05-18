@@ -53,7 +53,7 @@ const html = /*html*/`
  * @returns {Promise<void>} - A promise that resolves when the view is started.
  */
 const start = async () => {
-  const userId = '173b8552-8153-44b4-afe1-d7ce98235f77';
+  const userId = '97e30085-8d7a-49b9-8a98-aabf2dfe3105';
 
   const userInformationService = new UserInformationService(userId);
   const friendshipService = new FriendshipService(userId);
@@ -77,8 +77,8 @@ async function loadUserData(userInformationService) {
   const user = userDataResponse.user;
 
   const avatar = document.querySelector('.avatar img');
-  console.log(user.avatar);
-  avatar.src = `http://localhost:3000/static/src/img/lili.jpg`;
+  avatar.src = `http://localhost:8000${user.avatar}`
+  console.log(avatar.src);
   document.getElementById('userNickname').innerText = `@${user.nickname}`
   document.getElementById('userStatus').innerText = user.status == 'active' ? 'Active' : 'Inactive';
   document.getElementById('userStatus').classList.add(`status-${user.status}`);

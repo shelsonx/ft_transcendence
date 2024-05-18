@@ -1,3 +1,5 @@
+import os
+
 """
 Django settings for user_management_api.
 
@@ -20,7 +22,9 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'urls'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 DATABASES = {
     'default': {

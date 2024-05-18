@@ -4,7 +4,7 @@ from django.db import models
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     pass
@@ -20,7 +20,7 @@ class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_uuid = models.CharField(max_length=255, unique=True, null=True, blank=True)
     name = models.CharField(max_length=255)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.png')
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.jpeg')
     avatar_name = models.CharField(max_length=255, null=True, blank=True)
     nickname = models.CharField(max_length=255, unique=True)
     two_factor_enabled = models.BooleanField(default=False)
@@ -46,10 +46,12 @@ class User(AbstractBaseUser):
         friend_requests_json = [friend_request.as_json() for friend_request in friend_requests]
         blocked_users = self.blocked_users.all()
         blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
+        avatar_url = self.avatar.url if self.avatar else None
+        
         return {
             'id': self.id,
             'name': self.name,
-            'avatar': self.avatar.url if self.avatar else None,
+            'avatar': avatar_url,
             'avatar_name': self.avatar_name,
             'nickname': self.nickname,
             'two_factor_enabled': self.two_factor_enabled,
