@@ -3,11 +3,13 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.http import JsonResponse
+from django.core.files.uploadhandler import TemporaryFileUploadHandler
+from django.http.multipartparser import MultiPartParser, MultiPartParserError
 from django.views.decorators.csrf import csrf_exempt
 
 from user_management_api.exception.exception \
     import UserDoesNotExistException, InvalidUUIDException, \
-    InvalidFieldException, InvalidFormDataException
+    InvalidFormDataException
 from user_management_api.forms import UserForm
 from user_management_api.models.models import User
 import json
@@ -63,19 +65,22 @@ class UserInfoView(View):
             return JsonResponse({'status': 'success', 'users': users_json}, status=200, safe=False)
 
     def patch(self, request, user_id):
-        user = self.get_user(user_id)
-        avatar = request.FILES.get('avatar')
+        
+        user = User.objects.get(id=user_id)
 
-        print(request.POST)
+        if request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+            try:
+                request.upload_handlers.insert(0, TemporaryFileUploadHandler(request))
+                parser = MultiPartParser(request.META, request, request.upload_handlers)
+                data, files = parser.parse()
 
-        if avatar:
-            avatar_name = f'{str(user_id)}_avatar'
-            user.avatar = avatar
-            user.avatar_name = avatar_name
-
-        for key in request.POST:
-            if hasattr(user, key):
-                setattr(user, key, request.POST[key])
-
-        user.save()
-        return JsonResponse({'status': 'success', 'message': 'User updated successfully.', 'status_code': 200}, status=200)
+                form = UserForm(data, files, instance=user)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse({'status': 'success', 'message': 'User updated successfully', 'status_code': 200}, status=200)
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Invalid form data', 'status_code': 400, 'errors': form.errors}, status=400)
+            except MultiPartParserError as e:
+                return JsonResponse({'status': 'error', 'message': f'Error parsing multipart data: {e}', 'status_code': 400}, status=400)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Content-Type must be multipart/form-data', 'status_code': 400}, status=400)
