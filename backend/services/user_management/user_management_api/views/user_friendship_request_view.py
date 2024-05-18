@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from user_management_api.views.user_info import UserInfoView
-from user_management_api.models.models import FriendshipRequest
+from user_management_api.models.models import FriendshipRequest, Friendship, User
 from user_management_api.exception.exception import MissingParameterException
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -34,12 +34,11 @@ class FriendshipRequestView(View):
         FriendshipRequest.objects.create(sender=sender, receiver=receiver)
         return JsonResponse({'status': 'success', 'message': 'Friend request sent successfully', 'status_code': 200}, status=200)
 
-    def put(self, request, user_id, friend_id=None):
-        if friend_id is None:
-            raise MissingParameterException("friend_id")
-        friend_request = FriendshipRequest.objects.get(sender=friend_id, receiver=user_id, is_active=True)
-        friend_request.is_active = False
-        friend_request.receiver.friends.add(friend_request.sender)
+    def put(self, request, user_id, request_id=None):
+        if request_id is None:
+            raise MissingParameterException("request_id")
+        friend_request = FriendshipRequest.objects.get(id=request_id)
+        Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver)
         friend_request.save()
         return JsonResponse({'status': 'success', 'message': 'Friend request accepted', 'status_code': 200}, status=200)
 
