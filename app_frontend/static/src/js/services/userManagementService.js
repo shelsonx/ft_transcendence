@@ -123,7 +123,6 @@ class UserInformationService {
       avatar_name: formData.get('avatar').name
     };
 
-    console.log(data);
     const requestData = new HttpClientRequestData('PATCH', '/', data);
     const response = await this.httpClient.makeRequest(requestData);
 
