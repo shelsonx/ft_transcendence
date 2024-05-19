@@ -5,6 +5,7 @@ import signup from "../views/auth/signup.js";
 import twoFactorAuth from "../views/auth/validate2Factor.js";
 import home from "../views/home.js";
 import userProfile from "../views/user_management/user-profile.js";
+import searchUsers from "../views/user_management/search-users.js";
 import userSettings from "../views/user_management/user-settings.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
@@ -33,6 +34,7 @@ const hashRoutes = {
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
+  "search-users": { title: "Search Users", render: searchUsers, description: "Search for users."},
   "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },

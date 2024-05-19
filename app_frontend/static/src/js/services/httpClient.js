@@ -158,6 +158,7 @@ export class HttpClient {
    */
 
   async makeRequest(httpClientRequestData) {
+    console.log(httpClientRequestData);
     if (!httpClientRequestData) {
       throw new Error('Request data is required');
     }

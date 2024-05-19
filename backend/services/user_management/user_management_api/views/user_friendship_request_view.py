@@ -21,6 +21,7 @@ class FriendshipRequestView(View):
                 'id': request.id,
                 'sender_id': request.sender.id,
                 'sender_name': request.sender.name,
+                'is_active': request.is_active,
             })
         return JsonResponse({'status': 'success', 'friend_requests': friend_requests_list, 'status_code': 200}, status=200)
 
@@ -38,7 +39,12 @@ class FriendshipRequestView(View):
         if request_id is None:
             raise MissingParameterException("request_id")
         friend_request = FriendshipRequest.objects.get(id=request_id)
-        Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver)
+        friend_request.is_active = False
+        try:
+            Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver)
+            Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender)
+        except:
+            return JsonResponse({'status': 'error', 'message': 'Friend request already accepted', 'status_code': 400}, status=400)
         friend_request.save()
         return JsonResponse({'status': 'success', 'message': 'Friend request accepted', 'status_code': 200}, status=200)
 

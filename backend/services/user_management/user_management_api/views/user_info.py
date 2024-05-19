@@ -6,10 +6,13 @@ from django.http import JsonResponse
 from django.core.files.uploadhandler import TemporaryFileUploadHandler
 from django.http.multipartparser import MultiPartParser, MultiPartParserError
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
-from user_management_api.exception.exception \
-    import UserDoesNotExistException, InvalidUUIDException, \
+from user_management_api.exception.exception import (
+    UserDoesNotExistException,
+    InvalidUUIDException,
     InvalidFormDataException
+)
 from user_management_api.forms import UserForm
 from user_management_api.models.models import User
 import json
@@ -60,12 +63,26 @@ class UserInfoView(View):
                 return JsonResponse({'status': 'success', 'user': user.as_json()}, status=200)
             return render(request, 'user_profile.html', {'user': user.as_json()})
         else:
-            users = User.objects.all()
+            nickname = request.GET.get('nickname')
+            name = request.GET.get('name')
+            email = request.GET.get('email')
+            status = request.GET.get('status')
+
+            filters = Q()
+            if nickname:
+                filters &= Q(nickname__icontains=nickname)
+            if name:
+                filters &= Q(name__icontains=name)
+            if email:
+                filters &= Q(email__icontains=email)
+            if status:
+                filters &= Q(status=status)
+
+            users = User.objects.filter(filters)
             users_json = [user.as_json() for user in users]
             return JsonResponse({'status': 'success', 'users': users_json}, status=200, safe=False)
 
     def patch(self, request, user_id):
-        
         user = User.objects.get(id=user_id)
 
         if request.headers.get('Content-Type', '').startswith('multipart/form-data'):

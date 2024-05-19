@@ -66,8 +66,8 @@ class FriendshipRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
-    class Meta:
-        unique_together = ['sender', 'receiver']
+    """     class Meta:
+        unique_together = ['sender', 'receiver'] """
 
     def __str__(self):
         return f'{self.sender} has sent a friend request to {self.receiver}'
@@ -78,8 +78,8 @@ class Friendship(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = ['user', 'friend']
+    """ class Meta:
+        unique_together = ['user', 'friend'] """
 
     def __str__(self):
         return f'{self.user} is friends with {self.friend}'
@@ -90,8 +90,8 @@ class BlockedUser(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = ['user', 'blocked_user']
+    """ class Meta:
+        unique_together = ['user', 'blocked_user'] """
 
     def __str__(self):
         return f'{self.user} has blocked {self.blocked_user}'
