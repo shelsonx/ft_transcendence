@@ -95,19 +95,18 @@ const start = async () => {
   animate();
 
   window.addEventListener("keydown", (e) => {
-    console.log(e)
     switch(e.code) {
       case "ArrowUp":
-        console.log("Right player up");
+        player_right.update("up");
         break;
       case "ArrowDown":
-        console.log("Right player down");
+        player_right.update("down");
         break;
       case "KeyW":
-        console.log("Left player up");
+        player_left.update("up");
         break;
       case "KeyS":
-        console.log("Left player down");
+        player_left.update("down");
         break;
     }
   });
