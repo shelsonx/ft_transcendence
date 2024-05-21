@@ -13,6 +13,11 @@ class PongTable {
   draw(ctx) {
     ctx.fillStyle = "#000000";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.beginPath();
+    ctx.moveTo(this.position.x + this.width / 2, this.position.y);
+    ctx.lineTo(this.position.x + this.width / 2, this.height);
+    ctx.stroke();
   }
 }
 
