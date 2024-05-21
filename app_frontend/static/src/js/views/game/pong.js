@@ -5,6 +5,7 @@ import PongTable from "../../models/pongTable.js";
 import PlayerManager from "../../models/playerManager.js";
 import { Game } from "../../contracts/game/game.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../constants/game.js';
+import { GameRuleType } from '../../contracts/game/gameRule.js';
 
 
 class PongGameView extends BaseLoggedView {
@@ -38,6 +39,33 @@ const html = /*html*/`
   </div>
 `
 
+const gameObj = {
+  id: 1,
+  game_datetime: new Date(),
+  status: "scheduled",
+  duration: 0,
+  rules: {
+    rule_type: GameRuleType.PLAYER_POINTS,
+    points_to_win: 11,
+    game_total_points: null,
+    max_duration: null,
+  },
+  player_left: {
+    user: {
+      id: 1,
+      username: "user42",
+    },
+    score: 0,
+  },
+  player_right: {
+    user: {
+      id: 1,
+      username: "student42",
+    },
+    score: 0,
+  },
+}
+
 const start = async () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -48,15 +76,20 @@ const start = async () => {
   const ball = new PongBall(
     Math.random() * canvas.width, Math.random() * canvas.height, 10, 10
   );
-  // const player1 = new PlayerManager(10, 80);
-  // const player2 = new PlayerManager(canvas.width - 20, canvas.height - 80);
+  const game = Game.createGameFromObj(gameObj);
+  const player_left = new PlayerManager(
+    game.player_left, canvas.width, canvas.height, 10
+  );
+  const player_right = new PlayerManager(
+    game.player_right, canvas.width, canvas.height, canvas.width - 20 // const
+  );
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     table.draw(ctx);
     ball.update(ctx);
-    // player1.draw(ctx);
-    // player2.draw(ctx);
+    player_left.draw(ctx);
+    player_right.draw(ctx);
     requestAnimationFrame(animate);
   }
   animate();
@@ -80,27 +113,6 @@ const start = async () => {
   });
 
   // window.addEventListener() // resize
-
-  // class PongPlayer {
-  //   constructor(x, y) {
-  //     this.position = {
-  //       x,
-  //       y,
-  //     };
-  //     this.velocity = {
-  //       x: 0,
-  //       y: 0,
-  //     };
-  //     // this.width = proportionalSize(40);
-  //     // this.height = proportionalSize(40);
-  //     this.width = 10;
-  //     this.height = 40;
-  //   }
-  //   draw() {
-  //     ctx.fillStyle = "#99c9ff";
-  //     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  //   }
-  // }
 
 }
 
