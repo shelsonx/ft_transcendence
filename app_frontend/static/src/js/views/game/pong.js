@@ -1,9 +1,5 @@
 import BaseLoggedView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
-import PongBall from "../../models/ball.js";
-import PongTable from "../../models/pongTable.js";
-import PlayerManager from "../../models/playerManager.js";
-import { Game } from "../../contracts/game/game.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../constants/game.js';
 import { GameRuleType } from '../../contracts/game/gameRule.js';
 import PongManager from '../../models/pongManager.js';
@@ -21,21 +17,19 @@ class PongGameView extends BaseLoggedView {
 
 const html = /*html*/`
   <div id="pong-game" class="">
-    <h3 class="row justify-content-center">Duration: 00:00</h3>
-    <div class="row justify-content-center">
-      <div class="col">
-        <h3 class="row justify-content-center">Player A</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_a.id_reference }}</p>
-        <p>Points: {{ match.score_a }}</p> -->
+    <h4 class="d-flex justify-content-center">00:00</h4>
+    <div class="d-flex justify-content-sm-center">
+      <div class="mx-3">
+        <span class="sm name" id="player-left-name">A</span>
+        <span class="score" id="player-left-score"> 0</span>
       </div>
-      <canvas id="canvas" class="col"></canvas>
-      <div class="col">
-        <h3 class="row justify-content-center">Player B</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_b.id_reference }}</p>
-        <p>Points: {{ match.score_b }}</p> -->
+      <div class="mx-3">
+        <span class="score" id="player-right-score">0</span>
+        <span class="sm name" id="player-right-name">B</span>
       </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <canvas id="canvas"></canvas>
     </div>
   </div>
 `
@@ -77,9 +71,6 @@ const start = async () => {
   const pong = new PongManager(gameObj, canvas.width, canvas.height);
 
   function animate() {
-    // if (pong.player_left.score < pong.game.rules.points_to_win)
-    //   pong.player_left.score += 1;
-
     if (pong.checkGameEnded() === true) {
       // save in back
       // window.cancelAnimationFrame(animationFrame);
