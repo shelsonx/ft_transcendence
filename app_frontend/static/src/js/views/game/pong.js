@@ -6,6 +6,7 @@ import PlayerManager from "../../models/playerManager.js";
 import { Game } from "../../contracts/game/game.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../constants/game.js';
 import { GameRuleType } from '../../contracts/game/gameRule.js';
+import PongManager from '../../models/pongManager.js';
 
 
 class PongGameView extends BaseLoggedView {
@@ -71,42 +72,41 @@ const start = async () => {
   const ctx = canvas.getContext("2d");
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
+  let animationFrame;
 
-  const table = new PongTable(0, 0, canvas.width, canvas.height);
-  const ball = new PongBall(
-    Math.random() * canvas.width, Math.random() * canvas.height, 10, 10
-  );
-  const game = Game.createGameFromObj(gameObj);
-  const player_left = new PlayerManager(
-    game.player_left, canvas.width, canvas.height, 10
-  );
-  const player_right = new PlayerManager(
-    game.player_right, canvas.width, canvas.height, canvas.width - 20 // const
-  );
+  const pong = new PongManager(gameObj, canvas.width, canvas.height);
 
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    table.draw(ctx);
-    ball.update(ctx);
-    player_left.draw(ctx);
-    player_right.draw(ctx);
-    requestAnimationFrame(animate);
+    // if (pong.player_left.score < pong.game.rules.points_to_win)
+    //   pong.player_left.score += 1;
+
+    if (pong.checkGameEnded() === true) {
+      // save in back
+      // window.cancelAnimationFrame(animationFrame);
+      console.log("Ended");
+    }
+    else {
+      pong.update();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pong.draw(ctx);
+      animationFrame = requestAnimationFrame(animate);
+    }
   }
   animate();
 
   window.addEventListener("keydown", (e) => {
     switch(e.code) {
       case "ArrowUp":
-        player_right.update("up");
+        pong.player_right.update("up");
         break;
       case "ArrowDown":
-        player_right.update("down");
+        pong.player_right.update("down");
         break;
       case "KeyW":
-        player_left.update("up");
+        pong.player_left.update("up");
         break;
       case "KeyS":
-        player_left.update("down");
+        pong.player_left.update("down");
         break;
     }
   });
