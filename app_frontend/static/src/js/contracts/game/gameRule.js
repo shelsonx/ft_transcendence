@@ -61,4 +61,4 @@ class GameRules {
 // const rule = GameRules.createGameRulesFromObj(obj);
 // console.log(rule)
 
-export { GameRules };
+export { GameRules, GameRuleType };

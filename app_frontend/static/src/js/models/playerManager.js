@@ -5,8 +5,8 @@ class PlayerManager {
     this.player = player;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
-    this.states = [];
-    this.currentState = this.states[0];
+    // this.states = [];
+    // this.currentState = this.states[0];
     // this.width = proportionalSize(40);
     // this.height = proportionalSize(40);
     this.width = 10;
