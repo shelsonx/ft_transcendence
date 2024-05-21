@@ -1,9 +1,9 @@
 // import { GamePlayer } from "../contracts/game/gamePlayer.js";
 
 class PlayerManager {
-  constructor(player, gameWidth, gameHeight, x) {
-    this.player = player;
-    this.gameWidth = gameWidth;
+  constructor(player, gameHeight, x) {
+    this.user = player.user;
+    this.score = player.score;
     this.gameHeight = gameHeight;
     // this.states = [];
     // this.currentState = this.states[0];

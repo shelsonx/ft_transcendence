@@ -1,32 +1,33 @@
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants/game.js";
+import { BALL_VELOCITY, PONG_BALL_SIZE } from "../constants/game.js";
 
-class PongBall {
-  constructor(x, y, width, height) {
+export default class PongBall {
+  constructor(x, y, gameWidth, gameHeight) {
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
     this.position = {
       x,
       y,
     };
     this.velocity = {
-      x: x > CANVAS_WIDTH / 2 ? -1 : 1,
-      y: y > CANVAS_HEIGHT / 2 ? -1 : 1,
+      x: x > gameWidth / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
+      y: y > gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
     };
-    this.width = width;
-    this.height = height;
+    this.size = PONG_BALL_SIZE;
   }
 
   draw(ctx) {
     ctx.fillStyle = "#99c9ff";
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
   }
 
-  update(ctx) {
-    if (this.position.x + this.velocity.x > CANVAS_WIDTH) {
+  update() {
+    if (this.position.x + this.velocity.x > this.gameWidth) {
       this.velocity.x *= -1;
     }
     else if (this.position.x + this.velocity.x < 0) {
       this.velocity.x *= -1;
     }
-    if (this.position.y + this.velocity.y > CANVAS_HEIGHT) {
+    if (this.position.y + this.velocity.y > this.gameHeight) {
       this.velocity.y *= -1;
     }
     else if (this.position.y + this.velocity.y < 0) {
@@ -35,8 +36,5 @@ class PongBall {
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    this.draw(ctx);
   }
 }
-
-export default PongBall;
