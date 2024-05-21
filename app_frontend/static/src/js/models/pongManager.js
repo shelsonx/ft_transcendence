@@ -22,6 +22,12 @@ class PongManager {
       gameHeight,
       canvas.width - 20 // const
     );
+
+    const left_name = document.getElementById("player-left-name");
+    const right_name = document.getElementById("player-right-name");
+    left_name.innerText = this.player_left.user.username;
+    right_name.innerText = this.player_right.user.username;
+    this.updateHtml();
   }
 
   checkGameEnded() {
@@ -53,22 +59,25 @@ class PongManager {
     return check;
   }
 
+  updateHtml() {
+    const left_score = document.getElementById("player-left-score");
+    const right_score = document.getElementById("player-right-score");
+
+    left_score.innerText = this.player_left.score;
+    right_score.innerText = this.player_right.score;
+  }
+
   checkPoint() {
     if (this.ball.position.x + this.ball.velocity.x > this.gameWidth) {
       this.player_left.score += 1;
-      console.log(
-        `${this.player_left.user.username} earns 1 point: ${this.player_left.score}`
-      );
-      // update score on screen
+      this.updateHtml();
       // send update to back?
       this.ball.position.x = 0;
       this.ball.position.y = Math.random() * this.gameHeight;
-    } else if (this.ball.position.x + this.ball.velocity.x < 0) {
+    }
+    else if (this.ball.position.x + this.ball.velocity.x < 0) {
       this.player_right.score += 1;
-      console.log(
-        `${this.player_right.user.username} earns 1 point: ${this.player_right.score}`
-      );
-      // update score on screen
+      this.updateHtml();
       // send update to back?
       this.ball.position.x = this.gameWidth - this.ball.size * 2;
       this.ball.position.y = Math.random() * this.gameHeight;
