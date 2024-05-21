@@ -25,7 +25,8 @@ class GamePlayer {
 
   static createGamePlayerFromObj(obj) {
     validateObj(GamePlayer, obj);
-    return new GamePlayer(obj.id, obj.username);
+    validateObj(GameUser, obj.user);
+    return new GamePlayer(obj.user, obj.score);
   }
 
   draw() {};
