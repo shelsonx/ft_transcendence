@@ -1,14 +1,8 @@
-// import { GamePlayer } from "../contracts/game/gamePlayer.js";
-
 class PlayerManager {
   constructor(player, gameHeight, x) {
     this.user = player.user;
     this.score = player.score;
     this.gameHeight = gameHeight;
-    // this.states = [];
-    // this.currentState = this.states[0];
-    // this.width = proportionalSize(40);
-    // this.height = proportionalSize(40);
     this.width = 10;
     this.height = 40;
     this.position = {
@@ -22,7 +16,7 @@ class PlayerManager {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "#99c9ff"; // receber o ctx no constructor?
+    ctx.fillStyle = "#99c9ff";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
