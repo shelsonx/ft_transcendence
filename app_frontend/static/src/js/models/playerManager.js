@@ -1,5 +1,5 @@
 import {
-  MAIN_COLOR_GAME,
+  PLAYER_COLOR,
   PLAYER_HEIGHT,
   PLAYER_WIDTH,
 } from "../constants/game.js";
@@ -23,7 +23,7 @@ class PlayerManager {
   }
 
   draw(ctx) {
-    ctx.fillStyle = MAIN_COLOR_GAME;
+    ctx.fillStyle = PLAYER_COLOR;
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
