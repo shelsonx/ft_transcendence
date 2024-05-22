@@ -3,6 +3,7 @@ import gameService from "../../services/gameService.js";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../constants/game.js";
 import { GameRuleType } from "../../contracts/game/gameRule.js";
 import PongManager from "../../models/pongManager.js";
+import { GameStatus } from "../../contracts/game/game.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -41,7 +42,7 @@ const html = /*html*/ `
 const gameObj = {
   id: 1,
   game_datetime: new Date(),
-  status: "scheduled",
+  status: GameStatus.SCHEDULED,
   duration: {
     minutes: 0,
     seconds: 0,
@@ -135,6 +136,7 @@ const start = async () => {
   function animate() {
     if (pong.checkGameEnded() === true) {
       loadEndMessage(pong);
+      pong.end();
       // save in back
       // window.cancelAnimationFrame(animationFrame);
     } else {
@@ -149,7 +151,7 @@ const start = async () => {
   startButton.addEventListener("click", (e) => {
     loadStartMessages();
     setTimeout(() => {
-      pong.begin = new Date().getTime();
+      pong.begin();
       animate();
     }, startMessages[4].showMsgDelay);
 
