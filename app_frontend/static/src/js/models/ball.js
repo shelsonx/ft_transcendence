@@ -11,6 +11,7 @@ export default class PongBall {
       y: y > gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
     };
     this.size = PONG_BALL_SIZE;
+    this.velocityControl = 0;
   }
 
   draw(ctx) {
@@ -19,6 +20,14 @@ export default class PongBall {
   }
 
   update() {
+    this.velocityControl++;
+    if (this.velocityControl === 2000) {
+      this.velocityControl = 0;
+      this.velocity.x *= 1.25;
+      this.velocity.y *= 1.25;
+      console.log("change velocity");
+    }
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
   }
