@@ -6,8 +6,6 @@ class PongTable {
     };
     this.width = width;
     this.height = height;
-    // this.width = 200;
-    // this.height = proportionalSize(40);
   }
 
   draw(ctx) {
@@ -18,6 +16,11 @@ class PongTable {
     ctx.moveTo(this.position.x + this.width / 2, this.position.y);
     ctx.lineTo(this.position.x + this.width / 2, this.height);
     ctx.stroke();
+  }
+
+  resize(width, height) {
+    this.width = width;
+    this.height = height;
   }
 }
 

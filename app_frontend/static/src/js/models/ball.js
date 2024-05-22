@@ -1,4 +1,5 @@
 import { BALL_VELOCITY, PONG_BALL_SIZE } from "../constants/game.js";
+import { proportionalWidth } from "../utils/size.js";
 
 export default class PongBall {
   constructor(x, y, gameWidth, gameHeight) {
@@ -10,7 +11,7 @@ export default class PongBall {
       x: x > gameWidth / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
       y: y > gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
     };
-    this.size = PONG_BALL_SIZE;
+    this.size = proportionalWidth(PONG_BALL_SIZE);
     this.velocityControl = 0;
   }
 
@@ -30,5 +31,9 @@ export default class PongBall {
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+  }
+
+  resize() {
+    this.size = proportionalWidth(PONG_BALL_SIZE);
   }
 }
