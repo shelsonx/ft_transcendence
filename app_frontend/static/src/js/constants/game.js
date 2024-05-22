@@ -11,3 +11,7 @@ export const PONG_BALL_SIZE = 10;
 
 export const BALL_VELOCITY = 1;
 export const PLAYER_VELOCITY = 5;
+
+export const MAIN_COLOR_GAME = "#99c9ff";
+export const TABLE_COLOR = "#000000";
+export const TABLE_DIVISION_COLOR = "#FFFFFF";

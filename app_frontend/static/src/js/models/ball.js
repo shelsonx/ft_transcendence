@@ -1,4 +1,8 @@
-import { BALL_VELOCITY, PONG_BALL_SIZE } from "../constants/game.js";
+import {
+  BALL_VELOCITY,
+  MAIN_COLOR_GAME,
+  PONG_BALL_SIZE,
+} from "../constants/game.js";
 import { proportionalWidth } from "../utils/size.js";
 
 export default class PongBall {
@@ -16,7 +20,7 @@ export default class PongBall {
   }
 
   draw(ctx) {
-    ctx.fillStyle = "#99c9ff";
+    ctx.fillStyle = MAIN_COLOR_GAME;
     ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
   }
 
