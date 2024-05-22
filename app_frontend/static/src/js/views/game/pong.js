@@ -48,7 +48,7 @@ const gameObj = {
   player_left: {
     user: {
       id: 1,
-      username: "user42",
+      username: "staff42",
     },
     score: 0,
   },
