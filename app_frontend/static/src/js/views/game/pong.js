@@ -70,28 +70,28 @@ const gameObj = {
 
 const startMessages = [
   {
-    msg: '3',
+    msg: "3",
     showMsgDelay: 0,
   },
   {
-    msg: '2',
+    msg: "2",
     showMsgDelay: 1000,
   },
   {
-    msg: '1',
+    msg: "1",
     showMsgDelay: 2000,
   },
   {
-    msg: 'Get Ready!',
+    msg: "Get Ready!",
     showMsgDelay: 3000,
   },
   {
-    msg: '',
+    msg: "",
     showMsgDelay: 4000,
   },
 ];
 
-const loadMessages = async () => {
+const loadStartMessages = () => {
   const message = document.getElementById("message");
 
   startMessages.forEach((obj) => {
@@ -103,6 +103,21 @@ const loadMessages = async () => {
       `;
     }, obj.showMsgDelay);
   });
+};
+
+function loadEndMessage(game) {
+  const messageHtml = document.getElementById("message");
+  const winner = game.winner();
+  const msg =
+    winner !== null
+      ? `${winner.user.username} won!`
+      : "Game ended in a draw";
+
+  messageHtml.innerHTML = /*html*/ `
+    <h1 class="align-items-center border border-white border-opacity-10 rounded-3 form-container">
+      ${msg}
+    </h1>
+  `;
 }
 
 const start = async () => {
@@ -119,9 +134,9 @@ const start = async () => {
   let animationFrame;
   function animate() {
     if (pong.checkGameEnded() === true) {
+      loadEndMessage(pong);
       // save in back
       // window.cancelAnimationFrame(animationFrame);
-      console.log("Ended");
     } else {
       pong.update();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -130,10 +145,9 @@ const start = async () => {
     }
   }
 
-  const start = document.getElementById("start");
-
-  start.addEventListener("click", (e) => {
-    loadMessages();
+  const startButton = document.getElementById("start");
+  startButton.addEventListener("click", (e) => {
+    loadStartMessages();
     setTimeout(() => {
       animate();
     }, startMessages[4].showMsgDelay);
