@@ -1,7 +1,7 @@
 import PongTable from "./pongTable.js";
 import PongBall from "./ball.js";
 import PlayerManager from "./playerManager.js";
-import { Game } from "../contracts/game/game.js";
+import { Game, GameStatus } from "../contracts/game/game.js";
 import { getTimeValue } from "../utils/timeUtils.js";
 
 class PongManager {
@@ -24,12 +24,30 @@ class PongManager {
       canvas.width - 20 // const
     );
 
-    this.begin = null;
     this.timeHtml = document.getElementById("pong-time");
 
     this.leftScoreHtml = document.getElementById("score-left");
     this.rightScoreHtml = document.getElementById("score-right");
     this.setHtmlData();
+  }
+
+  begin() {
+    this.game.game_datetime = new Date();
+    this.game.status.value = GameStatus.ONGOING;
+  }
+
+  end() {
+    const now = new Date();
+    const delta = now - this.game.game_datetime;
+    const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((delta % (1000 * 60)) / 1000);
+
+    this.game.status.value = GameStatus.ENDED;
+    this.game.duration.minutes = minutes;
+    this.game.duration.seconds = seconds;
+    this.game.player_left.score = this.player_left.score;
+    this.game.player_right.score = this.player_right.score;
+    console.log(this.game);
   }
 
   checkGameEnded() {
@@ -150,7 +168,7 @@ class PongManager {
 
   updateHtmlTime() {
     const now = new Date().getTime();
-    const delta = now - this.begin;
+    const delta = now - this.game.game_datetime;
     const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((delta % (1000 * 60)) / 1000);
 
