@@ -16,7 +16,7 @@ class PongGameView extends BaseLoggedView {
 const html = /*html*/ `
   <div id="pong-game" class="">
     <h4 class="time d-flex justify-content-center">
-      <span id="minutes">00</span>:<span id="seconds">00</span>
+      <span id="pong-time">00:00</span>
     </h4>
     <div class="d-flex justify-content-sm-center">
       <div class="mx-3">
@@ -149,6 +149,7 @@ const start = async () => {
   startButton.addEventListener("click", (e) => {
     loadStartMessages();
     setTimeout(() => {
+      pong.begin = new Date().getTime();
       animate();
     }, startMessages[4].showMsgDelay);
 

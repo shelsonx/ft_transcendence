@@ -25,8 +25,7 @@ class PongManager {
     );
 
     this.begin = null;
-    this.minutesHtml = document.getElementById("minutes");
-    this.secondsHtml = document.getElementById("seconds");
+    this.timeHtml = document.getElementById("pong-time");
 
     this.leftScoreHtml = document.getElementById("score-left");
     this.rightScoreHtml = document.getElementById("score-right");
@@ -42,7 +41,6 @@ class PongManager {
     if (points_to_win !== null) {
       players.forEach((player) => {
         if (player.score === points_to_win) {
-          console.log(`${player.user.username} wins: ${player.score}`);
           check = true;
         }
       });
@@ -119,13 +117,14 @@ class PongManager {
       return this.player_left;
     if (this.player_right.score > this.player_left.score)
       return this.player_right;
-    return null;  // a tie
+    return null; // a tie
   }
 
   update() {
     this.checkBallColision();
     this.checkPoint();
     this.ball.update();
+    this.updateHtmlTime();
   }
 
   draw(ctx) {
@@ -141,17 +140,23 @@ class PongManager {
 
     left_name.innerText = this.player_left.user.username;
     right_name.innerText = this.player_right.user.username;
-    this.minutesHtml.innerText = getTimeValue(this.game.duration.minutes);
-    this.secondsHtml.innerText = getTimeValue(this.game.duration.seconds);
+    this.timeHtml.innerText = `
+      ${getTimeValue(this.game.duration.minutes)}:${getTimeValue(
+      this.game.duration.seconds
+    )}
+    `;
     this.updateHtmlPoints();
   }
 
   updateHtmlTime() {
-    const now = new Date();
+    const now = new Date().getTime();
     const delta = now - this.begin;
-    // outra lógica!
-    // this.minutesHtml.innerText = this.minutes;
-    // this.secondsHtml.innerText = this.seconds;
+    const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((delta % (1000 * 60)) / 1000);
+
+    this.timeHtml.innerText = `
+      ${getTimeValue(minutes)}:${getTimeValue(seconds)}
+    `;
   }
 
   updateHtmlPoints() {
