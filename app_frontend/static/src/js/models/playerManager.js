@@ -1,10 +1,13 @@
+import { PLAYER_HEIGHT, PLAYER_WIDTH } from "../constants/game.js";
+import { proportionalHeight, proportionalWidth } from "../utils/size.js";
+
 class PlayerManager {
   constructor(player, gameHeight, x) {
     this.user = player.user;
     this.score = player.score;
     this.gameHeight = gameHeight;
-    this.width = 10;
-    this.height = 40;
+    this.width = proportionalWidth(PLAYER_WIDTH);
+    this.height = proportionalHeight(PLAYER_HEIGHT);
     this.position = {
       x: x,
       y: Math.random() * gameHeight,
@@ -31,6 +34,11 @@ class PlayerManager {
         this.position.y += this.velocity.y;
       }
     }
+  }
+
+  resize() {
+    this.width = proportionalWidth(PLAYER_WIDTH);
+    this.height = proportionalHeight(PLAYER_HEIGHT);
   }
 }
 
