@@ -162,7 +162,7 @@ class PongManager {
     this.gameHeight = newGameHeight;
 
     this.table.resize(newGameWidth, newGameHeight);
-    this.ball.resize();
+    this.ball.resize(newGameWidth, newGameHeight);
     this.player_left.resize(newGameHeight);
     this.player_right.resize(newGameHeight);
     this.player_right.position.x =

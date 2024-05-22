@@ -1,6 +1,6 @@
 import {
+  BALL_COLOR,
   BALL_VELOCITY,
-  MAIN_COLOR_GAME,
   PONG_BALL_SIZE,
 } from "../constants/game.js";
 import { proportionalWidth } from "../utils/size.js";
@@ -17,10 +17,12 @@ export default class PongBall {
     };
     this.size = proportionalWidth(PONG_BALL_SIZE);
     this.velocityControl = 0;
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
   }
 
   draw(ctx) {
-    ctx.fillStyle = MAIN_COLOR_GAME;
+    ctx.fillStyle = BALL_COLOR;
     ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
   }
 
@@ -37,7 +39,11 @@ export default class PongBall {
     this.position.y += this.velocity.y;
   }
 
-  resize() {
+  resize(newGameWidth, newGameHeight) {
     this.size = proportionalWidth(PONG_BALL_SIZE);
+    this.position.x = this.position.x * newGameWidth / this.gameWidth;
+    this.position.y = this.position.y * newGameHeight / this.gameHeight;
+    this.gameWidth = newGameWidth;
+    this.gameHeight = newGameHeight;
   }
 }
