@@ -7,10 +7,18 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt /usr/src/app
 
+RUN apt-get update && \
+    apt-get install -y gettext && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY . /usr/src/app
+
+RUN django-admin makemessages --all
+RUN django-admin compilemessages
 
 RUN chmod +x entrypoint.sh
 
