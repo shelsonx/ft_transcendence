@@ -1,9 +1,9 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../../constants/game.js";
 import { GameRuleType } from "../../contracts/game/gameRule.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
+import { canvasHeight, canvasWidth } from "../../utils/size.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -110,9 +110,7 @@ function loadEndMessage(game) {
   const messageHtml = document.getElementById("message");
   const winner = game.winner();
   const msg =
-    winner !== null
-      ? `${winner.user.username} won!`
-      : "Game ended in a draw";
+    winner !== null ? `${winner.user.username} won!` : "Game ended in a draw";
 
   messageHtml.innerHTML = /*html*/ `
     <h1 class="align-items-center border border-white border-opacity-10 rounded-3 form-container">
@@ -124,8 +122,8 @@ function loadEndMessage(game) {
 const start = async () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = CANVAS_WIDTH;
-  canvas.height = CANVAS_HEIGHT;
+  canvas.width = canvasWidth();
+  canvas.height = canvasHeight();
 
   const pong = new PongManager(gameObj, canvas.width, canvas.height);
   pong.table.draw(ctx);
@@ -173,7 +171,12 @@ const start = async () => {
     });
   });
 
-  // window.addEventListener() // resize
+  window.addEventListener("resize", (e) => {
+    canvas.width = canvasWidth();
+    canvas.height = canvasHeight();
+    pong.resize(canvas.width, canvas.height);
+    pong.draw(ctx);
+  });
 };
 
 export default new PongGameView(html, start);

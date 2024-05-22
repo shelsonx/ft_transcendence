@@ -3,6 +3,8 @@ import PongBall from "./ball.js";
 import PlayerManager from "./playerManager.js";
 import { Game, GameStatus } from "../contracts/game/game.js";
 import { getTimeValue } from "../utils/timeUtils.js";
+import { PLAYER_WIDTH, TABLE_PADDING } from "../constants/game.js";
+import { proportionalWidth } from "../utils/size.js";
 
 class PongManager {
   constructor(game, gameWidth, gameHeight) {
@@ -17,15 +19,18 @@ class PongManager {
       gameWidth,
       gameHeight
     );
-    this.player_left = new PlayerManager(this.game.player_left, gameHeight, 10);
+    this.player_left = new PlayerManager(
+      this.game.player_left,
+      gameHeight,
+      proportionalWidth(TABLE_PADDING)
+    );
     this.player_right = new PlayerManager(
       this.game.player_right,
       gameHeight,
-      canvas.width - 20 // const
+      gameWidth - proportionalWidth(TABLE_PADDING + PLAYER_WIDTH)
     );
 
     this.timeHtml = document.getElementById("pong-time");
-
     this.leftScoreHtml = document.getElementById("score-left");
     this.rightScoreHtml = document.getElementById("score-right");
     this.setHtmlData();
@@ -34,6 +39,7 @@ class PongManager {
   begin() {
     this.game.game_datetime = new Date();
     this.game.status.value = GameStatus.ONGOING;
+    // send update to back?
   }
 
   end() {
@@ -47,7 +53,6 @@ class PongManager {
     this.game.duration.seconds = seconds;
     this.game.player_left.score = this.player_left.score;
     this.game.player_right.score = this.player_right.score;
-    console.log(this.game);
   }
 
   checkGameEnded() {
@@ -150,6 +155,18 @@ class PongManager {
     this.ball.draw(ctx);
     this.player_left.draw(ctx);
     this.player_right.draw(ctx);
+  }
+
+  resize(gameWidth, gameHeight) {
+    this.gameWidth = gameWidth;
+    this.gameHeight = gameHeight;
+
+    this.table.resize(gameWidth, gameHeight);
+    this.ball.resize();
+    this.player_left.resize();
+    this.player_right.resize();
+    this.player_right.position.x =
+      gameWidth - proportionalWidth(TABLE_PADDING + PLAYER_WIDTH);
   }
 
   setHtmlData() {
