@@ -157,16 +157,16 @@ class PongManager {
     this.player_right.draw(ctx);
   }
 
-  resize(gameWidth, gameHeight) {
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
+  resize(newGameWidth, newGameHeight) {
+    this.gameWidth = newGameWidth;
+    this.gameHeight = newGameHeight;
 
-    this.table.resize(gameWidth, gameHeight);
+    this.table.resize(newGameWidth, newGameHeight);
     this.ball.resize();
-    this.player_left.resize();
-    this.player_right.resize();
+    this.player_left.resize(newGameHeight);
+    this.player_right.resize(newGameHeight);
     this.player_right.position.x =
-      gameWidth - proportionalWidth(TABLE_PADDING + PLAYER_WIDTH);
+      newGameWidth - proportionalWidth(TABLE_PADDING + PLAYER_WIDTH);
   }
 
   setHtmlData() {
