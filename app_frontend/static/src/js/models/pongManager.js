@@ -114,6 +114,14 @@ class PongManager {
     }
   }
 
+  winner() {
+    if (this.player_left.score > this.player_right.score)
+      return this.player_left;
+    if (this.player_right.score > this.player_left.score)
+      return this.player_right;
+    return null;  // a tie
+  }
+
   update() {
     this.checkBallColision();
     this.checkPoint();
