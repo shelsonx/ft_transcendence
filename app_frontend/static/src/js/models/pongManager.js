@@ -84,12 +84,16 @@ class PongManager {
   }
 
   checkPoint() {
-    if (this.ball.position.x + this.ball.velocity.x > this.gameWidth) {
+    if (
+      this.ball.position.x + this.ball.size + this.ball.velocity.x >
+      this.gameWidth
+    ) {
       this.player_left.score += 1;
       this.updateHtmlPoints();
       // send update to back?
       this.ball.position.x = proportionalWidth(TABLE_PADDING);
       this.ball.position.y = Math.random() * this.gameHeight;
+      this.ball.startVelocity();
     } else if (this.ball.position.x + this.ball.velocity.x < 0) {
       this.player_right.score += 1;
       this.updateHtmlPoints();
@@ -97,12 +101,13 @@ class PongManager {
       this.ball.position.x =
         this.gameWidth - proportionalWidth(TABLE_PADDING) - this.ball.size;
       this.ball.position.y = Math.random() * this.gameHeight;
+      this.ball.startVelocity();
     }
   }
 
   checkBallColisionPlayerY(player) {
     const newPlayerY = player.position.y + player.velocity.y;
-    
+
     if (
       this.ball.position.y + this.ball.size >= newPlayerY &&
       this.ball.position.y <= newPlayerY + player.height

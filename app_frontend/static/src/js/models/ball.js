@@ -11,14 +11,11 @@ export default class PongBall {
       x,
       y,
     };
-    this.velocity = {
-      x: x > gameWidth / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
-      y: y > gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
-    };
     this.size = proportionalWidth(PONG_BALL_SIZE);
-    this.velocityControl = 0;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
+    this.velocityControl = 0;
+    this.startVelocity();
   }
 
   draw(ctx) {
@@ -27,24 +24,31 @@ export default class PongBall {
   }
 
   update() {
-    this.udpadteBallVelocity();
+    this.udpadteVelocity();
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
   }
 
-  udpadteBallVelocity() {
+  udpadteVelocity() {
     this.velocityControl++;
-    if (this.velocityControl === 2000) {
+    if (this.velocityControl === 500) {
       this.velocityControl = 0;
       this.velocity.x *= 1.2;
       this.velocity.y *= 1.1;
     }
   }
 
+  startVelocity() {
+    this.velocity = {
+      x: this.position.x > this.gameWidth / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
+      y: this.position.y > this.gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
+    };
+  }
+
   resize(newGameWidth, newGameHeight) {
     this.size = proportionalWidth(PONG_BALL_SIZE);
-    this.position.x = this.position.x * newGameWidth / this.gameWidth;
-    this.position.y = this.position.y * newGameHeight / this.gameHeight;
+    this.position.x = (this.position.x * newGameWidth) / this.gameWidth;
+    this.position.y = (this.position.y * newGameHeight) / this.gameHeight;
     this.gameWidth = newGameWidth;
     this.gameHeight = newGameHeight;
   }
