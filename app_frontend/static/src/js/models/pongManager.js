@@ -101,9 +101,11 @@ class PongManager {
   }
 
   checkBallColisionPlayerY(player) {
+    const newPlayerY = player.position.y + player.velocity.y;
+    
     if (
-      this.ball.position.y + this.ball.size >= player.position.y &&
-      this.ball.position.y <= player.position.y + player.height
+      this.ball.position.y + this.ball.size >= newPlayerY &&
+      this.ball.position.y <= newPlayerY + player.height
     ) {
       this.ball.velocity.x *= -1;
     }
@@ -159,6 +161,8 @@ class PongManager {
     this.checkBallColision();
     this.checkPoint();
     this.ball.update();
+    this.player_left.update();
+    this.player_right.update();
     this.updateHtmlTime();
   }
 

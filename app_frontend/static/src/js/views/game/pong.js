@@ -4,6 +4,7 @@ import { GameRuleType } from "../../contracts/game/gameRule.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
+import { PLAYER_VELOCITY } from "../../constants/game.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -154,18 +155,31 @@ const start = async () => {
     }, startMessages[4].showMsgDelay);
 
     window.addEventListener("keydown", (e) => {
+      e.preventDefault();
       switch (e.code) {
         case "ArrowUp":
-          pong.player_right.update("up");
+          pong.player_right.velocity.y = -PLAYER_VELOCITY;
           break;
         case "ArrowDown":
-          pong.player_right.update("down");
+          pong.player_right.velocity.y = PLAYER_VELOCITY;
           break;
         case "KeyW":
-          pong.player_left.update("up");
+          pong.player_left.velocity.y = -PLAYER_VELOCITY;;
           break;
         case "KeyS":
-          pong.player_left.update("down");
+          pong.player_left.velocity.y = PLAYER_VELOCITY;
+          break;
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      switch (e.code) {
+        case "ArrowUp":
+        case "ArrowDown":
+          pong.player_right.velocity.y = 0;
+          break;
+        case "KeyW":
+        case "KeyS":
+          pong.player_left.velocity.y = 0;
           break;
       }
     });
