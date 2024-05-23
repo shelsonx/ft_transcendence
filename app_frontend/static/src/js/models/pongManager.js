@@ -88,42 +88,47 @@ class PongManager {
       this.player_left.score += 1;
       this.updateHtmlPoints();
       // send update to back?
-      this.ball.position.x = 0;
+      this.ball.position.x = proportionalWidth(TABLE_PADDING);
       this.ball.position.y = Math.random() * this.gameHeight;
     } else if (this.ball.position.x + this.ball.velocity.x < 0) {
       this.player_right.score += 1;
       this.updateHtmlPoints();
       // send update to back?
-      this.ball.position.x = this.gameWidth - this.ball.size * 2;
+      this.ball.position.x =
+        this.gameWidth - proportionalWidth(TABLE_PADDING) - this.ball.size;
       this.ball.position.y = Math.random() * this.gameHeight;
     }
   }
 
   checkBallColision() {
     // colision in x - with players
-    if (
-      this.ball.position.x + this.ball.velocity.x ===
-      this.player_right.position.x
-    ) {
+    if (this.ball.velocity.x > 0) {
+      // colision with player_right
       if (
-        this.ball.position.y >= this.player_right.position.y &&
-        this.ball.position.y <=
-          this.player_right.position.y + this.player_right.height
+        this.ball.position.x + this.ball.size + this.ball.velocity.x >=
+        this.player_right.position.x
       ) {
-        this.ball.velocity.x *= -1;
-        console.log("player right colision detected");
+        if (
+          this.ball.position.y >= this.player_right.position.y &&
+          this.ball.position.y <=
+            this.player_right.position.y + this.player_right.height
+        ) {
+          this.ball.velocity.x *= -1;
+        }
       }
-    } else if (
-      this.ball.position.x + this.ball.velocity.x ===
-      this.player_left.position.x + this.player_left.width
-    ) {
+    } else if (this.ball.velocity.x < 0) {
+      // colision with player_left
       if (
-        this.ball.position.y >= this.player_left.position.y &&
-        this.ball.position.y <=
-          this.player_left.position.y + this.player_left.height
+        this.ball.position.x + this.ball.velocity.x <=
+        this.player_left.position.x + this.player_left.width
       ) {
-        this.ball.velocity.x *= -1;
-        console.log("player left colision detected");
+        if (
+          this.ball.position.y >= this.player_left.position.y &&
+          this.ball.position.y <=
+            this.player_left.position.y + this.player_left.height
+        ) {
+          this.ball.velocity.x *= -1;
+        }
       }
     }
 
