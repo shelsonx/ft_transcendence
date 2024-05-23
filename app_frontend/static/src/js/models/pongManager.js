@@ -105,7 +105,7 @@ class PongManager {
     }
   }
 
-  checkBallColisionPlayerY(player) {
+  checkBallColisionSidePlayer(player) {
     const newPlayerY = player.position.y + player.velocity.y;
 
     if (
@@ -113,6 +113,17 @@ class PongManager {
       this.ball.position.y <= newPlayerY + player.height
     ) {
       this.ball.velocity.x *= -1;
+    }
+  }
+
+  checkBallColisionTopBottomPlayer(player) {
+    const newPlayerY = player.position.y + player.velocity.y;
+
+    if (
+      this.ball.position.y + this.ball.size >= newPlayerY &&
+      this.ball.position.y <= newPlayerY + player.height
+    ) {
+      this.ball.velocity.y *= -1;
     }
   }
 
@@ -125,11 +136,13 @@ class PongManager {
       ballColisionX = this.ball.position.x + this.ball.size;
       playerColisionX = this.player_right.position.x;
 
-      if (
-        ballColisionX + this.ball.velocity.x >= playerColisionX &&
-        ballColisionX <= playerColisionX
-      )
-        this.checkBallColisionPlayerY(this.player_right);
+      if (ballColisionX + this.ball.velocity.x >= playerColisionX) {
+        // side colision
+        if (ballColisionX <= playerColisionX)
+          this.checkBallColisionSidePlayer(this.player_right);
+        // top and bottom colision
+        else this.checkBallColisionTopBottomPlayer(this.player_right);
+      }
     }
 
     // colision with player_left
@@ -137,11 +150,12 @@ class PongManager {
       ballColisionX = this.ball.position.x;
       playerColisionX = this.player_left.position.x + this.player_left.width;
 
-      if (
-        ballColisionX + this.ball.velocity.x <= playerColisionX &&
-        ballColisionX >= playerColisionX
-      ) {
-        this.checkBallColisionPlayerY(this.player_left);
+      if (ballColisionX + this.ball.velocity.x <= playerColisionX) {
+        // side colision
+        if (ballColisionX >= playerColisionX)
+          this.checkBallColisionSidePlayer(this.player_left);
+        // top and bottom colision
+        else this.checkBallColisionTopBottomPlayer(this.player_left);
       }
     }
 
