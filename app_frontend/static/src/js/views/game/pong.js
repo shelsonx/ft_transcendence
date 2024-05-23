@@ -15,23 +15,23 @@ class PongGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="pong-game" class="">
-    <h4 class="time d-flex justify-content-center">
-      <span id="pong-time">00:00</span>
-    </h4>
-    <div class="d-flex justify-content-sm-center">
-      <div class="mx-3">
-        <span class="sm name" id="name-left">A</span>
-        <span class="score" id="score-left"> 0</span>
-      </div>
-      <div class="mx-3">
-        <span class="score" id="score-right">0</span>
-        <span class="sm name" id="name-right">B</span>
-      </div>
+  <h4 class="time d-flex justify-content-center">
+    <span id="pong-time">00:00</span>
+  </h4>
+
+  <div class="d-flex justify-content-between container-sm">
+    <div>
+      <span class="sm name" id="name-left"></span>
+      <span class="score mx-1" id="score-left"></span>
     </div>
-    <div class="d-flex justify-content-center">
-      <canvas id="canvas"></canvas>
+    <div>
+      <span class="score mx-1" id="score-right"></span>
+      <span class="sm name" id="name-right"></span>
     </div>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <canvas id="canvas"></canvas>
   </div>
 
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
@@ -62,7 +62,7 @@ const gameObj = {
   },
   player_right: {
     user: {
-      id: 1,
+      id: 2,
       username: "student42",
     },
     score: 0,
@@ -98,7 +98,7 @@ const loadStartMessages = () => {
   startMessages.forEach((obj) => {
     setTimeout(() => {
       message.innerHTML = /*html*/ `
-        <h1>
+        <h1 class="game-message">
           ${obj.msg}
         </h1>
       `;
@@ -113,7 +113,7 @@ function loadEndMessage(game) {
     winner !== null ? `${winner.user.username} won!` : "Game ended in a draw";
 
   messageHtml.innerHTML = /*html*/ `
-    <h1 class="align-items-center border border-white border-opacity-10 rounded-3 form-container">
+    <h1 class="game-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
       ${msg}
     </h1>
   `;

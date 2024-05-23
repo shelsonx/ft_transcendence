@@ -18,13 +18,13 @@ export const proportionalWidth = (size) => {
 };
 
 export const canvasWidth = () => {
-  return innerWidth * WIDTH_FACTOR < CANVAS_WIDTH_DEFAULT
-    ? innerWidth * WIDTH_FACTOR
-    : CANVAS_WIDTH_DEFAULT;
+  return innerWidth * WIDTH_FACTOR >= CANVAS_WIDTH_DEFAULT
+    ? CANVAS_WIDTH_DEFAULT
+    : innerWidth * WIDTH_FACTOR;
 };
 
 export const canvasHeight = () => {
-  return innerHeight * HEIGHT_FACTOR < CANVAS_HEIGHT_DEFAULT
-    ? innerHeight * HEIGHT_FACTOR
-    : CANVAS_HEIGHT_DEFAULT;
+  return innerHeight * HEIGHT_FACTOR >= CANVAS_HEIGHT_DEFAULT
+    ? CANVAS_HEIGHT_DEFAULT
+    : innerHeight * HEIGHT_FACTOR;
 };
