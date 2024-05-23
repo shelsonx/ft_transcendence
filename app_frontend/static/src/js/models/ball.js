@@ -32,7 +32,6 @@ export default class PongBall {
       this.velocityControl = 0;
       this.velocity.x *= 1.25;
       this.velocity.y *= 1.25;
-      console.log("change velocity");
     }
 
     this.position.x += this.velocity.x;
