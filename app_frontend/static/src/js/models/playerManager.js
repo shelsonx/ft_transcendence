@@ -18,7 +18,7 @@ class PlayerManager {
     };
     this.velocity = {
       x: 0,
-      y: 10,
+      y: 0,
     };
   }
 
@@ -27,16 +27,13 @@ class PlayerManager {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
-  update(move) {
-    if (move == "up") {
-      if (this.position.y - this.velocity.y >= 0) {
-        this.position.y -= this.velocity.y;
-      }
-    } else if (move == "down") {
-      if (this.position.y + this.velocity.y + this.height <= this.gameHeight) {
-        this.position.y += this.velocity.y;
-      }
-    }
+
+  update() {
+    this.position.y += this.velocity.y;
+    if (this.position.y < 0)
+      this.position.y = 0;
+    if (this.position.y + this.height > this.gameHeight)
+      this.position.y = this.gameHeight - this.height;
   }
 
   resize(newGameHeight) {
