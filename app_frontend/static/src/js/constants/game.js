@@ -1,4 +1,4 @@
-export const CANVAS_WIDTH_DEFAULT = 600;
+export const CANVAS_WIDTH_DEFAULT = 700;
 export const CANVAS_HEIGHT_DEFAULT = 450;
 export const WIDTH_FACTOR = 0.9;
 export const HEIGHT_FACTOR = 0.7;
