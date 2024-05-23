@@ -100,44 +100,51 @@ class PongManager {
     }
   }
 
+  checkBallColisionPlayerY(player) {
+    if (
+      this.ball.position.y + this.ball.size >= player.position.y &&
+      this.ball.position.y <= player.position.y + player.height
+    ) {
+      this.ball.velocity.x *= -1;
+    }
+  }
+
   checkBallColision() {
     // colision in x - with players
+    let ballColisionX, playerColisionX;
+
+    // colision with player_right
     if (this.ball.velocity.x > 0) {
-      // colision with player_right
+      ballColisionX = this.ball.position.x + this.ball.size;
+      playerColisionX = this.player_right.position.x;
+
       if (
-        this.ball.position.x + this.ball.size + this.ball.velocity.x >=
-        this.player_right.position.x
-      ) {
-        if (
-          this.ball.position.y >= this.player_right.position.y &&
-          this.ball.position.y <=
-            this.player_right.position.y + this.player_right.height
-        ) {
-          this.ball.velocity.x *= -1;
-        }
-      }
-    } else if (this.ball.velocity.x < 0) {
-      // colision with player_left
+        ballColisionX + this.ball.velocity.x >= playerColisionX &&
+        ballColisionX <= playerColisionX
+      )
+        this.checkBallColisionPlayerY(this.player_right);
+    }
+
+    // colision with player_left
+    else if (this.ball.velocity.x < 0) {
+      ballColisionX = this.ball.position.x;
+      playerColisionX = this.player_left.position.x + this.player_left.width;
+
       if (
-        this.ball.position.x + this.ball.velocity.x <=
-        this.player_left.position.x + this.player_left.width
+        ballColisionX + this.ball.velocity.x <= playerColisionX &&
+        ballColisionX >= playerColisionX
       ) {
-        if (
-          this.ball.position.y >= this.player_left.position.y &&
-          this.ball.position.y <=
-            this.player_left.position.y + this.player_left.height
-        ) {
-          this.ball.velocity.x *= -1;
-        }
+        this.checkBallColisionPlayerY(this.player_left);
       }
     }
 
     // colision in y
-    if (this.ball.position.y + this.ball.velocity.y > this.gameHeight) {
+    if (
+      this.ball.position.y + this.ball.velocity.y <= 0 ||
+      this.ball.position.y + this.ball.size + this.ball.velocity.y >=
+        this.gameHeight
+    )
       this.ball.velocity.y *= -1;
-    } else if (this.ball.position.y + this.ball.velocity.y < 0) {
-      this.ball.velocity.y *= -1;
-    }
   }
 
   winner() {
