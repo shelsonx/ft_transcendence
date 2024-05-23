@@ -27,15 +27,18 @@ export default class PongBall {
   }
 
   update() {
+    this.udpadteBallVelocity();
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+  }
+
+  udpadteBallVelocity() {
     this.velocityControl++;
     if (this.velocityControl === 2000) {
       this.velocityControl = 0;
-      this.velocity.x *= 1.25;
-      this.velocity.y *= 1.25;
+      this.velocity.x *= 1.2;
+      this.velocity.y *= 1.1;
     }
-
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
   }
 
   resize(newGameWidth, newGameHeight) {
