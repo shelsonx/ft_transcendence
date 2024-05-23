@@ -10,7 +10,7 @@ export const PLAYER_HEIGHT = 40;
 export const PONG_BALL_SIZE = 10;
 
 export const BALL_VELOCITY = 1;
-export const PLAYER_VELOCITY = 5;
+export const PLAYER_VELOCITY = 2;
 
 export const PLAYER_COLOR = "#F5C16E";
 export const BALL_COLOR = "#1189c4";
