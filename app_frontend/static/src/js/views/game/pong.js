@@ -17,7 +17,7 @@ class PongGameView extends BaseLoggedView {
 
 const html = /*html*/ `
   <h4 class="time d-flex justify-content-center">
-    <span id="pong-time">00:00</span>
+    <span id="pong-time"></span>
   </h4>
 
   <div class="d-flex justify-content-between container-sm">
@@ -39,36 +39,6 @@ const html = /*html*/ `
     <button id="start" class="btn btn-primary">Start</button>
   </div>
 `;
-
-const gameObj = {
-  id: 1,
-  game_datetime: new Date(),
-  status: GameStatus.SCHEDULED,
-  duration: {
-    minutes: 0,
-    seconds: 0,
-  },
-  rules: {
-    rule_type: GameRuleType.PLAYER_POINTS,
-    points_to_win: 11,
-    game_total_points: null,
-    max_duration: null,
-  },
-  player_left: {
-    user: {
-      id: 1,
-      username: "staff42",
-    },
-    score: 0,
-  },
-  player_right: {
-    user: {
-      id: 2,
-      username: "student42",
-    },
-    score: 0,
-  },
-};
 
 const startMessages = [
   {
@@ -120,7 +90,15 @@ function loadEndMessage(game) {
   `;
 }
 
-const start = async () => {
+const settleGame = (response) => {
+  if (response.status === "not found") {
+    const message = document.getElementById("message");
+    message.innerHTML = /*html*/ `<h1 class="game-message">404 not Found</h1>`;
+    return ;
+  }
+  console.log("Response: ", response)
+  const gameObj = response.data.game;
+
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   canvas.width = canvasWidth();
@@ -191,6 +169,21 @@ const start = async () => {
     pong.resize(canvas.width, canvas.height);
     pong.draw(ctx);
   });
+}
+
+const start = async () => {
+  const match = new URLSearchParams(window.location.search).get('match');
+
+  if (match === null) {
+    const message = document.getElementById("message");
+    message.innerHTML = /*html*/ `
+      <h1 class="game-message" data-i18n-key="page-not-found--title">
+        Page not Found
+      </h1>`;
+    return ;
+  }
+
+  await gameService.game(match).then(settleGame);
 };
 
 export default new PongGameView(html, start);
