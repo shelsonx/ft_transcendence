@@ -38,7 +38,7 @@ const html = /*html*/`
                                             <div class="col-6 text-white" id="details-nickname">transcdc-ft</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Scores:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game_info--score" >Scores:</div>
                                             <div class="col-6 text-white" id="details-scores">42</div>
                                         </div>
                                         <div class="row mb-2">
@@ -100,14 +100,14 @@ function drawChart(chartDiv, response) {
 
     var options = {
         title: 'User Performance',
-        legend: { 
-            textStyle: { 
+        legend: {
+            textStyle: {
                 color: 'white',
-            } 
+            }
         },
-        backgroundColor: 'none', 
+        backgroundColor: 'none',
         titleTextStyle: {
-            color: 'white', 
+            color: 'white',
             fontSize: 10
         },
         pieStartAngle: 100,
@@ -131,29 +131,29 @@ function drawChartMedalRaking(chartDiv, response) {
 
     data.addRow([response.user.nickname, response.user.scores, "#652417"]);
     data.sort([{column: 1}]);
-    
+
     var view = new google.visualization.DataView(data);
     view.setColumns([0, 1,
-        { 
+        {
             calc: "stringify",
             sourceColumn: 1,
             type: "string",
-            role: "annotation" 
+            role: "annotation"
         },
         2
     ]);
-    
+
     var options = {
         width: 400,
         height: 220,
         bar: {groupWidth: "95%"},
-        legend: { 
-            textStyle: { 
+        legend: {
+            textStyle: {
                 color: 'white',
-            } 
+            }
         },
         titleTextStyle: {
-            color: 'white', 
+            color: 'white',
         },
         legend: { position: "none" },
         backgroundColor: 'none',
@@ -174,10 +174,10 @@ function drawChartMedalRaking(chartDiv, response) {
             }
         }
     };
-    
+
     var chart = new google.visualization.ColumnChart(chartDiv);
     chart.draw(view, options);
-    
+
 }
 
 function setData(container, data) {

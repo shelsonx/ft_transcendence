@@ -20,5 +20,6 @@
   "two-factor-auth--resend": "Renvoyer le code",
   "two-factor-auth--submit": "Soumettre",
   "two-factor-auth--two-factor-code": "Code à deux facteurs",
-  "page-not-found--title": "Page non trouvée"
+  "page-not-found--title": "Page non trouvée",
+  "game_info--score": "Score"
 }

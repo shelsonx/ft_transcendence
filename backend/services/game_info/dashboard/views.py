@@ -22,7 +22,7 @@ def total_infos(request):
     total_players = len(users)
     return JsonResponse(
         {'total_scores': total_scores,
-        'total_players': total_players}, 
+        'total_players': total_players},
         safe=False)
 
 def get_user(request, id):
@@ -36,6 +36,7 @@ def get_user(request, id):
 def register_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
+        print(payload)
         id_msc = payload.get('id_msc')
         full_name = payload.get('full_name')
         nickname = payload.get('nickname')
@@ -72,7 +73,7 @@ def set_playing_user(request: HttpRequest) -> HttpResponse:
         user.save()
         return HttpResponse("OK", status=200)
     except Http404:
-        return HttpResponse("Error: Failed to set playing", status=400) 
+        return HttpResponse("Error: Failed to set playing", status=400)
 
 @require_POST
 @csrf_exempt

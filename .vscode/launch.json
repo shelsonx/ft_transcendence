@@ -10,6 +10,10 @@
       },
       "pathMappings": [
         {
+         "localRoot": "${workspaceFolder}/backend/services/game_info",
+          "remoteRoot": "/usr/src/app"
+        },
+        {
           "localRoot": "${workspaceFolder}/backend/api_gateway",
           "remoteRoot": "/code"
         },
@@ -20,7 +24,7 @@
         {
         "localRoot": "${workspaceFolder}/app_frontend",
         "remoteRoot": "/code"
-        },
+        }
       ],
         "django": true,
     }

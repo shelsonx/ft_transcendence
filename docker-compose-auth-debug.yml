@@ -82,10 +82,9 @@ services:
       - game-info-db
 
   api-gateway:
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:80"]
     build: ./backend/api_gateway
     container_name: api-gateway
-    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:80"]
-
     volumes:
       - ./backend/api_gateway:/code
     ports:
@@ -106,6 +105,7 @@ services:
 
   user-management-api:
     build: ./backend/services/user_management
+    container_name: user-management-api
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend/services/user_management:/user_management
@@ -116,6 +116,7 @@ services:
 
   user-management-db:
     image: postgres
+    container_name: user-management-db
     volumes:
       - user-management-db:/var/lib/postgresql/data
     environment:

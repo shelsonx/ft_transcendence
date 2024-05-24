@@ -4,12 +4,12 @@ from abc import ABC, abstractmethod
 from typing import List
 from copy import deepcopy
 import uuid
-from ...services.http_client import HttpClient
+from ...services.http_client_request import HttpClientRequest
 
-from django.http import Http404, HttpRequest
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from ...interfaces.services.http_client import IHttpClient, HttpClientData
 from ...utils.convert_to_json_response import convert_to_json_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from urllib.parse import urlparse, parse_qs
 from django.http.request import HttpHeaders
 
@@ -74,13 +74,12 @@ class IRouter(ABC):
     return headers_dict
 
   def notify_microservices(self, verb:str, api_url: str, http_client_data: HttpClientData):
-    http_client = HttpClient(api_url)
+    http_client = HttpClientRequest(api_url)
     method = getattr(http_client, verb.lower(), None)
     if not method:
       raise Exception(f"Method {verb} not found")
     data = method(http_client_data)
-    data_json = http_response_to_json(data)
-    return data_json
+    return data.json()
 
   def path_resolver(self, path: str):
     for route in self.routes.values():
@@ -104,6 +103,17 @@ class IRouter(ABC):
         return path
     self.http_client.base_url.rebuild_url(self.http_client.base_url.path)
     return path
+
+  def convert_to_json_response(self, response):
+
+    # django_response = HttpResponse(
+    # content=response.text,
+    # status=response.status_code,
+    # content_type=response.headers['Content-Type']
+    # )
+    # for header, value in response.headers.items():
+    #     django_response[header] = value
+    return JsonResponse(data=response.json(), status=response.status_code, safe=False)
 
   def route(self, verb: str, path: str, request: HttpRequest, *args, **kwargs):
     if not isinstance(verb, str):
@@ -129,5 +139,14 @@ class IRouter(ABC):
     method = getattr(self.http_client, verb.lower(), None)
     if method is None:
         raise ValueError(f"verb '{verb}' not supported by http_client")
-    reponse = method(http_client_data)
-    return convert_to_json_response(reponse)
+    response = method(http_client_data)
+
+    # django_response = HttpResponse(
+    # content=response.text,
+    # status=response.status_code,
+    # content_type=response.headers['Content-Type']
+    # )
+    # for header, value in response.headers.items():
+    #     django_response[header] = value
+
+    return self.convert_to_json_response(response)
