@@ -22,7 +22,7 @@ class GameService {
   }
 
   async getFormGame() {
-    const requestData = new HttpClientRequestData('GET', '/game');
+    const requestData = new HttpClientRequestData('GET', '/add-game');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -35,7 +35,7 @@ class GameService {
       username: formData.get("username"),
       csrfmiddlewaretoken: formData.get("csrfmiddlewaretoken"),
     }
-    const requestData = new HttpClientRequestData('POST', '/game');
+    const requestData = new HttpClientRequestData('POST', '/add-game');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
