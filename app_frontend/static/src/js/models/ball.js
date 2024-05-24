@@ -1,9 +1,11 @@
 import {
   BALL_COLOR,
+  BALL_MAX_ANGLE,
   BALL_VELOCITY,
   PONG_BALL_SIZE,
 } from "../constants/game.js";
 import { proportionalWidth } from "../utils/size.js";
+import { degToRad, radToDeg, rotate, slope } from "../utils/velocity.js";
 
 export default class PongBall {
   constructor(x, y, gameWidth, gameHeight) {
@@ -39,10 +41,45 @@ export default class PongBall {
   }
 
   startVelocity() {
+    let angle = Math.random() * degToRad(BALL_MAX_ANGLE);
+    if (angle == 0) angle = degToRad(BALL_MAX_ANGLE);
+    const vx = Math.cos(angle) * BALL_VELOCITY;
+    const vy = Math.sin(angle) * BALL_VELOCITY;
+
     this.velocity = {
-      x: this.position.x > this.gameWidth / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
-      y: this.position.y > this.gameHeight / 2 ? -BALL_VELOCITY : BALL_VELOCITY,
+      x: this.position.x > this.gameWidth / 2 ? -vx : vx,
+      y: this.position.y > this.gameHeight / 2 ? -vy : vy,
     };
+  }
+
+  updateVelocityDueToColision(player) {
+    // this.velocity.x *= -1;
+    const factor =
+      Math.abs(this.position.y - player.position.y) / player.height;
+
+    if (factor >= 0.45 && factor <= 0.55) {
+      // decrease the slope
+      if (this.velocity.y > BALL_VELOCITY / 2) this.velocity.y *= 0.8;
+      // slow down
+      if (this.velocity.x > BALL_VELOCITY / 2) this.velocity.x *= 0.9;
+    }
+    if (factor >= 0.9 || factor <= 0.1) {
+      // increase the slope
+      if (this.velocity.y < 5) this.velocity.y *= 1.3;
+      // speed up
+      if (this.velocity.x < 3) this.velocity.x *= 1.2;
+    }
+
+    const rotateAngle = this.getVelocityRotateAngle();
+    this.velocity = rotate(this.velocity, rotateAngle);
+  }
+
+  getVelocityRotateAngle() {
+    const oldAngle = radToDeg(slope(this.velocity));
+    let newAngle = 180 - oldAngle;
+
+    if (newAngle < 0) newAngle += 360;
+    return degToRad(newAngle - oldAngle);
   }
 
   resize(newGameWidth, newGameHeight) {
