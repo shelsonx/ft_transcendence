@@ -1,38 +1,72 @@
 {% load i18n %}
 
-<div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
-
-    <form id="match-form">
-      <div class="main pb-5">
-
-        {% csrf_token %}
-
-        <h5>{% translate "Set the game rules:" %}</h5>
-        {% include "form.html" with form=rules_form %}
-
-        <h5 class="pt-3">{% translate "Choose an oponent:" %}</h5>
-        {% include "form.html" with form=user_form %}
-
-      </div>
-
-      <button class="btn btn-primary w-100" id="button-invite" type="submit">
-        {% translate "Invite" %}
-      </button>
-    </form>
-
-    <form id="match-confirmation" class="d-none main pb-5">
-      {% csrf_token %}
-      <p>Token de confirmação aqui</p>
-    </form>
-
-    <div class="game-rules d-none" id="game-rules">
-      {% blocktrans %}
-      Explain rules
-      {% endblocktrans %}
-      <button class="btn btn-secondary w-100" id="button-start" type="btn">
-        {% translate "Start Game" %}
+<div class="main d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
+  <div class="game-rules pb-2 {% if invalid %}d-none{% endif %}" id="game-rules">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
+        {% translate "See Pong Game Rules" %}
       </button>
     </div>
+    <div class="collapse py-2" id="rules-collapse">
+      <ol>
+        <li class="pt-2">
+          {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
+        </li>
+        <ul>
+          <li>
+            {% blocktrans %}
+            <span class="text-emphasis"><strong>W</strong></span>
+            and
+            <span class="text-emphasis"><strong>S</strong></span> for left player
+            {% endblocktrans %}
+          </li>
+          <li>
+            {% blocktrans %}
+            <span class="text-emphasis"><strong>ArrowUp</strong></span> and <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
+            {% endblocktrans %}
+          </li>
+        </ul>
+        <li class="pt-2">
+          {% blocktrans %}
+            Game ends when a player riches
+            <span class="text-emphasis"><strong>11 points</strong></span>.
+            {% endblocktrans %}
+        <p>{% translate "You may customize this value or change how the game ends, considering:" %}</p>
+        <ul>
+          <li>{% translate "game total points" %}</li>
+          <li>{% translate "game duration" %}</li>
+        </ul>
+      </ol>
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-secondary" id="set-rules-btn" type="btn">
+          {% translate "Customize Game Rules" %}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form id="match-form">
+    <div class="pb-2">
+      {% csrf_token %}
+
+      <div id="form-game-rules" class="d-none">
+        {% include "form.html" with form=rules_form %}
+      </div>
+
+      <label class="pt-3">{% translate "Choose an oponent:" %}</label>
+      {% include "form.html" with form=user_form %}
+
+    </div>
+
+    <button class="btn btn-primary w-100" id="button-invite" type="submit">
+      {% translate "Invite" %}
+    </button>
+  </form>
+
+  <form id="match-confirmation" class="d-none main pb-5">
+    {% csrf_token %}
+    <p>Token de confirmação aqui</p>
+  </form>
 
   </div>
 </div>
