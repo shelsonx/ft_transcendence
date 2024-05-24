@@ -9,7 +9,8 @@ export const PLAYER_WIDTH = 10;
 export const PLAYER_HEIGHT = 40;
 export const PONG_BALL_SIZE = 10;
 
-export const BALL_VELOCITY = 1;
+export const BALL_MAX_ANGLE = 45;
+export const BALL_VELOCITY = 1.5;
 export const PLAYER_VELOCITY = 2;
 
 export const PLAYER_COLOR = "#F5C16E";
