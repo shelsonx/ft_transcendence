@@ -11,6 +11,7 @@ from django.http import (
     HttpResponseBadRequest,
 )
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 
@@ -97,10 +98,42 @@ class GameView(generic.View):
     @logged_permission()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
         print("entrou no get")
-        game = get_object_or_404(Game, pk=pk)
+        # game = get_object_or_404(Game, pk=pk)
+
+        game = {
+            "id": 1,
+            "game_datetime": timezone.now().date(),
+            "status": GameStatus.SCHEDULED.value,
+            "duration": {
+                "minutes": 0,
+                "seconds": 0,
+            },
+            "rules": {
+                "rule_type": GameRuleType.PLAYER_POINTS.value,
+                "points_to_win": 11,
+                "game_total_points": None,
+                "max_duration": None,
+            },
+            "player_left": {
+                "user": {
+                    "id": 1,
+                    "username": "staff42",
+                },
+                "score": 0,
+            },
+            "player_right": {
+                "user": {
+                    "id": 2,
+                    "username": "student42",
+                },
+                "score": 0,
+            },
+        }
         # verificar se o usuário é o dono do jogo, se tem acesso?
 
-        data = {"status": "success", "data": {"game": game.__dict__}}
+        data = {"status": "success", "data": {"game": game}}
+        # data = {"status": "not found", "data": {"game": game}}
+        # data = {"status": "success", "data": {"game": game.__dict__}}
         pprint.pprint(data, indent=4)
         return JsonResponse(data, status=HTTPStatus.OK, safe=False)
         # return JsonResponse(data, status=HTTPStatus.OK)
@@ -122,7 +155,7 @@ class GameView(generic.View):
     #     game: Game = self.game_form.save()
     #     print("Game updated: ", game)
     #     return render(request, self.template_name, context)
-        # return HttpResponse(status=HTTPStatus.NO_CONTENT)
+    # return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
     # TODO: SHEELA - protect route to only gateway
     @csrf_protect

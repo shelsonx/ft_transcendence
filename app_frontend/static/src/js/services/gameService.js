@@ -41,20 +41,20 @@ class GameService {
   }
 
   async game(id) {
-    const requestData = new HttpClientRequestData('GET', `game/${id}`, data);
+    const requestData = new HttpClientRequestData('GET', `/game/${id}`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async updateGame(id) {
     const data = {}
-    const requestData = new HttpClientRequestData('PATCH', `game/${id}`, data);
+    const requestData = new HttpClientRequestData('PATCH', `/game/${id}`, data);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async deleteGame(id) {
-    const requestData = new HttpClientRequestData('DELETE', `game/${id}`);
+    const requestData = new HttpClientRequestData('DELETE', `/game/${id}`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }

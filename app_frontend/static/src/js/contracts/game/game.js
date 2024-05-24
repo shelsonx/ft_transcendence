@@ -3,11 +3,11 @@ import { GameRules } from "./gameRule.js";
 import { GamePlayer } from "./gamePlayer.js";
 
 class GameStatus {
-  static PENDING = "0";
-  static SCHEDULED = "1";
-  static ONGOING = "2";
-  static ENDED = "3";
-  static CANCELED = "4";
+  static PENDING = 0;
+  static SCHEDULED = 1;
+  static ONGOING = 2;
+  static ENDED = 3;
+  static CANCELED = 4;
   static statusTypes = [
     GameStatus.PENDING,
     GameStatus.SCHEDULED,
