@@ -94,49 +94,15 @@ class AddGameView(generic.View):
 
 
 class GameView(generic.View):
-    # @csrf_protect
     @logged_permission()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
-        print("entrou no get")
-        # game = get_object_or_404(Game, pk=pk)
-
-        game = {
-            "id": 1,
-            "game_datetime": timezone.now().date(),
-            "status": GameStatus.SCHEDULED.value,
-            "duration": {
-                "minutes": 0,
-                "seconds": 0,
-            },
-            "rules": {
-                "rule_type": GameRuleType.PLAYER_POINTS.value,
-                "points_to_win": 11,
-                "game_total_points": None,
-                "max_duration": None,
-            },
-            "player_left": {
-                "user": {
-                    "id": 1,
-                    "username": "staff42",
-                },
-                "score": 0,
-            },
-            "player_right": {
-                "user": {
-                    "id": 2,
-                    "username": "student42",
-                },
-                "score": 0,
-            },
-        }
+        game = Game.objects.filter(pk=pk).first()
+        if not game:
+            return JsonResponse({"status": "not found"}, status=HTTPStatus.NOT_FOUND)
         # verificar se o usuário é o dono do jogo, se tem acesso?
 
-        data = {"status": "success", "data": {"game": game}}
-        # data = {"status": "not found", "data": {"game": game}}
-        # data = {"status": "success", "data": {"game": game.__dict__}}
-        pprint.pprint(data, indent=4)
-        return JsonResponse(data, status=HTTPStatus.OK, safe=False)
-        # return JsonResponse(data, status=HTTPStatus.OK)
+        data = {"status": "success", "data": {"game": game.to_json()}}
+        return JsonResponse(data, status=HTTPStatus.OK)
 
     # @csrf_protect
     # @logged_permission()

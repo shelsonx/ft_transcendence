@@ -109,3 +109,11 @@ class GameRules(models.Model):
     #     validate_constraints: bool = ...,
     # ) -> None:
     #     return super().full_clean(exclude, validate_unique, validate_constraints)
+
+    def to_json(self) -> dict:
+        return {
+            "rule_type": self.rule_type,
+            "points_to_win": self.points_to_win,
+            "game_total_points": self.game_total_points,
+            "max_duration": self.max_duration,
+        }
