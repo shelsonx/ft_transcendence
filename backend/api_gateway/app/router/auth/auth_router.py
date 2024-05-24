@@ -40,10 +40,13 @@ class AuthRouter(IRouter):
 
   def register(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
     if request.method == "POST":
-        return self.http_client.post(http_client_data)
+        response =  self.http_client.post(http_client_data)
+        return convert_to_json_response(response)
 
     sign_in_dto = self.http_client.put(http_client_data)
     sign_in_dto_json = convert_to_json_response(sign_in_dto)
+    if sign_in_dto.status >= 400:
+        return sign_in_dto_json
     sign_in_dto_data = get_prop_from_json(sign_in_dto_json)
 
     headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_in_dto_data['token'])
@@ -53,14 +56,35 @@ class AuthRouter(IRouter):
     print(auth_me_data)
     if auth_me_data['enable_2fa']:
         return sign_in_dto_data
-
-    self.notify_microservices("POST", ApiUrls.GAME_INFO, HttpClientData(
-        url="/register_user/",
-        data=json.dumps({
+    body = json.dumps({
             "id_msc": auth_me_data['id'],
             "full_name": auth_me_data["user_name"],
             "nickname": auth_me_data["user_name"]
-        }).encode('utf-8'),
+        }).encode('utf-8')
+
+    self.notify_microservices("POST", ApiUrls.GAME_INFO, HttpClientData(
+        url="/register_user/",
+        data=body,
+        headers=headers_dict
+    ))
+#     body = {
+#     "id_msc": auth_me_data['id'],
+#     "full_name": auth_me_data["user_name"],
+#     "nickname": auth_me_data["user_name"]
+# }
+
+    body = json.dumps({
+            "name": auth_me_data["user_name"],
+            "user_uuid": auth_me_data['id'],
+            "nickname": auth_me_data["user_name"],
+            "email": auth_me_data['email'],
+            "two_factor_enabled": auth_me_data['enable_2fa'],
+            "chosen_language": "en"
+        }).encode('utf-8')
+
+    self.notify_microservices("POST", ApiUrls.USER_MANAGEMENT, HttpClientData(
+        url="",
+        data=body,
         headers=headers_dict
     ))
     '''

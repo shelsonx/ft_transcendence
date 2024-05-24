@@ -19,5 +19,6 @@
   "two-factor-auth--title": "Two Factor Authentication",
   "two-factor-auth--resend": "Resend code",
   "two-factor-auth--two-factor-code": "Two Factor Code",
-  "two-factor-auth--submit": "Submit"
+  "two-factor-auth--submit": "Submit",
+  "game_info--score": "Score"
 }
