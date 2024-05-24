@@ -85,6 +85,24 @@ class Game(models.Model):
         # name = " x ".join([])
         return str(self.game_datetime.date())
 
+    def to_json(self) -> dict:
+        players = self.game_players.all()
+        player_left = players.first()
+        player_right = players.last()
 
-# class Pong(Game):
-#     pass
+        seconds = self.duration.seconds
+        minutes = seconds // 60
+        seconds = seconds % 60
+
+        return {
+            "id": self.pk,
+            "game_datetime": self.game_datetime,
+            "status": self.status,
+            "duration": {
+                "minutes": minutes,
+                "seconds": seconds,
+            },
+            "rules": self.rules.to_json(),
+            "player_left": player_left.to_json(),
+            "player_right": player_right.to_json(),
+        }
