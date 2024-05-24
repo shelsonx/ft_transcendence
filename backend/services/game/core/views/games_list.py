@@ -20,7 +20,7 @@ logger = logging.getLogger("eqlog")
 
 class GamesView(generic.ListView):
     model = Game
-    ordering = ["status", "game_datetime"]
+    ordering = ["-game_datetime", "status"]
     template_name = "games_table.html"
     # paginate_by = 20
 
