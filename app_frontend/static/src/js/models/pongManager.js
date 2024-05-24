@@ -3,7 +3,7 @@ import PongBall from "./ball.js";
 import PlayerManager from "./playerManager.js";
 import { Game, GameStatus } from "../contracts/game/game.js";
 import { getTimeValue } from "../utils/timeUtils.js";
-import { PLAYER_WIDTH, TABLE_PADDING } from "../constants/game.js";
+import { PLAYER_WIDTH, PONG_BALL_SIZE, TABLE_PADDING } from "../constants/game.js";
 import { proportionalWidth } from "../utils/size.js";
 
 class PongManager {
@@ -14,8 +14,8 @@ class PongManager {
 
     this.table = new PongTable(0, 0, gameWidth, gameHeight);
     this.ball = new PongBall(
-      Math.random() * gameWidth,
-      Math.random() * gameHeight,
+      Math.random() * (gameWidth - proportionalWidth(PONG_BALL_SIZE)),
+      Math.random() * (gameHeight - proportionalWidth(PONG_BALL_SIZE)),
       gameWidth,
       gameHeight
     );
@@ -92,7 +92,7 @@ class PongManager {
       this.updateHtmlPoints();
       // send update to back?
       this.ball.position.x = proportionalWidth(TABLE_PADDING);
-      this.ball.position.y = Math.random() * this.gameHeight;
+      this.ball.position.y = Math.random() * (this.gameHeight - this.ball.size);
       this.ball.startVelocity();
     } else if (this.ball.position.x + this.ball.velocity.x < 0) {
       this.player_right.score += 1;
@@ -100,7 +100,7 @@ class PongManager {
       // send update to back?
       this.ball.position.x =
         this.gameWidth - proportionalWidth(TABLE_PADDING) - this.ball.size;
-      this.ball.position.y = Math.random() * this.gameHeight;
+      this.ball.position.y = Math.random() * (this.gameHeight - this.ball.size);
       this.ball.startVelocity();
     }
   }
@@ -112,7 +112,7 @@ class PongManager {
       this.ball.position.y + this.ball.size >= newPlayerY &&
       this.ball.position.y <= newPlayerY + player.height
     ) {
-      this.ball.velocity.x *= -1;
+      this.ball.updateVelocityDueToColision(player);
     }
   }
 
