@@ -54,6 +54,7 @@ class AddGameView(generic.View):
         self.set_forms(request.POST)
         context = self.get_context_data()
         if not self.rules_form.is_valid():
+            context["invalid"] = True
             return render(request, self.template_name, context)
 
         rules: GameRules = self.rules_form.save()
@@ -70,10 +71,12 @@ class AddGameView(generic.View):
         # confirm_template =
         # response = render(request, self.template_name, self.get_context_data())
         # return response
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        data = {"status": "success", "data": {"game": game.pk}}
+        return JsonResponse(data, status=HTTPStatus.CREATED)
 
     def get_context_data(self, **kwargs) -> dict:
         return {
+            "invalid": False,
             "GameStatus": GameStatus,
             "game_form": self.game_form,
             "rules_form": self.rules_form,

@@ -1,9 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import PongBall from "../../models/ball.js";
-import PongTable from "../../models/pongTable.js";
-import PlayerManager from "../../models/playerManager.js";
-import { Game } from "../../contracts/game/game.js";
+import { GameRuleType } from "../../contracts/game/gameRule.js";
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
     super({
@@ -16,98 +13,88 @@ class NewGameView extends BaseLoggedView {
 const html = /*html*/ `
   <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
-  <div id="pong-game" class="d-none">
-    <h3 class="row justify-content-center">Duration: 00:00</h3>
-    <div class="row justify-content-center">
-      <div class="col">
-        <h3 class="row justify-content-center">Player A</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_a.id_reference }}</p>
-        <p>Points: {{ match.score_a }}</p> -->
-      </div>
-      <canvas id="canvas" class="col"></canvas>
-      <div class="col">
-        <h3 class="row justify-content-center">Player B</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_b.id_reference }}</p>
-        <p>Points: {{ match.score_b }}</p> -->
-      </div>
-    </div>
-  </div>
 `;
 
-let addGameForm;
-let game;
+const swapGameForm = async (response_content) => {
+  const swapContainer = document.getElementById("swap-container");
+  swapContainer.innerHTML = response_content;
 
-// window.addEventListener("load", () => console.log("load"));
+  const addGameForm = document.getElementById('match-form');
+  addGameForm.addEventListener("submit", submitGameForm);
 
-const swapGameForm = async (response) => {
-  const gameFormSwap = document.getElementById("swap-container");
-  gameFormSwap.innerHTML = response;
-
-  addGameForm = document.getElementById('match-form');
-  addGameForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(addGameForm);
-
-    console.log("submit form");
-    await gameService.addGame(formData).then(addGameResult);
-    console.log("final");
-  });
+  const setRulesButton = document.getElementById('set-rules-btn');
+  setRulesButton.addEventListener("click", setRules);
 };
 
+const submitGameForm = async (e) => {
+  e.preventDefault();
+  const addGameForm = document.getElementById('match-form');
+  const formData = new FormData(addGameForm);
+
+  await gameService.getFormGame().then(addGameResult);
+  // await gameService.addGame(formData).then(addGameResult);
+}
+
+const setRules = () => {
+  const setRulesButton = document.getElementById('set-rules-btn');
+  setRulesButton.classList.add("d-none");
+
+  const formGameRules = document.getElementById('form-game-rules');
+  const gameTotalPointsField = document.getElementById('game_total_points');
+  const maxDurationField = document.getElementById('max_duration');
+  formGameRules.classList.remove("d-none");
+  gameTotalPointsField.classList.add("d-none");
+  maxDurationField.classList.add("d-none");
+
+  const ruleTypeField = document.getElementById('id_rule_type');
+  ruleTypeField.addEventListener("change", updateGameRulesFields);
+}
+
+const updateGameRulesFields = () => {
+  const ruleTypeField = document.getElementById('id_rule_type');
+  const pointsToWinField = document.getElementById("points_to_win");
+  const gameTotalPointsField = document.getElementById('game_total_points');
+  const maxDurationField = document.getElementById('max_duration');
+
+  if (ruleTypeField.value === GameRuleType.PLAYER_POINTS) {
+    pointsToWinField.classList.remove("d-none");
+    gameTotalPointsField.classList.add("d-none");
+    maxDurationField.classList.add("d-none");
+  }
+  else if (ruleTypeField.value === GameRuleType.GAME_TOTAL_POINTS) {
+    pointsToWinField.classList.add("d-none");
+    gameTotalPointsField.classList.remove("d-none");
+    maxDurationField.classList.add("d-none");
+  }
+  else if (ruleTypeField.value === GameRuleType.GAME_DURATION) {
+    pointsToWinField.classList.add("d-none");
+    gameTotalPointsField.classList.add("d-none");
+    maxDurationField.classList.remove("d-none");
+  }
+}
+
 const addGameResult = async (response) => {
-  console.log(typeof response);
-  if (typeof response == "string") {
-    swapGameForm(response);
-  } else {
-    game = Game.createGameFromObj(response);
+  // console.log(response);
+  // if (typeof response == "string") {
+  //   swapGameForm(response);
+  // } else {
 
     const gameForm = document.getElementById("match-form");
     gameForm.classList.add("d-none");
-    const rulesElement = document.getElementById("game-rules");
+    const gameRules = document.getElementById("game-rules");
+    gameRules.classList.add("d-none");
+    const rulesElement = document.getElementById("match-confirmation");
     rulesElement.classList.remove("d-none");
 
-    const startButton = document.getElementById("button-start");
-    startButton.addEventListener("click", (e) => {
-      const pongElement = document.getElementById("pong-game");
-      pongElement.classList.remove("d-none");
-      const gameFormSwap = document.getElementById("swap-container");
-      gameFormSwap.classList.add("d-none");
-    })
-  }
+    // const confirmButton = document.getElementById("button-start");
+    // confirmButton.addEventListener("click", (e) => {})
+  // }
 };
 
 // new URLSearchParams(obj).toString();
 
 const start = async () => {
   await gameService.getFormGame().then(swapGameForm);
-  // console.log(addGameForm);
-
-  // addGameForm.addEventListener("submit", async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(addGameForm);
-
-  //   console.log("submit form");
-  //   await gameService.addGame(formData).then(addGameResult);
-  //   console.log("final");
-  // });
-
-  const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = innerWidth / 2;
-  canvas.height = innerHeight / 2;
-
-  const table = new PongTable(0, 0, canvas.width, canvas.height);
-  table.draw(ctx);
-
-  const player1 = new PlayerManager(10, 80);
-  player1.draw(ctx);
-  const player2 = new PlayerManager(canvas.width - 20, canvas.height - 80);
-  player2.draw(ctx);
-
-  const ball = new PongBall(canvas.width / 2, canvas.height / 2);
-  ball.draw(ctx);
 };
 
 export default new NewGameView(html, start);

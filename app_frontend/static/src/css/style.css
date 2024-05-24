@@ -354,3 +354,7 @@ body {
 .score {
     color: var(--secondary-light);
 }
+
+.text-emphasis {
+    color: var(--secondary-light);
+}
