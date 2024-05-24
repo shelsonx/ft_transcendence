@@ -77,11 +77,14 @@ const loadStartMessages = () => {
   });
 };
 
-function loadEndMessage(game) {
+function loadEndMessage(pong) {
   const messageHtml = document.getElementById("message");
-  const winner = game.winner();
-  const msg =
+  const winner = pong.winner();
+  let msg =
     winner !== null ? `${winner.user.username} won!` : "Game ended in a draw";
+
+  if (pong.game.status.value === GameStatus.CANCELED)
+    msg = "This game was cancelled";
 
   messageHtml.innerHTML = /*html*/ `
     <h1 class="game-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
@@ -94,9 +97,8 @@ const settleGame = (response) => {
   if (response.status === "not found") {
     const message = document.getElementById("message");
     message.innerHTML = /*html*/ `<h1 class="game-message">404 not Found</h1>`;
-    return ;
+    return;
   }
-  console.log("Response: ", response)
   const gameObj = response.data.game;
 
   const canvas = document.getElementById("canvas");
@@ -108,6 +110,9 @@ const settleGame = (response) => {
   pong.table.draw(ctx);
   pong.player_left.draw(ctx);
   pong.player_right.draw(ctx);
+
+  if ([GameStatus.ENDED, GameStatus.CANCELED].includes(pong.game.status.value))
+    return loadEndMessage(pong);
 
   let animationFrame;
   function animate() {
@@ -142,7 +147,7 @@ const settleGame = (response) => {
           pong.player_right.velocity.y = PLAYER_VELOCITY;
           break;
         case "KeyW":
-          pong.player_left.velocity.y = -PLAYER_VELOCITY;;
+          pong.player_left.velocity.y = -PLAYER_VELOCITY;
           break;
         case "KeyS":
           pong.player_left.velocity.y = PLAYER_VELOCITY;
@@ -169,10 +174,10 @@ const settleGame = (response) => {
     pong.resize(canvas.width, canvas.height);
     pong.draw(ctx);
   });
-}
+};
 
 const start = async () => {
-  const match = new URLSearchParams(window.location.search).get('match');
+  const match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {
     const message = document.getElementById("message");
@@ -180,7 +185,7 @@ const start = async () => {
       <h1 class="game-message" data-i18n-key="page-not-found--title">
         Page not Found
       </h1>`;
-    return ;
+    return;
   }
 
   await gameService.game(match).then(settleGame);
