@@ -29,7 +29,11 @@ class HttpClientRequest(IHttpClient):
         return response
 
     def deserialize(self, response: requests.Response)-> Union[Any, int]:
-        return response.json(), response.status_code
+        try:
+            json_resp, status = response.json(), response.status_code
+        except json.JSONDecodeError:
+            json_resp, status = response.text, response.status_code
+        return json_resp, status
 
     def serialize(self, data: requests.Response) -> str:
         return json.dumps(data).encode('utf-8')
