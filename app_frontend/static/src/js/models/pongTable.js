@@ -1,3 +1,5 @@
+import { TABLE_COLOR, TABLE_DIVISION_COLOR } from "../constants/game.js";
+
 class PongTable {
   constructor(x, y, width, height) {
     this.position = {
@@ -6,18 +8,21 @@ class PongTable {
     };
     this.width = width;
     this.height = height;
-    // this.width = 200;
-    // this.height = proportionalSize(40);
   }
 
   draw(ctx) {
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = TABLE_COLOR;
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    ctx.strokeStyle = "#FFFFFF";
+    ctx.strokeStyle = TABLE_DIVISION_COLOR;
     ctx.beginPath();
     ctx.moveTo(this.position.x + this.width / 2, this.position.y);
     ctx.lineTo(this.position.x + this.width / 2, this.height);
     ctx.stroke();
+  }
+
+  resize(width, height) {
+    this.width = width;
+    this.height = height;
   }
 }
 
