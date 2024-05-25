@@ -9,18 +9,19 @@ from django.http import (
     JsonResponse,
     HttpResponseBadRequest,
 )
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
+# First Party
+from common.decorators import logged_permission
+
 # Local Folder
-from .decorators import logged_permission
 from .models import User
 from .forms import UserForm
 
 
-# TODO: SHEELA - check to remove this, csrf is important
 @method_decorator(csrf_exempt, name="dispatch")
 class UserView(generic.View):
     form_class = UserForm
