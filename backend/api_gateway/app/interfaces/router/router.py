@@ -1,23 +1,27 @@
 
-from ..services.http_client import IHttpClient
+from ...utils.http_response_to_json import http_response_to_json
 from abc import ABC, abstractmethod
 from typing import List
 from copy import deepcopy
 import uuid
-from django.http import Http404, HttpRequest
+from ...services.http_client_request import HttpClientRequest
+
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from ...interfaces.services.http_client import IHttpClient, HttpClientData
 from ...utils.convert_to_json_response import convert_to_json_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from urllib.parse import urlparse, parse_qs
+from django.http.request import HttpHeaders
 
 class Route:
 
-  def __init__(self, route_key, allowed_verbs, is_redirect = False) -> None:
+  def __init__(self, route_key, allowed_verbs, is_redirect = False, handler_function = None) -> None:
     self.route_key = route_key
     self.allowed_verbs = allowed_verbs
     self.split = route_key.split('/')
     self.len = len(self.split)
     self.is_redirect = is_redirect
+    self.handler_function = handler_function
 
     self.path_converters = {
       "<str:": lambda x: str(x),
@@ -60,6 +64,22 @@ class IRouter(ABC):
     self.http_client = http_client
     self.routes = { route.route_key: route for route in routes }
 
+  def clone_header(self, headers: HttpHeaders):
+    headers_dict = {k: headers[k] for k in headers}
+    return headers_dict
+
+  def clone_header_with_auth(self, headers: HttpHeaders, token: str):
+    headers_dict = self.clone_header(headers)
+    headers_dict['Authorization'] = f"Bearer {token}"
+    return headers_dict
+
+  def notify_microservices(self, verb:str, api_url: str, http_client_data: HttpClientData):
+    http_client = HttpClientRequest(api_url)
+    method = getattr(http_client, verb.lower(), None)
+    if not method:
+      raise Exception(f"Method {verb} not found")
+    data = method(http_client_data)
+    return self.convert_to_json_response(data)
 
   def path_resolver(self, path: str):
     for route in self.routes.values():
@@ -84,6 +104,18 @@ class IRouter(ABC):
     self.http_client.base_url.rebuild_url(self.http_client.base_url.path)
     return path
 
+  def convert_to_json_response(self, response):
+
+    # django_response = HttpResponse(
+    # content=response.text,
+    # status=response.status_code,
+    # content_type=response.headers['Content-Type']
+    # )
+    # for header, value in response.headers.items():
+    #     django_response[header] = value
+    data_json, status = self.http_client.deserialize(response)
+    return JsonResponse(data=data_json, status=status, safe=False)
+
   def route(self, verb: str, path: str, request: HttpRequest, *args, **kwargs):
     if not isinstance(verb, str):
       raise ValueError("verb must be a string")
@@ -101,8 +133,21 @@ class IRouter(ABC):
       raise ValueError(f"verb '{verb}' not allowed for path '{path}'")
     if route.is_redirect:
       return HttpResponseRedirect(redirect_to=self.http_client.base_url.localhost + path.lstrip('/'))
+
+    http_client_data = HttpClientData(url=route.route_key, data=request.body, headers=request.headers)
+    if route.handler_function:
+        return route.handler_function(http_client_data, request, *args, **kwargs)
     method = getattr(self.http_client, verb.lower(), None)
     if method is None:
         raise ValueError(f"verb '{verb}' not supported by http_client")
-    reponse = method(HttpClientData(url=route.route_key, data=request.body, headers=request.headers))
-    return convert_to_json_response(reponse)
+    response = method(http_client_data)
+
+    # django_response = HttpResponse(
+    # content=response.text,
+    # status=response.status_code,
+    # content_type=response.headers['Content-Type']
+    # )
+    # for header, value in response.headers.items():
+    #     django_response[header] = value
+
+    return self.convert_to_json_response(response)

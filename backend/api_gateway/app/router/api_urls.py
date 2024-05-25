@@ -22,3 +22,5 @@ class ApiUrl:
 
 class ApiUrls:
   AUTH = ApiUrl("http", "localhost:8002", "auth-api:80", "api/auth/")
+  USER_MANAGEMENT = ApiUrl("http", "localhost:8006", "user-management-api:8000", "user/")
+  GAME_INFO = ApiUrl("http", "localhost:8003", "game-info:80", "dash/")

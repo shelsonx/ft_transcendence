@@ -33,13 +33,10 @@ services:
   auth-api:
     build: ./backend/services/auth
     container_name: auth-api
-    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:80"]
-    #command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./backend/services/auth:/code
     ports:
       - "8002:80"
-      - 5678:5678
     env_file:
       - .env
     environment:
@@ -61,16 +58,38 @@ services:
     depends_on:
       - auth-db
 
+  game-info-db:
+    image: postgres:16
+    volumes:
+      - game-info-db-data:/var/lib/postgresql/data
+    env_file:
+      - ./.env.db
+    ports:
+      - "5434:5432"
+
+  game-info:
+    build: ./backend/services/game_info
+    container_name: game-info
+    volumes:
+      - ./backend/services/game_info:/usr/src/app
+    ports:
+      - "8003:80"
+    env_file:
+      - .env.web
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - game-info-db
+
   api-gateway:
     build: ./backend/api_gateway
     container_name: api-gateway
-    #command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5679 ./manage.py runserver 0.0.0.0:80"]
-    command: python manage.py runserver 0.0.0.0:80
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 ./manage.py runserver 0.0.0.0:80"]
     volumes:
       - ./backend/api_gateway:/code
     ports:
       - "8010:80"
-      - 5679:5679
+      - "5678:5678"
     env_file:
       - .env
     environment:
@@ -83,7 +102,33 @@ services:
     depends_on:
       - auth-api
 
+
+  user-management-api:
+    build: ./backend/services/user_management
+    container_name: user-management-api
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/services/user_management:/user_management
+    ports:
+      - "8006:8000"
+    depends_on:
+      - user-management-db
+
+  user-management-db:
+    image: postgres
+    container_name: user-management-db
+    volumes:
+      - user-management-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: users_db
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: '1234'
+    ports:
+      - "5435:5432"
+
 volumes:
   #change the volume name
   auth-db-data:
+  game-info-db-data:
+  user-management-db:
 
