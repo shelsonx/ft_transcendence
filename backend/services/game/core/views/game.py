@@ -94,28 +94,15 @@ class AddGameView(generic.View):
 
 
 class GameView(generic.View):
-    # @csrf_protect
     @logged_permission()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
-        print("entrou no get")
-        # game = get_object_or_404(Game, pk=pk)
-
-
-        from utils.generator import Generator
-        gen = Generator()
-        player_a = gen.seedUser(username="test48")
-        player_b = gen.seedUser(username="test49")
-        game = gen.seedGame(players=[player_a, player_b])
-        game.status = GameStatus.CANCELED
-        game.save()
+        game = Game.objects.filter(pk=pk).first()
+        if not game:
+            return JsonResponse({"status": "not found"}, status=HTTPStatus.NOT_FOUND)
         # verificar se o usuário é o dono do jogo, se tem acesso?
 
         data = {"status": "success", "data": {"game": game.to_json()}}
-        # data = {"status": "not found", "data": {"game": game}}
-        # data = {"status": "success", "data": {"game": game.__dict__}}
-        pprint.pprint(data, indent=4)
         return JsonResponse(data, status=HTTPStatus.OK)
-        # return JsonResponse(data, status=HTTPStatus.OK)
 
     # @csrf_protect
     # @logged_permission()
