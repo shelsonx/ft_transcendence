@@ -12,17 +12,20 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 
 # First Party
 from core.models import Game, GameStatus, GameRules, GameRuleType
 from core.forms import GameForm, GameEditForm, GameRulesForm
-from user.decorators import logged_permission
+from common.decorators import logged_permission
 from user.forms import UserSearchForm
 from user.models import User
 
 
+@method_decorator(csrf_exempt, name="dispatch")  # remove csrf protection...
 class AddGameView(generic.View):
     template_name = "add_game.html"
     game_form = None
@@ -32,7 +35,8 @@ class AddGameView(generic.View):
     # @csrf_protect
     @logged_permission()
     def get(self, request: HttpRequest) -> HttpResponse:
-        print("entrou no get de add")
+        pprint.pprint(request, indent=4)
+        print("Cookies: ", request.COOKIES)
         self.set_forms()
 
         response = render(request, self.template_name, self.get_context_data())
@@ -49,8 +53,8 @@ class AddGameView(generic.View):
         from utils.generator import Generator
 
         gen = Generator()
-        player_a = gen.seedUser()
-        player_b = gen.seedUser()
+        player_a = gen.seedUser(username="user21")
+        player_b = gen.seedUser(username="user42")
 
         self.set_forms(request.POST)
         context = self.get_context_data()

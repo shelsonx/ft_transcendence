@@ -23,7 +23,7 @@ from core.models import (
     TournamentType,
 )
 from core.forms import GameForm, GameEditForm, GameRulesForm
-from user.decorators import logged_permission
+from common.decorators import logged_permission
 from user.models import User
 
 

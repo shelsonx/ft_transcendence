@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from core.models import Game, GameStatus
-from user.decorators import logged_permission
+from common.decorators import logged_permission
 from user.models import User
 
 logger = logging.getLogger("eqlog")
