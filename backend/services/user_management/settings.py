@@ -1,3 +1,5 @@
+import os
+
 """
 Django settings for user_management_api.
 
@@ -12,7 +14,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = "pong"
 DEBUG = True
 WSGI_APPLICATION = 'wsgi.application'
@@ -20,7 +22,24 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'urls'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(BASE_DIR.parent, 'media')
+LANGUAGE_CODE = 'en-us'
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('fr', 'French'),
+    ('es', 'Spanish'),
+    ('pt', 'Portuguese'),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 
 DATABASES = {
     'default': {
@@ -55,6 +74,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

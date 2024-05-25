@@ -1,14 +1,9 @@
 from django.db import models
-
-# Create your models here.
 import uuid
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
 
 class CustomUserManager(BaseUserManager):
     pass
-
 
 class User(AbstractBaseUser):
 
@@ -20,8 +15,7 @@ class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_uuid = models.CharField(max_length=255, unique=True, null=True, blank=True)
     name = models.CharField(max_length=255)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.png')
-    avatar_name = models.CharField(max_length=255, null=True, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.jpeg')
     nickname = models.CharField(max_length=255, unique=True)
     two_factor_enabled = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
@@ -39,18 +33,22 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-    def as_json(self):
+    def as_json(self, depth=0, max_depth=2):
+        if depth > max_depth:
+            return {'id': self.id, 'name': self.name}
+
         friends = self.friends.all()
-        friends_json = [friend.as_json() for friend in friends]
+        friends_json = [friend.as_json(depth=depth+1, max_depth=max_depth) for friend in friends]
         friend_requests = self.friend_requests.all()
-        friend_requests_json = [friend_request.as_json() for friend_request in friend_requests]
+        friend_requests_json = [friend_request.as_json(depth=depth+1, max_depth=max_depth) for friend_request in friend_requests]
         blocked_users = self.blocked_users.all()
-        blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
+        blocked_users_json = [blocked_user.as_json(depth=depth+1, max_depth=max_depth) for blocked_user in blocked_users]
+        avatar_url = self.avatar.url if self.avatar else None
+
         return {
             'id': self.id,
             'name': self.name,
-            'avatar': self.avatar.url if self.avatar else None,
-            'avatar_name': self.avatar_name,
+            'avatar': avatar_url,
             'nickname': self.nickname,
             'two_factor_enabled': self.two_factor_enabled,
             'email': self.email,
@@ -66,6 +64,7 @@ class FriendshipRequest(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_request_receiver')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         unique_together = ['sender', 'receiver']

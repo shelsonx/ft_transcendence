@@ -72,16 +72,14 @@ class FriendshipRequestService {
     return response;
   }
 
-  async acceptFriendRequest(requestId) {
-    const data = { request_id: requestId };
-    const requestData = new HttpClientRequestData('POST', `friend_request/accept/`, data);
+  async acceptFriendRequest(request_id) {
+    const requestData = new HttpClientRequestData('PUT', `friend_request/${request_id}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async rejectFriendRequest(requestId) {
-    const data = { request_id: requestId };
-    const requestData = new HttpClientRequestData('POST', `friend_request/reject/`, data);
+    const requestData = new HttpClientRequestData('DELETE', `friend_request/${requestId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -123,7 +121,6 @@ class UserInformationService {
       avatar_name: formData.get('avatar').name
     };
 
-    console.log(data);
     const requestData = new HttpClientRequestData('PATCH', '/', data);
     const response = await this.httpClient.makeRequest(requestData);
 

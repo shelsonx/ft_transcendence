@@ -1,27 +1,38 @@
 {% load i18n %}
-<h1>{% translate "Let's Play Pong!" %}</h1>
 
-{{ game_form.as_table }}
-{{ rules_form.as_table }}
+<div class="d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
 
-{% comment %} <p>Duration: {{ game.duration }}</p>
-<p>Status: {{ game.status.label }}</p> {% endcomment %}
+    <form id="match-form">
+      <div class="main pb-5">
 
-{% comment %}
-<h2>Rules</h2>
-<ul>
-  <li>Player max points: {{ game.player_reach_points }}</li>
-  <li>Max total points: {{ game.game_total_points }}</li>
-</ul>
-{% endcomment %}
+        {% csrf_token %}
 
-{% comment %} <div class="row">
-  <div class="col">
-    <h3>Player A</h3>
-    <p>Points: {{ game.score_a }}</p>
+        <h5>{% translate "Set the game rules:" %}</h5>
+        {% include "form.html" with form=rules_form %}
+
+        <h5 class="pt-3">{% translate "Choose an oponent:" %}</h5>
+        {% include "form.html" with form=user_form %}
+
+      </div>
+
+      <button class="btn btn-primary w-100" id="button-invite" type="submit">
+        {% translate "Invite" %}
+      </button>
+    </form>
+
+    <form id="match-confirmation" class="d-none main pb-5">
+      {% csrf_token %}
+      <p>Token de confirmação aqui</p>
+    </form>
+
+    <div class="game-rules d-none" id="game-rules">
+      {% blocktrans %}
+      Explain rules
+      {% endblocktrans %}
+      <button class="btn btn-secondary w-100" id="button-start" type="btn">
+        {% translate "Start Game" %}
+      </button>
+    </div>
+
   </div>
-  <div class="col">
-    <h3>Player B</h3>
-    <p>Points: {{ game.score_b }}</p>
-  </div>
-</div> {% endcomment %}
+</div>

@@ -15,8 +15,6 @@ class GameService {
   }
 
   async userGames() {
-    const jwtToken = localStorage.getItem(AuthConstants.AUTH_TOKEN);
-    console.log(jwtToken)
     const requestData = new HttpClientRequestData('GET', '/games');
     // const requestData = new HttpClientRequestData('GET', '/user/<uuid:pk>/games');
     const response = await this.httpClient.makeRequest(requestData);
@@ -29,8 +27,14 @@ class GameService {
     return response;
   }
 
-  async addGame() {
-    data = {}
+  async addGame(formData) {
+    const jwtToken = localStorage.getItem(AuthConstants.AUTH_TOKEN);
+    // console.log(jwtToken)
+    const data = {
+      points_to_win: formData.get("points_to_win"),
+      username: formData.get("username"),
+      csrfmiddlewaretoken: formData.get("csrfmiddlewaretoken"),
+    }
     const requestData = new HttpClientRequestData('POST', '/game');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
@@ -43,7 +47,7 @@ class GameService {
   }
 
   async updateGame(id) {
-    data = {}
+    const data = {}
     const requestData = new HttpClientRequestData('PATCH', `game/${id}`, data);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
@@ -77,7 +81,7 @@ class GameService {
   }
 
   async addTournament() {
-    data = {}
+    const data = {}
     const requestData = new HttpClientRequestData('POST', '/tournament');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
@@ -90,7 +94,7 @@ class GameService {
   }
 
   async updateTournament(id) {
-    data = {}
+    const data = {}
     const requestData = new HttpClientRequestData('PATCH', `tournament/${id}`, data);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
