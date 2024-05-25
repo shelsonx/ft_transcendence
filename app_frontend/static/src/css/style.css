@@ -247,7 +247,7 @@ body {
 
 .friends-list li, .blocked-list li {
     padding: 5px 0;
-    border-bottom: 1px solid #eaeaea; 
+    border-bottom: 1px solid #eaeaea;
 }
 
 .friends-list li:last-child, .blocked-list li:last-child {
@@ -345,4 +345,16 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.game-message {
+    color: var(--secondary-light);
+}
+
+.score {
+    color: var(--secondary-light);
+}
+
+.text-emphasis {
+    color: var(--secondary-light);
 }

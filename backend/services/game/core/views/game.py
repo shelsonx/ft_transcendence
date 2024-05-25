@@ -1,4 +1,5 @@
 # python std library
+import pprint
 import uuid
 from http import HTTPStatus
 
@@ -10,7 +11,9 @@ from django.http import (
     HttpResponseBadRequest,
 )
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from django.views import generic
+from django.views.decorators.csrf import csrf_protect
 
 # First Party
 from core.models import Game, GameStatus, GameRules, GameRuleType
@@ -20,29 +23,29 @@ from user.forms import UserSearchForm
 from user.models import User
 
 
-class GameView(generic.View):
-    template_name = "game.html"
-    game = None
+class AddGameView(generic.View):
+    template_name = "add_game.html"
     game_form = None
     rules_form = None
     user_form = None
 
+    # @csrf_protect
     @logged_permission()
-    def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
-        if pk:
-            self.game = get_object_or_404(Game, pk=pk)
-        else:
-            self.set_forms()
+    def get(self, request: HttpRequest) -> HttpResponse:
+        print("entrou no get de add")
+        self.set_forms()
 
         response = render(request, self.template_name, self.get_context_data())
         return response
 
+    # @csrf_protect
     @logged_permission()
     def post(self, request: HttpRequest) -> HttpResponse:
         # TODO: SHEELA - verify if users exists
         # player_a = get_object_or_404(User)
         # player_b = get_object_or_404(User)
         # remove this:
+        print("entrou no post")
         from utils.generator import Generator
 
         gen = Generator()
@@ -52,6 +55,7 @@ class GameView(generic.View):
         self.set_forms(request.POST)
         context = self.get_context_data()
         if not self.rules_form.is_valid():
+            context["invalid"] = True
             return render(request, self.template_name, context)
 
         rules: GameRules = self.rules_form.save()
@@ -64,38 +68,16 @@ class GameView(generic.View):
         game.players.add(player_b)
 
         print("Game created: ", game)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
-
-    @logged_permission()
-    def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        # TODO: SHEELA - protect route
-        self.game = get_object_or_404(Game, pk=pk)
-        # verificar acesso ao jogo
-
-        # a edição na verdade vai seguir outras regras... salvar scores, status
-        self.set_forms(request.POST)
-        context = self.get_context_data()
-        if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
-            return render(request, self.template_name, context)
-            # return HttpResponseBadRequest()
-
-        game: Game = self.game_form.save()
-        print("Game updated: ", game)
-        return render(request, self.template_name, context)
-        # return HttpResponse(status=HTTPStatus.NO_CONTENT)
-
-    # TODO: SHEELA - protect route to only gateway
-    @logged_permission()
-    def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        # TODO: SHEELA - protect route
-        game = get_object_or_404(Game, pk=pk)
-        game.delete()
-        print("game deleted: ", game)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        # we need to show
+        # confirm_template =
+        # response = render(request, self.template_name, self.get_context_data())
+        # return response
+        data = {"status": "success", "data": {"game": game.pk}}
+        return JsonResponse(data, status=HTTPStatus.CREATED)
 
     def get_context_data(self, **kwargs) -> dict:
         return {
-            "game": self.game,
+            "invalid": False,
             "GameStatus": GameStatus,
             "game_form": self.game_form,
             "rules_form": self.rules_form,
@@ -106,6 +88,47 @@ class GameView(generic.View):
         initial = {
             "status": GameStatus.PENDING,
         }
-        self.game_form = GameForm(data, initial=initial, instance=self.game)
+        self.game_form = GameForm(data, initial=initial)
         self.rules_form = GameRulesForm(data)
         self.user_form = UserSearchForm(data)
+
+
+class GameView(generic.View):
+    @logged_permission()
+    def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
+        game = Game.objects.filter(pk=pk).first()
+        if not game:
+            return JsonResponse({"status": "not found"}, status=HTTPStatus.NOT_FOUND)
+        # verificar se o usuário é o dono do jogo, se tem acesso?
+
+        data = {"status": "success", "data": {"game": game.to_json()}}
+        return JsonResponse(data, status=HTTPStatus.OK)
+
+    # @csrf_protect
+    # @logged_permission()
+    # def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+    #     # TODO: SHEELA - protect route
+    #     self.game = get_object_or_404(Game, pk=pk)
+    #     # verificar acesso ao jogo
+
+    #     # a edição na verdade vai seguir outras regras... salvar scores, status
+    #     self.set_forms(request.POST)
+    #     context = self.get_context_data()
+    #     if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
+    #         return render(request, self.template_name, context)
+    #         # return HttpResponseBadRequest()
+
+    #     game: Game = self.game_form.save()
+    #     print("Game updated: ", game)
+    #     return render(request, self.template_name, context)
+    # return HttpResponse(status=HTTPStatus.NO_CONTENT)
+
+    # TODO: SHEELA - protect route to only gateway
+    @csrf_protect
+    @logged_permission()
+    def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+        # TODO: SHEELA - protect route
+        game = get_object_or_404(Game, pk=pk)
+        game.delete()
+        print("game deleted: ", game)
+        return HttpResponse(status=HTTPStatus.NO_CONTENT)
