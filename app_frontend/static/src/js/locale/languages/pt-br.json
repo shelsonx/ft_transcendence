@@ -19,5 +19,6 @@
   "two-factor-auth--resend": "Reenviar código",
   "two-factor-auth--submit": "Enviar",
   "two-factor-auth--two-factor-code": "Código de autenticação de dois fatores",
-  "page-not-found--title": "Página não encontrada"
+  "page-not-found--title": "Página não encontrada",
+  "game_info--score": "Pontuação"
 }

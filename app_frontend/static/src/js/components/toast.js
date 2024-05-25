@@ -2,8 +2,8 @@ import { ElementDisplay } from './elementDisplay.js';
 
 class Toast extends ElementDisplay {
   #types
-  constructor(html, className) {
-    super(html, className);
+  constructor(className, html) {
+    super(className, html);
     this.#types = {
       success: {
         bg: 'bg-success',
