@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from http import client
+from typing import Any, Union
 
 class HttpClientData:
     def __init__(self, url: str, data: dict, headers: dict) -> None:
@@ -25,6 +26,8 @@ class IHttpClient:
     def delete(self, url: str, headers: dict) -> client.HTTPResponse:
         pass
 
-    def serialize(self, data: dict) -> str:
+    def deserialize(self, data: Any) -> Union[Any, int]:
         pass
 
+    def serialize(self, data: Any) -> str:
+        pass

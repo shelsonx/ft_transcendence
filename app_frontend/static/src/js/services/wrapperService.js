@@ -1,5 +1,6 @@
 import { ElementDisplay } from "../components/elementDisplay.js";
 import Toast from "../components/toast.js";
+import { ApiError } from '../contracts/apiError.js';
 import { ApiResonse } from '../contracts/apiResponse.js';
 
 const loader = new ElementDisplay(
@@ -25,22 +26,27 @@ class WrapperLoadingService {
     this.#toast = toast
   }
   async execute(service, serviceFunction, ...args) {
-    let result;
+    let apiResult;
     try {
       this.#loader.display();
-      result = await (serviceFunction.bind(service))(...args);
+      const result = await (serviceFunction.bind(service))(...args);
+      apiResult = new ApiResonse(result?.data ?? result, result?.message ?? 'OK', true);
     } catch (error) {
-      result = new ApiResonse(null, error?.message ?? "Something went wrong!", false);
+      if (error instanceof ApiError) {
+        apiResult = new ApiResonse(null, `Status: ${error.status} - ${error.message}`, false);
+      } else {
+        apiResult = new ApiResonse(null, error?.message ?? "Something went wrong!", false);
+      }
     } finally {
       this.#loader.remove();
-      const isError = !result.is_success;
+      const isError = !apiResult.is_success;
       this.#toast.display(
         isError ? 'Error' : 'Success',
-        result.message,
+        apiResult.message,
         isError ? 'danger' : 'success'
       );
     }
-    return result;
+    return apiResult;
   }
 }
 

@@ -79,7 +79,7 @@ class IRouter(ABC):
     if not method:
       raise Exception(f"Method {verb} not found")
     data = method(http_client_data)
-    return data.json()
+    return self.convert_to_json_response(data)
 
   def path_resolver(self, path: str):
     for route in self.routes.values():
@@ -113,7 +113,8 @@ class IRouter(ABC):
     # )
     # for header, value in response.headers.items():
     #     django_response[header] = value
-    return JsonResponse(data=response.json(), status=response.status_code, safe=False)
+    data_json, status = self.http_client.deserialize(response)
+    return JsonResponse(data=data_json, status=status, safe=False)
 
   def route(self, verb: str, path: str, request: HttpRequest, *args, **kwargs):
     if not isinstance(verb, str):

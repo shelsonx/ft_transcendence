@@ -1,3 +1,4 @@
+from typing import Any, Union
 import requests
 from urllib.parse import urljoin
 import json
@@ -27,5 +28,8 @@ class HttpClientRequest(IHttpClient):
         response = requests.request(method, url_with_base, data=request_data.data, headers=request_data.headers)
         return response
 
-    def serialize(self, response: requests.Response) -> str:
-        return response.json()
+    def deserialize(self, response: requests.Response)-> Union[Any, int]:
+        return response.json(), response.status_code
+
+    def serialize(self, data: requests.Response) -> str:
+        return json.dumps(data).encode('utf-8')

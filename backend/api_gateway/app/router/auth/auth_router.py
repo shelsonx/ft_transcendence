@@ -35,19 +35,18 @@ class AuthRouter(IRouter):
       headers=headers_dict
     )
     auth_data = self.http_client.get(http_client_data_user_me)
-    data_json = http_response_to_json(auth_data)
+    data_json = self.convert_to_json_response(auth_data)
     return data_json
 
   def register(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
     if request.method == "POST":
         response =  self.http_client.post(http_client_data)
-        return convert_to_json_response(response)
+        return self.convert_to_json_response(response)
 
     sign_in_dto = self.http_client.put(http_client_data)
-    sign_in_dto_json = convert_to_json_response(sign_in_dto)
-    if sign_in_dto.status >= 400:
-        return sign_in_dto_json
-    sign_in_dto_data = get_prop_from_json(sign_in_dto_json)
+    sign_in_dto_data = self.convert_to_json_response(sign_in_dto)
+    if sign_in_dto.status_code >= 400:
+        return sign_in_dto_data
 
     headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_in_dto_data['token'])
 

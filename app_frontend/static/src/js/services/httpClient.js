@@ -1,4 +1,6 @@
 import { AuthConstants } from "../constants/auth-constants.js";
+import { ApiError } from "../contracts/apiError.js";
+import { ApiResonse } from "../contracts/apiResponse.js";
 import { getCookie } from "../utils/getCookie.js";
 import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
 /**
@@ -63,6 +65,22 @@ export class HttpClient {
     }
   }
 
+  async #toResponse(response) {
+    if (response.ok) {
+      const content_type = response.headers.get("content-type")
+      if (content_type.includes("text/html")) {
+        return await response.text();
+      }
+      return await response.json();
+    } else if (response.status >= 300 && response.status < 400) {
+      return new ApiResonse(null, "Redirect", false);
+    }
+    throw new ApiError(
+      response.statusText || 'An error occurred while processing your request',
+      response.status
+    );
+  }
+
   /**
    * Make a POST request.
    * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
@@ -74,7 +92,7 @@ export class HttpClient {
       headers: httpClientRequestData.headers,
       body: JSON.stringify(httpClientRequestData.data)
     });
-    return await response.json();
+    return await this.#toResponse(response);
   }
 
   /**
@@ -87,27 +105,21 @@ export class HttpClient {
       method: 'GET',
       headers: httpClientRequestData.headers
     });
-
-    const content_type = response.headers.get("content-type")
-    if (content_type.includes("text/html")) {
-      return await response.text();
-    }
-
-    return await response.json();
+    return await this.#toResponse(response);
   }
 
-    /**
-   * Make a PUT request.
-   * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
-   * @returns {Promise<Object>} The response data.
-   */
+  /**
+ * Make a PUT request.
+ * @param {HttpClientRequestData} httpClientRequestData - The data for the request.
+ * @returns {Promise<Object>} The response data.
+ */
   async #put(httpClientRequestData) {
     const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
       method: 'PUT',
       headers: httpClientRequestData.headers,
       body: JSON.stringify(httpClientRequestData.data)
     });
-    return await response.json();
+    return await this.#toResponse(response);
   }
   /**
    * Make a DELETE request.
@@ -119,7 +131,8 @@ export class HttpClient {
       method: 'DELETE',
       headers: httpClientRequestData.headers,
     });
-    return await response.json();
+    return await this.#toResponse(response);
+
   }
 
   /**
@@ -130,25 +143,20 @@ export class HttpClient {
    */
   async #patch(httpClientRequestData) {
     const formData = new FormData();
-  
+
     for (const key in httpClientRequestData.data) {
       if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
         formData.append(key, httpClientRequestData.data[key]);
       }
     }
 
-    try {
-      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
-        method: 'PATCH',
-        body: formData
-      });
-
-      return await response.json();
-    } catch (error) {
-      throw error;
-    }
+    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+      method: 'PATCH',
+      body: formData
+    });
+    return await this.#toResponse(response);
   }
-  
+
 
   /**
    * Make an HTTP request.
@@ -161,7 +169,7 @@ export class HttpClient {
     if (!httpClientRequestData) {
       throw new Error('Request data is required');
     }
-    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this), 'PATCH': this.#patch.bind(this)};
+    const httpVerb = { 'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this), 'PATCH': this.#patch.bind(this) };
     this.addCsrfToken(httpClientRequestData);
     const httpRequest = httpVerb?.[httpClientRequestData.method?.toUpperCase()];
     if (!httpRequest) {
