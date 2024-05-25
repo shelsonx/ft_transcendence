@@ -131,30 +131,21 @@ export class HttpClient {
   async #patch(httpClientRequestData) {
     const formData = new FormData();
   
-    // Append data to formData, skip null values
     for (const key in httpClientRequestData.data) {
       if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
         formData.append(key, httpClientRequestData.data[key]);
       }
     }
-  
+
     try {
       const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
         method: 'PATCH',
-        headers: {
-          ...httpClientRequestData.headers, // Make sure not to set 'Content-Type' manually
-        },
         body: formData
       });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      return await response.json(); // Assuming the server responds with JSON
+
+      return await response.json();
     } catch (error) {
-      console.error('Failed to execute PATCH request:', error);
-      throw error; // Rethrow or handle as necessary
+      throw error;
     }
   }
   
@@ -170,7 +161,7 @@ export class HttpClient {
     if (!httpClientRequestData) {
       throw new Error('Request data is required');
     }
-    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this)};
+    const httpVerb = {'GET': this.#get.bind(this), 'POST': this.#post.bind(this), 'PUT': this.#put.bind(this), 'DELETE': this.#delete.bind(this), 'PATCH': this.#patch.bind(this)};
     this.addCsrfToken(httpClientRequestData);
     const httpRequest = httpVerb?.[httpClientRequestData.method?.toUpperCase()];
     if (!httpRequest) {

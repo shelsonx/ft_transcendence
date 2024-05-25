@@ -77,7 +77,7 @@ const loadUserData = async (userInformationService) => {
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
-    avatar.src = `http://localhost:3000/static/src/img/lili.jpg`;
+    avatar.src = `http://localhost:8000${userData.avatar}`;
     language.value = userData.chosen_language;
 }
 
@@ -130,7 +130,7 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = '173b8552-8153-44b4-afe1-d7ce98235f77';
+    const userId = '97e30085-8d7a-49b9-8a98-aabf2dfe3105';
     const userInformationService = new UserInformationService(userId);
 
     await loadUserData(userInformationService);

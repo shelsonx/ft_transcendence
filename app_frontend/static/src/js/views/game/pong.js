@@ -1,7 +1,8 @@
 import BaseLoggedView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
-// import Player from './player.js'
-// import PongTable from './table.js';
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../constants/game.js';
+import { GameRuleType } from '../../contracts/game/gameRule.js';
+import PongManager from '../../models/pongManager.js';
 
 
 class PongGameView extends BaseLoggedView {
@@ -16,98 +17,93 @@ class PongGameView extends BaseLoggedView {
 
 const html = /*html*/`
   <div id="pong-game" class="">
-    <h3 class="row justify-content-center">Duration: 00:00</h3>
-    <div class="row justify-content-center">
-      <div class="col">
-        <h3 class="row justify-content-center">Player A</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_a.id_reference }}</p>
-        <p>Points: {{ match.score_a }}</p> -->
+    <h4 class="d-flex justify-content-center">00:00</h4>
+    <div class="d-flex justify-content-sm-center">
+      <div class="mx-3">
+        <span class="sm name" id="player-left-name">A</span>
+        <span class="score" id="player-left-score"> 0</span>
       </div>
-      <canvas id="canvas" class="col"></canvas>
-      <div class="col">
-        <h3 class="row justify-content-center">Player B</h3>
-        <h2 class="row justify-content-center">0</h2>
-        <!-- <p>{{ match.player_b.id_reference }}</p>
-        <p>Points: {{ match.score_b }}</p> -->
+      <div class="mx-3">
+        <span class="score" id="player-right-score">0</span>
+        <span class="sm name" id="player-right-name">B</span>
       </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <canvas id="canvas"></canvas>
     </div>
   </div>
 `
 
+const gameObj = {
+  id: 1,
+  game_datetime: new Date(),
+  status: "scheduled",
+  duration: 0,
+  rules: {
+    rule_type: GameRuleType.PLAYER_POINTS,
+    points_to_win: 11,
+    game_total_points: null,
+    max_duration: null,
+  },
+  player_left: {
+    user: {
+      id: 1,
+      username: "user42",
+    },
+    score: 0,
+  },
+  player_right: {
+    user: {
+      id: 1,
+      username: "student42",
+    },
+    score: 0,
+  },
+}
+
 const start = async () => {
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
-  canvas.width = innerWidth / 2;
-  canvas.height = innerHeight / 2;
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
+  let animationFrame;
 
-  class PongTable {
-    constructor() {
-      this.position = {
-        x: 0,
-        y: 0,
-      };
-      this.width = canvas.width;
-      this.height = canvas.height;
-    }
-    draw() {
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
-  }
+  const pong = new PongManager(gameObj, canvas.width, canvas.height);
 
-  const table = new PongTable();
-  table.draw()
-
-  class PongPlayer {
-    constructor(x, y) {
-      this.position = {
-        x,
-        y,
-      };
-      this.velocity = {
-        x: 0,
-        y: 0,
-      };
-      // this.width = proportionalSize(40);
-      // this.height = proportionalSize(40);
-      this.width = 10;
-      this.height = 40;
+  function animate() {
+    if (pong.checkGameEnded() === true) {
+      // save in back
+      // window.cancelAnimationFrame(animationFrame);
+      console.log("Ended");
     }
-    draw() {
-      ctx.fillStyle = "#99c9ff";
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    else {
+      pong.update();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pong.draw(ctx);
+      animationFrame = requestAnimationFrame(animate);
     }
   }
+  animate();
 
-  const player1 = new PongPlayer(10, 80);
-  player1.draw()
-  const player2 = new PongPlayer(canvas.width - 20, canvas.height - 80);
-  player2.draw()
-
-  class PongBall {
-    constructor(x, y) {
-      this.position = {
-        x,
-        y,
-      };
-      this.velocity = {
-        x: 0,
-        y: 0,
-      };
-      // this.width = proportionalSize(40);
-      // this.height = proportionalSize(40);
-      this.width = 10;
-      this.height = 10;
+  window.addEventListener("keydown", (e) => {
+    switch(e.code) {
+      case "ArrowUp":
+        pong.player_right.update("up");
+        break;
+      case "ArrowDown":
+        pong.player_right.update("down");
+        break;
+      case "KeyW":
+        pong.player_left.update("up");
+        break;
+      case "KeyS":
+        pong.player_left.update("down");
+        break;
     }
-    draw() {
-      ctx.fillStyle = "#99c9ff";
-      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-    }
-  }
+  });
 
-  const ball = new PongBall(canvas.width / 2, canvas.height / 2);
-  ball.draw()
+  // window.addEventListener() // resize
+
 }
 
 export default new PongGameView(html, start);
