@@ -1,8 +1,12 @@
 from abc import ABCMeta
 
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.http.request import HttpHeaders
 import json
+
+from ...entities.api_data_response import ApiDataResponse
+
+from ...utils.to_json_response import to_json_response
 
 from ...utils.http_response_to_json import http_response_to_json
 from ...utils.get_prop_from_json import get_prop_from_json
@@ -38,60 +42,60 @@ class AuthRouter(IRouter):
     data_json = self.convert_to_json_response(auth_data)
     return data_json
 
-  def register(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
-    if request.method == "POST":
-        response =  self.http_client.post(http_client_data)
-        return self.convert_to_json_response(response)
-
-    sign_in_dto = self.http_client.put(http_client_data)
-    sign_in_dto_data = self.convert_to_json_response(sign_in_dto)
-    if sign_in_dto.status_code >= 400:
-        return sign_in_dto_data
-
-    headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_in_dto_data['token'])
-
-    auth_me_data = self.get_me(headers_dict)
-
-    print(auth_me_data)
-    if auth_me_data['enable_2fa']:
-        return sign_in_dto_data
+  def register_game_info_ms(self, auth_data_json, headers_dict):
     body = json.dumps({
-            "id_msc": auth_me_data['id'],
-            "full_name": auth_me_data["user_name"],
-            "nickname": auth_me_data["user_name"]
-        }).encode('utf-8')
+                    "id_msc": auth_data_json['id'],
+                    "full_name": auth_data_json["user_name"],
+                    "nickname": auth_data_json["user_name"]
+                }).encode('utf-8')
 
-    self.notify_microservices("POST", ApiUrls.GAME_INFO, HttpClientData(
+    return self.notify_microservices("POST", ApiUrls.GAME_INFO, HttpClientData(
         url="/register_user/",
         data=body,
         headers=headers_dict
     ))
-#     body = {
-#     "id_msc": auth_me_data['id'],
-#     "full_name": auth_me_data["user_name"],
-#     "nickname": auth_me_data["user_name"]
-# }
 
+  def register_user_management_ms(self, auth_data_json, headers_dict):
     body = json.dumps({
-            "name": auth_me_data["user_name"],
-            "user_uuid": auth_me_data['id'],
-            "nickname": auth_me_data["user_name"],
-            "email": auth_me_data['email'],
-            "two_factor_enabled": auth_me_data['enable_2fa'],
+            "name": auth_data_json["user_name"],
+            "user_uuid": auth_data_json['id'],
+            "nickname": auth_data_json["user_name"],
+            "email": auth_data_json['email'],
+            "two_factor_enabled": auth_data_json['enable_2fa'],
             "chosen_language": "en"
         }).encode('utf-8')
 
-    self.notify_microservices("POST", ApiUrls.USER_MANAGEMENT, HttpClientData(
+    return self.notify_microservices("POST", ApiUrls.USER_MANAGEMENT, HttpClientData(
         url="",
         data=body,
         headers=headers_dict
     ))
-    '''
-        {'id': '2f0b18d7-35b2-43c3-8091-7983356348c9', 'user_name': 'Bruno123', 'email': 'brunobonaldi94@gmail.com', 'login_type': {'name': 'email'}, 'enable_2fa': False, 'created_at': '2024-05-17T02:06:05.832Z', 'updated_at': '2024-05-17T02:06:05.832Z', 'is_active': True}
-        if enable_2fa is True:
-            nao enviar para os microservicos
-        else:
-            enviar para outros microservicos (quer dizer que o usuario esta se cadastrando)
-    '''
-    ######
-    return sign_in_dto_data
+
+
+  def register(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
+    try:
+        if request.method == "POST":
+            response =  self.http_client.post(http_client_data)
+            return self.convert_to_json_response(response)
+
+        sign_up_data = self.http_client.put(http_client_data)
+        sign_up_data_json = self.convert_to_json_response(sign_up_data)
+        if sign_up_data.status_code >= 400:
+            return sign_up_data_json
+
+        headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_up_data.json()['data']['token'])
+
+        auth_me_data = self.get_me(headers_dict)
+        auth_data_json = json.loads(auth_me_data.content)['data']
+        if auth_data_json['enable_2fa']:
+            return sign_up_data_json
+
+        game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
+        print(game_info_data)
+        user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
+        print(user_management_data)
+        return sign_up_data_json
+    except Exception as exception:
+        return to_json_response(
+            data=ApiDataResponse(message=str(exception), is_success=False), status=500
+        )

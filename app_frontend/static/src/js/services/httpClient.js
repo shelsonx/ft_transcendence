@@ -75,10 +75,18 @@ export class HttpClient {
     } else if (response.status >= 300 && response.status < 400) {
       return new ApiResonse(null, "Redirect", false);
     }
-    throw new ApiError(
-      response.statusText || 'An error occurred while processing your request',
-      response.status
-    );
+
+    let apiError = null;
+    try {
+      const error = await response.json()
+      apiError = new ApiError(error?.message ?? JSON.stringify(error) , response.status);
+    } catch(err) {
+      apiError = new ApiError(
+        'An error occurred while processing your request',
+        response.status
+      );
+    }
+    throw apiError;
   }
 
   /**

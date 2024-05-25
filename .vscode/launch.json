@@ -10,16 +10,16 @@
       },
       "pathMappings": [
         {
-         "localRoot": "${workspaceFolder}/backend/services/game_info",
-          "remoteRoot": "/usr/src/app"
-        },
-        {
           "localRoot": "${workspaceFolder}/backend/api_gateway",
           "remoteRoot": "/code"
         },
         {
         "localRoot": "${workspaceFolder}/backend/services/auth",
         "remoteRoot": "/code"
+        },
+        {
+         "localRoot": "${workspaceFolder}/backend/services/game_info",
+          "remoteRoot": "/usr/src/app"
         },
         {
         "localRoot": "${workspaceFolder}/app_frontend",
