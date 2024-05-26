@@ -26,7 +26,8 @@ users = [
         "login_type_id":login_type_email,
         "enable_2fa":False,
         "password":make_password("Sheela123"),
-        "is_active":True
+        "is_active":True,
+        "is_first_login":False
     },
     {
         "id": "355aaf65-0300-47b6-8748-c8d0c1aed702",
@@ -35,7 +36,8 @@ users = [
         "login_type_id":login_type_email,
         "enable_2fa":False,
         "password":make_password("Bruno123"),
-        "is_active":True
+        "is_active":True,
+        "is_first_login":False
     },
     {
         "id": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
@@ -44,7 +46,8 @@ users = [
         "login_type_id":login_type_email,
         "enable_2fa":False,
         "password":make_password("Shelson123"),
-        "is_active":True
+        "is_active":True,
+        "is_first_login":False
     },
     {
         "id": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
@@ -53,7 +56,8 @@ users = [
         "login_type_id":login_type_email,
         "enable_2fa":False,
         "password":make_password("Eliaris123"),
-        "is_active":True
+        "is_active":True,
+        "is_first_login":False
     },
     {
         "id": "e054f322-7733-48be-b1b1-7a66357efecd",
@@ -62,7 +66,8 @@ users = [
         "login_type_id":login_type_email,
         "enable_2fa":False,
         "password":make_password("Humberto123"),
-        "is_active":True
+        "is_active":True,
+        "is_first_login":False
     }
 ]
 
@@ -86,7 +91,8 @@ def create_users(apps, schema_editor):
             login_type_id=user["login_type_id"],
             enable_2fa=user["enable_2fa"],
             password=user["password"],
-            is_active=user["is_active"]
+            is_active=user["is_active"],
+            is_first_login=user["is_first_login"]
         )
 
 def delete_users(apps, schema_editor):
