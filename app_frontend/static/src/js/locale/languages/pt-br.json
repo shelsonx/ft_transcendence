@@ -20,5 +20,12 @@
   "two-factor-auth--submit": "Enviar",
   "two-factor-auth--two-factor-code": "Código de autenticação de dois fatores",
   "page-not-found--title": "Página não encontrada",
-  "game_info--score": "Pontuação"
+
+  "game-info--nickname": "Apelido",
+  "game-info--scores": "Pontuações",
+  "game-info--winnings": "Vitórias",
+  "game-info--losses": "Perdas",
+  "game-info--ranking": "Classificação",
+  "game-info--info": "Informações",
+  "game-info--players": "Jogadores"
 }
