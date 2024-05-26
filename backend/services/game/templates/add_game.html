@@ -49,9 +49,27 @@
     <div class="pb-2">
       {% csrf_token %}
 
-      <div id="form-game-rules" class="d-none">
-        {% include "form.html" with form=rules_form %}
-      </div>
+      <fieldset class="fieldset-game-rules py-2">
+        <div id="form-game-rules" class="d-none">
+          <legend class="d-flex justify-content-between">
+            <u>
+              <span class="game-rules-group">{% translate "Customize Game Rules" %}</span>
+            </u>
+            <span data-bs-theme="dark" class="close-button">
+                {% comment %} <legend>{% translate "Customize Game Rules" %}</legend> {% endcomment %}
+              <button type="button" class="btn-close" id="close-rules-btn" aria-label="Close"></button>
+            </span>
+          </legend>
+          <div class="px-2">
+            {% include "form.html" with form=rules_form %}
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" id="default-rules-btn" type="button">
+                {% translate "Use Default Rules" %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
 
       <label class="pt-3">{% translate "Choose an oponent:" %}</label>
       {% include "form.html" with form=user_form %}
