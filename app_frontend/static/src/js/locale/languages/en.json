@@ -20,5 +20,12 @@
   "two-factor-auth--resend": "Resend code",
   "two-factor-auth--two-factor-code": "Two Factor Code",
   "two-factor-auth--submit": "Submit",
-  "game_info--score": "Score"
+
+  "game-info--nickname": "Nickname",
+  "game-info--scores": "Scores",
+  "game-info--winnings": "Winnings",
+  "game-info--losses": "Losses",
+  "game-info--ranking": "Ranking",
+  "game-info--info": "Info",
+  "game-info--players": "Players"
 }
