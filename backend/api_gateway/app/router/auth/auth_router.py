@@ -29,6 +29,7 @@ class AuthRouter(IRouter):
       Route("/user/<uuid:user_id>", ['PUT', 'DELETE']),
       Route("/sign-in-42/", ['POST']),
       Route("/validate-2factor-code/", allowed_verbs=['POST', 'PUT'], handler_function=self.register),
+      Route("/register-42/", ['GET'], handler_function=self.register_42),
     ]
     super().__init__(http_client, routes_auth)
 
@@ -71,7 +72,27 @@ class AuthRouter(IRouter):
         headers=headers_dict
     ))
 
+  def register_ms(self, default_response, headers_dict):
 
+        auth_me_data = self.get_me(headers_dict)
+        auth_data_json = json.loads(auth_me_data.content)['data']
+        if auth_data_json['enable_2fa']:
+            return default_response
+
+        game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
+        print(game_info_data)
+        user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
+        print(user_management_data)
+        return default_response
+
+  def register_42(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
+     try:
+        data = ApiDataResponse(data={"message": "Ok"}, is_success=True, message="OK").to_dict()
+        return self.register_ms(JsonResponse(data=data, status=200, safe=False), request.headers)
+     except Exception as exception:
+        return to_json_response(
+            data=ApiDataResponse(message=str(exception), is_success=False), status=500
+        )
   def register(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
     try:
         if request.method == "POST":
@@ -84,16 +105,7 @@ class AuthRouter(IRouter):
             return sign_up_data_json
 
         headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_up_data.json()['data']['token'])
-
-        auth_me_data = self.get_me(headers_dict)
-        auth_data_json = json.loads(auth_me_data.content)['data']
-        if auth_data_json['enable_2fa']:
-            return sign_up_data_json
-
-        game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
-        print(game_info_data)
-        user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
-        print(user_management_data)
+        self.register_ms(sign_up_data_json, headers_dict)
         return sign_up_data_json
     except Exception as exception:
         return to_json_response(
