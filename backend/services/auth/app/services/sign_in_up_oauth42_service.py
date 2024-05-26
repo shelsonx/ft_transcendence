@@ -36,6 +36,7 @@ class SignInOAuth42Service(BaseService):
     async def execute(
         self, sign_in_up_OAuth42_dto: SignInUpOAuth42Dto
     ) -> SignInResultDto:
+        change_first_login = True
         try:
             if not sign_in_up_OAuth42_dto.is_valid():
                 raise TokenExpiredException()
@@ -61,8 +62,8 @@ class SignInOAuth42Service(BaseService):
                 login_type=LoginTypeConstants.AUTH_42,
                 is_active=True,
             )
+            change_first_login = False
 
         token_user.is_active = True
         await self.user_repository.update_user(token_user)
-
-        return await self.base_sign_in_usecase.execute(token_user, False)
+        return await self.base_sign_in_usecase.execute(token_user, False, change_first_login)
