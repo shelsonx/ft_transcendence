@@ -76,13 +76,15 @@ class AuthRouter(IRouter):
 
         auth_me_data = self.get_me(headers_dict)
         auth_data_json = json.loads(auth_me_data.content)['data']
+
         if auth_data_json['enable_2fa']:
             return default_response
 
-        game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
-        print(game_info_data)
-        user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
-        print(user_management_data)
+        if auth_data_json['is_first_login']:
+            game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
+            print(game_info_data)
+            user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
+            print(user_management_data)
         return default_response
 
   def register_42(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):

@@ -7,7 +7,7 @@ from asgiref.sync import sync_to_async
 
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_name = models.CharField(max_length=100, unique=True, null=False, blank=False)
+    user_name = models.CharField(max_length=50, unique=True, null=False, blank=False)
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
     login_type = models.ForeignKey(
         LoginType, on_delete=models.CASCADE, null=False, blank=False
@@ -17,6 +17,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=False)
     updated_at = models.DateTimeField(auto_now=True, null=False)
     is_active = models.BooleanField(default=False, null=False)
+    is_first_login = models.BooleanField(default=True, null=False)
 
     def __str__(self):
         return self.user_name
@@ -36,4 +37,5 @@ class User(models.Model):
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "is_active": self.is_active,
+            "is_first_login": self.is_first_login,
         }

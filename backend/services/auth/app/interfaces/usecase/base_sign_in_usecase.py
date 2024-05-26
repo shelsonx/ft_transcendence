@@ -1,3 +1,4 @@
+from ...utils.call_async import call_async
 from ...interfaces.repositories.user_repository import IUserRepository
 from ...interfaces.repositories.login_type_repository import ILoginTypeRepository
 from ...interfaces.services import ITokenService
@@ -48,19 +49,32 @@ class BaseSignInUseCase(BaseUseCase):
             token=token, is_temporary_token=is_temporary_token, email=user.email
         )
 
+    async def change_is_first_login(self, user: User, change_first_login: bool):
+        if change_first_login:
+            if user.is_first_login:
+                user.is_first_login = False
+                await user.asave()
+
     async def execute(
-        self, user: User, is_temporary_token: bool, expires_in_hours: int = 2
+        self, user: User,
+        is_temporary_token: bool,
+        change_fist_login: bool = False,
+        expires_in_hours: int = 2
     ) -> SignInResultDto:
 
         if is_temporary_token:
-            return await self._send_code_and_return_token(
+            token = await self._send_code_and_return_token(
                 user, is_temporary_token, expires_in_hours
             )
+            await self.change_is_first_login(user, change_fist_login)
+            return token
+
         token = self._create_token(
             user,
             is_temporary_token=is_temporary_token,
             expires_in_hours=expires_in_hours,
         )
+        await self.change_is_first_login(user, change_fist_login)
         return SignInResultDto(
             token=token, is_temporary_token=is_temporary_token, email=user.email
         )

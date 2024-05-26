@@ -48,5 +48,6 @@ class SignInUseCase(BaseSignInUseCase):
 
         if not user.check_password(sign_in_dto.password):
             raise InvalidPasswordException()
-        result = await super().execute(user, False)
+
+        result = await super().execute(user, False, True)
         return result.to_dict()
