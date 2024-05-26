@@ -19,65 +19,90 @@ const swapGameForm = async (response_content) => {
   const swapContainer = document.getElementById("swap-container");
   swapContainer.innerHTML = response_content;
 
-  const addGameForm = document.getElementById('match-form');
+  const addGameForm = document.getElementById("match-form");
   addGameForm.addEventListener("submit", submitGameForm);
 
-  const setRulesButton = document.getElementById('set-rules-btn');
-  setRulesButton.addEventListener("click", setRules);
+  const setRulesButton = document.getElementById("set-rules-btn");
+  setRulesButton.addEventListener("click", showRules);
+
+  updateGameRulesFields();
+  const ruleTypeField = document.getElementById("id_rule_type");
+  ruleTypeField.addEventListener("change", updateGameRulesFields);
 };
 
 const submitGameForm = async (e) => {
   e.preventDefault();
-  const addGameForm = document.getElementById('match-form');
+  const addGameForm = document.getElementById("match-form");
   const formData = new FormData(addGameForm);
 
-  await gameService.getFormGame().then(addGameResult);
-  // await gameService.addGame(formData).then(addGameResult);
-}
+  // await gameService.getFormGame().then(addGameResult);
+  await gameService.addGame(formData).then(addGameResult);
+};
 
-const setRules = () => {
-  const setRulesButton = document.getElementById('set-rules-btn');
+const showRules = () => {
+  const setRulesButton = document.getElementById("set-rules-btn");
   setRulesButton.classList.add("d-none");
 
-  const formGameRules = document.getElementById('form-game-rules');
-  const gameTotalPointsField = document.getElementById('game_total_points');
-  const maxDurationField = document.getElementById('max_duration');
+  const formGameRules = document.getElementById("form-game-rules");
   formGameRules.classList.remove("d-none");
-  gameTotalPointsField.classList.add("d-none");
-  maxDurationField.classList.add("d-none");
-
-  const ruleTypeField = document.getElementById('id_rule_type');
-  ruleTypeField.addEventListener("change", updateGameRulesFields);
-}
+};
 
 const updateGameRulesFields = () => {
-  const ruleTypeField = document.getElementById('id_rule_type');
+  const ruleTypeField = document.getElementById("id_rule_type");
   const pointsToWinField = document.getElementById("points_to_win");
-  const gameTotalPointsField = document.getElementById('game_total_points');
-  const maxDurationField = document.getElementById('max_duration');
+  const pointsToWinFieldInput = document.getElementById("id_points_to_win");
+  const gameTotalPointsField = document.getElementById("game_total_points");
+  const gameTotalPointsFieldInput = document.getElementById("id_game_total_points");
+  const maxDurationField = document.getElementById("max_duration");
+  const maxDurationFieldInput = document.getElementById("id_max_duration");
 
   if (ruleTypeField.value === GameRuleType.PLAYER_POINTS) {
     pointsToWinField.classList.remove("d-none");
     gameTotalPointsField.classList.add("d-none");
     maxDurationField.classList.add("d-none");
-  }
-  else if (ruleTypeField.value === GameRuleType.GAME_TOTAL_POINTS) {
+    pointsToWinFieldInput.required = true;
+    gameTotalPointsFieldInput.required = false;
+    maxDurationFieldInput.required = false;
+    gameTotalPointsFieldInput.setAttribute("value", "");
+    maxDurationFieldInput.setAttribute("value", "");
+  } else if (ruleTypeField.value === GameRuleType.GAME_TOTAL_POINTS) {
     pointsToWinField.classList.add("d-none");
     gameTotalPointsField.classList.remove("d-none");
     maxDurationField.classList.add("d-none");
-  }
-  else if (ruleTypeField.value === GameRuleType.GAME_DURATION) {
+    pointsToWinFieldInput.required = false;
+    gameTotalPointsFieldInput.required = true;
+    maxDurationFieldInput.required = false;
+    pointsToWinFieldInput.setAttribute("value", "");
+    maxDurationFieldInput.setAttribute("value", "");
+  } else if (ruleTypeField.value === GameRuleType.GAME_DURATION) {
     pointsToWinField.classList.add("d-none");
     gameTotalPointsField.classList.add("d-none");
     maxDurationField.classList.remove("d-none");
+    pointsToWinFieldInput.required = false;
+    gameTotalPointsFieldInput.required = false;
+    maxDurationFieldInput.required = true;
+    pointsToWinFieldInput.setAttribute("value", "");
+    gameTotalPointsFieldInput.setAttribute("value", "");
   }
-}
+};
 
-const addGameResult = async (response) => {
-  // console.log(response);
-  // if (typeof response == "string") {
-  //   swapGameForm(response);
-  // } else {
+const addGameResult = async (response_content) => {
+  console.log(response_content);
+  if (typeof response_content == "string") {
+    swapGameForm(response_content);
+  } else {
+    if (response_content.hasOwnProperty("status") && response_content.status !== "success") {
+      console.log("error");
+      return;
+    }
+    if (
+      response_content.hasOwnProperty("data") &&
+      response_content.data.hasOwnProperty("game") &&
+      response_content.data.game !== null
+    ) {
+      // window.location.href = '?match=' + response.data.game + '#pong';
+      // return;
+    }
 
     const gameForm = document.getElementById("match-form");
     gameForm.classList.add("d-none");
@@ -88,7 +113,7 @@ const addGameResult = async (response) => {
 
     // const confirmButton = document.getElementById("button-start");
     // confirmButton.addEventListener("click", (e) => {})
-  // }
+  }
 };
 
 // new URLSearchParams(obj).toString();
