@@ -25,6 +25,12 @@ const swapGameForm = async (response_content) => {
   const setRulesButton = document.getElementById("set-rules-btn");
   setRulesButton.addEventListener("click", showRules);
 
+  const useDefaultRulesButton = document.getElementById("default-rules-btn");
+  useDefaultRulesButton.addEventListener("click", useDefaultRules);
+
+  const closeRulesButton = document.getElementById("close-rules-btn");
+  closeRulesButton.addEventListener("click", hideRules);
+
   updateGameRulesFields();
   const ruleTypeField = document.getElementById("id_rule_type");
   ruleTypeField.addEventListener("change", updateGameRulesFields);
@@ -45,6 +51,26 @@ const showRules = () => {
 
   const formGameRules = document.getElementById("form-game-rules");
   formGameRules.classList.remove("d-none");
+};
+
+const hideRules = (e) => {
+  e.preventDefault();
+  const setRulesButton = document.getElementById("set-rules-btn");
+  setRulesButton.classList.remove("d-none");
+
+  const formGameRules = document.getElementById("form-game-rules");
+  formGameRules.classList.add("d-none");
+};
+
+const useDefaultRules = (e) => {
+  e.preventDefault();
+  const ruleTypeField = document.getElementById("id_rule_type");
+  const pointsToWinFieldInput = document.getElementById("id_points_to_win");
+
+  ruleTypeField.value = GameRuleType.PLAYER_POINTS;
+  pointsToWinFieldInput.setAttribute("value", 11);
+  pointsToWinFieldInput.value = 11;
+  updateGameRulesFields();
 };
 
 const updateGameRulesFields = () => {
