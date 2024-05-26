@@ -9,5 +9,5 @@ COPY . /code/
 
 RUN chmod +x ./entrypoint.sh
 
-# ENTRYPOINT [ "./entrypoint.sh" ]
-# CMD ["python", "./manage.py", "runserver", "0.0.0.0:80"]
+ENTRYPOINT [ "./entrypoint.sh" ]
+CMD ["python", "./manage.py", "runserver", "0.0.0.0:80"]
