@@ -30,6 +30,7 @@ class User {
     createdAt,
     updatedAt,
     isActive,
+    isFirstLogin,
     token,
   ) {
     this.id = id;
@@ -40,6 +41,7 @@ class User {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.isActive = isActive;
+    this.isFirstLogin = isFirstLogin;
     this.token = token;
   }
   static createUserFromObj(obj) {
@@ -52,6 +54,7 @@ class User {
       created_at: 0,
       updated_at: 0,
       is_active: 0,
+      is_first_login: 0,
       token: 0,
     };
     for (let key in mustHaveKeys) {
@@ -68,6 +71,7 @@ class User {
       obj.created_at,
       obj.updated_at,
       obj.is_active,
+      obj.is_first_login,
       obj.token,
     );
   }

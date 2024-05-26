@@ -28,28 +28,34 @@ class HashRouter extends Router {
     document.querySelector('meta[name="description"]').setAttribute("content", view.description);
   }
 
+  redirectUserToLogin() {
+    this.user = null;
+    window.location.href = '/#login';
+    return false
+  }
+
   async checkIsAuthenticated() {
     replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
     const token = localStorage.getItem(AuthConstants.AUTH_TOKEN);
     if (!token) {
-      this.user = null;
-      window.location.href = '/#login';
-      return false;
+      return this.redirectUserToLogin();
     }
     if (this?.user?.token === token) {
       return true;
     }
-    const response = await authService.getMe();
-    if (response.is_success) {
-      this.user = User.createUserFromObj({
-        ...response.data,
-        token,
-      });
-      return true;
-    } else {
-      this.user = null;
-      window.location.href = '/#login';
-      return false;
+    try {
+      const response = await authService.getMe();
+      if (response.is_success) {
+        this.user = User.createUserFromObj({
+          ...response.data,
+          token,
+        });
+        return true;
+      } else {
+        return this.redirectUserToLogin();
+      }
+    } catch(e) {
+     return this.redirectUserToLogin();
     }
   }
 
