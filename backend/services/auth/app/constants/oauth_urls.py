@@ -4,3 +4,4 @@ class OAuthUrls:
     TOKEN_URL = "https://api.intra.42.fr/oauth/token"
     JWT_TOKEN = "transcendence-auth_token"
     FRONTEND_URL = "http://localhost:3000/"
+    FRONTEND_URL_TEMP = "http://localhost:3000/#auth-register-temp"
