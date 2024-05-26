@@ -65,6 +65,17 @@ export class HttpClient {
     }
   }
 
+  getFormUrlencodedBody(data) {
+    const params = [];
+    for (var property in data) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(data[property]);
+      params.push(encodedKey + "=" + encodedValue);
+    }
+
+    return params.join("&");
+  }
+
   async #toResponse(response) {
     if (response.ok) {
       const content_type = response.headers.get("content-type")
@@ -95,10 +106,17 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #post(httpClientRequestData) {
+    let body = JSON.stringify(httpClientRequestData.data);
+    if (
+      httpClientRequestData.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+    )
+      body = this.getFormUrlencodedBody(httpClientRequestData.data);
+
     const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
       method: 'POST',
       headers: httpClientRequestData.headers,
-      body: JSON.stringify(httpClientRequestData.data)
+      body: body
     });
     return await this.#toResponse(response);
   }
@@ -122,10 +140,17 @@ export class HttpClient {
  * @returns {Promise<Object>} The response data.
  */
   async #put(httpClientRequestData) {
+    let body = JSON.stringify(httpClientRequestData.data);
+    if (
+      httpClientRequestData.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+    )
+      body = this.getFormUrlencodedBody(httpClientRequestData.data);
+
     const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
       method: 'PUT',
       headers: httpClientRequestData.headers,
-      body: JSON.stringify(httpClientRequestData.data)
+      body: body
     });
     return await this.#toResponse(response);
   }
@@ -158,11 +183,22 @@ export class HttpClient {
       }
     }
 
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
-      method: 'PATCH',
-      body: formData
-    });
-    return await this.#toResponse(response);
+    if (
+      httpClientRequestData.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+    )
+      formData = this.getFormUrlencodedBody(httpClientRequestData.data);
+
+    try {
+      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+        method: 'PATCH',
+        body: formData
+      });
+
+      return await this.#toResponse(response);
+    } catch (error) {
+      throw error;
+    }
   }
 
 
