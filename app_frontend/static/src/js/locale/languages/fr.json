@@ -21,5 +21,12 @@
   "two-factor-auth--submit": "Soumettre",
   "two-factor-auth--two-factor-code": "Code à deux facteurs",
   "page-not-found--title": "Page non trouvée",
-  "game_info--score": "Score"
+
+  "game-info--nickname": "surnom",
+  "game-info--scores": "partitions",
+  "game-info--winnings": "gains",
+  "game-info--losses": "pertes",
+  "game-info--ranking": "classement",
+  "game-info--info": "Info",
+  "game-info--players": "joueurs"
 }
