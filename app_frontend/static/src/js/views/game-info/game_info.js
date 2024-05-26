@@ -34,23 +34,23 @@ const html = /*html*/`
                                 <div class="row">
                                     <div class="col"  id="details-infos-user">
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Nickname:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game-info--nickname">Nickname:</div>
                                             <div class="col-6 text-white" id="details-nickname">transcdc-ft</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Scores:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game-info--scores">Scores:</div>
                                             <div class="col-6 text-white" id="details-scores">42</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Winnings:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game-info--winnings">Winnings:</div>
                                             <div class="col-6 text-white" id="details-winnings">42</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Losses:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game-info--losses">Losses:</div>
                                             <div class="col-6 text-white" id="details-losses">0</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-6 text-white">Ranking:</div>
+                                            <div class="col-6 text-white" data-i18n-key="game-info--ranking">Ranking:</div>
                                             <div class="col-6 text-white" id="details-position">1º</div>
                                         </div>
                                     </div>
@@ -66,20 +66,20 @@ const html = /*html*/`
                 <div class="col-8 header-info-column">
                     <i class="fas fa-info-circle header-info-icon"></i>
                     <div>
-                        <p class="mb-0">Info</p>
+                        <p class="mb-0" data-i18n-key="game-info--info">Info</p>
                     </div>
                 </div>
                 <div class="col-2 header-scores-column">
                     <i class="fas fa-chart-bar me-2"></i>
                     <div>
-                        <p class="mb-0">Scores</p>
+                        <p class="mb-0" data-i18n-key="game-info--scores" id="game-info-scores-label">Scores</p>
                         <p class="mb-0" id="total_scores"></p>
                     </div>
                 </div>
                 <div class="col-2 header-players-column">
                     <i class="fas fa-users me-2"></i>
                     <div>
-                        <p class="mb-0">Players</p>
+                        <p class="mb-0" data-i18n-key="game-info--players">Players</p>
                         <p class="mb-0" id="total_players"></p>
                     </div>
                 </div>
@@ -188,7 +188,7 @@ function setData(container, data) {
     userPhoto.src = `http://localhost:8003/${data.photo}`;
 
     const scores = container.querySelector('.list-scores');
-    scores.textContent = `Scores: ${data.scores}`;
+    scores.textContent = data.scores;
 
     const userPlaying = container.querySelector('.list-user-game-status');
 
