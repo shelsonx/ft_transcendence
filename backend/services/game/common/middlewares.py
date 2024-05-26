@@ -1,9 +1,10 @@
 # Python STD library
 from functools import wraps
+from http import HTTPStatus
 from os import environ
 
 # Django
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 
 # Local Folder
 from .exceptions import UnauthorizedException
@@ -17,11 +18,11 @@ class JWTAuthenticationMiddleware:
         self.secret = secret
 
     def unauthorized(self, message: str = "Unauthorized"):
-        data = {
-            "message": message,
-            "is_success": False,
-        }
-        return JsonResponse(data=data, status=401)
+        return HttpResponse(
+            content=message,
+            status=HTTPStatus.UNAUTHORIZED,
+            headers={"WWW-Authenticate": "Bearer token68"},
+        )
 
     def __call__(self, f):
         @wraps(f)
