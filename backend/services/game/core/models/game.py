@@ -1,5 +1,7 @@
 # Third Party
+from datetime import timedelta
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 # First Party
@@ -19,13 +21,15 @@ class Game(models.Model):
         verbose_name_plural = _("Games")
         ordering = ["-game_datetime"]
 
-    game_datetime = models.DateTimeField(verbose_name=_("Game date"), null=True)  # remove null
+    game_datetime = models.DateTimeField(
+        verbose_name=_("Game date"), default=timezone.now(), blank=True
+    )
     status = models.SmallIntegerField(
         choices=GameStatus,
         default=GameStatus.SCHEDULED,
         verbose_name=_("Game status"),
     )
-    duration = models.DurationField(null=True)
+    duration = models.DurationField(default=timedelta(seconds=0), blank=True)
 
     rules = models.ForeignKey(
         to=GameRules, on_delete=models.RESTRICT, verbose_name=_("Game Rules")

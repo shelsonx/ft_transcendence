@@ -389,3 +389,7 @@ body {
 .text-emphasis {
     color: var(--secondary-light);
 }
+
+.form-error {
+    color: var(--red-light);
+}

@@ -6,10 +6,10 @@ class GameForm(forms.ModelForm):
 
     class Meta:
         model = Game
-        exclude = ["players", "rules"]
+        exclude = ["players"]
 
 class GameEditForm(GameForm):
 
     class Meta:
         model = Game
-        fields = ["duration", "game_datetime", "status"]
+        fields = ["duration", "game_datetime", "status", "rules"]
