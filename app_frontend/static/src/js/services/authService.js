@@ -77,6 +77,12 @@ class AuthService extends LanguageService{
    window.location.assign(`${this.baseApi}redirect-42/`);
   }
 
+  async register42() {
+    const requestData = new HttpClientRequestData('GET', 'register-42/');
+    const response = await this.makeRequest(requestData);
+    return response;
+  }
+
   async forgotPassword(formData) {
     const data = {
       email: formData.get('email'),
