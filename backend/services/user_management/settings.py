@@ -1,4 +1,5 @@
 import os
+from django.utils.translation import gettext_lazy as _
 
 """
 Django settings for user_management_api.
@@ -29,10 +30,9 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('en', 'English'),
-    ('fr', 'French'),
-    ('es', 'Spanish'),
-    ('pt', 'Portuguese'),
+    ('en', _('English')),
+    ('pt-br', _('Brazilian Portuguese')),
+    ('fr', _('French')),
 ]
 
 LOCALE_PATHS = [

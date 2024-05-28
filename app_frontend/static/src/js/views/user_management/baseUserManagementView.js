@@ -10,6 +10,7 @@ class userManagementView extends View {
     const navItems = [
       new NavItems('#user-profile', 'Profile'),
       new NavItems('#user-settings', 'Settings',),
+      new NavItems('#search-users', 'Search Users'),
     ];
     const addStart = () => {
       start();

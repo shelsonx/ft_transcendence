@@ -4,36 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
-msgid "Email"
-msgstr "E-mail"
-
-#, fuzzy
-msgid "Name"
-msgstr "Nom"
-
-#, fuzzy
-msgid "Nickname"
-msgstr "Pseudo"
-
-#, fuzzy
-msgid "Two-factor authentication"
-msgstr "Authentification à deux facteurs"
-
-#, fuzzy
-msgid "Language"
-msgstr "Langue"
-
-#, fuzzy
-msgid "Change picture"
-msgstr "Changer l'image"
-
-#, fuzzy
-msgid "Submit"
-msgstr "Envoyer"
-
+msgid ""
+msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-04 14:56-0300\n"
+"POT-Creation-Date: 2024-05-26 19:34-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,60 +17,99 @@ msgstr "Envoyer"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-#: app/validators/lower_case_validator.py:14
-#, python-format
-msgid ""
-"This password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
 
-#: app/validators/lower_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
-
-#: app/validators/min_length_validator.py:12
-#, python-format
-msgid "This password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/min_length_validator.py:19
-#, python-format
-msgid "Your password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:14
-#, python-format
-msgid ""
-"This password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
-
-#: auth_api/settings.py:131
+#: settings.py:33
 msgid "English"
 msgstr ""
 
-#: auth_api/settings.py:132
-msgid "French"
-msgstr ""
-
-#: auth_api/settings.py:133
+#: settings.py:34
 msgid "Brazilian Portuguese"
 msgstr ""
 
-#: app/exceptions/field_already_exists_exception.py:7
-msgid "field already exists"
-msgstr "le champ existe déjà"
+#: settings.py:35
+msgid "French"
+msgstr "Français"
 
-#: app/exceptions/invalid_password_exception.py:8
-msgid "bad credentials"
-msgstr "Mauvaises informations d'identification"
+#: user_management_api/exception/exception.py:42
+msgid "Friendship already exists"
+msgstr "L'amitié existe déjà"
+
+#: user_management_api/views/user_blocking.py:28
+msgid "Blocked user added successfully"
+msgstr "Utilisateur bloqué ajouté avec succès"
+
+#: user_management_api/views/user_blocking.py:35
+msgid "Blocked user removed successfully"
+msgstr "Utilisateur bloqué supprimé avec succès"
+
+#: user_management_api/views/user_friendship.py:31
+msgid "Friend removed successfully"
+msgstr "Ami supprimé avec succès"
+
+#: user_management_api/views/user_friendship_request_view.py:31
+msgid "Friend request sent successfully"
+msgstr "Ami ajouté avec succès"
+
+#: user_management_api/views/user_friendship_request_view.py:32
+msgid "Friend request already sent"
+msgstr "Demande d'ami déjà envoyée"
+
+#: user_management_api/views/user_friendship_request_view.py:43
+msgid "Friend request accepted"
+msgstr "L'amitié a été acceptée"
+
+#: user_management_api/views/user_friendship_request_view.py:44
+msgid "Friend request already accepted"
+msgstr "Demande d'ami déjà acceptée"
+
+#: user_management_api/views/user_friendship_request_view.py:58
+msgid "Friend request rejected"
+msgstr "Demande d'ami rejetée"
+
+#: user_management_api/views/user_info.py:48
+msgid "User deleted successfully"
+msgstr "Utilisateur supprimé avec succès"
+
+#: user_management_api/views/user_info.py:54
+msgid "User created successfully"
+msgstr "Utilisateur créé avec succès"
+
+#: user_management_api/views/user_info.py:89
+msgid "User updated successfully"
+msgstr "Utilisateur mis à jour avec succès"
+
+#: user_management_api/views/user_info.py:90
+msgid "Invalid form data"
+msgstr "Formulaire invalide"
+
+#: user_management_api/views/user_info.py:91
+msgid "Content-Type must be multipart/form-data"
+msgstr "Content-Type doit être multipart/form-data"
+
+#: user_management_api/views/user_info.py:92
+msgid "Error parsing multipart data"
+msgstr "Erreur lors de l'analyse des données multipart"
+
+msgid "Friend request already rejected"
+msgstr "Demande d'ami déjà rejetée"
+
+msgid "User does not exist"
+msgstr "L'utilisateur n'existe pas"
+
+msgid "Invalid UUID"
+msgstr "UUID invalide"
+
+msgid "User already exists"
+msgstr "L'utilisateur existe déjà"
+
+msgid "User not found"
+msgstr "Utilisateur non trouvé"
+
+msgid "Invalid_field"
+msgstr "Champ invalide"
+
+msgid "Missing parameter"
+msgstr "Paramètre manquant"
+
+msgid "Invalid JSON data"
+msgstr "Données JSON invalides"
