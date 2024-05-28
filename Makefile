@@ -27,7 +27,7 @@ exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh
 
 logs:
-	$(DOCKER_CMD) logs $(filter-out $@,$(MAKECMDGOALS)) -f
+	$(DOCKER_CMD) logs $(filter-out $@,$(MAKECMDGOALS))
 
 test:
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) ./manage.py test app.tests
