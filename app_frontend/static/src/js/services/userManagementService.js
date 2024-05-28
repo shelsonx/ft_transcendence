@@ -33,9 +33,9 @@ class FriendshipService {
  * A service for managing blocked users.
  * @class
  */
-class BlockingService {
+class BlockingService {  
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8000/user/${userId}/`);
+    this.httpClient = new HttpClient(`http://localhost:8000/en/user/${userId}/`);
   }
 
   async getBlockedUsers() {
@@ -63,7 +63,7 @@ class BlockingService {
  */
 class FriendshipRequestService {
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8000/user/${userId}/`);
+    this.httpClient = new HttpClient(`http://localhost:8000/en/user/${userId}/`);
   }
 
   async getFriendRequests() {
@@ -85,8 +85,7 @@ class FriendshipRequestService {
   }
 
   async sendFriendRequest(friendId) {
-    const data = { friend_id: friendId };
-    const requestData = new HttpClientRequestData('POST', `friend_request/${userId}/`, data);
+    const requestData = new HttpClientRequestData('POST', `friend_request/${friendId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -132,12 +131,31 @@ class UserInformationService {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
-
 }
+class SearchUsersService {
+
+  constructor() {
+    this.httpClient = new HttpClient('http://localhost:8000/user/');
+  }
+
+  async searchUsers(query) {
+    const requestData = new HttpClientRequestData('GET', `?nickname=${query}`);
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+  
+  async viewOnlineUsers() {
+    const requestData = new HttpClientRequestData('GET', '?status=active');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+}
+
 
 export {
   FriendshipService,
   BlockingService,
   FriendshipRequestService,
-  UserInformationService
+  UserInformationService,
+  SearchUsersService
 };

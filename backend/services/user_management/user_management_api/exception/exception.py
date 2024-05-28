@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 class UserManagementException(Exception):
     def __init__(self, message, status_code=500):
         self.message = message
@@ -9,34 +10,42 @@ class UserManagementException(Exception):
 
 
 class UserDoesNotExistException(UserManagementException):
-    def __init__(self, message='User does not exist', status_code=404):
+    user_does_not_exist_message = _('User does not exist')
+    def __init__(self, message=user_does_not_exist_message, status_code=404):
         super().__init__(message, status_code)
 
 class InvalidUUIDException(UserManagementException):
-    def __init__(self, message='Invalid UUID', status_code=400):
+    invalid_uuid_message = _('Invalid UUID')
+    def __init__(self, message=invalid_uuid_message, status_code=400):
         super().__init__(message, status_code)
 
 class UserAlreadyExistsException(UserManagementException):
-    def __init__(self, message='User already exists', status_code=400):
+    user_already_exists_message = _('User already exists')
+    def __init__(self, message=user_already_exists_message, status_code=400):
         super().__init__(message, status_code)
 
 class InvalidFieldException(UserManagementException):
-    def __init__(self, message='Invalid field', status_code=400):
+    invalid_field_message = _('Invalid field')
+    def __init__(self, message=invalid_field_message, status_code=400):
         super().__init__(message, status_code)
 
 class MissingParameterException(UserManagementException):
-    def __init__(self, parameter, message='Missing parameter', status_code=400):
+    missing_parameter_message = _('Missing parameter')
+    def __init__(self, parameter, message=missing_parameter_message, status_code=400):
         self.parameter = parameter
         super().__init__(f'{message}: {parameter}', status_code)
 
 class InvalidJSONDataException(UserManagementException):
-    def __init__(self, message='Invalid JSON data', status_code=400):
+    invalid_json_data_message = _('Invalid JSON data')
+    def __init__(self, message=invalid_json_data_message, status_code=400):
         super().__init__(message, status_code)
 
 class InvalidFormDataException(UserManagementException):
-    def __init__(self, message='Invalid form data', status_code=400):
+    invalid_form_data_message = _('Invalid form data')
+    def __init__(self, message=invalid_form_data_message, status_code=400):
         super().__init__(message, status_code)
 
 class FriendshipAlreadyExistsException(UserManagementException):
-    def __init__(self, message='Friendship already exists', status_code=400):
+    friendship_already_exists_message = _('Friendship already exists')
+    def __init__(self, message=friendship_already_exists_message, status_code=400):
         super().__init__(message, status_code)
