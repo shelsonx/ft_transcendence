@@ -3,6 +3,7 @@ from urllib.parse import urlparse, urlencode
 import json
 from ..interfaces.services.http_client import IHttpClient, HttpClientData
 from urllib.parse import urljoin
+from typing import Any, Union
 
 class HttpClient(IHttpClient):
 
@@ -35,9 +36,12 @@ class HttpClient(IHttpClient):
         conn.request(method, path, request_data.data, request_data.headers)
         return conn.getresponse()
 
-    def serialize(self, response: http.client.HTTPResponse) -> str:
+    def deserialize(self, response: http.client.HTTPResponse) -> Union[Any, int]:
         data = response.read().decode()
-        return json.loads(data)
+        return json.loads(data), response.status
+
+    def serialize(self, data: Any) -> str:
+        return json.dumps(data).encode('utf-8')
 
     def _extract_url(self, url: str) -> str:
         url_parse = urlparse(url)

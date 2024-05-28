@@ -16,25 +16,14 @@ const html = /*html*/`
   <div id="swap-container" class="container-fluid main"></div>
 `
 
-let matchesRows = document.getElementsByClassName("match-row");
-
 const swap = (response) => {
+  // TODO: lidar quando retornar erro ou não responder
   const swapContainer = document.getElementById("swap-container");
   swapContainer.innerHTML = response;
-
-  matchesRows = document.getElementsByClassName("match-row");
-  matchesRows.array.forEach(match => {
-    match.addEventListener("click", () => {
-      window.location = '#pong';
-    })
-  });
 }
 
 const start = async () => {
-  gameService.userGames().then(swap);
-
-  // const tbody = document.getElementsByTagName("tbody");
-  // tbody.className = "main";
+  await gameService.userGames().then(swap);
 }
 
 export default new HomeView(html, start);

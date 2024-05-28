@@ -1,4 +1,5 @@
 import notFound from "../views/404.js";
+import authRegisterTempView from "../views/auth/authRegisterTempView.js";
 import forgotPassword from "../views/auth/forgotPassword.js";
 import login from "../views/auth/login.js";
 import signup from "../views/auth/signup.js";
@@ -11,8 +12,8 @@ import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import NewGameView from "../views/game/new_game.js";
 import PongGameView from "../views/game/pong.js";
-import TournamentsView from "../views/game/tournaments.js";
 import TournamentDetailView from "../views/game/tournament-detail.js";
+import TournamentsView from "../views/game/tournaments.js";
 
 
 /**
@@ -32,6 +33,7 @@ const hashRoutes = {
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
+  "auth-register-temp": { title: "Register Auth 42", render: authRegisterTempView, description: "Register 42."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
   "user-profile": { title: "User Profile", render: userProfile, description: "View user profile."},
   "search-users": { title: "Search Users", render: searchUsers, description: "Search for users."},

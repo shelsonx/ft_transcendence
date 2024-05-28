@@ -1,47 +1,100 @@
-import BaseLoggedView from '../baseLoggedView.js';
-import gameService from '../../services/gameService.js';
-
+import BaseLoggedView from "../baseLoggedView.js";
+import gameService from "../../services/gameService.js";
+import { GameRuleType } from "../../contracts/game/gameRule.js";
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
-      start
-    },
-  );
+      start,
+    });
   }
 }
 
-const html = /*html*/`
-<div id="swap-container" class="container-fluid main"></div>
-  <div id="add-game" class="row justify-content-center">
-    <button class="btn btn-primary col-3" id="button">
-      Let's play pong!
-    </button>
+const html = /*html*/ `
+  <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
-`
+`;
 
-let idTarget = "swap-container";
+const swapGameForm = async (response_content) => {
+  const swapContainer = document.getElementById("swap-container");
+  swapContainer.innerHTML = response_content;
 
-const swap = (response) => {
-  const add_game = document.getElementById(idTarget)
-  // console.log(response)
-  // const headers = await response.headers
-  // console.log(...headers)
-  // console.log(response.body)
-  add_game.innerHTML = response
-  // test.innerHTML = await response.text()
+  const addGameForm = document.getElementById('match-form');
+  addGameForm.addEventListener("submit", submitGameForm);
+
+  const setRulesButton = document.getElementById('set-rules-btn');
+  setRulesButton.addEventListener("click", setRules);
+};
+
+const submitGameForm = async (e) => {
+  e.preventDefault();
+  const addGameForm = document.getElementById('match-form');
+  const formData = new FormData(addGameForm);
+
+  await gameService.getFormGame().then(addGameResult);
+  // await gameService.addGame(formData).then(addGameResult);
 }
+
+const setRules = () => {
+  const setRulesButton = document.getElementById('set-rules-btn');
+  setRulesButton.classList.add("d-none");
+
+  const formGameRules = document.getElementById('form-game-rules');
+  const gameTotalPointsField = document.getElementById('game_total_points');
+  const maxDurationField = document.getElementById('max_duration');
+  formGameRules.classList.remove("d-none");
+  gameTotalPointsField.classList.add("d-none");
+  maxDurationField.classList.add("d-none");
+
+  const ruleTypeField = document.getElementById('id_rule_type');
+  ruleTypeField.addEventListener("change", updateGameRulesFields);
+}
+
+const updateGameRulesFields = () => {
+  const ruleTypeField = document.getElementById('id_rule_type');
+  const pointsToWinField = document.getElementById("points_to_win");
+  const gameTotalPointsField = document.getElementById('game_total_points');
+  const maxDurationField = document.getElementById('max_duration');
+
+  if (ruleTypeField.value === GameRuleType.PLAYER_POINTS) {
+    pointsToWinField.classList.remove("d-none");
+    gameTotalPointsField.classList.add("d-none");
+    maxDurationField.classList.add("d-none");
+  }
+  else if (ruleTypeField.value === GameRuleType.GAME_TOTAL_POINTS) {
+    pointsToWinField.classList.add("d-none");
+    gameTotalPointsField.classList.remove("d-none");
+    maxDurationField.classList.add("d-none");
+  }
+  else if (ruleTypeField.value === GameRuleType.GAME_DURATION) {
+    pointsToWinField.classList.add("d-none");
+    gameTotalPointsField.classList.add("d-none");
+    maxDurationField.classList.remove("d-none");
+  }
+}
+
+const addGameResult = async (response) => {
+  // console.log(response);
+  // if (typeof response == "string") {
+  //   swapGameForm(response);
+  // } else {
+
+    const gameForm = document.getElementById("match-form");
+    gameForm.classList.add("d-none");
+    const gameRules = document.getElementById("game-rules");
+    gameRules.classList.add("d-none");
+    const rulesElement = document.getElementById("match-confirmation");
+    rulesElement.classList.remove("d-none");
+
+    // const confirmButton = document.getElementById("button-start");
+    // confirmButton.addEventListener("click", (e) => {})
+  // }
+};
+
+// new URLSearchParams(obj).toString();
 
 const start = async () => {
-  gameService.getFormGame().then(swap);
-  console.log('Pong Game View');
-
-  const button = document.getElementById("button");
-  button.addEventListener("click", () => {
-    idTarget = "add-game";
-    gameService.getFormGame().then(swap);
-  })
-
-}
+  await gameService.getFormGame().then(swapGameForm);
+};
 
 export default new NewGameView(html, start);
