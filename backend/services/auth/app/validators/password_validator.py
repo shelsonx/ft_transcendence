@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from ..exceptions.not_valid_password_exception import NotValidPasswordException
 from ..entities.validation_data import ValidationData
+from django.utils.translation import gettext as _
 
 
 class PasswordValidator(BaseValidator):
@@ -23,6 +24,7 @@ class PasswordValidator(BaseValidator):
             validate_password(
                 password, None, password_validators=[min_len, upper_case, lower_case]
             )
-            return ValidationData(is_success=True, message="Password is valid")
+            valid_pass = _("Password is valid")
+            return ValidationData(is_success=True, message=valid_pass)
         except ValidationError as e:
             raise NotValidPasswordException(e.messages)

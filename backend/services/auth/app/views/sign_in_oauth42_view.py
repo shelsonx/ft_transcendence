@@ -26,7 +26,6 @@ class SignInOAuth42View(View):
         frontend_url = OAuthUrls.FRONTEND_URL
         if is_temporary:
             frontend_url += f"?email={email}#two-factor-auth"
-        #TODO - VERIFICAR SE É O PRIMEIRO LOGIN PARA REDIRECIONAR PARA A ROTA TEMPORARIA NO FRONT PARA NOTIFICAR OS OUTROS MS
         is_first_login = True
         if is_first_login:
             frontend_url = OAuthUrls.FRONTEND_URL_TEMP
