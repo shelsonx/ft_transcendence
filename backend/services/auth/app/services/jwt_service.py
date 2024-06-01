@@ -9,6 +9,7 @@ from ..constants.env_variables import EnvVariables
 from ..exceptions.unauthorized_exception import UnauthorizedException
 from ..entities.jwt_payload import JWTPayload
 from ..utils.uuid_encoder import UUIDEncoder
+from django.utils.translation import gettext_lazy as _
 
 
 class JWTService(ITokenService):
@@ -62,7 +63,8 @@ class JWTService(ITokenService):
         payload = json.loads(base64.b64decode(base64payload).decode("utf-8"))
         decoded_payload = JWTPayload.decode(payload)
         if decoded_payload.is_expired():
-            raise UnauthorizedException(message="Token expired")
+            token_expired = _("Token expired")
+            raise UnauthorizedException(message=token_expired)
         generated_signature = self._generate_signature(
             base64header, base64payload, secret
         )

@@ -13,6 +13,7 @@ from ..constants.login_type_constants import LoginTypeConstants
 from asgiref.sync import sync_to_async
 from ..constants.env_variables import EnvVariables
 from os import environ
+from django.utils.translation import gettext_lazy as _
 
 
 class SignInUseCase(BaseSignInUseCase):
@@ -35,7 +36,8 @@ class SignInUseCase(BaseSignInUseCase):
 
             login_type = await self.get_login_type(user)
             if login_type.name != LoginTypeConstants.AUTH_EMAIL:
-                raise ForbiddenException("Forbidden access to this login type")
+                forbidden_access_login = _("Forbidden access to this login type")
+                raise ForbiddenException(forbidden_access_login)
 
             should_send_temporary_token = not user.is_active or user.enable_2fa
 

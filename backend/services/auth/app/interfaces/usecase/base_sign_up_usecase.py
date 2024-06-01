@@ -8,6 +8,7 @@ from ..dtos.base_sign_up_dto import BaseSignUpDto
 from django.core.exceptions import ObjectDoesNotExist
 from ...validators.password_validator import PasswordValidator
 from .base_usecase import BaseUseCase
+from django.utils.translation import gettext_lazy as _
 
 
 class BaseSignUpUseCase(BaseUseCase):
@@ -29,8 +30,9 @@ class BaseSignUpUseCase(BaseUseCase):
     ) -> User:
 
         if password is None and login_type == LoginTypeConstants.AUTH_EMAIL:
+            pass_required = _("Password is required for email sign up")
             raise NotValidPasswordException(
-                message="Password is required for email sign up"
+                message=pass_required
             )
         login_type = await self.login_type_repository.get_login_type_by_name(login_type)
 
