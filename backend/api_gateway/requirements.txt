@@ -5,3 +5,6 @@ sqlparse==0.4.4
 typing_extensions==4.9.0
 django-cors-headers==4.3.1
 requests==2.32.2
+werkzeug==3.0.1
+django-extensions==3.2.3
+pyOpenSSL==23.3.0

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'app.apps.AppConfig',    
+    'app.apps.AppConfig',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8010",
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 
 ROOT_URLCONF = 'auth_api.urls'
