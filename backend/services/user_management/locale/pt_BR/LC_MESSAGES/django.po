@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: settings.py:33
 msgid "English"
@@ -31,66 +31,89 @@ msgid "French"
 msgstr ""
 
 #: user_management_api/exception/exception.py:42
-#, fuzzy
-#| msgid "field already exists"
 msgid "Friendship already exists"
-msgstr "field already exists"
+msgstr "Amizade já existe"
 
 #: user_management_api/views/user_blocking.py:28
 msgid "Blocked user added successfully"
-msgstr ""
+msgstr "Usuário bloqueado adicionado com sucesso"
 
 #: user_management_api/views/user_blocking.py:35
 msgid "Blocked user removed successfully"
-msgstr ""
+msgstr "Usuário bloqueado removido com sucesso"
 
 #: user_management_api/views/user_friendship.py:31
 msgid "Friend removed successfully"
-msgstr ""
+msgstr "Amigo removido com sucesso"
 
 #: user_management_api/views/user_friendship_request_view.py:31
+#, fuzzy
+#| msgid "Friend request sent successfully."
 msgid "Friend request sent successfully"
-msgstr ""
+msgstr "Soliciatação de amizade enviada com sucesso."
 
 #: user_management_api/views/user_friendship_request_view.py:32
 msgid "Friend request already sent"
-msgstr ""
+msgstr "Solicitação de amizade já enviada"
 
 #: user_management_api/views/user_friendship_request_view.py:43
+#, fuzzy
+#| msgid "Friend request already accepted"
 msgid "Friend request accepted"
-msgstr ""
+msgstr "Solicitação de amizade já aceita"
 
 #: user_management_api/views/user_friendship_request_view.py:44
 msgid "Friend request already accepted"
-msgstr ""
+msgstr "Solicitação de amizade já aceita"
 
 #: user_management_api/views/user_friendship_request_view.py:58
 msgid "Friend request rejected"
-msgstr ""
+msgstr "Solicitação de amizade rejeitada"
 
 #: user_management_api/views/user_info.py:48
 msgid "User deleted successfully"
-msgstr ""
+msgstr "Usuário deletado com sucesso"
 
 #: user_management_api/views/user_info.py:54
 msgid "User created successfully"
-msgstr ""
+msgstr "Usuário criado com sucesso"
 
 #: user_management_api/views/user_info.py:89
 msgid "User updated successfully"
-msgstr ""
+msgstr "Usuário atualizado com sucesso"
 
 #: user_management_api/views/user_info.py:90
 msgid "Invalid form data"
-msgstr ""
+msgstr "Dados do formulário inválidos"
 
 #: user_management_api/views/user_info.py:91
 msgid "Content-Type must be multipart/form-data"
-msgstr ""
+msgstr "Content-Type deve ser multipart/form-data"
 
 #: user_management_api/views/user_info.py:92
 msgid "Error parsing multipart data"
-msgstr ""
+msgstr "Erro ao analisar dados multipart"
 
-#~ msgid "bad credentials"
-#~ msgstr "Bad Credentials"
+msgid "Friend request already rejected"
+msgstr "Solicitação de amizade já rejeitada"
+
+msgid "User does not exist"
+msgstr "Usuário não existe"
+
+msgid "Invalid UUID"
+msgstr "UUID inválido"
+
+msgid "User already exists"
+msgstr "Usuário já existe"
+
+msgid "User not found"
+msgstr "Usuário não encontrado"
+
+msgid "Invalid_field"
+msgstr "Campo inválido"
+
+msgid "Missing parameter"
+msgstr "Parâmetro faltando"
+
+msgid "Invalid JSON data"
+msgstr "Dados JSON inválidos"

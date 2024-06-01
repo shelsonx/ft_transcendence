@@ -58,7 +58,15 @@ const start = async () => {
   await loadFriendsList(friendshipService);
   await loadBlockedUsers(blockingService);
   await loadFriendRequests(friendshipRequestService);
+  initializeTooltips();
 };
+
+const initializeTooltips = () => {
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
+}
 
 /**
  * Load the user data into the form fields.
@@ -103,6 +111,8 @@ async function loadFriendsList(friendshipService) {
       const unfriendBtn = document.createElement('button');
       unfriendBtn.innerHTML = '<i class="bi bi-person-dash-fill"></i>';
       unfriendBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
+      unfriendBtn.setAttribute('data-bs-toggle', 'tooltip');
+      unfriendBtn.setAttribute('title', 'Unfriend User');
       unfriendBtn.addEventListener('click', function () {
         unfriendUser(friend.id);
       });
@@ -110,6 +120,7 @@ async function loadFriendsList(friendshipService) {
       li.appendChild(unfriendBtn);
       friendsList.appendChild(li);
     });
+    initializeTooltips(); // Initialize tooltips after adding elements
   }
 }
 
@@ -125,7 +136,6 @@ async function loadBlockedUsers(blockingService) {
 
   const blockedList = document.getElementById('blockedList');
 
-
   if (blockedUsers.length == 0) {
     blockedList.innerText = 'You have not blocked any users yet';
   } else {
@@ -138,6 +148,8 @@ async function loadBlockedUsers(blockingService) {
       const unblockBtn = document.createElement('button');
       unblockBtn.innerHTML = '<i class="bi bi-unlock-fill"></i>';
       unblockBtn.classList.add('btn', 'btn-success', 'btn-sm', 'ml-2');
+      unblockBtn.setAttribute('data-bs-toggle', 'tooltip');
+      unblockBtn.setAttribute('title', 'Unblock User');
       unblockBtn.addEventListener('click', function () {
         unblockUser(blockedUser.id);
       });
@@ -145,6 +157,7 @@ async function loadBlockedUsers(blockingService) {
       li.appendChild(unblockBtn);
       blockedList.appendChild(li);
     });
+    initializeTooltips(); // Initialize tooltips after adding elements
   }
 }
 
@@ -157,7 +170,7 @@ async function loadBlockedUsers(blockingService) {
 async function loadFriendRequests(friendshipRequestService) {
   const friendshipRequestDataResponse = await friendshipRequestService.getFriendRequests();
   const friendRequests = friendshipRequestDataResponse.friend_requests;
-  const activeFriendRequests = friendRequests.filter(request => request.is_active);
+  const activeFriendRequests = friendRequests.filter(request => request.is_active == true);
 
   const friendRequestsList = document.getElementById('friendRequests');
 
@@ -165,7 +178,7 @@ async function loadFriendRequests(friendshipRequestService) {
     friendRequestsList.innerText = 'You have no friend requests';
   } else {
     document.querySelector('.friends-list').style.display = 'block';
-    friendRequests.forEach(request => {
+    activeFriendRequests.forEach(request => {
       const li = document.createElement('li');
       li.classList.add('d-flex', 'justify-content-between', 'align-items-center');
       li.innerText = request.sender_name;
@@ -176,6 +189,8 @@ async function loadFriendRequests(friendshipRequestService) {
       const acceptBtn = document.createElement('button');
       acceptBtn.innerHTML = '<i class="bi bi-check-lg"></i>';
       acceptBtn.classList.add('btn', 'btn-success', 'btn-sm');
+      acceptBtn.setAttribute('data-bs-toggle', 'tooltip');
+      acceptBtn.setAttribute('title', 'Accept Friend Request');
       acceptBtn.addEventListener('click', function () {
         acceptFriendRequest(request.id);
       });
@@ -183,6 +198,8 @@ async function loadFriendRequests(friendshipRequestService) {
       const rejectBtn = document.createElement('button');
       rejectBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
       rejectBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
+      rejectBtn.setAttribute('data-bs-toggle', 'tooltip');
+      rejectBtn.setAttribute('title', 'Reject Friend Request');
       rejectBtn.addEventListener('click', function () {
         rejectFriendRequest(request.id);
       });
@@ -192,6 +209,7 @@ async function loadFriendRequests(friendshipRequestService) {
       li.appendChild(buttonsContainer);
       friendRequestsList.appendChild(li);
     });
+    initializeTooltips(); // Initialize tooltips after adding elements
   }
 }
 

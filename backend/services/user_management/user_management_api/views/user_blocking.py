@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from user_management_api.models.models import User
 from user_management_api.views.user_info import UserInfoView
 
+from django.utils.translation import gettext as _
+
 @method_decorator(csrf_exempt, name='dispatch')
 class UserBlockingView(View):
     """
@@ -23,13 +25,15 @@ class UserBlockingView(View):
         return JsonResponse({'status': 'success', 'blocked_users': blocked_users_json, 'status_code': 200}, status=200)
     
     def post(self, request, user_id, blocked_id):
+        blocked_user_message = _('Blocked user added successfully')
         user = UserInfoView().get_user(user_id)
         blocked = UserInfoView().get_user(blocked_id)
         user.blocked_users.add(blocked)
-        return JsonResponse({'status': 'success', 'message': 'Blocked user added successfully', 'status_code': 200}, status=200)
+        return JsonResponse({'status': 'success', 'message': blocked_user_message, 'status_code': 200}, status=200)
 
     def delete(self, request, user_id, blocked_id):
+        blocked_user_removed_message = _('Blocked user removed successfully')
         user = UserInfoView().get_user(user_id)
         blocked = UserInfoView().get_user(blocked_id)
         user.blocked_users.remove(blocked)
-        return JsonResponse({'status': 'success', 'message': 'Blocked user removed successfully', 'status_code': 200}, status=200)
+        return JsonResponse({'status': 'success', 'message': blocked_user_removed_message, 'status_code': 200}, status=200)
