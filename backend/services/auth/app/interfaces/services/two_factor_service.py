@@ -4,6 +4,7 @@ from ..repositories.two_factor_repository import ITwoFactorRepository
 from ...exceptions.two_factor_exception import TwoFactorCodeException
 from ...models.two_factor import TwoFactor
 from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 
 class ITwoFactorService(ABC):
 
@@ -33,9 +34,8 @@ class ITwoFactorService(ABC):
             )
             seconds_to_wait = 60
             if not two_factor_code.can_send_code(seconds_to_wait):
-                raise TwoFactorCodeException(
-                    f"You new to wait {seconds_to_wait} seconds before sending a new code"
-                )
+                message = _("You need to wait %(seconds_to_wait)s seconds before sending a new code") % {'seconds_to_wait': seconds_to_wait}
+                raise TwoFactorCodeException(message)
         except TwoFactor.DoesNotExist:
             pass
         await self.two_factor_repository.delete_two_factor_by_user_id(user_id)

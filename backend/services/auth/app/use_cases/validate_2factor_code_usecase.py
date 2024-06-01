@@ -7,6 +7,7 @@ from ..interfaces.repositories.two_factor_repository import ITwoFactorRepository
 from django.core.exceptions import ObjectDoesNotExist
 from ..exceptions.two_factor_exception import TwoFactorCodeException
 from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
+from django.utils.translation import gettext_lazy as _
 
 
 class Validate2FactorCodeUseCase(BaseUseCase):
@@ -31,7 +32,8 @@ class Validate2FactorCodeUseCase(BaseUseCase):
             user.id, code=two_factor_dto.two_factor_code
         )
         if not is_valid:
-            raise TwoFactorCodeException("Invalid two factor code")
+            invalid_code = _("Invalid two factor code")
+            raise TwoFactorCodeException(invalid_code)
 
         user.is_active = True
         await self.user_repository.update_user(user)

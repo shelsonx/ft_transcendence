@@ -19,42 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 #: app/validators/lower_case_validator.py:14
 #, python-format
-msgid ""
-"This password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
-
-#: app/validators/lower_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
-
-#: app/validators/min_length_validator.py:12
-#, python-format
-msgid "This password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/min_length_validator.py:19
-#, python-format
-msgid "Your password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:14
-#, python-format
-msgid ""
-"This password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
-
 #: auth_api/settings.py:131
 msgid "English"
 msgstr ""
@@ -74,3 +38,66 @@ msgstr "field already exists"
 #: app/exceptions/invalid_password_exception.py:8
 msgid "bad credentials"
 msgstr "Bad Credentials"
+
+msgid "Unauthorized"
+msgstr "Unauthorized"
+
+msgid "Forbidden"
+msgstr "Forbidden"
+
+msgid "Invalid Access Token"
+msgstr "Invalid Access Token"
+
+msgid "Token Expired"
+msgstr "Token Expired"
+
+msgid "Two factor code required"
+msgstr "Two factor code required"
+
+msgid "User is inactive, you must confirm the code by e-mail"
+msgstr "User is inactive, you must confirm the code by e-mail"
+
+msgid "User not found"
+msgstr "User not found"
+
+msgid "You need to wait %(seconds_to_wait)s seconds before sending a new code"
+msgstr "You need to wait %(seconds_to_wait)s seconds before sending a new code"
+
+msgid "Password is required for email sign up"
+msgstr "Password is required for email sign up"
+
+msgid "Transcendence Journey - Two Factor Authentication"
+msgstr "Transcendence Journey - Two Factor Authentication"
+
+msgid "Your two factor authentication code is %(code)s"
+msgstr "Your two factor authentication code is %(code)s"
+
+msgid "old password is missing"
+msgstr "old password is missing"
+
+msgid "Invalid two factor code"
+msgstr "Invalid two factor code"
+
+msgid "Forbidden access to this login type"
+msgstr "Forbidden access to this login type"
+
+msgid "This password must contain at least %(lower_case_min)d character(s) in lowercase."
+msgstr "This password must contain at least %(lower_case_min)d character(s) in lowercase."
+
+msgid "Your password must contain at least %(lower_case_min)d character(s) in lowercase."
+msgstr "Your password must contain at least %(lower_case_min)d character(s) in lowercase."
+
+msgid "This password must contain at least %(min_length)d characters."
+msgstr "This password must contain at least %(min_length)d characters."
+
+msgid "Your password must contain at least %(min_length)d characters."
+msgstr "Your password must contain at least %(min_length)d characters."
+
+msgid "This password must contain at least %(upper_case_min)d character(s) in uppercase."
+msgstr "This password must contain at least %(upper_case_min)d character(s) in uppercase."
+
+msgid "Your password must contain at least %(upper_case_min)d character(s) in uppercase."
+msgstr "Your password must contain at least %(upper_case_min)d character(s) in uppercase."
+
+msgid "Password is valid"
+msgstr "Password is valid"

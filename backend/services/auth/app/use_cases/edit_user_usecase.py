@@ -12,7 +12,7 @@ from ..utils.call_async import call_async
 from asgiref.sync import sync_to_async
 from ..interfaces.usecase.base_usecase import BaseUseCase
 from django.contrib.auth.hashers import make_password
-
+from django.utils.translation import gettext_lazy as _
 
 class EditUserUseCase(BaseUseCase):
 
@@ -26,6 +26,7 @@ class EditUserUseCase(BaseUseCase):
         if not is_changing_password:
             return True
         if is_changing_password and is_string_empty_or_none(old_password):
+            old_pass_missing = _("old password is missing")
             raise FieldIsMissingException("old password is missing")
         if not user.check_password(old_password):
             raise InvalidPasswordException()

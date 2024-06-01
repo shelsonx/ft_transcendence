@@ -19,41 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 #: app/validators/lower_case_validator.py:14
 #, python-format
-msgid ""
-"This password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
-
-#: app/validators/lower_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(lower_case_min)d character(s) in "
-"lowercase."
-msgstr ""
-
-#: app/validators/min_length_validator.py:12
-#, python-format
-msgid "This password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/min_length_validator.py:19
-#, python-format
-msgid "Your password must contain at least %(min_length)d characters."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:14
-#, python-format
-msgid ""
-"This password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
-
-#: app/validators/upper_case_validator.py:22
-#, python-format
-msgid ""
-"Your password must contain at least %(upper_case_min)d character(s) in "
-"uppercase."
-msgstr ""
 
 #: auth_api/settings.py:131
 msgid "English"
@@ -74,3 +39,66 @@ msgstr "campo já existe"
 #: app/exceptions/invalid_password_exception.py:8
 msgid "bad credentials"
 msgstr "Credenciais Inválidas"
+
+msgid "Unauthorized"
+msgstr "Não Autorizado"
+
+msgid "Forbidden"
+msgstr "Proibido"
+
+msgid "Invalid Access Token"
+msgstr "Token de Acesso Inválido"
+
+msgid "Token Expired"
+msgstr "Token Expirou"
+
+msgid "Two factor code required"
+msgstr "Código de dois fatores necessário"
+
+msgid "User is inactive, you must confirm the code by e-mail"
+msgstr "Usuário está inativo, você deve confirmar o código por e-mail"
+
+msgid "User not found"
+msgstr "Usuário não encontrado"
+
+msgid "You need to wait %(seconds_to_wait)s seconds before sending a new code"
+msgstr "Você precisa esperar %(seconds_to_wait)s segundos antes de enviar um novo código"
+
+msgid "Password is required for email sign up"
+msgstr "Senha é necessária para cadastro por e-mail"
+
+msgid "Transcendence Journey - Two Factor Authentication"
+msgstr "Jornada da Transcendência - Autenticação de Dois Fatores"
+
+msgid "Your two factor authentication code is %(code)s"
+msgstr "Votre code d'authentification à deux facteurs est %(code)s"
+
+msgid "old password is missing"
+msgstr "senha antiga está faltando"
+
+msgid "Invalid two factor code"
+msgstr "Código de dois fatores inválido"
+
+msgid "Forbidden access to this login type"
+msgstr "Acesso proibido para este tipo de login"
+
+msgid "This password must contain at least %(lower_case_min)d character(s) in lowercase."
+msgstr "Esta senha deve conter pelo menos %(lower_case_min)d caractere(s) em minúsculas."
+
+msgid "Your password must contain at least %(lower_case_min)d character(s) in lowercase."
+msgstr "Sua senha deve conter pelo menos %(lower_case_min)d caractere(s) em minúsculas."
+
+msgid "This password must contain at least %(min_length)d characters."
+msgstr "Esta senha deve conter pelo menos %(min_length)d caracteres."
+
+msgid "Your password must contain at least %(min_length)d characters."
+msgstr "Sua senha deve conter pelo menos %(min_length)d caracteres."
+
+msgid "This password must contain at least %(upper_case_min)d character(s) in uppercase."
+msgstr "Esta senha deve conter pelo menos %(upper_case_min)d caractere(s) em maiúsculas."
+
+msgid "Your password must contain at least %(upper_case_min)d character(s) in uppercase."
+msgstr "Sua senha deve conter pelo menos %(upper_case_min)d caractere(s) em maiúsculas."
+
+msgid "Password is valid"
+msgstr "Senha é válida"
