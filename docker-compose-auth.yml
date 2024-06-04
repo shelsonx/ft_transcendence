@@ -37,7 +37,6 @@ services:
       - ./backend/services/auth:/code
     ports:
       - "8002:80"
-      - 5678:5678
     env_file:
       - .env
     environment:

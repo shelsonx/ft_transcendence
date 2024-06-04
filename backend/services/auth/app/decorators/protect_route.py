@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from ..entities.api_data_response import ApiDataResponse
 from os import environ
 from ..constants.env_variables import EnvVariables
-
+from django.utils.translation import gettext_lazy as _
 
 class ProtectedRoute:
     def __init__(self, roles=[], func=None, secret=None):
@@ -13,7 +13,9 @@ class ProtectedRoute:
         self.func = func
         self.secret = secret
 
-    def unauthorized(self, message: str = "Unauthorized"):
+    def unauthorized(self, message: str = None):
+        if not message:
+            message = _("Unauthorized")
         api_data_response = ApiDataResponse(
             message=message, data=None, is_success=False
         ).to_dict()

@@ -5,6 +5,7 @@ from ..models.two_factor import TwoFactor
 from ..interfaces.services.two_factor_service import ITwoFactorService
 from django.conf import settings
 from ..interfaces.repositories.two_factor_repository import ITwoFactorRepository
+from django.utils.translation import gettext_lazy as _
 
 
 class TwoFactorService(ITwoFactorService):
@@ -19,9 +20,11 @@ class TwoFactorService(ITwoFactorService):
         return str(random.randint(100000, 999999))
 
     def notify_user(self, email: str, code: str) -> None:
+        subject = _("Transcendence Journey - Two Factor Authentication")
+        message = _("Your two factor authentication code is %(code)s") % {'code': code}
         self.email_service.send_email(
-            subject="Transcendence Journey - Two Factor Authentication",
-            message=f"Your two factor authentication code is {code}",
+            subject=subject,
+            message=message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[email],
         )

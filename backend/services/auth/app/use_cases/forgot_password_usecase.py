@@ -8,6 +8,7 @@ from ..exceptions.two_factor_exception import TwoFactorCodeException
 from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 from ..validators.password_validator import PasswordValidator
 from django.contrib.auth.hashers import make_password
+from django.utils.translation import gettext_lazy as _
 
 
 class ForgotPasswordUseCase(BaseUseCase):
@@ -34,7 +35,8 @@ class ForgotPasswordUseCase(BaseUseCase):
             user.id, code=forgot_password_dto.two_factor_code
         )
         if not is_valid:
-            raise TwoFactorCodeException("Invalid two factor code")
+            invalid_code = _("Invalid two factor code")
+            raise TwoFactorCodeException(invalid_code)
 
         password_validator = PasswordValidator()
         password_validator.validate(forgot_password_dto.password)

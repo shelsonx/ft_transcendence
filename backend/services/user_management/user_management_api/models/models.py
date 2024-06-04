@@ -16,7 +16,7 @@ class User(AbstractBaseUser):
     user_uuid = models.CharField(max_length=255, unique=True, null=True, blank=True)
     name = models.CharField(max_length=255)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.jpeg')
-    nickname = models.CharField(max_length=255, unique=True)
+    nickname = models.CharField(max_length=50, unique=True)
     two_factor_enabled = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
     chosen_language = models.CharField(max_length=255, default='en')
