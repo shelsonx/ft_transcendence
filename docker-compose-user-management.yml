@@ -12,7 +12,7 @@ services:
     env_file:
       - .env.web
 
-  db:
+  user_management-db:
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -23,6 +23,16 @@ services:
     ports:
       - "5432:5432"
 
- 
+  user_management_api:
+    build: ./backend/services/user_management
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend/services/user_management:/user_management
+    ports:
+      - "8000:8000"
+    depends_on:
+
+      - user_management-db
+
 volumes:
   postgres_data:

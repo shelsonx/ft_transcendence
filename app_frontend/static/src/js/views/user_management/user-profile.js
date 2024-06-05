@@ -1,10 +1,10 @@
-import UserManagementView from './baseUserManagementView.js';
 import {
-  FriendshipService,
   BlockingService,
   FriendshipRequestService,
+  FriendshipService,
   UserInformationService
 } from '../../services/userManagementService.js';
+import UserManagementView from './baseUserManagementView.js';
 
 class UserProfileView extends UserManagementView {
   constructor(html, start) {
@@ -20,7 +20,7 @@ const html = /*html*/`
   <div class="row justify-content-center text-center">
     <div class="col-md-8">
       <div class="avatar">
-        <img src="" alt="User Avatar" class="img-fluid rounded-circle border border-warning mb-4">
+        <img src="" alt="Avatar" class="img-fluid rounded-circle border border-warning mb-4">
       </div>
       <h2 id="userNickname"></h2>
       <h2 id="userStatus"></h2>
@@ -28,13 +28,13 @@ const html = /*html*/`
       <p id="user2fa"></p>
       <div class="lists-container d-flex flex-column align-items-center mt-4">
         <div class="friends-list col mb-4">
-          <h3>Friends</h3>
+          <h3 data-i18n-key="profile--friends">Friends</h3>
           <ul id="friendsList" class="list-unstyled"></ul>
-          <h4>Friend Requests</h4>
+          <h4 data-i18n-key="profile--friend-requests">Friend Requests</h4>
           <ul id="friendRequests" class="list-unstyled"></ul>
         </div>
         <div class="blocked-list col">
-          <h3>Blocked Users</h3>
+          <h3 data-i18n-key="profile--blocked-users">Blocked Users</h3>
           <ul id="blockedList" class="list-unstyled"></ul>
         </div>
       </div>
@@ -47,7 +47,7 @@ const html = /*html*/`
  * @returns {Promise<void>} - A promise that resolves when the view is started.
  */
 const start = async () => {
-  const userId = '97e30085-8d7a-49b9-8a98-aabf2dfe3105';
+  const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
 
   const userInformationService = new UserInformationService(userId);
   const friendshipService = new FriendshipService(userId);
@@ -79,12 +79,15 @@ async function loadUserData(userInformationService) {
   const user = userDataResponse.user;
 
   const avatar = document.querySelector('.avatar img');
-  avatar.src = `http://localhost:8000${user.avatar}`;
-  document.getElementById('userNickname').innerText = `@${user.nickname}`;
-  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Active' : 'Inactive';
+  avatar.src = `http://localhost:8006${user.avatar}`;
+  document.getElementById('userNickname').innerText = `@${user.nickname.toLowerCase()}`;
+  document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
+  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Active' : 'Status: Inactive';
   document.getElementById('userStatus').classList.add(`status-${user.status}`);
-  document.getElementById('userLanguage').innerText = `Language: ${user.chosen_language.toUpperCase()}`;
-  document.getElementById('user2fa').innerText = user.two_factor_enabled ? '2FA: Enabled' : '2FA: Disabled';
+  document.getElementById('userLanguage').setAttribute('data-i18n-key', `profile--language-${user.chosen_language.toLowerCase()}`);
+  document.getElementById('userLanguage').innerText = `${user.chosen_language}` == 'en' ? 'Language: English' : `${user.chosen_language}` == 'pt-br' ? 'Language: Portuguese' : 'Language: French';
+  document.getElementById('user2fa').setAttribute('data-i18n-key', user.two_factor_enabled ? 'profile--2fa-enabled' : 'profile--2fa-disabled');
+  document.getElementById('user2fa').innerText = user.two_factor_enabled ? 'Two Factor Authentication: Enabled' : 'Two Factor Authentication: Disabled';
 }
 
 /**
@@ -101,6 +104,7 @@ async function loadFriendsList(friendshipService) {
 
   if (friends.length == 0) {
     friendsList.innerText = 'You have not added any friends yet :(';
+    friendsList.setAttribute('data-i18n-key', 'profile--no-friends');
   } else {
     document.querySelector('.friends-list').style.display = 'block';
     friends.forEach(friend => {
@@ -113,6 +117,7 @@ async function loadFriendsList(friendshipService) {
       unfriendBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
       unfriendBtn.setAttribute('data-bs-toggle', 'tooltip');
       unfriendBtn.setAttribute('title', 'Unfriend User');
+      unfriendBtn.setAttribute('data-i18n-key', 'profile--unfriend');
       unfriendBtn.addEventListener('click', function () {
         unfriendUser(friend.id);
       });
@@ -138,6 +143,7 @@ async function loadBlockedUsers(blockingService) {
 
   if (blockedUsers.length == 0) {
     blockedList.innerText = 'You have not blocked any users yet';
+    blockedList.setAttribute('data-i18n-key', 'profile--no-blocked-users');
   } else {
     document.querySelector('.blocked-list').style.display = 'block';
     blockedUsers.forEach(blockedUser => {
@@ -150,6 +156,7 @@ async function loadBlockedUsers(blockingService) {
       unblockBtn.classList.add('btn', 'btn-success', 'btn-sm', 'ml-2');
       unblockBtn.setAttribute('data-bs-toggle', 'tooltip');
       unblockBtn.setAttribute('title', 'Unblock User');
+      unblockBtn.setAttribute('data-i18n-key', 'profile--unblock');
       unblockBtn.addEventListener('click', function () {
         unblockUser(blockedUser.id);
       });
@@ -176,6 +183,7 @@ async function loadFriendRequests(friendshipRequestService) {
 
   if (friendRequests.length == 0 || activeFriendRequests.length == 0) {
     friendRequestsList.innerText = 'You have no friend requests';
+    friendRequestsList.setAttribute('data-i18n-key', 'profile--no-friend-requests');
   } else {
     document.querySelector('.friends-list').style.display = 'block';
     activeFriendRequests.forEach(request => {
@@ -191,6 +199,7 @@ async function loadFriendRequests(friendshipRequestService) {
       acceptBtn.classList.add('btn', 'btn-success', 'btn-sm');
       acceptBtn.setAttribute('data-bs-toggle', 'tooltip');
       acceptBtn.setAttribute('title', 'Accept Friend Request');
+      acceptBtn.setAttribute('data-i18n-key', 'profile--accept');
       acceptBtn.addEventListener('click', function () {
         acceptFriendRequest(request.id);
       });
@@ -200,6 +209,7 @@ async function loadFriendRequests(friendshipRequestService) {
       rejectBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
       rejectBtn.setAttribute('data-bs-toggle', 'tooltip');
       rejectBtn.setAttribute('title', 'Reject Friend Request');
+      rejectBtn.setAttribute('data-i18n-key', 'profile--reject');
       rejectBtn.addEventListener('click', function () {
         rejectFriendRequest(request.id);
       });
@@ -220,7 +230,7 @@ async function loadFriendRequests(friendshipRequestService) {
  * is accepted.
  */
 async function acceptFriendRequest(requestId) {
-  const friendshipRequestService = new FriendshipRequestService('97e30085-8d7a-49b9-8a98-aabf2dfe3105');
+  const friendshipRequestService = new FriendshipRequestService('af7aa1aa-d877-484d-b2a9-3d392531b8ab');
   await friendshipRequestService.acceptFriendRequest(requestId);
 }
 
@@ -231,7 +241,7 @@ async function acceptFriendRequest(requestId) {
  * is rejected.
  */
 async function rejectFriendRequest(requestId) {
-  const friendshipRequestService = new FriendshipRequestService('97e30085-8d7a-49b9-8a98-aabf2dfe3105');
+  const friendshipRequestService = new FriendshipRequestService('af7aa1aa-d877-484d-b2a9-3d392531b8ab');
   await friendshipRequestService.rejectFriendRequest(requestId);
 }
 
@@ -241,7 +251,7 @@ async function rejectFriendRequest(requestId) {
  * @returns {Promise<void>} - A promise that resolves when the user is unfriended.
  */
 async function unfriendUser(friendId) {
-  const friendshipService = new FriendshipService('97e30085-8d7a-49b9-8a98-aabf2dfe3105');
+  const friendshipService = new FriendshipService('af7aa1aa-d877-484d-b2a9-3d392531b8ab');
   await friendshipService.deleteFriend(friendId);
 }
 
@@ -251,7 +261,7 @@ async function unfriendUser(friendId) {
  * @returns {Promise<void>} - A promise that resolves when the user is unblocked.
  */
 async function unblockUser(blockedUserId) {
-  const blockingService = new BlockingService('97e30085-8d7a-49b9-8a98-aabf2dfe3105');
+  const blockingService = new BlockingService('af7aa1aa-d877-484d-b2a9-3d392531b8ab');
   await blockingService.unblockUser(blockedUserId);
 }
 

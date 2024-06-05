@@ -25,7 +25,7 @@ The API has the following endpoints:
 
 ### Create User
 
-```http://localhost:8000/user/```
+```http://localhost:8006/user/```
 
 with POST request and the following JSON body:
 
@@ -41,19 +41,19 @@ with POST request and the following JSON body:
 
 ### Get User
 
-```http://localhost:8000/user/{id}```
+```http://localhost:8006/user/{id}```
 
 with GET request
 
 ### Get All Users
 
-```http://localhost:8000/user/```
+```http://localhost:8006/user/```
 
 with GET request
 
 ### Update User
 
-```http://localhost:8000/user/{id}```
+```http://localhost:8006/user/{id}```
 
 with PATCH request and the following JSON body:
 
@@ -66,43 +66,43 @@ with PATCH request and the following JSON body:
 
 ### Delete User
 
-```http://localhost:8000/user/{id}```
+```http://localhost:8006/user/{id}```
 
 with DELETE request
 
 ### Add Friend
 
-```http://localhost:8000/user/{id}/friends/{friendId}```
+```http://localhost:8006/user/{id}/friends/{friendId}```
 
 with POST request
 
 ### Remove Friend
 
-```http://localhost:8000/user/{id}/friends/{friendId}```
+```http://localhost:8006/user/{id}/friends/{friendId}```
 
 with DELETE request
 
 ### Get Friends
 
-```http://localhost:8000/user/{id}/friends```
+```http://localhost:8006/user/{id}/friends```
 
 with GET request
 
 ### Block User
 
-```http://localhost:8000/user/{id}/block/{blockId}```
+```http://localhost:8006/user/{id}/block/{blockId}```
 
 with POST request
 
 ### Unblock User
 
-```http://localhost:8000/user/{id}/block/{blockId}```
+```http://localhost:8006/user/{id}/block/{blockId}```
 
 with DELETE request
 
 ### Get Blocked Users
 
-```http://localhost:8000/user/{id}/block```
+```http://localhost:8006/user/{id}/block```
 
 
 ## Run Tests

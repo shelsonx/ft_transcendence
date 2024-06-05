@@ -1,5 +1,5 @@
-import UserManagementView from './baseUserManagementView.js';
 import { UserInformationService } from '../../services/userManagementService.js';
+import UserManagementView from './baseUserManagementView.js';
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -16,8 +16,8 @@ const html = /*html*/`
 <div class="settings-form">
     <div class="avatar">
         <!-- User avatar image -->
-        <img src="" alt="User Avatar">
-        <button class="change-avatar">Change picture</button>
+        <img src="" alt="Avatar">
+        <button class="change-avatar" data-i18n-key="settings--change-picture">Change Picture</button>
         <input type="file" id="avatar-input" accept="image/*" style="display: none;" />
     </div>
     <form id="user-settings-form">
@@ -28,29 +28,29 @@ const html = /*html*/`
         </div>
         <!-- Name -->
         <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name" data-i18n-key="settings--name">Name:</label>
             <input type="text" id="name" name="name" required>
         </div>
         <!-- Nickname -->
         <div class="form-group">
-            <label for="nickname">Nickname:</label>
+            <label for="nickname" data-i18n-key="settings--nickname">Nickname:</label>
             <input type="text" id="nickname" name="nickname" required>
         </div>
         <!-- Two Factor Authentication -->
         <div class="form-group">
-            <label for="two-factor-enabled">Two Factor Authentication:</label>
+            <label for="two-factor-enabled" data-i18n-key="settings--Two-Factor-Authentication">Two Factor Authentication:</label>
             <input type="checkbox" id="two-factor-enabled" name="two-factor-enabled">
         </div>
         <!-- Language Choice -->
         <div class="form-group">
-            <label for="language">Language:</label>
+            <label for="language" data-i18n-key="settings--language">Language:</label>
             <select id="language" name="language">
-                <option value="en">English</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
+                <option value="en" data-i18n-key="settings--english">English</option>
+                <option value="pt-br" data-i18n-key="settings--portuguese">Portuguese</option>
+                <option value="fr" data-i18n-key="settings--french">French</option>
             </select>
         </div>
-        <button type="submit" class="btn-submit">Submit</button>
+        <button type="submit" class="btn-submit" data-i18n-key="settings--submit">Submit</button>
     </form>
 </div>
 </div>
@@ -77,7 +77,7 @@ const loadUserData = async (userInformationService) => {
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
-    avatar.src = `http://localhost:8000${userData.avatar}`;
+    avatar.src = `http://localhost:8006${userData.avatar}`;
     language.value = userData.chosen_language;
 }
 
@@ -130,7 +130,7 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = '97e30085-8d7a-49b9-8a98-aabf2dfe3105';
+    const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
     const userInformationService = new UserInformationService(userId);
 
     await loadUserData(userInformationService);

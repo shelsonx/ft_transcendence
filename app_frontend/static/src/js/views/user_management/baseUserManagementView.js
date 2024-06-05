@@ -8,9 +8,9 @@ class userManagementView extends View {
     start
   }) {
     const navItems = [
-      new NavItems('#user-profile', 'Profile'),
-      new NavItems('#user-settings', 'Settings',),
-      new NavItems('#search-users', 'Search Users'),
+      new NavItems('#user-profile', 'Profile', { 'data-i18n-key': 'user-management--profile',}),
+      new NavItems('#user-settings', 'Settings', { 'data-i18n-key': 'user-management--settings',}),
+      new NavItems('#search-users', 'Search', { 'data-i18n-key': 'user-management--search',}),
     ];
     const addStart = () => {
       start();
