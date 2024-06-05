@@ -61,7 +61,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_management_api',
     'corsheaders',
+    'django_extensions'
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",

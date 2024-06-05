@@ -43,7 +43,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'user.apps.UserConfig',
     'core.apps.CoreConfig',
+    'django_extensions'
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

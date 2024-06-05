@@ -25,7 +25,6 @@ services:
 
   user_management_api:
     build: ./backend/services/user_management
-    command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend/services/user_management:/user_management
     ports:
