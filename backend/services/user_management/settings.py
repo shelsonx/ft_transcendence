@@ -69,7 +69,7 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "https://localhost:3000",
     "http://0.0.0.0:3000",
 ]
 

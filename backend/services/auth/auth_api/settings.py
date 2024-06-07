@@ -59,6 +59,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8010",
+    "https://localhost:8010",
+
 ]
 
 SECURE_SSL_REDIRECT = True

@@ -103,7 +103,7 @@ const start = async () => {
     users.forEach(user => {
       const userItem = document.createElement('div');
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
-      const avatar = "http://localhost:8006" + user.avatar;
+      const avatar = "https://localhost:8006" + user.avatar;
       userItem.innerHTML = `
                 <div class="d-flex align-items-center">
                     <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">

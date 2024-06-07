@@ -12,7 +12,7 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
 class FriendshipService {
   constructor(userId) {
     this.httpClient =
-      new HttpClient(`http://localhost:8006/user/${userId}/`);
+      new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriends() {
@@ -35,7 +35,7 @@ class FriendshipService {
  */
 class BlockingService {
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
   async getBlockedUsers() {
@@ -63,7 +63,7 @@ class BlockingService {
  */
 class FriendshipRequestService {
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
   async getFriendRequests() {
@@ -99,7 +99,7 @@ class FriendshipRequestService {
 class UserInformationService {
 
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/user/${userId}`);
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}`);
 
   }
 
@@ -135,7 +135,7 @@ class UserInformationService {
 class SearchUsersService {
 
   constructor() {
-    this.httpClient = new HttpClient('http://localhost:8006/user/');
+    this.httpClient = new HttpClient('https://localhost:8006/user/');
   }
 
   async searchUsers(query) {

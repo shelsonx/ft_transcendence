@@ -4,7 +4,6 @@ services:
   frontend:
     build: ./app_frontend
     container_name: frontend
-    command: python manage.py runserver 0.0.0.0:3000
     volumes:
       - ./app_frontend:/code
     ports:

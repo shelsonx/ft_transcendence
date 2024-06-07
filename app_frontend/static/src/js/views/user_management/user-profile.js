@@ -79,7 +79,7 @@ async function loadUserData(userInformationService) {
   const user = userDataResponse.user;
 
   const avatar = document.querySelector('.avatar img');
-  avatar.src = `http://localhost:8006${user.avatar}`;
+  avatar.src = `https://localhost:8006${user.avatar}`;
   document.getElementById('userNickname').innerText = `@${user.nickname.toLowerCase()}`;
   document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
   document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Active' : 'Status: Inactive';

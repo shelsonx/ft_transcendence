@@ -77,7 +77,7 @@ const loadUserData = async (userInformationService) => {
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
-    avatar.src = `http://localhost:8006${userData.avatar}`;
+    avatar.src = `https://localhost:8006${userData.avatar}`;
     language.value = userData.chosen_language;
 }
 
