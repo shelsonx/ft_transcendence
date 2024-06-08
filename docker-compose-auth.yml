@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.7'
 
 services:
   frontend:
@@ -158,8 +158,7 @@ services:
       - POSTGRES_DB=${POSTGRES_GAME_DB}
       - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     depends_on:
-      game-db:
-        condition: service_healthy
+      - game-db
 
 volumes:
   #change the volume name
