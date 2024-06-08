@@ -130,7 +130,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_GAME_USER}
       - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
-      - POSTGRES_NAME=${POSTGRES_GAME_DB}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
       - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     restart: unless-stopped
     ports:
@@ -155,7 +155,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_GAME_USER}
       - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
-      - POSTGRES_NAME=${POSTGRES_GAME_DB}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
       - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     depends_on:
       game-db:

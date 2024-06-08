@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0010_alter_twofactor_expiration_alter_user_user_name'),
+        ('app', '0011_alter_twofactor_expiration_alter_user_user_name'),
     ]
 
     operations = [

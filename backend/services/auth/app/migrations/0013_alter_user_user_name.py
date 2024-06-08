@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0012_user_is_first_login'),
+        ('app','0012_alter_twofactor_expiration'),
     ]
 
     operations = [
