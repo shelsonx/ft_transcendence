@@ -130,7 +130,7 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
+    const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
     const userInformationService = new UserInformationService(userId);
 
     await loadUserData(userInformationService);
