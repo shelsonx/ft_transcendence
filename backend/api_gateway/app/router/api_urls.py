@@ -13,14 +13,14 @@ class ApiUrl:
 
 
   def rebuild_url(self, path: str, language: str = None):
-    path_with_langue = f"{language}/{path}" if language else path
+    path_with_lang = f"{language}/{path}" if language else path
 
-    self.localhost = f"{self.http_https}://{self.localhost_port}/{path_with_langue}"
+    self.localhost = f"{self.http_https}://{self.localhost_port}/{path_with_lang}"
     #"http://auth-api:80/api/auth/",
-    self.container = f"{self.http_https}://{self.container_name_port}/{path_with_langue}"
+    self.container = f"{self.http_https}://{self.container_name_port}/{path_with_lang}"
     #"http://localhost:8002/api/auth/"
 
 class ApiUrls:
-  AUTH = ApiUrl("http", "localhost:8002", "auth-api:80", "api/auth/")
-  USER_MANAGEMENT = ApiUrl("http", "localhost:8006", "user-management-api:8000", "user/")
-  GAME_INFO = ApiUrl("http", "localhost:8003", "game-info:80", "dash/")
+  AUTH = ApiUrl("https", "localhost:8002", "auth-api:80", "api/auth/")
+  USER_MANAGEMENT = ApiUrl("https", "localhost:8006", "user-management-api:8000", "user/")
+  GAME_INFO = ApiUrl("https", "localhost:8003", "game-info:80", "dash/")

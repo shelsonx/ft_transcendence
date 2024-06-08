@@ -103,7 +103,7 @@ def delete_users(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("app", "0008_forgotpassworddto_twofactordto_and_more"),
+        ("app", "0009_user_is_first_login"),
     ]
 
     operations = [

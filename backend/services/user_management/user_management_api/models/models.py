@@ -71,7 +71,7 @@ class FriendshipRequest(models.Model):
 
     def __str__(self):
         return f'{self.sender} has sent a friend request to {self.receiver}'
-    
+
 class Friendship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_creator')
     friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_receiver')

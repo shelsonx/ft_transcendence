@@ -3,7 +3,7 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
 class GameInfoService {
 
 	constructor() {
-		this.httpClient = new HttpClient('http://localhost:8003/dash/');
+		this.httpClient = new HttpClient('https://localhost:8003/dash/');
 	}
 	async gameInfo() {
 		const home = new HttpClientRequestData('GET', 'home/');

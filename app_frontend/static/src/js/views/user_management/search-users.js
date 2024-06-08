@@ -1,5 +1,5 @@
+import { BlockingService, FriendshipRequestService, SearchUsersService } from '../../services/userManagementService.js';
 import UserManagementView from './baseUserManagementView.js';
-import { SearchUsersService, FriendshipRequestService, BlockingService } from '../../services/userManagementService.js';
 
 class searchUsersView extends UserManagementView {
   constructor(html, start) {
@@ -49,7 +49,7 @@ const html = /*html*/`
 
 const start = async () => {
 
-  const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
+  const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
 
   const searchButton = document.getElementById('searchButton');
   const searchInput = document.getElementById('searchInput');
@@ -103,7 +103,7 @@ const start = async () => {
     users.forEach(user => {
       const userItem = document.createElement('div');
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
-      const avatar = "http://localhost:8006" + user.avatar;
+      const avatar = "https://localhost:8006" + user.avatar;
       userItem.innerHTML = `
                 <div class="d-flex align-items-center">
                     <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">

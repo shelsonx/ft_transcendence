@@ -5,7 +5,7 @@ import { LanguageService } from './languageService.js';
 class AuthService extends LanguageService{
 
   constructor() {
-    super('http://localhost:8002/api/auth/');
+    super('https://localhost:8010/api/auth/');
   }
 
   addTokenToLocalStorage(response) {

@@ -1,5 +1,5 @@
-import UserManagementView from './baseUserManagementView.js';
 import { UserInformationService } from '../../services/userManagementService.js';
+import UserManagementView from './baseUserManagementView.js';
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -77,7 +77,7 @@ const loadUserData = async (userInformationService) => {
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
-    avatar.src = `http://localhost:8006${userData.avatar}`;
+    avatar.src = `https://localhost:8006${userData.avatar}`;
     language.value = userData.chosen_language;
 }
 
@@ -130,7 +130,7 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
+    const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
     const userInformationService = new UserInformationService(userId);
 
     await loadUserData(userInformationService);

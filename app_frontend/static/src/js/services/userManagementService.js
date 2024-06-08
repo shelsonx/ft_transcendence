@@ -12,7 +12,7 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
 class FriendshipService {
   constructor(userId) {
     this.httpClient =
-      new HttpClient(`http://localhost:8006/user/${userId}/`);
+      new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriends() {
@@ -33,9 +33,9 @@ class FriendshipService {
  * A service for managing blocked users.
  * @class
  */
-class BlockingService {  
+class BlockingService {
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
   async getBlockedUsers() {
@@ -63,7 +63,7 @@ class BlockingService {
  */
 class FriendshipRequestService {
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
   async getFriendRequests() {
@@ -99,7 +99,7 @@ class FriendshipRequestService {
 class UserInformationService {
 
   constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/user/${userId}`);
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}`);
 
   }
 
@@ -135,7 +135,7 @@ class UserInformationService {
 class SearchUsersService {
 
   constructor() {
-    this.httpClient = new HttpClient('http://localhost:8006/user/');
+    this.httpClient = new HttpClient('https://localhost:8006/user/');
   }
 
   async searchUsers(query) {
@@ -143,7 +143,7 @@ class SearchUsersService {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
-  
+
   async viewOnlineUsers() {
     const requestData = new HttpClientRequestData('GET', '?status=active');
     const response = await this.httpClient.makeRequest(requestData);
@@ -153,9 +153,7 @@ class SearchUsersService {
 
 
 export {
-  FriendshipService,
   BlockingService,
-  FriendshipRequestService,
-  UserInformationService,
-  SearchUsersService
+  FriendshipRequestService, FriendshipService, SearchUsersService, UserInformationService
 };
+

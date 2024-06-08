@@ -43,7 +43,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'user.apps.UserConfig',
     'core.apps.CoreConfig',
+    'django_extensions'
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -58,7 +64,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "https://localhost:3000",
     "http://localhost:3000",
+    "https://0.0.0.0:3000",
+    "http://0.0.0.0:3000",
 ]
 # CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
