@@ -38,6 +38,7 @@ class Game(models.Model):
     players = models.ManyToManyField(
         to=User, through="GamePlayer", related_name="games"
     )
+    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
 
     # field to link Elimination Tournament Games
     # result_to = models.ForeignKey(

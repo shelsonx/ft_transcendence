@@ -53,8 +53,11 @@ class Generator:
         game = Game.objects.create(**(self.game(**fields)))
 
         for player in players:
-            # game.players.add(player)
-            self.seedGamePlayer(game=game, user=player)
+            game.players.add(player)
+            # self.seedGamePlayer(game=game, user=player)
+        if not game.owner:
+            game.owner = players[0]
+            game.save()
         return game
 
     def gamePlayer(self, **fields) -> dict:
@@ -111,6 +114,9 @@ class Generator:
             # tournament.players.add(player)
             self.seedTournamentPlayer(tournament=tournament, user=player)
 
+        if not tournament.owner:
+            tournament.owner = players[0]
+            tournament.save()
         tournament.generate_rounds()
         return tournament
 

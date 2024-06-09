@@ -53,6 +53,7 @@ class Tournament(models.Model):
         related_name="tournaments",
         verbose_name=_("Tournament Players"),
     )
+    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
 
     # total games in CHALLENGE (is the same as total games for each player) - inputed
     # total games for each player against each other in ROUND_ROBIN - inputed
