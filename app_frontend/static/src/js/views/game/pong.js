@@ -176,7 +176,7 @@ const settleGame = (response) => {
   });
 };
 
-const start = async () => {
+const start = async (user) => {
   const match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {

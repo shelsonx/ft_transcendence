@@ -33,7 +33,7 @@ const swap = (response) => {
   // test.innerHTML = await response.text()
 }
 
-const start = async () => {
+const start = async (user) => {
   gameService.getFormTournament().then(swap);
   console.log('Create Tournament View');
 

@@ -31,7 +31,7 @@ const swap = (response) => {
   });
 }
 
-const start = async () => {
+const start = async (user) => {
   gameService.userTournaments().then(swap);
 
   // const tbody = document.getElementsByTagName("tbody");
