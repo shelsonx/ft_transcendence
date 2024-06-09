@@ -15,7 +15,7 @@ class HomeView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <h1>Hello, user!</h1>
+  <h2 id="hello-user"></h2>
   <div id="swap-container" class="container-fluid main"></div>
 `
 
@@ -43,6 +43,8 @@ const start = async (user) => {
   if (user) {
     changeLanguageWhenLogin(user.id);
   }
+  const helloUser = document.getElementById("hello-user");
+  helloUser.innerHTML = `Hello, ${user.userName}!`;
   await gameService.userGames().then(swap);
 }
 
