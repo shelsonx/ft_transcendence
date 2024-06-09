@@ -12,19 +12,17 @@ services:
       - .env.web
     depends_on:
       - auth-api
-  #change the database name
+
   auth-db:
-    image: postgres:16
+    image: postgres:bullseye
     container_name: auth-db
     volumes:
-      #change the volume name
       - auth-db-data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      # add in the .env the name of the db
       - POSTGRES_DB=${POSTGRES_AUTH_DB}
     ports:
       - "5433:5432"
@@ -58,7 +56,8 @@ services:
       - auth-db
 
   game-info-db:
-    image: postgres:16
+    image: postgres:bullseye
+    container_name: game-info-db
     volumes:
       - game-info-db-data:/var/lib/postgresql/data
     env_file:
@@ -102,6 +101,7 @@ services:
 
   user-management-api:
     build: ./backend/services/user_management
+    container_name: user-management-api
     volumes:
       - ./backend/services/user_management:/user_management
     ports:
@@ -110,7 +110,8 @@ services:
       - user-management-db
 
   user-management-db:
-    image: postgres
+    image: postgres:bullseye
+    container_name: user-management-db
     volumes:
       - user-management-db:/var/lib/postgresql/data
     environment:
