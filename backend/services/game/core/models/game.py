@@ -151,5 +151,5 @@ class Game(models.Model):
             "rules": self.rules.to_json(),
             "player_left": player_left.to_json(),
             "player_right": player_right.to_json(),
-            # "owner": self.owner,
+            "owner": self.owner.to_json(),
         }
