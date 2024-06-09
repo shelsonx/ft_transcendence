@@ -8,9 +8,14 @@ services:
       - game-db-data:/var/lib/postgresql/data
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     restart: unless-stopped
     ports:
-      - "5435:5432"
+      - "5436:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 4s
@@ -28,6 +33,11 @@ services:
       - 8020:8000
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     depends_on:
       game-db:
         condition: service_healthy
