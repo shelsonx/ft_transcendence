@@ -40,7 +40,7 @@ class Game(models.Model):
         to=GameRules, on_delete=models.RESTRICT, verbose_name=_("Game Rules")
     )
 
-    players = models.ManyToManyField(
+    _players = models.ManyToManyField(
         to=User, through="GamePlayer", related_name="games"
     )
     owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
@@ -61,6 +61,22 @@ class Game(models.Model):
     #     return None
 
     @property
+    def players(self):
+        players = self.game_players.all().order_by("position")
+
+        if not players.exists():
+            return None, None
+
+        if players.count() == 1:
+            p = players[0]
+            if p.position == GamePlayerPosition.LEFT:
+                return p, None
+            return None, p
+
+        if players.count() == 2:
+            return players[0], players[1]  # player_left, player_right
+
+    @property
     def winner(self) -> User | None:
         if self.status != GameStatus.ENDED:
             return None
@@ -72,11 +88,21 @@ class Game(models.Model):
 
     @property
     def is_a_tie(self) -> bool:
-        raise NotImplementedError("property not implemented")
+        if self.status != GameStatus.ENDED:
+            return False
 
-    #     if self.status == GameStatus.ENDED:
-    #         return self.score_a == self.score_b
-    #     return False
+        player_left, player_right = self.players
+        if player_left and player_right:
+            if player_left.score == player_right.score:
+                return True
+
+        return False
+
+    def add_player(self, user: User):
+        self._players.add(user)
+
+    def add_players(self, users: list[User]):
+        self._players.add(*users)
 
     def set_players_position(self):
         players = self.game_players.all()
@@ -101,14 +127,14 @@ class Game(models.Model):
         pass
 
     def __str__(self) -> str:
-        # players =
-        # name = " x ".join([])
-        return str(self.game_datetime.date())
+        player_left, player_right = self.players
+        p1 = player_left.user.username
+        p2 = player_right.user.username
+
+        return f"{p1} x {p2} - {str(self.game_datetime.date())}"
 
     def to_json(self) -> dict:
-        players = self.game_players.all()
-        player_left = players.first()
-        player_right = players.last()
+        player_left, player_right = self.players
 
         seconds = self.duration.seconds
         minutes = seconds // 60

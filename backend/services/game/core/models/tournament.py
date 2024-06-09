@@ -92,7 +92,8 @@ class Tournament(models.Model):
                 points_to_win=11,
             ),
         )
-        game.players.add(*[player_a, player_b])
+        game.add_players([player_a, player_b])
+        game.set_players_position()
         round.games.add(game)
         self.rounds.add(round)
 
@@ -175,7 +176,8 @@ class Challenge(Tournament):
                 status=GameStatus.SCHEDULED,
                 rules=self.rules,
             )
-            game.players.add(*self.players.all())
+            game.add_players(self.players.all())
+            game.set_players_position()
             round.games.add(game)
             self.rounds.add(round)
 
@@ -220,7 +222,8 @@ class RoundRobin(Tournament):
                             status=GameStatus.SCHEDULED,
                             rules=self.rules,
                         )
-                        game.players.add(*players_match)
+                        game.add_players(players_match)
+                        game.set_players_position()
                         round.games.add(game)
 
                 self.rounds.add(round)
@@ -299,7 +302,8 @@ class Elimination(Tournament):
                     rules=self.rules,
                 )
                 if i == 0:
-                    pprint(map(lambda p: game.players.add(p), players_pairs[j]))
+                    pprint(map(lambda p: game.add_player(p), players_pairs[j]))
+                    game.set_players_position()
                 round.games.add(game)
 
             self.rounds.add(round)
@@ -307,8 +311,8 @@ class Elimination(Tournament):
 
         # for round 1 and 2 we may add some players
         for players_match in players_pairs:
-            if all(p for p in players_match):
-                game.players.add(*players_match)
+            game.add_players(players_match)
+            game.set_players_position()
         # we also need to link the next game
 
     def validate_number_of_players(self, current_number_of_players: int):

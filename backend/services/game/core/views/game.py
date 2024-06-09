@@ -28,6 +28,7 @@ from common.decorators import logged_permission
 from user.forms import UserSearchForm
 from user.models import User
 
+
 @method_decorator(csrf_exempt, name="dispatch")  # remove csrf protection...
 class AddGameView(generic.View):
     template_name = "add_game.html"
@@ -85,8 +86,8 @@ class AddGameView(generic.View):
         game: Game = game_form.save(commit=False)
         game.owner = request_user
         game.save()
-        game.players.add(request_user)
-        game.players.add(self.opponent)
+        game.add_player(request_user)
+        game.add_player(self.opponent)
         game.set_players_position()
 
         data = {"status": "success", "data": {"game": game.pk}}
@@ -97,7 +98,7 @@ class AddGameView(generic.View):
         if opponent:
             opponent = User.objects.filter(username=opponent).first()
         # if not opponent:
-            # TODO: pedir o usuário para Lili ou Bruno e salvar se existir
+        # TODO: pedir o usuário para Lili ou Bruno e salvar se existir
         return opponent
 
     def get_context_data(self, **kwargs) -> dict:

@@ -51,10 +51,8 @@ class Generator:
     def seedGame(self, **fields) -> Game:
         players = fields.pop("players", None) or [self.seedUser(), self.seedUser()]
         game = Game.objects.create(**(self.game(**fields)))
+        game.add_players(players)
 
-        for player in players:
-            game.players.add(player)
-            # self.seedGamePlayer(game=game, user=player)
         if not game.owner:
             game.owner = players[0]
             game.save()
