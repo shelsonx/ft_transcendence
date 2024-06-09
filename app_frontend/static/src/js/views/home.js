@@ -14,9 +14,20 @@ class HomeView extends BaseLoggedView {
   }
 }
 
+const userLabel = "My games"
+const allUsersLabel = "All games"
+let userData = false
+
 const html = /*html*/`
-  <h2 id="hello-user"></h2>
-  <div id="swap-container" class="container-fluid main"></div>
+  <div class="d-flex justify-content-between">
+    <h2 id="hello-user"></h2>
+    <div >
+      <button id="btn-data-switch" type="button" class="btn btn-info">
+        ${userLabel}
+      </button>
+    </div>
+  </div>
+  <div id="swap-container" class="container-fluid main mt-5"></div>
 `
 
 const swap = (response) => {
@@ -43,9 +54,26 @@ const start = async (user) => {
   if (user) {
     changeLanguageWhenLogin(user.id);
   }
+
   const helloUser = document.getElementById("hello-user");
   helloUser.innerHTML = `Hello, ${user.userName}!`;
-  await gameService.userGames().then(swap);
+
+  await gameService.allGames().then(swap);
+  
+  const btnDataSwitch = document.getElementById("btn-data-switch");
+  btnDataSwitch.addEventListener("click", async () => {
+    userData = !userData
+
+    if (userData) {
+      await gameService.userGames(user.id).then(swap);
+      btnDataSwitch.innerHTML = allUsersLabel;
+    }
+    else {
+      await gameService.allGames().then(swap);
+      btnDataSwitch.innerHTML = userLabel;
+    }
+  });
+
 }
 
 export default new HomeView(html, start);

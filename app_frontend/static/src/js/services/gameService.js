@@ -13,8 +13,8 @@ class GameService {
     return response;
   }
 
-  async userGames() {
-    const requestData = new HttpClientRequestData("GET", "/games");
+  async userGames(id) {
+    const requestData = new HttpClientRequestData("GET", `/user-games/${id}`);
     // const requestData = new HttpClientRequestData('GET', '/user/<uuid:pk>/games');
     const response = await this.httpClient.makeRequest(requestData);
     return response;

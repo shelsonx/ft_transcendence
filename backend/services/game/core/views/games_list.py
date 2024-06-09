@@ -33,12 +33,13 @@ class GamesView(generic.ListView):
         # pprint.pprint(request.headers, indent=4)
         self.user = None
         if pk:
-            self.user = get_object_or_404(User, pk=pk)
+            self.user = pk
+            # self.user = get_object_or_404(User, pk=pk)
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet[Game]:
-        if self.user:
-            return self.user.games.all()
+        # if self.user:
+        #     return self.user.games.all()
         return super().get_queryset()
 
     def get_context_data(self, **kwargs) -> dict:

@@ -2,9 +2,7 @@
 {% load timedelta_tags %}
 
 {% if user %}
-  <h1>{% translate "User Games" %}</h1>
-{% else %}
-  <h1>{% translate "Games" %}</h1>
+{{user}}
 {% endif %}
 
 <div id="games-table" class="table-responsive">
