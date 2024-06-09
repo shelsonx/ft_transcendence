@@ -1,5 +1,6 @@
 GAME_FILE = ./docker-compose.yml
-PROJECT_NAME = transcendence
+PROJECT_NAME = the_transcendence_journey
+
 
 up:
 	docker-compose -f $(GAME_FILE) --project-name $(PROJECT_NAME) up
