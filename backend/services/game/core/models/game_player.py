@@ -31,7 +31,7 @@ class GamePlayer(models.Model):
     def to_json(self) -> dict:
         user = self.user
         return {
-            "user": user.to_json(),
+            "user": user.resume_to_json() if user else User.anonymous(),
             "score": self.score,
             "position": self.position,
         }

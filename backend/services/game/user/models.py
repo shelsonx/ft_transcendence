@@ -21,9 +21,22 @@ class User(models.Model):
         # if request.current_user.sub != str(user_id):
         #     raise ForbiddenException()
 
+    @classmethod
+    def anonymous(cls):
+        return {
+            "id": None,
+            "username": _("anonymous"),
+        }
+
     # @property
     # def avatarUrl(self):
     #     return f"https://"
+
+    def resume_to_json(self) -> dict:
+        return {
+            "id": self.pk,
+            "username": self.username,
+        }
 
     def to_json(self) -> dict:
         return {

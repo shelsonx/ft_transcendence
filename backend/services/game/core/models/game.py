@@ -149,7 +149,7 @@ class Game(models.Model):
                 "seconds": seconds,
             },
             "rules": self.rules.to_json(),
-            "player_left": player_left.to_json(),
-            "player_right": player_right.to_json(),
-            "owner": self.owner.to_json(),
+            "player_left": player_left.to_json() if player_left else User.anonymous(),
+            "player_right": player_right.to_json() if player_left else User.anonymous(),
+            "owner": self.owner.resume_to_json() if self.owner else User.anonymous(),
         }
