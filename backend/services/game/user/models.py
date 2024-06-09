@@ -32,6 +32,9 @@ class User(models.Model):
     # def avatarUrl(self):
     #     return f"https://"
 
+    def __str__(self):
+        return self.username
+
     def resume_to_json(self) -> dict:
         return {
             "id": self.pk,

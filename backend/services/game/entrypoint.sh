@@ -5,5 +5,6 @@
 
 python manage.py migrate
 python manage.py loaddata game_rules
+python manage.py loaddata users
 
 exec $@
