@@ -41,8 +41,8 @@ export default class View {
   /**
    * Start the view.
    */
-  start() {
-    this.#start();
+  start(user = null) {
+    this.#start(user);
     this.#navHandler.addToNavbar();
   }
 }

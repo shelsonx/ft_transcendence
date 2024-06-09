@@ -193,6 +193,19 @@ class LanguageHandler {
     this.handleLocation(newLanguageSelected.code);
   }
 
+  changeLanguage(locale) {
+    const langSelected = Object.values(this.supportedLanguages).find(lg => lg.code === locale);
+    if (!langSelected) {
+      return ;
+    }
+    const { name } = langSelected;
+    for (const button of this.buttonsRef) {
+      if (button.textContent === name) {
+        button.click();
+      }
+    }
+  }
+
   onInit(isFirstLoad = false) {
     this.addLanguagesToDropdown();
     this.handleLocation(this.#locale, isFirstLoad);
