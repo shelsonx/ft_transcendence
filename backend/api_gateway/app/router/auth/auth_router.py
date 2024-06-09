@@ -56,6 +56,17 @@ class AuthRouter(IRouter):
         headers=headers_dict
     ))
 
+  def register_game_ms(self, auth_data_json, headers_dict):
+     body = json.dumps({
+            "id": auth_data_json['id'],
+            "username": auth_data_json["user_name"],
+        }).encode('utf-8')
+     return self.notify_microservices("POST", ApiUrls.GAME, HttpClientData(
+        url=f"/user/",
+        data=body,
+        headers=headers_dict
+     ))
+
   def register_user_management_ms(self, auth_data_json, headers_dict):
     body = json.dumps({
             "name": auth_data_json["user_name"],
@@ -85,6 +96,8 @@ class AuthRouter(IRouter):
             print(game_info_data)
             user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
             print(user_management_data)
+            game_data = self.register_game_ms(auth_data_json, headers_dict)
+            print(game_data)
         return default_response
 
   def register_42(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
