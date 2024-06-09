@@ -58,6 +58,7 @@ class Generator:
         if not game.owner:
             game.owner = players[0]
             game.save()
+        game.set_players_position()
         return game
 
     def gamePlayer(self, **fields) -> dict:

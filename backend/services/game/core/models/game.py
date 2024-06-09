@@ -1,5 +1,9 @@
 # Third Party
+# python std library
+import random
 from datetime import timedelta
+
+# django
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -10,6 +14,7 @@ from user.models import User
 # Local Folder
 from .game_status import GameStatus
 from .game_rules import GameRules
+from .game_player_position import GamePlayerPosition
 
 
 class Game(models.Model):
@@ -65,12 +70,6 @@ class Game(models.Model):
             return None
         return players.first().user
 
-    #     if self.score_a > self.score_b:
-    #         return self.player_a
-    #     elif self.score_b > self.score_a:
-    #         return self.player_b
-    #     return None
-
     @property
     def is_a_tie(self) -> bool:
         raise NotImplementedError("property not implemented")
@@ -78,6 +77,22 @@ class Game(models.Model):
     #     if self.status == GameStatus.ENDED:
     #         return self.score_a == self.score_b
     #     return False
+
+    def set_players_position(self):
+        players = self.game_players.all()
+        if not players.exists() or players.count() != 2:
+            return
+        if players[0].position != players[1].position:
+            return
+
+        random.shuffle(players)
+        p1 = players[0]
+        p2 = players[2]
+        p1.position = GamePlayerPosition.LEFT
+        p1.save()
+        p2.position = GamePlayerPosition.RIGHT
+        p2.save()
+        return p1, p2
 
     def add_score(self) -> None:
         # tournament is other rule
@@ -110,4 +125,5 @@ class Game(models.Model):
             "rules": self.rules.to_json(),
             "player_left": player_left.to_json(),
             "player_right": player_right.to_json(),
+            # "owner": self.owner,
         }

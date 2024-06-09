@@ -82,12 +82,12 @@ class AddGameView(generic.View):
             logging.error(log)
             return HttpResponse(message, status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
-        game: Game = game_form.save()
+        game: Game = game_form.save(commit=False)
+        game.owner = request_user
+        game.save()
         game.players.add(request_user)
         game.players.add(self.opponent)
-        # players = [request_user, opponent]
-        # random.shuffle(players)
-        # for player in players:
+        game.set_players_position()
 
         data = {"status": "success", "data": {"game": game.pk}}
         return JsonResponse(data, status=HTTPStatus.CREATED)
