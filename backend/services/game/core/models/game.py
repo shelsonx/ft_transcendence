@@ -27,7 +27,7 @@ class Game(models.Model):
         ordering = ["-game_datetime"]
 
     game_datetime = models.DateTimeField(
-        verbose_name=_("Game date"), default=timezone.now(), blank=True
+        verbose_name=_("Game date"), default=timezone.now, blank=True
     )
     status = models.SmallIntegerField(
         choices=GameStatus,
