@@ -144,7 +144,7 @@ const addGameResult = async (response_content) => {
 
 // new URLSearchParams(obj).toString();
 
-const start = async () => {
+const start = async (user) => {
   await gameService.getFormGame().then(swapGameForm);
 };
 
