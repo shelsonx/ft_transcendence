@@ -6,8 +6,9 @@ class GameStatus {
   static PENDING = 0;
   static SCHEDULED = 1;
   static ONGOING = 2;
-  static ENDED = 3;
-  static CANCELED = 4;
+  static PAUSED = 3;
+  static ENDED = 4;
+  static CANCELED = 5;
   static statusTypes = [
     GameStatus.PENDING,
     GameStatus.SCHEDULED,
