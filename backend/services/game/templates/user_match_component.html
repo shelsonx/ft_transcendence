@@ -1,0 +1,15 @@
+<div class="player">
+  <span class="{% if player.is_winner %} winner {% else %}default{% endif %}">
+    {% if position == "R" %}
+      {{ player.score}}
+    {% else %}
+      {% comment %} TODO: avatar {% endcomment %}
+    {% endif %}
+    {{ player.user.username}}
+    {% if position == "L" %}
+      {{ player.score}}
+    {% else %}
+      {% comment %} TODO: avatar {% endcomment %}
+    {% endif %}
+  </span>
+</div>
