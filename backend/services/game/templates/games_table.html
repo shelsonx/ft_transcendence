@@ -1,8 +1,18 @@
 {% load i18n %}
 {% load timedelta_tags %}
 
-{% if user %}
-<div>{{user}}</div>
+{% if not is_viewer and user %}
+  <div><h3>{% translate "Your matches" %}</h3></div>
+{% endif %}
+{% if is_viewer %}
+  <div class="d-inline-flex">
+    {% comment %} TODO: avatar {% endcomment %}
+    <h3>
+      {% blocktrans %}
+        {{ user }} matches
+      {% endblocktrans %}
+    </h3>
+  </div>
 {% endif %}
 
 <div id="games-table" class="table-responsive">
@@ -27,7 +37,7 @@
               id="game_{{game.pk}}"
               onclick="window.location='?match={{game.pk}}#pong';"
           >
-          
+
             <td>
               {% include "game_result.html" %}
             </td>
@@ -47,6 +57,13 @@
                 -
               {% endif %}
             </td>
+
+            {% if user %}
+              {% comment %} column to indicate that the user won {% endcomment %}
+              <td></td>
+              {% comment %} column to indicate some user record? {% endcomment %}
+              <td></td>
+            {% endif %}
 
           </tr>
         {% comment %} {% endif %} {% endcomment %}

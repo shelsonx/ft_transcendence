@@ -3,7 +3,7 @@ import { HttpClient, HttpClientRequestData } from "./httpClient.js";
 
 class GameService {
   constructor() {
-    this.baseUrl = 'https://localhost:8020';
+    this.baseUrl = "https://localhost:8020";
     this.httpClient = new HttpClient(this.baseUrl);
   }
 
@@ -15,7 +15,15 @@ class GameService {
 
   async userGames(id) {
     const requestData = new HttpClientRequestData("GET", `/user-games/${id}`);
-    // const requestData = new HttpClientRequestData('GET', '/user/<uuid:pk>/games');
+    const response = await this.httpClient.makeRequest(requestData);
+    return response;
+  }
+
+  async viewUserGames(id) {
+    const requestData = new HttpClientRequestData(
+      "GET",
+      `/view-user-games/${id}`
+    );
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -47,7 +55,7 @@ class GameService {
     const requestData = new HttpClientRequestData(
       "POST",
       "/add-game",
-      data,
+      data
       // headers
     );
     requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";

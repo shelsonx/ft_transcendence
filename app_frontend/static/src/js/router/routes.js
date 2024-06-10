@@ -10,6 +10,7 @@ import searchUsers from "../views/user_management/search-users.js";
 import userSettings from "../views/user_management/user-settings.js";
 import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
+import SeeUserGamesView from "../views/game/view_user_games.js";
 import NewGameView from "../views/game/new_game.js";
 import PongGameView from "../views/game/pong.js";
 import TournamentDetailView from "../views/game/tournament-detail.js";
@@ -40,10 +41,11 @@ const hashRoutes = {
   "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
-  "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },  // posso receber um id da match...?
+  "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },
   "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
-  "tournaments": { title: "Tournaments", render: TournamentsView, description: "Game info page.", isProtected: true },
-  "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Game info page.", isProtected: true },
+  "view-user-games": { title: "View user Games", render: SeeUserGamesView, description: "View user games", isProtected: true },
+  "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },
+  "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
 };
 
 export {

@@ -8,6 +8,7 @@ import uuid
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404
+from django.urls import resolve
 # from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
@@ -22,6 +23,7 @@ class GamesView(generic.ListView):
     model = Game
     ordering = ["-game_datetime", "status"]
     template_name = "games_table.html"
+    is_viewer = False
     # paginate_by = 20
 
     # TODO SHEELA: proteger a rota - somente o usuário pode acessar?
@@ -29,14 +31,22 @@ class GamesView(generic.ListView):
     def get(
         self, request: HttpRequest, pk: uuid = None, *args, **kwargs
     ) -> HttpResponse:
-        # pprint.pprint(request, indent=4)
         # pprint.pprint(request.headers, indent=4)
         self.user = None
         if pk:
-            self.user = User.objects.filter(pk=pk).first()  # TODO: usar a regra abaixo
+            self.user = User.objects.filter(pk=pk).first()  # TODO:use get_object_or_404
             if not self.user:
                 self.user = get_object_or_404(User, username="sheela")
             # self.user = get_object_or_404(User, pk=pk)
+
+            current_url = resolve(request.path_info).url_name
+            if current_url == "view_user_games":
+                self.is_viewer = True
+            else:
+                # TODO:SHEELA verify if request.current_user == self.user
+                # if not return permission denied
+                pass
+
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet[Game]:
@@ -54,6 +64,7 @@ class GamesView(generic.ListView):
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["user"] = self.user
+        context["is_viewer"] = self.is_viewer
         context["GameStatus"] = GameStatus
 
         game_list = []
