@@ -28,6 +28,9 @@ db-logs:
 runscript:
 	docker exec -it game-api bash -c "python manage.py shell < test.py"
 
+db:
+	docker exec -it game-api bash -c "python manage.py shell < utils/seed_base_data.py"
+
 shell:
 	docker exec -it game-api bash -c "python manage.py shell"
 
