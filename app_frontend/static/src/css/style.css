@@ -39,9 +39,10 @@
     --yellow-light: #FFD76B;
     --yellow-normal: #FFCE52;
     --yellow-dark: #D9B043;
-    --info-light:#1189c4;
+    --info-light:#6cbbe2;
     --info-normal: #0a5074;
     --info-dark: #022435;
+    --table-dark-bg: #10151c;
     --gradient-main: linear-gradient(90deg, rgba(245, 193, 110, 0.08) -0.86%, rgba(229, 186, 117, 0.94) 97.95%);
     font-size: 17px;
     --extra-small-screen:320px;
@@ -73,7 +74,7 @@ body {
     position: relative;
     scroll-behavior: smooth;
     min-height: 100vh;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 #app {
@@ -413,4 +414,41 @@ body {
 }
 .game-rules-group {
     font-size: medium;
+}
+
+.table-dark {
+    --bs-table-bg: var(--table-dark-bg) !important;
+}
+
+.main {
+    overflow: auto !important;
+}
+
+/* .match-row {
+    margin: 10px;
+} */
+
+/* width */
+::-webkit-scrollbar {
+    width: 1rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border: 2px solid var(--info-dark);
+    border-radius: 8px;
+    background: var(--info-normal);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--info-dark);
 }

@@ -27,7 +27,7 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div id="swap-container" class="container-fluid main mt-5"></div>
+  <div id="swap-container" class="container-fluid main mt-3"></div>
 `
 
 const swap = (response) => {
@@ -59,7 +59,7 @@ const start = async (user) => {
   helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
-  
+
   const btnDataSwitch = document.getElementById("btn-data-switch");
   btnDataSwitch.addEventListener("click", async () => {
     userData = !userData

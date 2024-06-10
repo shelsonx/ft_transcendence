@@ -15,8 +15,8 @@
   </div>
 {% endif %}
 
-<div id="games-table" class="table-responsive">
-  <table class="table">
+<div id="games-table" class="table-responsive main border border-white border-opacity-10 rounded-3">
+  <table class="table table-dark align-middle {% if not is_viewer and user %}table-hover{% endif %}">
     <thead>
       <tr>
         <th class="games-table-title">{% translate "Result" %}</th>
