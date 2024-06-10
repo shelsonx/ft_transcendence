@@ -35,7 +35,9 @@
         {% comment %} {% if game.status == GameStatus.ENDED or user %} {% endcomment %}
           <tr class="match-row"
               id="game_{{game.pk}}"
-              onclick="window.location='?match={{game.pk}}#pong';"
+              {% if not is_viewer and game.is_owner %}
+                onclick="window.location='?match={{game.pk}}#pong';"
+              {% endif %}
           >
 
             <td>

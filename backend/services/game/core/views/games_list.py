@@ -46,6 +46,9 @@ class GamesView(generic.ListView):
                 # TODO:SHEELA verify if request.current_user == self.user
                 # if not return permission denied
                 pass
+        else:
+            pass
+            # self.user = request.current_user
 
         return super().get(request, *args, **kwargs)
 
@@ -95,5 +98,9 @@ class GamesView(generic.ListView):
         game.player_left = player_left
         game.player_right = player_right
         game.has_winner = bool(winner)
+
+        game.is_owner = False
+        if self.user and game.owner and self.user.pk == game.owner.pk:
+            game.is_owner = True
 
         return game
