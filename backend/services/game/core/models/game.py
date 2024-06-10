@@ -111,9 +111,10 @@ class Game(models.Model):
         if players[0].position != players[1].position:
             return
 
-        random.shuffle(players)
-        p1 = players[0]
-        p2 = players[2]
+        players_list = [p for p in players]
+        random.shuffle(players_list)
+        p1 = players_list[0]
+        p2 = players_list[1]
         p1.position = GamePlayerPosition.LEFT
         p1.save()
         p2.position = GamePlayerPosition.RIGHT
