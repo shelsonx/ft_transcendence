@@ -51,7 +51,7 @@ class AddGameView(generic.View):
     def post(self, request: HttpRequest) -> HttpResponse:
         # request_user = request.current_user
         # TODO: pedir o usuário para Lili ou Bruno e salvar se existir
-        request_user = User.objects.get(username="user42")
+        request_user = User.objects.get(username="sheela")
         pprint.pprint(request.POST, indent=4)
         # pprint.pprint(request.headers, indent=4)
 
@@ -59,14 +59,14 @@ class AddGameView(generic.View):
         self.set_forms(post_data)
         context = self.get_context_data()
         forms = [self.rules_form, self.user_form]
-        if not all(form.is_valid() for form in forms):
-            # context["invalid"] = True
-            return render(request, self.template_name, context)
-
         if not self.opponent:
+            [form.is_valid() for form in forms]
             self.user_form.add_error(
                 "username", ValidationError(message="user does not exist")
             )
+            return render(request, self.template_name, context)
+        if not all(form.is_valid() for form in forms):
+            # context["invalid"] = True
             return render(request, self.template_name, context)
 
         rules: GameRules = GameRules.filter(self.rules_form)

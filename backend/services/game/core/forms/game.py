@@ -6,7 +6,7 @@ class GameForm(forms.ModelForm):
 
     class Meta:
         model = Game
-        exclude = ["players"]
+        exclude = ["_players", "owner"]
 
 class GameEditForm(GameForm):
 
