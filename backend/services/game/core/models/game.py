@@ -127,10 +127,18 @@ class Game(models.Model):
             pass
         pass
 
+    def get_player_name(self, player) -> str:
+        """
+        player is a GamePlayer instance
+        """
+        if player and player.user:
+            return player.user.username
+        return User.anonymous()["username"]
+
     def __str__(self) -> str:
         player_left, player_right = self.players
-        p1 = player_left.user.username
-        p2 = player_right.user.username
+        p1 = self.get_player_name(player_left)
+        p2 = self.get_player_name(player_right)
 
         return f"{p1} x {p2} - {str(self.game_datetime.date())}"
 
