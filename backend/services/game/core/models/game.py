@@ -77,14 +77,14 @@ class Game(models.Model):
             return players[0], players[1]  # player_left, player_right
 
     @property
-    def winner(self) -> User | None:
+    def winner(self):
         if self.status != GameStatus.ENDED:
             return None
 
         players = self.game_players.order_by("-score")
         if not players.exists():
             return None
-        return players.first().user
+        return players.first()
 
     @property
     def is_a_tie(self) -> bool:

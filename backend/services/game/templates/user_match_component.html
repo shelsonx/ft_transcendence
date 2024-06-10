@@ -1,15 +1,23 @@
 <div class="player">
-  <span class="{% if player.is_winner %} winner {% else %}default{% endif %}">
-    {% if position == "R" %}
-      {{ player.score}}
-    {% else %}
+  {% if position == "R" %}
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+      <strong>{{ player.score}}</strong>
+    </span>
+  {% else %}
+    <span class="avatar">
       {% comment %} TODO: avatar {% endcomment %}
-    {% endif %}
-    {{ player.user.username}}
-    {% if position == "L" %}
-      {{ player.score}}
-    {% else %}
+    </span>
+  {% endif %}
+  <span class="username">{{ player.user.username}}</span>
+
+  {% if position == "L" %}
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+      <strong>{{ player.score}}</strong>
+    </span>
+  {% else %}
+    <span class="avatar">
       {% comment %} TODO: avatar {% endcomment %}
-    {% endif %}
-  </span>
+    </span>
+  {% endif %}
+
 </div>

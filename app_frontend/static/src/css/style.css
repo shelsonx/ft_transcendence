@@ -13,6 +13,9 @@
     --secondary-gradient: linear-gradient(90deg, #F5C16E 0%, #CC9E54 100%);
     --secondary-gradientMain: linear-gradient(90deg, rgba(245, 193, 110, 0.08) -0.86%, rgba(229, 186, 117, 0.94) 97.95%);
     --secondary-gradientVertical: linear-gradient(180deg, rgba(245, 193, 110, 0.08) 0%, rgba(229, 186, 117, 0.94) 100%);
+    --info-light:#6cbbe2;
+    --info-normal: #0a5074;
+    --info-dark: #022435;
     --white-light: #FCFEFF;
     --white-normal: #F2F5F6;
     --white-dark: #E4E9ED;
@@ -39,9 +42,9 @@
     --yellow-light: #FFD76B;
     --yellow-normal: #FFCE52;
     --yellow-dark: #D9B043;
-    --info-light:#6cbbe2;
-    --info-normal: #0a5074;
-    --info-dark: #022435;
+    --purple-light: #bb95db;
+    --purple-normal: #510093;
+    --purple-dark: #231037;
     --table-dark-bg: #10151c;
     --gradient-main: linear-gradient(90deg, rgba(245, 193, 110, 0.08) -0.86%, rgba(229, 186, 117, 0.94) 97.95%);
     font-size: 17px;
@@ -94,14 +97,18 @@ body {
 }
 
 .btn-info {
-    background-color: var(--info-normal) !important;
-    border-color: var(--info-dark) !important;
+    /* background-color: var(--info-normal) !important;
+    border-color: var(--info-dark) !important; */
+    background-color: var(--purple-normal) !important;
+    border-color: var(--purple-dark) !important;
     color: var(--white-dark) !important;
 }
 
 .btn-info:hover {
-    background-color: var(--info-dark) !important;
-    border-color: var(--info-dark) !important;
+    /* background-color: var(--info-dark) !important; */
+    /* border-color: var(--info-dark) !important; */
+    background-color: var(--purple-dark) !important;
+    border-color: var(--purple-dark) !important;
 }
 
 .dropdown-item.active, .dropdown-item:active {
@@ -424,10 +431,6 @@ body {
     overflow: auto !important;
 }
 
-/* .match-row {
-    margin: 10px;
-} */
-
 /* width */
 ::-webkit-scrollbar {
     width: 1rem;
@@ -443,12 +446,20 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    border: 2px solid var(--info-dark);
+    border: 2px solid var(--primary-light);
     border-radius: 8px;
-    background: var(--info-normal);
+    background: var(--primary-normal);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--info-dark);
+    background: var(--primary-light);
+    border: 2px solid var(--primary-light);
+}
+
+.winner {
+    color: var(--green-dark)
+}
+.loser {
+    color: var(--red-dark)
 }

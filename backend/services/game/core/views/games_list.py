@@ -81,11 +81,19 @@ class GamesView(generic.ListView):
         player_left.is_winner = False
         player_right.is_winner = False
         winner = game.winner
-        if winner and winner.pk == player_left.user.pk:
-            player_left.is_winner = True
-        else:
-            player_right.is_winner = True
+        if winner is not None:
+            if player_left and winner.pk == player_left.pk:
+                player_left.is_winner = True
+            else:
+                player_right.is_winner = True
+
+        if player_left and not player_left.user:
+            player_left.user = User(**User.anonymous())
+        if player_right and not player_right.user:
+            player_right.user = User(**User.anonymous())
+
         game.player_left = player_left
         game.player_right = player_right
+        game.has_winner = bool(winner)
 
         return game
