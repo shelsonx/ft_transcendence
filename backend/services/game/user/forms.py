@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["username"]
 
 
 class UserSearchForm(UserForm):
