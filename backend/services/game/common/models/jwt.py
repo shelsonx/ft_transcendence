@@ -6,6 +6,7 @@ from uuid import UUID
 # Django
 from django.utils import timezone
 
+
 @dataclass
 class JWTPayload:
     sub: UUID
