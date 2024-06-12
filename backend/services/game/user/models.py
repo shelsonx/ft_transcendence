@@ -14,14 +14,6 @@ class User(models.Model):
     # score = models.IntegerField(default=0)
 
     @classmethod
-    def validate_user_id(cls, *args, **kwargs) -> None:
-        pass
-        # user_id = kwargs.get("user_id")
-        # request = args[1]
-        # if request.current_user.sub != str(user_id):
-        #     raise ForbiddenException()
-
-    @classmethod
     def anonymous(cls):
         return {
             "id": None,

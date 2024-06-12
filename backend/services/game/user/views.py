@@ -10,13 +10,14 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
 # First Party
+from common.decorators import logged_permission
 from common.models import (
     error_json_response,
     json_bad_request,
     json_not_found,
     success_json_response,
 )
-from common.decorators import logged_permission
+from common.validators import is_valid_uuid4
 
 # Local Folder
 from .models import User
@@ -37,28 +38,28 @@ class UserView(generic.View):
     def post(self, request: HttpRequest) -> JsonResponse:
         # TODO: SHEELA - protect route
         data = json.loads(request.body)
-        id = data.get("id")  # TODO: validate uuid
+        id = data.get("id")
+
+        if id is None:
+            return json_bad_request(msg="Missing user reference id")
+        if not is_valid_uuid4(id):
+            return json_bad_request(msg="Invalid user id format")
 
         user = User.objects.filter(id=id)
         if user.exists():
             return json_bad_request(msg="User already registered")
 
-        if id is None:
-            return json_bad_request(msg="Missing user reference id")
-
-        self.form = self.form_class(data, User(id=id))
+        self.form = self.form_class(data, instance=User(id=id))
         if not self.form.is_valid():
             return json_bad_request(data=self.get_form_errors(), msg="Invalid data")
 
-        user: User = self.form.save(commit=False)
-        user.id = id
-        user.save()
-
+        user: User = self.form.save()
         return success_json_response(msg="User created", status=HTTPStatus.CREATED)
 
     # @logged_permission()
     def patch(self, request: HttpRequest, pk: uuid) -> JsonResponse:
         # TODO: SHEELA - protect route - should be the same user in the JWT?
+
         user = User.objects.filter(pk=pk).first()
         if not user:
             return json_not_found(msg="User not found. Register it with POST method.")
@@ -74,6 +75,7 @@ class UserView(generic.View):
     # TODO: SHEELA - protect route to only gateway
     def delete(self, request: HttpRequest, pk: uuid) -> JsonResponse:
         # TODO: SHEELA - protect route - should be the same user in the JWT?
+
         user = User.objects.filter(pk=pk).first()
         if not user:
             return json_not_found(msg="User not found")
