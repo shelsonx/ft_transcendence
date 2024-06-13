@@ -463,3 +463,17 @@ body {
 .loser {
     color: var(--red-dark)
 }
+
+.action {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+}
+
+.table td, th {
+  text-align: center;
+}
+
+.table th {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+}
