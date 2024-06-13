@@ -40,7 +40,7 @@ class UserInfoView(View):
         if not self.is_valid_uuid(user_id):
             raise InvalidUUIDException
         try:
-            return User.objects.get(id=user_id)
+            return User.objects.get(user_uuid=user_id)
         except User.DoesNotExist:
             raise UserDoesNotExistException
 

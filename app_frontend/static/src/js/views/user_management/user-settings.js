@@ -21,11 +21,6 @@ const html = /*html*/`
         <input type="file" id="avatar-input" accept="image/*" style="display: none;" />
     </div>
     <form id="user-settings-form">
-        <!-- Email -->
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
         <!-- Name -->
         <div class="form-group">
             <label for="name" data-i18n-key="settings--name">Name:</label>
@@ -66,14 +61,12 @@ const loadUserData = async (userInformationService) => {
     var userData = await userInformationService.getUserData();
     userData = userData.user;
 
-    const email = document.getElementById('email');
     const name = document.getElementById('name');
     const nickname = document.getElementById('nickname');
     const twoFactorEnabled = document.getElementById('two-factor-enabled');
     const avatar = document.querySelector('.avatar img');
     const language = document.getElementById('language');
 
-    email.value = userData.email;
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
