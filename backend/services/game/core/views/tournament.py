@@ -23,7 +23,7 @@ from core.models import (
     TournamentType,
 )
 from core.forms import GameForm, GameEditForm, GameRulesForm
-from common.decorators import logged_permission
+from user.decorators import JWTAuthentication
 from user.models import User
 
 
@@ -33,7 +33,7 @@ class TournamentView(generic.View):
     tournament_form = None
     rules_form = None
 
-    @logged_permission()
+    @JWTAuthentication()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
         if pk:
             self.tournament = get_object_or_404(Tournament, pk=pk)
@@ -43,7 +43,7 @@ class TournamentView(generic.View):
         response = render(request, self.template_name, self.get_context_data())
         return response
 
-    @logged_permission()
+    @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
         # TODO: SHEELA - verify if all users exists
         # remove this:
@@ -71,7 +71,7 @@ class TournamentView(generic.View):
         print("Tournament created: ", tournament)
         return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
-    @logged_permission()
+    @JWTAuthentication()
     def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
         # TODO: SHEELA - protect route
         self.tournament = get_object_or_404(Tournament, pk=pk)
@@ -90,7 +90,7 @@ class TournamentView(generic.View):
         # return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
     # TODO: SHEELA - protect route to only gateway
-    @logged_permission()
+    @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
         # TODO: SHEELA - protect route
         tournament = get_object_or_404(Tournament, pk=pk)

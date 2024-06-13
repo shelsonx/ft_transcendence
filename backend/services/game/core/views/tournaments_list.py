@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from core.models import Tournament, TournamentStatus, TournamentType
-from common.decorators import logged_permission
+from user.decorators import JWTAuthentication
 from user.models import User
 
 logger = logging.getLogger("eqlog")
@@ -28,7 +28,7 @@ class TournamentsView(generic.ListView):
     # paginate_by = 20
 
     # TODO SHEELA: proteger a rota - somente o usuário pode acessar?
-    @logged_permission()
+    @JWTAuthentication()
     def get(
         self, request: HttpRequest, pk: uuid = None, *args, **kwargs
     ) -> HttpResponse:

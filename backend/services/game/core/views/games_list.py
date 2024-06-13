@@ -13,7 +13,7 @@ from django.urls import resolve
 from django.views import generic
 
 from core.models import Game, GameStatus
-from common.decorators import logged_permission
+from user.decorators import JWTAuthentication
 from user.models import User
 
 logger = logging.getLogger("eqlog")
@@ -27,7 +27,7 @@ class GamesView(generic.ListView):
     # paginate_by = 20
 
     # TODO SHEELA: proteger a rota - somente o usuário pode acessar?
-    @logged_permission()
+    @JWTAuthentication()
     def get(
         self, request: HttpRequest, pk: uuid = None, *args, **kwargs
     ) -> HttpResponse:

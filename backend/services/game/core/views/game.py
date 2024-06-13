@@ -21,10 +21,11 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
 # First Party
-from common.middlewares import JWTAuthenticationMiddleware
+from common.validators import is_valid_uuid4
+from common.models import json_response
+from user.decorators import JWTAuthentication
 from core.models import Game, GameStatus, GameRules
 from core.forms import GameForm, GameEditForm, GameRulesForm
-from common.decorators import logged_permission
 from user.forms import UserSearchForm
 from user.models import User
 
@@ -35,26 +36,15 @@ class AddGameView(generic.View):
     rules_form = None
     user_form = None
 
-    # @csrf_protect
-    # @JWTAuthenticationMiddleware(func=User.validate_user_id)\
+    @JWTAuthentication()
     def get(self, request: HttpRequest) -> HttpResponse:
-        pprint.pprint(request, indent=4)
-        print("Cookies: ", request.COOKIES)
         self.set_forms()
-
         response = render(request, self.template_name, self.get_context_data())
         return response
 
-    # @JWTAuthenticationMiddleware(func=User.validate_user_id)
-    # @logged_permission()
     # @csrf_protect
+    @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
-        # request_user = request.current_user
-        # TODO: pedir o usuário para Lili ou Bruno e salvar se existir
-        request_user = User.objects.get(username="sheela")
-        pprint.pprint(request.POST, indent=4)
-        # pprint.pprint(request.headers, indent=4)
-
         post_data = request.POST
         self.set_forms(post_data)
         context = self.get_context_data()
@@ -66,12 +56,17 @@ class AddGameView(generic.View):
             )
             return render(request, self.template_name, context)
         if not all(form.is_valid() for form in forms):
-            # context["invalid"] = True
             return render(request, self.template_name, context)
 
-        rules: GameRules = GameRules.filter(self.rules_form)
+        rules = GameRules.objects.filter(
+            rule_type=self.rules_form.cleaned_data["rule_type"],
+            points_to_win=self.rules_form.cleaned_data["points_to_win"],
+            game_total_points=self.rules_form.cleaned_data["game_total_points"],
+            max_duration=self.rules_form.cleaned_data["max_duration"],
+        ).first()
         if rules is None:
             rules = self.rules_form.save()
+
         data = {
             "status": GameStatus.SCHEDULED,  # TODO: deixar como PENDING
             "rules": rules,
@@ -80,25 +75,23 @@ class AddGameView(generic.View):
         if not game_form.is_valid():
             message = _("An internal error occured while creating the game")
             log = message + ": " + game_form.errors.as_text()
-            logging.error(log)
-            return HttpResponse(message, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+            logging.error(log)  # TODO: remove it!
+            return json_response.error(msg=message)
 
         game: Game = game_form.save(commit=False)
-        game.owner = request_user
+        game.owner = request.user
         game.save()
-        game.add_player(request_user)
+        game.add_player(request.user)
         game.add_player(self.opponent)
         game.set_players_position()
 
         data = {"status": "success", "data": {"game": game.pk}}
-        return JsonResponse(data, status=HTTPStatus.CREATED)
+        return json_response.success(data=data, status=HTTPStatus.CREATED)
 
     def get_opponent(self, post_data: QueryDict | None) -> User | None:
         opponent = post_data.get("username") if post_data else None
         if opponent:
-            opponent = User.objects.filter(username=opponent).first()
-        # if not opponent:
-        # TODO: pedir o usuário para Lili ou Bruno e salvar se existir
+            opponent = User.get_object(username=opponent)
         return opponent
 
     def get_context_data(self, **kwargs) -> dict:
@@ -111,24 +104,24 @@ class AddGameView(generic.View):
 
     def set_forms(self, data=None) -> None:
         self.opponent = self.get_opponent(data)
-        print(self.opponent)
+        print(self.opponent)  # TODO: SHEELA - remove it!
         self.rules_form = GameRulesForm(data)
         self.user_form = UserSearchForm(data, instance=self.opponent)
 
 
 class GameView(generic.View):
-    @logged_permission()
+    @JWTAuthentication()
     def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
         game = Game.objects.filter(pk=pk).first()
         if not game:
-            return JsonResponse({"status": "not found"}, status=HTTPStatus.NOT_FOUND)
-        # verificar se o usuário é o dono do jogo, se tem acesso?
+            return json_response.not_found()
+        if game.owner != request.user:
+            return json_response.forbidden()
 
         data = {"status": "success", "data": {"game": game.to_json()}}
         return JsonResponse(data, status=HTTPStatus.OK)
 
-    # @csrf_protect
-    # @logged_permission()
+    # @JWTAuthentication()
     # def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
     #     # TODO: SHEELA - protect route
     #     self.game = get_object_or_404(Game, pk=pk)
@@ -146,12 +139,13 @@ class GameView(generic.View):
     #     return render(request, self.template_name, context)
     # return HttpResponse(status=HTTPStatus.NO_CONTENT)
 
-    # TODO: SHEELA - protect route to only gateway
-    @csrf_protect
-    @logged_permission()
+    @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        # TODO: SHEELA - protect route
-        game = get_object_or_404(Game, pk=pk)
+        game = Game.objects.filter(pk=pk).first()
+        if not game:
+            return json_response.not_found()
+        if game.owner != request.user:
+            return json_response.forbidden()
+
         game.delete()
-        print("game deleted: ", game)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        return json_response.success(msg="Game deleted")
