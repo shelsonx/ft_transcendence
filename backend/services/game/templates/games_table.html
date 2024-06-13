@@ -29,86 +29,89 @@
     </thead>
 
     <tbody>
-      {% for game in game_list %}
-      <tr class="match-row" id="game_{{game.pk}}">
-        <td>{% include "game_result.html" %}</td>
+      {% if total_games %}
 
-        <td>
-          {% if game.status == GameStatus.ENDED %}
-            {{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}
-          {% else %}
-            {{ game.status_label }}
-          {% endif %}
-        </td>
+        {% for game in game_list %}
+        <tr class="match-row">
+          <td>{% include "game_result.html" %}</td>
 
-        <td>
-          {% if game.status == GameStatus.ENDED %}
-            {{ game.duration|format_timedelta }}
-          {% else %}
-            -
-          {% endif %}
-        </td>
-
-        {% if user %}
-          {% comment %} column to indicate that the user won or makeactions {% endcomment %}
           <td>
-            {% if game.is_winner %}
-              <span class="winner">{% translate "Winner" %}</span>
-            {% elif not is_public_view and game.is_owner %}
-
-              {% if game.status == GameStatus.SCHEDULED %}
-                <button
-                  class="btn btn-primary action"
-                  onclick="window.location='?match={{game.pk}}#pong';"
-                >
-                  {% translate "Play" %}
-                </button>
-
-              {% elif game.status == GameStatus.PAUSED or game.status == GameStatus.ONGOING %}
-                <button
-                  class="btn btn-primary action"
-                  onclick="window.location='?match={{game.pk}}#pong';"
-                >
-                  {% translate "Continue" %}
-                </button>
-
-              {% elif game.status == GameStatus.PENDING %}
-                <button
-                  class="btn btn-secondary action"
-                  onclick="window.location='?match={{game.pk}}#pong';"
-                >
-                  {% translate "Validate" %}
-                </button>
-              {% endif %}
+            {% if game.status == GameStatus.ENDED %}
+              {{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}
+            {% else %}
+              {{ game.status_label }}
             {% endif %}
           </td>
 
           <td>
-            {% if not is_public_view and game.is_owner %}
-
-              {% if game.status == GameStatus.PENDING %}
-                <button
-                  class="btn btn-dark"
-                  {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
-                >
-                  {% translate "Delete" %}
-                </button>
-
-              {% elif game.status == GameStatus.SCHEDULED or game.status == GameStatus.PAUSED %}
-                <button
-                  class="btn btn-dark"
-                  {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
-                >
-                  {% translate "Cancel" %}
-                </button>
-
-              {% endif %}
+            {% if game.status == GameStatus.ENDED %}
+              {{ game.duration|format_timedelta }}
+            {% else %}
+              -
             {% endif %}
           </td>
-        {% endif %}
-      </tr>
 
-      {% endfor %}
+          {% if user %}
+            {% comment %} column to indicate that the user won or makeactions {% endcomment %}
+            <td>
+              {% if game.is_winner %}
+                <span class="winner">{% translate "Winner" %}</span>
+              {% elif not is_public_view and game.is_owner %}
+
+                {% if game.status == GameStatus.SCHEDULED %}
+                  <button
+                    class="btn btn-primary action"
+                    onclick="window.location='?match={{game.pk}}#pong';"
+                  >
+                    {% translate "Play" %}
+                  </button>
+
+                {% elif game.status == GameStatus.PAUSED or game.status == GameStatus.ONGOING %}
+                  <button
+                    class="btn btn-primary action"
+                    onclick="window.location='?match={{game.pk}}#pong';"
+                  >
+                    {% translate "Continue" %}
+                  </button>
+
+                {% elif game.status == GameStatus.PENDING %}
+                  <button
+                    class="btn btn-secondary action"
+                    onclick="window.location='?match={{game.pk}}#pong';"
+                  >
+                    {% translate "Validate" %}
+                  </button>
+                {% endif %}
+              {% endif %}
+            </td>
+
+            <td>
+              {% if not is_public_view and game.is_owner %}
+
+                {% if game.status == GameStatus.PENDING %}
+                  <button
+                    class="btn btn-dark"
+                    {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
+                  >
+                    {% translate "Delete" %}
+                  </button>
+
+                {% elif game.status == GameStatus.SCHEDULED or game.status == GameStatus.PAUSED %}
+                  <button
+                    class="btn btn-dark"
+                    {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
+                  >
+                    {% translate "Cancel" %}
+                  </button>
+
+                {% endif %}
+              {% endif %}
+            </td>
+          {% endif %}
+        </tr>
+
+        {% endfor %}
+      {% endif %}
     </tbody>
   </table>
 

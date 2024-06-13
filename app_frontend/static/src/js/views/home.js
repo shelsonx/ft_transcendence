@@ -16,14 +16,18 @@ class HomeView extends BaseLoggedView {
 
 const userLabel = "My games"
 const allUsersLabel = "All games"
-let userData = false
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
     <h2 id="hello-user"></h2>
-    <div >
+    <div>
       <button id="btn-data-switch" type="button" class="btn btn-info">
         ${userLabel}
+      </button>
+      <button id="btn-play" type="button" class="btn btn-primary"
+        onclick="window.location='#play';"
+      >
+        Play
       </button>
     </div>
   </div>
@@ -60,15 +64,18 @@ const start = async (user) => {
 
   await gameService.allGames().then(swap);
 
+  let userData = false
   const btnDataSwitch = document.getElementById("btn-data-switch");
   btnDataSwitch.addEventListener("click", async () => {
     userData = !userData
 
     if (userData) {
+      console.log(userData)
       await gameService.userGames(user.id).then(swap);
       btnDataSwitch.innerHTML = allUsersLabel;
-    }
+      }
     else {
+      console.log(userData)
       await gameService.allGames().then(swap);
       btnDataSwitch.innerHTML = userLabel;
     }
