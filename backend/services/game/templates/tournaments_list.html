@@ -9,8 +9,9 @@
   >
     <thead>
       <tr>
+        <th>{% translate "Name" %}</th>
+        <th>{% translate "Type" %}</th>
         <th>{% translate "Date / Status" %}</th>
-        <th>{% translate "Tournament Type" %}</th>
         <th>{% translate "Players" %}</th>
         <th>{% translate "Total Games" %}</th>
         <th>{% translate "Winner" %}</th>
@@ -24,22 +25,24 @@
     <tbody>
       {% if total_tournaments %}
 
-        {% for tournament in tournament_list %}
-            <tr class="tournament-row" onclick="window.location='?t={{tournament.pk}}#tournament';">
+        {% for t in tournament_list %}
+            <tr class="tournament-row" onclick="window.location='?t={{t.pk}}#tournament';">
 
-              {% if tournament.status == TournamentStatus.ENDED %}
-                <td>{{ tournament.date }}</td>
+              <td>{{ t.name }}</td>
+              <td>{{ t.type_label }}</td>
+
+              {% if t.status == TournamentStatus.ENDED %}
+                <td>{{ t.tournament_date }}</td>
               {% else %}
-                <td>{{ tournament.status_label }}</td>
+                <td>{{ t.status_label }}</td>
               {% endif %}
 
-              <td>{{ tournament.type_label }}</td>
-              <td>{{ tournament.number_of_players }}</td>
-              <td>{{ tournament.games_count }}</td>
+              <td>{{ t.number_of_players }}</td>
+              <td>{{ t.games_count }}</td>
 
               <td>
-                {% if tournament.status == tournamentStatus.ENDED %}
-                  {{ tournament.winner }}
+                {% if t.status == tournamentStatus.ENDED %}
+                  {{ t.winner }}
                 {% else %}
                   -
                 {% endif %}

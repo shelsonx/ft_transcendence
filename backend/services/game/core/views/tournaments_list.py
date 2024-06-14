@@ -9,7 +9,6 @@ import uuid
 from django.db.models import Sum
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404
 
 # from django.utils.translation import gettext_lazy as _
 from django.views import generic
@@ -78,9 +77,9 @@ class TournamentsView(generic.ListView):
         )
         tournament.games_count = tournament.all_rounds["number_of_games__sum"]
 
-        tournament.winner = None  # TODO
+        winner = tournament.winner
         tournament.is_winner = False
-        if self.user and tournament.winner and tournament.winner.user:
+        if self.user and winner and winner.user:
             tournament.is_winner = self.user.pk == tournament.winner.user.pk
 
         tournament.is_owner = False
