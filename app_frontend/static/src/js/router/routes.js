@@ -13,8 +13,9 @@ import GameInfoView from "../views/game-info/game_info.js";
 import SeeUserGamesView from "../views/game/view_user_games.js";
 import NewGameView from "../views/game/new_game.js";
 import PongGameView from "../views/game/pong.js";
-import TournamentDetailView from "../views/game/tournament-detail.js";
 import TournamentsView from "../views/game/tournaments.js";
+import NewTournamentView from "../views/game/new_tournament.js";
+import TournamentDetailView from "../views/game/tournament.js";
 
 
 /**
@@ -45,7 +46,8 @@ const hashRoutes = {
   "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
   "view-user-games": { title: "View user Games", render: SeeUserGamesView, description: "View user games", isProtected: true },
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },
-  "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
+  "add-tournament": { title: "Create a Tournament", render: NewTournamentView, description: "Create a Tournament", isProtected: true },
+  "tournament": { title: "Tournament detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
 };
 
 export {

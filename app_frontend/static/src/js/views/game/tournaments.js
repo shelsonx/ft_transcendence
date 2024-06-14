@@ -12,30 +12,56 @@ class TournamentsView extends BaseLoggedView {
   }
 }
 
+const userLabel = "My tournaments"
+const userDescription = "Your tournaments"
+const allUsersLabel = "All tournaments"
+const allUsersDescription = "Tournaments"
+let userData = false
+
 const html = /*html*/`
-  <div id="swap-container" class="container-fluid main"></div>
+  <div class="d-flex justify-content-between">
+    <h3 id="tournament-title"></h3>
+    <div >
+      <button id="btn-data-switch" type="button" class="btn btn-info">
+        ${userLabel}
+      </button>
+      <button id="btn-play" type="button" class="btn btn-primary"
+        onclick="window.location='#add-tournament';"
+      >
+        Create tournament
+      </button>
+    </div>
+  </div>
+  <div id="tournament-table-container" class="container-fluid main mt-5"></div>
 `
 
-let tournamentsRows = document.getElementsByClassName("tournament-row");
-
 const swap = (response) => {
-  const swapContainer = document.getElementById("swap-container");
+  // TODO: lidar quando retornar erro ou não responder
+  const swapContainer = document.getElementById("tournament-table-container");
   swapContainer.innerHTML = response;
-
-  tournamentsRows = document.getElementsByClassName("tournament-row");
-  tournamentsRows.array.forEach(match => {
-    match.addEventListener("click", () => {
-      // check if we do this without changing route because we gonna need to
-      window.location = '#tournament';
-    })
-  });
 }
 
 const start = async (user) => {
-  gameService.userTournaments().then(swap);
+  await gameService.allTournaments().then(swap);
 
-  // const tbody = document.getElementsByTagName("tbody");
-  // tbody.className = "main";
+  const title = document.getElementById("tournament-title");
+  title.innerHTML = allUsersDescription;
+
+  const btnDataSwitch = document.getElementById("btn-data-switch");
+  btnDataSwitch.addEventListener("click", async () => {
+    userData = !userData
+
+    if (userData) {
+      await gameService.userTournaments(user.id).then(swap);
+      btnDataSwitch.innerHTML = allUsersLabel;
+      title.innerHTML = userDescription;
+    }
+    else {
+      await gameService.allTournaments().then(swap);
+      btnDataSwitch.innerHTML = userLabel;
+      title.innerHTML = allUsersDescription;
+    }
+  });
 }
 
 export default new TournamentsView(html, start);
