@@ -111,6 +111,17 @@
       {% endfor %}
     </tbody>
   </table>
+
+  {% if total_games == 0 %}
+    <div class="game-message d-flex justify-content-center">
+      {% if is_public_view %}
+        <h3>{% translate "This user has no matches" %}</h3>
+      {% else %}
+        <h3>{% translate "You have no matches yet..." %}</h3>
+      {% endif %}
+    </div>
+  {% endif %}
+
 </div>
 
 {% if is_paginated %}
