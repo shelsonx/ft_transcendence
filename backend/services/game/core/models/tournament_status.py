@@ -7,4 +7,4 @@ class TournamentStatus(models.IntegerChoices):
     SCHEDULED = 1, _("Scheduled")  # all players already confirmed
     ON_GOING = 2, _("On going")
     ENDED = 3, _("Ended")
-    # CANCELED = 4, _("Canceled")
+    CANCELED = 4, _("Canceled")

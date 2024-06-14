@@ -23,15 +23,22 @@ class TournamentPlayer(models.Model):
         to=User, on_delete=models.SET_NULL, related_name="tournaments_player", null=True
     )
     alias_name = models.CharField(
-        max_length=20, verbose_name=_("Tournament player's name")
+        max_length=20, verbose_name=_("Alias name"), blank=True
     )
     score = models.IntegerField(
-        default=0, verbose_name=_("Player' score in the tournament")
+        default=0, verbose_name=_("Score")
     )
     rating = models.IntegerField(
-        default=0, verbose_name=_("Player's rating in the tournament")
+        default=0, verbose_name=_("Rating")
     )
 
     class Meta:
         db_table = "tournament_player"
         unique_together = [["tournament", "user"]]
+
+    def __str__(self) -> str:
+        if self.alias_name:
+            return self.alias_name
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]

@@ -35,3 +35,8 @@ class GamePlayer(models.Model):
             "score": self.score,
             "position": self.position,
         }
+
+    def __str__(self) -> str:
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]
