@@ -108,10 +108,7 @@ class Generator:
             for _ in range(tournament.number_of_players):
                 players.append(self.seedUser())
 
-        for player in players:
-            # tournament.players.add(player)
-            self.seedTournamentPlayer(tournament=tournament, user=player)
-
+        tournament.add_players(players)
         if not tournament.owner:
             tournament.owner = players[0]
             tournament.save()
