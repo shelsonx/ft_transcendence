@@ -27,6 +27,7 @@ class Tournament(models.Model):
     - The winner wins a bonus of 10 points in platform score
     """
 
+    # name = models.CharField(max_length=50, blank=True)
     tournament_type = models.SmallIntegerField(
         choices=TournamentType.choices,
         default=TournamentType.CHALLENGE,

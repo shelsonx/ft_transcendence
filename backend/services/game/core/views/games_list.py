@@ -25,7 +25,7 @@ logger = logging.getLogger("eqlog")
 class GamesView(generic.ListView):
     model = Game
     ordering = ["-game_datetime", "status"]
-    template_name = "games_table.html"
+    template_name = "games_list.html"
     is_public_view = False
     # paginate_by = 20
     excluded_status = [

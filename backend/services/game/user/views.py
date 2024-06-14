@@ -80,8 +80,6 @@ class UserView(generic.View):
         if not user:
             return json_response.not_found()
         if request.user != user:
-            # TODO: SHEELA - check if makes sense, since it will be already deleted in
-            # others microsservices
             return json_response.forbidden()
 
         user.delete()

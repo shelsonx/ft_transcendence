@@ -70,12 +70,10 @@ const start = async (user) => {
     userData = !userData
 
     if (userData) {
-      console.log(userData)
       await gameService.userGames(user.id).then(swap);
       btnDataSwitch.innerHTML = allUsersLabel;
       }
     else {
-      console.log(userData)
       await gameService.allGames().then(swap);
       btnDataSwitch.innerHTML = userLabel;
     }

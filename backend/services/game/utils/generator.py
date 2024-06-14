@@ -32,7 +32,6 @@ class Generator:
             return rules
 
         if size >= 2 or (size == 1 and fields.get("points_to_win")):
-            # TODO: talvez passar um full clean?
             return GameRules.objects.create(**fields)
 
         return GameRules.objects.get(pk=1)
