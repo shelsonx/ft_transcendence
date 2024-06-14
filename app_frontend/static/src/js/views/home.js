@@ -31,12 +31,12 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div id="swap-container" class="container-fluid main mt-3"></div>
+  <div id="home-container" class="container-fluid main mt-3"></div>
 `
 
 const swap = (response) => {
   // TODO: lidar quando retornar erro ou não responder
-  const swapContainer = document.getElementById("swap-container");
+  const swapContainer = document.getElementById("home-container");
   swapContainer.innerHTML = response;
 }
 

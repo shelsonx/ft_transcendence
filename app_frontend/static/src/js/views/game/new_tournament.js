@@ -13,11 +13,11 @@ class NewTournamentView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  <div id="add-tournament-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `;
 
-let idTarget = "swap-container";
+let idTarget = "add-tournament-container";
 
 const swap = (response) => {
   const add_tournament = document.getElementById(idTarget)

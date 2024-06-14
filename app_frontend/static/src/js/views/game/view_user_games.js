@@ -11,14 +11,14 @@ class SeeUserGamesView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <div id="swap-container" class="container-fluid main"></div>
+  <div id="game-table-container" class="container-fluid main"></div>
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `
 
 const swap = (response) => {
   // TODO: lidar quando retornar erro ou não responder
-  const swapContainer = document.getElementById("swap-container");
+  const swapContainer = document.getElementById("game-table-container");
   swapContainer.innerHTML = response;
 }
 
