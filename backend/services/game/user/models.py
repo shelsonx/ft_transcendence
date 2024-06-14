@@ -1,17 +1,15 @@
-# from itertools import chain
 import uuid
 
 from django.db import models
 from django.core.exceptions import MultipleObjectsReturned
-from django.http import Http404
 from django.utils.translation import gettext_lazy as _
 
-
+DEFAULT_AVATAR = "/media/avatars/default_avatar.jpeg"
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=50, unique=True, null=False, blank=False)
     # name = models.CharField(max_length=255)
-    # avatarFileName = models.CharField(max_length=100, default="default_avatar.jpeg")
+    avatar = models.CharField(max_length=255, default=DEFAULT_AVATAR, blank=True)
     # nickname = models.CharField(max_length=50)
     # score = models.IntegerField(default=0)
 
@@ -37,9 +35,12 @@ class User(models.Model):
             "username": _("anonymous"),
         }
 
-    # @property
-    # def avatarUrl(self):
-    #     return f"https://"
+    @property
+    def avatarUrl(self):
+        if not self.avatar:
+            self.avatar = DEFAULT_AVATAR
+            self.save()
+        return f"https://localhost:8006{self.avatar}"
 
     def __str__(self):
         return self.username

@@ -1,11 +1,12 @@
 <div class="player">
+
   {% if position == "R" %}
     <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
       <strong>{{ player.score}}</strong>
     </span>
   {% else %}
-    <span class="avatar">
-      {% comment %} TODO: avatar {% endcomment %}
+    <span >
+      <img class="match-list-avatar" src="{{ player.user.avatarUrl }}" alt="user avatar">
     </span>
   {% endif %}
   <span class="username">{{ player.user.username}}</span>
@@ -15,8 +16,8 @@
       <strong>{{ player.score}}</strong>
     </span>
   {% else %}
-    <span class="avatar">
-      {% comment %} TODO: avatar {% endcomment %}
+    <span >
+      <img class="match-list-avatar" src="{{ player.user.avatarUrl }}" alt="user avatar">
     </span>
   {% endif %}
 
