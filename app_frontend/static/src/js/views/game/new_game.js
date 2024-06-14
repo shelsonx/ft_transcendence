@@ -11,12 +11,12 @@ class NewGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  <div id="add-game-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `;
 
 const swapGameForm = async (response_content) => {
-  const swapContainer = document.getElementById("swap-container");
+  const swapContainer = document.getElementById("add-game-container");
   swapContainer.innerHTML = response_content;
 
   const addGameForm = document.getElementById("match-form");

@@ -13,7 +13,7 @@ class TournamentDetailView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-<div id="swap-container" class="container-fluid main"></div>
+<div id="tournament-container" class="container-fluid main"></div>
   <div id="add-tournament" class="row justify-content-center">
     <button class="btn btn-primary col-3" id="button">
       Create New Tournament
@@ -21,7 +21,7 @@ const html = /*html*/`
   </div>
 `
 
-let idTarget = "swap-container";
+let idTarget = "tournament-container";
 
 const swap = (response) => {
   const add_tournament = document.getElementById(idTarget)
