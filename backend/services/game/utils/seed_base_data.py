@@ -28,6 +28,7 @@ users = User.objects.filter(username__in=usernames)
 
 today = timezone.now()
 datebase = today - timedelta(days=7)
+# if True:
 if not all([u.games.all().exists() for u in users]):
     control = True
     for user in users:
@@ -36,20 +37,21 @@ if not all([u.games.all().exists() for u in users]):
             delta = timedelta(
                 days=randrange(7), minutes=randrange(60), seconds=randrange(60)
             )
-            game = gen.seedGame(
+            g = gen.seedGame(
                 game_datetime=(datebase + delta),
                 status=GameStatus.ENDED,
                 duration=timedelta(minutes=randrange(10), seconds=randrange(60)),
                 players=[user, opponent],
                 owner=user,
             )
-            max_points = game.rules.points_to_win
-            player_left, player_right = game.players
+            max_points = g.rules.points_to_win
+            player_left, player_right = g.players
             if control:
                 set_scores(player_left, player_right, max_points)
             else:
                 set_scores(player_right, player_left, max_points)
             control = not control
+            g.update_users()
 
         empty_status = [GameStatus.PENDING, GameStatus.SCHEDULED, GameStatus.CANCELED]
         shuffle(opponents)
@@ -66,19 +68,36 @@ if not all([u.games.all().exists() for u in users]):
 
         not_fineshed_status = [GameStatus.ONGOING, GameStatus.PAUSED]
         for status in not_fineshed_status:
-            game = gen.seedGame(
+            g = gen.seedGame(
                 game_datetime=(today - timedelta(days=i)),
                 status=status,
                 duration=timedelta(minutes=randrange(10), seconds=randrange(60)),
                 players=[user, opponents[i]],
                 owner=user,
             )
-            max_points = game.rules.points_to_win
-            player_left, player_right = game.players
+            max_points = g.rules.points_to_win
+            player_left, player_right = g.players
             player_left.score = randrange(max_points)
             player_left.save()
             player_right.score = randrange(max_points)
             player_right.save()
+            i = i + 1 if i < 3 else 0
+
+        # tie game
+        g = gen.seedGame(
+            rules=GameRules.objects.get(pk=4),
+            game_datetime=(today - timedelta(days=1)),
+            status=GameStatus.ENDED,
+            duration=timedelta(minutes=randrange(10, 15), seconds=randrange(60)),
+            players=[user, opponents[i]],
+            owner=user,
+        )
+        player_left, player_right = g.players
+        player_left.score = 21
+        player_left.save()
+        player_right.score = 21
+        player_right.save()
+        g.update_users()
 
 names = [
     "libft",
