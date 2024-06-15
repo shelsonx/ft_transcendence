@@ -35,34 +35,35 @@ class ITwoGameFactorService(ABC):
     def notify_user(self, email: str, code: str) -> None:
         pass
 
-    async def send_code_to_user(self, two_factor_game: TwoFactorGame, users: List[User]) -> None:
+    async def send_code_to_user(self, two_factor_game: SendGame2FactorCodeDto, users: List[User]) -> None:
         try:
 
             ids = list(map(lambda user: user.id, users))
-            for user_receiver_id in two_factor_game.user_receiver_id:
+            for user_receiver_id in two_factor_game.user_receiver_ids:
                 if user_receiver_id not in ids:
                     raise TwoFactorCodeException(_("Invalid email list"))
-
-            if len(users) != len(two_factor_game.user_receiver_id):
-                raise TwoFactorCodeException(_("Invalid email list"))
 
             two_factor_code = (
                 await self.two_factor_game_repository.find_two_factor_by_game_details(two_factor_game)
             )
+            print("two_factor_code",two_factor_code)
         except TwoFactorGame.DoesNotExist:
             pass
-        await self.two_factor_game_repository.delete_two_factor_by_ids(
-            [two_factor.id for two_factor in two_factor_code]
-        )
-        for user_receiver_id in two_factor_game.user_receiver_id:
+        if two_factor_code is not None:
+            await self.two_factor_game_repository.delete_two_factor_by_ids(
+                [two_factor.id for two_factor in two_factor_code]
+            )
+
+        user_requester = next(user for user in users if user.id == two_factor_game.user_requester_id)
+        for user_receiver_id in two_factor_game.user_receiver_ids:
+            user_receiver = next(user for user in users if user.id == user_receiver_id)
             two_factor_dto = await self.add_two_factor(
-                user_receiver_id=user_receiver_id,
-                user_requester_id=two_factor_game.user_requester_id,
+                user_receiver_id=user_receiver,
+                user_requester_id=user_requester,
                 game_type=two_factor_game.game_type,
                 game_id=two_factor_game.game_id
             )
-            user = next(user for user in users if user.id == user_receiver_id)
-            self.notify_user(user.email, two_factor_dto.code)
+            self.notify_user(user_receiver.email, two_factor_dto.code)
 
     async def validate_and_delete_two_factor(self, two_factor_game_dto: ValidateGame2FactorCodeDto) -> bool:
         is_valid = await self.validate_code(user_id, code)

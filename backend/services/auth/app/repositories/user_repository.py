@@ -59,5 +59,9 @@ class UserRepository(IUserRepository):
         return True
 
     async def get_users_by_ids(self, ids: List[str]) -> List[User]:
-        return await sync_to_async(User.objects.filter, thread_sensitive=True)(id__in=ids)
+        users = []
+        for id in ids:
+            user = await self.get_user_by_id(id)
+            users.append(user)
+        return users
 

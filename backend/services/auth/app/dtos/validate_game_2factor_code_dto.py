@@ -16,9 +16,8 @@ class UUIDArrayField(forms.Field):
             raise ValidationError(self.error_messages['too_many_values'])
         try:
             for v in value:
-                print(v)
                 uuid.UUID(v, version=4) # ValueError if not a valid uuid4
-            return value
+            return [uuid.UUID(uui_str) for uui_str in value]
         except:
             raise ValidationError(self.error_messages['invalid_uuid'])
 
@@ -49,7 +48,7 @@ class CodeUUIDArrayField(forms.Field):
         return value
 
 class SendGame2FactorCodeForm(forms.Form):
-    user_receiver_id = UUIDArrayField(required=True,
+    user_receiver_ids = UUIDArrayField(required=True,
                                       error_messages={
                                           'not_a_list': _('The user_receiver_id field must be an array of uuids.'),
                                           'too_many_values': _('The user_receiver_id field must contain at most %(max_uuids)d uuids.') % {'max_uuids': MAX_UUIDS},
@@ -67,7 +66,7 @@ class SendGame2FactorCodeDto(models.Model):
 
 
     def __str__(self) -> str:
-        return f"user_receiver_id: {self.user_receiver_id}, user_requester_id: {self.user_requester_id}, game_type: {self.game_type}, game_id: {self.game_id}"
+        return f"user_receiver_ids: {self.user_receiver_ids}, user_requester_id: {self.user_requester_id}, game_type: {self.game_type}, game_id: {self.game_id}"
 
     class Meta:
         managed = False
@@ -88,3 +87,8 @@ class ValidateGame2FactorCodeDto(models.Model):
     game_id = models.BigIntegerField(null=False, blank=False)
     game_type = models.CharField(max_length=50, choices=TwoFactorGame.GameType.choices, default=TwoFactorGame.GameType.INDIVIDUAL_GAME)
 
+    def __str__(self) -> str:
+        return f"user_requester_id: {self.user_requester_id}, code_user_receiver_id: {self.code_user_receiver_id}, game_id: {self.game_id}, game_type: {self.game_type}"
+
+    class Meta:
+        managed = False

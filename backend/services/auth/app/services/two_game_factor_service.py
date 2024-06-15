@@ -2,13 +2,13 @@ import random
 
 from ..interfaces.services.email_service import IEmailService
 from ..models.two_factor import TwoFactor
-from ..interfaces.services.two_factor_service import ITwoFactorService
+from ..interfaces.services.two_factor_game_service import ITwoGameFactorService
 from django.conf import settings
 from ..interfaces.repositories.two_factor_game_repository import ITwoFactorGameRepository
 from django.utils.translation import gettext_lazy as _
 from ..dtos.validate_game_2factor_code_dto import ValidateGame2FactorCodeDto, SendGame2FactorCodeDto
 
-class TwoGameFactorService(ITwoFactorService):
+class TwoGameFactorService(ITwoGameFactorService):
 
     def __init__(
         self, two_factor_game_repository: ITwoFactorGameRepository, email_service: IEmailService

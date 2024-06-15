@@ -4,7 +4,7 @@ from ..models.two_factor_game import TwoFactorGame
 from ..interfaces.repositories.two_factor_game_repository import ITwoFactorGameRepository
 
 
-class TwoFactorRepository(ITwoFactorGameRepository):
+class TwoGameFactorRepository(ITwoFactorGameRepository):
 
     async def add_two_factor(self, two_factor: TwoFactorGame) -> TwoFactorGame:
         return await TwoFactorGame.objects.acreate(
@@ -22,10 +22,12 @@ class TwoFactorRepository(ITwoFactorGameRepository):
         try:
             two_factor_game_list = []
             for user_receiver_id in two_factor_game_dto.user_receiver_ids:
-                tw_factor_game = await TwoFactorGame.objects.aget(
+                two_factor_game = await TwoFactorGame.objects.aget(
                     game_id=two_factor_game_dto.game_id,
-                    user_receiver_id=user_receiver_id, user_requester_id=two_factor_game_dto.user_requester_id)
-                two_factor_game_list.append(tw_factor_game)
+                    user_receiver_id=user_receiver_id,
+                    game_type=two_factor_game_dto.game_type,
+                    user_requester_id=two_factor_game_dto.user_requester_id)
+                two_factor_game_list.append(two_factor_game)
             return two_factor_game_list
         except TwoFactorGame.DoesNotExist:
             return None

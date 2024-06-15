@@ -15,12 +15,12 @@ class ValidateGame2FactorCodeView(View):
     def __init__(self, validate_game_2factor_code_controller: BaseController) -> None:
         self.validate_game_2factor_code_controller = validate_game_2factor_code_controller
 
-    @ProtectedRoute()
+    #@ProtectedRoute()
     async def put(self, request: HttpRequest) -> HttpResponse:
         data = await self.validate_game_2factor_code_controller.handle_put(request)
         return data
 
-    @ProtectedRoute()
+    #@ProtectedRoute()
     async def post(self, request: HttpRequest) -> HttpResponse:
         data = await self.validate_game_2factor_code_controller.handle_post(request)
         return data
