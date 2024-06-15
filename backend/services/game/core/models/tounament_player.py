@@ -57,9 +57,13 @@ class TournamentPlayer(models.Model):
         db_table = "tournament_player"
         unique_together = [["tournament", "user"]]
 
-    def __str__(self) -> str:
+    @property
+    def name(self) -> str:
         if self.alias_name:
             return self.alias_name
         if self.user:
             return self.user.username
         return User.anonymous()["username"]
+
+    def __str__(self) -> str:
+        return self.name

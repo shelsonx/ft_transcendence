@@ -104,7 +104,6 @@ class AddGameView(generic.View):
 
     def set_forms(self, data=None) -> None:
         self.opponent = self.get_opponent(data)
-        print(self.opponent)  # TODO: SHEELA - remove it!
         self.rules_form = GameRulesForm(data)
         self.user_form = UserSearchForm(data, instance=self.opponent)
 

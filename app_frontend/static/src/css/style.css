@@ -427,7 +427,7 @@ body {
     --bs-table-bg: var(--table-dark-bg) !important;
 }
 
-.main {
+.scroll-on {
     overflow: auto !important;
 }
 

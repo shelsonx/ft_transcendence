@@ -2,7 +2,7 @@
 {% load timedelta_tags %}
 
 <div id="tournaments-table"
-  class="table-responsive main border border-white border-opacity-10 rounded-3 align-content-center"
+  class="table-responsive main scroll-on border border-white border-opacity-10 rounded-3 align-content-center"
 >
   <table
     class="table table-dark align-middle table-hover"
@@ -41,8 +41,15 @@
               <td>{{ t.games_count }}</td>
 
               <td>
-                {% if t.status == tournamentStatus.ENDED %}
-                  {{ t.winner }}
+                {% if t.status == TournamentStatus.ENDED %}
+                  <span >
+                    {% if t.winner.user is not None %}
+                      <img class="match-list-avatar" src="{{ t.winner.user.avatarUrl }}" alt="user avatar">
+                    {% else %}
+                      <img class="match-list-avatar" src="{{ default_avatar }}" alt="user avatar">
+                    {% endif %}
+                  </span>
+                  <span class="username">{{ t.winner.name }}</span>
                 {% else %}
                   -
                 {% endif %}
