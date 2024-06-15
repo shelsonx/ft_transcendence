@@ -16,7 +16,7 @@ from user.models import User
 from .game_status import GameStatus
 from .game_rules import GameRules
 from .game_player_position import GamePlayerPosition
-from .rating import GameRating
+from .rating import GameRating, TournamentGameRating
 
 
 class Game(models.Model):
@@ -168,6 +168,55 @@ class Game(models.Model):
         self._updated_players = True
         self.save()
 
+    def update_tournament(self, *, force: bool = False):
+        round = self.round.all().first()
+        if not round:
+            return
+        if self.status != GameStatus.ENDED:
+            return
+        if self._updated_players and not force:
+            return
+
+        # ensure we have all data updated from DB
+        self.__player_left = None
+        self.__player_right = None
+        g_players = list(self.players)
+        t_players = round.tournament.players
+        t_players = [
+            t_p
+            for t_p in t_players
+            if t_p.user in [g.user for g in g_players if g.user]
+        ]
+        if len(t_players) != 2:
+            raise ValueError("mismatch in t_players size")
+        if t_players[0].user == self.__player_right.user:
+            t_players = [t_players[1], t_players[0]]
+
+        t_players[0].score += self.__player_left.score
+        t_players[1].score += self.__player_right.score
+        self.__is_tie = None
+        if self.is_a_tie:
+            t_players[0].ties += 1
+            t_players[1].ties += 1
+            t_players[0].rating += TournamentGameRating.TIE
+            t_players[1].rating += TournamentGameRating.TIE
+        else:
+            self.__winner = None
+            winner = self.winner
+            if t_players[0].user and t_players[0].user == winner.user:
+                t_players[0].winnings += 1
+                t_players[0].rating += TournamentGameRating.WIN
+                t_players[1].losses += 1
+            elif t_players[1].user and t_players[1].user == winner.user:
+                t_players[1].winnings += 1
+                t_players[1].rating += TournamentGameRating.WIN
+                t_players[0].losses += 1
+
+        t_players[0].save()
+        t_players[1].save()
+        self._updated_players = True
+        self.save()
+
     def get_player_name(self, player) -> str:
         """
         player is a GamePlayer instance
@@ -175,9 +224,6 @@ class Game(models.Model):
         if player and player.user:
             return player.user.username
         return User.anonymous()["username"]
-
-    def save(self, *args, **kwargs) -> None:
-        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         player_left, player_right = self.players
