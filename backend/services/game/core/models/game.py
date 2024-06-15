@@ -2,6 +2,7 @@
 # python std library
 import random
 from datetime import timedelta
+from typing import Any
 
 # django
 from django.db import models
@@ -15,6 +16,7 @@ from user.models import User
 from .game_status import GameStatus
 from .game_rules import GameRules
 from .game_player_position import GamePlayerPosition
+from .rating import GameRating
 
 
 class Game(models.Model):
@@ -43,53 +45,60 @@ class Game(models.Model):
     _players = models.ManyToManyField(
         to=User, through="GamePlayer", related_name="games"
     )
+    _updated_players = models.BooleanField(default=False)
     owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
 
-    # field to link Elimination Tournament Games
-    # result_to = models.ForeignKey(
-    #     "self",
-    #     on_delete=models.SET_NULL,
-    #     related_name="depends_on",
-    #     null=True,
-    #     blank=True,
-    # )
-
-    # @property
-    # def tournament(self):
-    #     if hasattr(self, "tournament"):
-    #         return self.tournament
-    #     return None
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.__player_left = None
+        self.__player_right = None
+        self.__winner = None
+        self.__is_tie = None
 
     @property
     def players(self):
-        players = self.game_players.all().order_by("position")
+        if self.__player_left or self.__player_right:
+            return self.__player_left, self.__player_right
+
+        players = self.game_players.all().select_related("user").order_by("position")
 
         if not players.exists():
             return None, None
 
-        if players.count() == 1:
+        count = players.count()
+        if count == 1:
             p = players[0]
             if p.position == GamePlayerPosition.LEFT:
-                return p, None
-            return None, p
+                self.__player_left = p
+            else:
+                self.__player_right = p
 
-        if players.count() == 2:
-            return players[0], players[1]  # player_left, player_right
+        elif count == 2:
+            self.__player_left = players[0]
+            self.__player_right = players[1]
+
+        return self.__player_left, self.__player_right
 
     @property
     def winner(self):
         if self.status != GameStatus.ENDED:
             return None
+        if self.__winner:
+            return self.__winner
 
-        players = self.game_players.order_by("-score")
+        players = self.game_players.all().select_related("user").order_by("-score")
         if not players.exists():
             return None
-        return players.first()
+
+        self.__winner = players.first()
+        return self.__winner
 
     @property
     def is_a_tie(self) -> bool:
         if self.status != GameStatus.ENDED:
             return False
+        if self.__is_tie is not None:
+            return self.__is_tie
 
         player_left, player_right = self.players
         if player_left and player_right:
@@ -121,11 +130,43 @@ class Game(models.Model):
         p2.save()
         return p1, p2
 
-    def add_score(self) -> None:
-        # tournament is other rule
-        if hasattr(self, "round"):
-            pass
-        pass
+    def update_users(self, *, force: bool = False) -> None:
+        if self.status != GameStatus.ENDED:
+            return
+        if not self.round:
+            return
+        if self._updated_players and not force:
+            return
+        # ensure we have all data updated from DB
+        self.__player_left = None
+        self.__player_right = None
+        self.__is_tie = None
+        if self.is_a_tie:
+            for player in list(self.players):
+                user: User = player.user
+                if user:
+                    user.score += player.score
+                    user.rating += GameRating.TIE
+                    user.ties += 1
+                    user.save()
+            self._updated_players = True
+            self.save()
+            return
+
+        self.__winner = None
+        winner = self.winner
+        for player in self.players:
+            user: User = player.user
+            if user:
+                user.score += player.score
+                if player == winner:
+                    user.rating += GameRating.WIN
+                    user.winnings += 1
+                else:
+                    user.losses += 1
+                user.save()
+        self._updated_players = True
+        self.save()
 
     def get_player_name(self, player) -> str:
         """
@@ -134,6 +175,9 @@ class Game(models.Model):
         if player and player.user:
             return player.user.username
         return User.anonymous()["username"]
+
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         player_left, player_right = self.players
