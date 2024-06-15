@@ -16,7 +16,7 @@ from django.views import generic
 from core.models import Tournament, TournamentStatus, TournamentType
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from user.models import User
+from user.models import DEFAULT_AVATAR, User
 
 logger = logging.getLogger("eqlog")
 
@@ -65,6 +65,7 @@ class TournamentsView(generic.ListView):
             count += 1
         context["tournament_list"] = tournament_list
         context["total_tournaments"] = count
+        context["default_avatar"] = f"https://localhost:8006{DEFAULT_AVATAR}"
 
         return context
 
