@@ -55,6 +55,7 @@ class Tournament(models.Model):
         related_name="tournaments",
         verbose_name=_("Tournament Players"),
     )
+    _updated_players = models.BooleanField(default=False)
     owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
 
     # value inputed for CHALLENGE (is the same as total games for each player)
@@ -80,15 +81,17 @@ class Tournament(models.Model):
     def add_players(self, users: list[User]):
         self._players.add(*users)
 
-    # def calculate_scores(self):
-    #     players = self.players
-    #     rounds = self.rounds.all()
-    #     for p in players:
-    #         p.score = GamePlayer.objects.filter(
-    #             user=p.user, game__round__in=rounds
-    #         ).aggregate(Sum("score"))["score__sum"] or 0
-    #         p.save()
-    # players.order_by("score")
+    def get_rounds(self) -> QuerySet:
+        return self.rounds.all().order_by("round_number")
+
+    def update_users(self, *, force: bool = False) -> None:
+        if self.status != TournamentStatus.ENDED:
+            return
+        if self._updated_players and not force:
+            return
+
+        for p in self.players:
+            p.update_user(force=force)
 
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight

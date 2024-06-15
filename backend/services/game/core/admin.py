@@ -48,7 +48,7 @@ class GameRulesAdmin(admin.ModelAdmin):
 class TournamentPlayerInline(admin.TabularInline):
     model = TournamentPlayer
     extra = 0
-    fields = ["user", "alias_name", "score", "rating"]
+    fields = ["user", "alias_name", "score", "rating", "winnings", "losses", "ties"]
     readonly_fields = ["user"]
 
 

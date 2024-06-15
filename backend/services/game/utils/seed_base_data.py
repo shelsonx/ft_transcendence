@@ -145,9 +145,10 @@ if not all([u.tournaments.all().exists() for u in users]):
                 else:
                     set_scores(player_right, player_left, max_points, is_total_points)
                 control = not control
+                g.update_tournament()
         t.status = TournamentStatus.ENDED
         t.save()
-        # t.calculate_scores()
+        t.update_users()
 
     max_index = len(users) - 1
     status = [TournamentStatus.INVITATION, TournamentStatus.SCHEDULED]

@@ -31,6 +31,27 @@ class TournamentPlayer(models.Model):
     rating = models.IntegerField(
         default=0, verbose_name=_("Rating")
     )
+    winnings = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+    ties = models.PositiveIntegerField(default=0)
+    _updated_players = models.BooleanField(default=False)
+
+    def update_user(self, *, force: bool = False):
+        if self._updated_players and not force:
+            return
+
+        user = self.user
+        if not user:
+            return
+
+        user.score += self.score
+        user.rating += self.rating
+        user.winnings += self.winnings
+        user.losses += self.losses
+        user.ties += self.ties
+        user.save()
+        self._updated_players = True
+        self.save()
 
     class Meta:
         db_table = "tournament_player"
