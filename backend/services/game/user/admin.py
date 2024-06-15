@@ -7,7 +7,4 @@ from .models import User
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     model = User
-    # readonly_fields = ()
-    # list_filter = []
-
-    # list_display = ["__str__"]
+    list_display = ["username", "score", "rating", "winnings", "losses", "ties"]
