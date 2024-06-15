@@ -56,7 +56,8 @@ class User(AbstractBaseUser):
             'status': self.status,
             'friends': friends_json,
             'friend_requests': friend_requests_json,
-            'blocked_users': blocked_users_json
+            'blocked_users': blocked_users_json,
+            'user_uuid': self.user_uuid if self.user_uuid else '',
         }
 
 class FriendshipRequest(models.Model):

@@ -1,19 +1,22 @@
 # Create your views here.
 # Standard Library
 import logging
+
 # import pprint
 import uuid
 
 # Third Party
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404
 from django.urls import resolve
+
 # from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
+from common.models import json_response
 from core.models import Game, GameStatus
-from common.decorators import logged_permission
+from user.decorators import JWTAuthentication
 from user.models import User
 
 logger = logging.getLogger("eqlog")
@@ -22,58 +25,57 @@ logger = logging.getLogger("eqlog")
 class GamesView(generic.ListView):
     model = Game
     ordering = ["-game_datetime", "status"]
-    template_name = "games_table.html"
-    is_viewer = False
+    template_name = "games_list.html"
+    is_public_view = False
     # paginate_by = 20
+    excluded_status = [
+        GameStatus.PENDING,
+        GameStatus.SCHEDULED,
+        GameStatus.CANCELED,
+    ]
 
-    # TODO SHEELA: proteger a rota - somente o usuário pode acessar?
-    @logged_permission()
+    @JWTAuthentication()
     def get(
         self, request: HttpRequest, pk: uuid = None, *args, **kwargs
     ) -> HttpResponse:
-        # pprint.pprint(request.headers, indent=4)
         self.user = None
         if pk:
-            self.user = User.objects.filter(pk=pk).first()  # TODO:use get_object_or_404
+            self.user = User.get_object(pk=pk)
             if not self.user:
-                self.user = get_object_or_404(User, username="sheela")
-            # self.user = get_object_or_404(User, pk=pk)
+                return json_response.not_found()
 
             current_url = resolve(request.path_info).url_name
             if current_url == "view_user_games":
-                self.is_viewer = True
-            else:
-                # TODO:SHEELA verify if request.current_user == self.user
-                # if not return permission denied
-                pass
-        else:
-            pass
-            # self.user = request.current_user
+                self.is_public_view = True
+            elif self.user != request.user:
+                return json_response.forbidden()
 
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet[Game]:
-        if self.user:
-            return self.user.games.all()
+        if self.user and not self.is_public_view:
+            return self.user.games.all().exclude(
+                Q(status__in=self.excluded_status) & ~Q(owner=self.user)
+            )
+        elif self.user:
+            return self.user.games.all().exclude(status__in=self.excluded_status)
 
-        excluded_status = [
-            GameStatus.PENDING,
-            GameStatus.SCHEDULED,
-            GameStatus.CANCELED,
-        ]
         queryset = super().get_queryset()
-        return queryset.exclude(status__in=excluded_status)
+        return queryset.exclude(status__in=self.excluded_status)
 
     def get_context_data(self, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
         context["user"] = self.user
-        context["is_viewer"] = self.is_viewer
+        context["is_public_view"] = self.is_public_view
         context["GameStatus"] = GameStatus
 
         game_list = []
+        count = 0
         for game in context["game_list"]:
             game_list.append(self.get_game_data(game))
+            count += 1
         context["game_list"] = game_list
+        context["total_games"] = count
 
         return context
 
@@ -102,5 +104,9 @@ class GamesView(generic.ListView):
         game.is_owner = False
         if self.user and game.owner and self.user.pk == game.owner.pk:
             game.is_owner = True
+
+        game.is_winner = False
+        if winner and winner.user and self.user and winner.user.pk == self.user.pk:
+            game.is_winner = True
 
         return game

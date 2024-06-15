@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from uuid import UUID
+import base64
+import json
 
 # Django
 from django.utils import timezone
@@ -20,7 +22,8 @@ class JWTPayload:
         return JWTPayload(sub, iat, exp)
 
     @staticmethod
-    def decode(payload: dict):
+    def decode(base64payload: str):
+        payload = json.loads(base64.b64decode(base64payload).decode("utf-8"))
         return JWTPayload(sub=payload["sub"], iat=payload["iat"], exp=payload["exp"])
 
     def is_expired(self):
@@ -32,11 +35,11 @@ class JWTPayload:
     def to_dict(self):
         return {"sub": self.sub, "iat": self.iat, "exp": self.exp}
 
-    def _timestamp_to_datetime(self, timestamp: float) -> str:
+    def __timestamp_to_datetime(self, timestamp: float) -> str:
         return datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S")
 
     def __str__(self) -> str:
         jwt_paylod = self.to_dict()
-        iat = self._timestamp_to_datetime(jwt_paylod["iat"])
-        exp = self._timestamp_to_datetime(jwt_paylod["exp"])
+        iat = self.__timestamp_to_datetime(jwt_paylod["iat"])
+        exp = self.__timestamp_to_datetime(jwt_paylod["exp"])
         return f"sub: {jwt_paylod['sub']}, iat: {iat}, exp: {exp}"

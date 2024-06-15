@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 class BaseApiException(Exception):
     def __init__(self, message, status_code):
         self.message = message
@@ -11,4 +13,4 @@ class BaseApiException(Exception):
 class UnauthorizedException(BaseApiException):
 
     def __init__(self, message="Unauthorized"):
-        super().__init__(message=message, status_code=401)
+        super().__init__(message=message, status_code=HTTPStatus.UNAUTHORIZED)

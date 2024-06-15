@@ -112,28 +112,6 @@ class GameRules(models.Model):
     # ) -> None:
     #     return super().full_clean(exclude, validate_unique, validate_constraints)
 
-    @classmethod
-    def filter(cls, form: forms.ModelForm):
-        if not form.is_valid():
-            return None
-
-        rules_type = form.cleaned_data["rule_type"]
-        filters = {"rule_type": rules_type}
-        match rules_type:
-            case GameRuleType.PLAYER_POINTS:
-                filters.update({"points_to_win": form.cleaned_data["points_to_win"]})
-            case GameRuleType.GAME_TOTAL_POINTS:
-                filters.update(
-                    {"game_total_points": form.cleaned_data["game_total_points"]}
-                )
-            case GameRuleType.GAME_DURATION:
-                filters.update({"max_duration": form.cleaned_data["max_duration"]})
-
-        rules = GameRules.objects.filter(**filters)
-        if rules.count() > 1:
-            raise ValueError("Duplicated GameRuleType object")
-        return rules.first()
-
     def __str__(self):
         text = f"{self.rule_type.label}"
 

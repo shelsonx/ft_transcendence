@@ -5,7 +5,7 @@ from http import HTTPStatus
 from django.http import JsonResponse
 
 
-def success_json_response(
+def success(
     data: dict = {}, msg: str = None, status: int = HTTPStatus.OK
 ) -> JsonResponse:
     data = {
@@ -16,7 +16,7 @@ def success_json_response(
     return JsonResponse(data, status=status)
 
 
-def error_json_response(
+def error(
     data: dict = {}, msg: str = None, status: int = HTTPStatus.INTERNAL_SERVER_ERROR
 ) -> JsonResponse:
     data = {
@@ -27,9 +27,11 @@ def error_json_response(
     return JsonResponse(data, status=status)
 
 
-def json_bad_request(data: dict = {}, msg: str = None) -> JsonResponse:
-    return error_json_response(data=data, msg=msg, status=HTTPStatus.BAD_REQUEST)
+def bad_request(data: dict = {}, msg: str = "Bad Request") -> JsonResponse:
+    return error(data=data, msg=msg, status=HTTPStatus.BAD_REQUEST)
 
+def not_found(data: dict = {}, msg: str = "Not found") -> JsonResponse:
+    return error(data=data, msg=msg, status=HTTPStatus.NOT_FOUND)
 
-def json_not_found(data: dict = {}, msg: str = None) -> JsonResponse:
-    return error_json_response(data=data, msg=msg, status=HTTPStatus.NOT_FOUND)
+def forbidden(data: dict = {}, msg: str = "Permission Denied") -> JsonResponse:
+    return error(data=data, msg=msg, status=HTTPStatus.FORBIDDEN)
