@@ -5,13 +5,17 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.utils.translation import gettext_lazy as _
 
 DEFAULT_AVATAR = "/media/avatars/default_avatar.jpeg"
+
+
 class User(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(max_length=50, unique=True, null=False, blank=False)
-    # name = models.CharField(max_length=255)
     avatar = models.CharField(max_length=255, default=DEFAULT_AVATAR, blank=True)
-    # nickname = models.CharField(max_length=50)
-    # score = models.IntegerField(default=0)
+    score = models.IntegerField(default=0)  # total points
+    rating = models.IntegerField(default=0)
+    winnings = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+    ties = models.PositiveIntegerField(default=0)
 
     @classmethod
     def get_object(cls, **fields):
@@ -20,13 +24,7 @@ class User(models.Model):
         if user.count() > 1:
             raise MultipleObjectsReturned
 
-        user = user.first()
-        if not user:
-            # TODO: SHEELA - call auth api and user management api to get data and
-            # create user
-            pass
-
-        return user
+        return user.first()
 
     @classmethod
     def anonymous(cls):
@@ -34,6 +32,14 @@ class User(models.Model):
             "id": None,
             "username": _("anonymous"),
         }
+
+    @property
+    def total_games(self) -> int:
+        return self.winnings + self.losses + self.ties
+
+    @property
+    def total_tournaments(self) -> int:
+        return self.tournaments.all().count()
 
     @property
     def avatarUrl(self):
