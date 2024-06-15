@@ -57,3 +57,7 @@ class UserRepository(IUserRepository):
     async def delete_user(self, id: str) -> bool:
         await User.objects.filter(id=id).adelete()
         return True
+
+    async def get_users_by_ids(self, ids: List[str]) -> List[User]:
+        return await sync_to_async(User.objects.filter, thread_sensitive=True)(id__in=ids)
+

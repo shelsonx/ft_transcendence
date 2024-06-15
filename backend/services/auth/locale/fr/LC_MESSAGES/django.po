@@ -114,3 +114,9 @@ msgstr "Le champ user_receiver_id doit contenir au maximum %(max_uuids)d"
 
 msgid "The user_receiver_id field must contain only valid uuids."
 msgstr "Le champ user_receiver_id doit contenir uniquement des uuids valides."
+
+msgid "Invalid email list"
+msgstr "Liste d'e-mails invalide"
+
+msgid "The code_user_receiver_id field must be an array of code and uuids."
+msgstr "Le champ code_user_receiver_id doit être un tableau de code et uuids."

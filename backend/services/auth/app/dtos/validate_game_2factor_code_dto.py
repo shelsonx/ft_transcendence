@@ -22,8 +22,33 @@ class UUIDArrayField(forms.Field):
         except:
             raise ValidationError(self.error_messages['invalid_uuid'])
 
+class CodeUUIDArrayField(forms.Field):
+    def is_valid_uuid(self, uuid_str):
+        try:
+            uuid.UUID(uuid_str)
+            return True
+        except ValueError:
+            return False
 
-class ValidateGame2FactorCodeForm(forms.Form):
+    def is_valid_data(self, data):
+        if not isinstance(data, list) or len(data) > MAX_UUIDS:
+            return False
+        for item in data:
+            if not isinstance(item, dict) or len(item) != 1:
+                return False
+            key, value = next(iter(item.items()))
+            if not isinstance(key, str) or len(key) != 6 or not key.isdigit() or not self.is_valid_uuid(value):
+                return False
+        return True
+
+    def clean(self, value):
+        if not isinstance(value, list):
+            raise ValidationError(self.error_messages['not_a_list'])
+        if not self.is_valid_data(value):
+            raise ValidationError(self.error_messages['invalid_uuid'])
+        return value
+
+class SendGame2FactorCodeForm(forms.Form):
     user_receiver_id = UUIDArrayField(required=True,
                                       error_messages={
                                           'not_a_list': _('The user_receiver_id field must be an array of uuids.'),
@@ -34,14 +59,32 @@ class ValidateGame2FactorCodeForm(forms.Form):
     game_id = forms.IntegerField(required=True)
 
 
-class ValidateGame2FactorCodeDto(models.Model):
+class SendGame2FactorCodeDto(models.Model):
     user_receiver_ids = ArrayField(models.UUIDField(blank=False, null=False), default=list)
     user_requester_id = models.UUIDField(blank=False, null=False)
     game_type = models.CharField(max_length=50, choices=TwoFactorGame.GameType.choices, default=TwoFactorGame.GameType.INDIVIDUAL_GAME)
     game_id = models.BigIntegerField(null=False, blank=False)
+
 
     def __str__(self) -> str:
         return f"user_receiver_id: {self.user_receiver_id}, user_requester_id: {self.user_requester_id}, game_type: {self.game_type}, game_id: {self.game_id}"
 
     class Meta:
         managed = False
+
+class ValidateGame2FactorCodeForm(forms.Form):
+    user_requester_id = forms.UUIDField(required=True)
+    code_user_receiver_id = CodeUUIDArrayField(required=True,
+                                      error_messages={
+                                          'not_correct_format': _('The code_user_receiver_id field must be an array of code and uuids.'),
+                                          'too_many_values': _('The code_user_receiver_id field must contain at most %(max_uuids)d uuids.') % {'max_uuids': MAX_UUIDS},
+                                          'invalid_uuid': _('The code_user_receiver_id field must contain only valid uuids.')})
+    game_id = forms.IntegerField(required=True)
+    game_type = forms.CharField(max_length=50, required=True)
+
+class ValidateGame2FactorCodeDto(models.Model):
+    user_requester_id = models.UUIDField(blank=False, null=False)
+    code_user_receiver_id = models.JSONField(null=True, blank=True)
+    game_id = models.BigIntegerField(null=False, blank=False)
+    game_type = models.CharField(max_length=50, choices=TwoFactorGame.GameType.choices, default=TwoFactorGame.GameType.INDIVIDUAL_GAME)
+

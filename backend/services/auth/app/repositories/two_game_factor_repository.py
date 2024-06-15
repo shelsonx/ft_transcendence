@@ -1,4 +1,5 @@
-from ..dtos.validate_game_2factor_code_dto import ValidateGame2FactorCodeDto
+from typing import List
+from ..dtos.validate_game_2factor_code_dto import SendGame2FactorCodeDto, ValidateGame2FactorCodeDto
 from ..models.two_factor_game import TwoFactorGame
 from ..interfaces.repositories.two_factor_game_repository import ITwoFactorGameRepository
 
@@ -17,7 +18,7 @@ class TwoFactorRepository(ITwoFactorGameRepository):
     async def delete_two_factor(self, id: str) -> bool:
         return await TwoFactorGame.objects.filter(id=id).adelete()
 
-    async def find_two_factor_by_game_details(self, two_factor_game_dto: ValidateGame2FactorCodeDto) -> TwoFactorGame:
+    async def find_two_factor_by_game_details(self, two_factor_game_dto: SendGame2FactorCodeDto) -> List[TwoFactorGame]:
         try:
             two_factor_game_list = []
             for user_receiver_id in two_factor_game_dto.user_receiver_ids:
@@ -31,9 +32,17 @@ class TwoFactorRepository(ITwoFactorGameRepository):
 
     async def delete_two_factor_by_game_details(self, two_factor_game_dto: ValidateGame2FactorCodeDto) -> bool:
         try:
-            for user_receiver_id in two_factor_game_dto.user_receiver_ids:
+            for code, user_receiver_id in dict(two_factor_game_dto.code_user_receiver_id):
                 await TwoFactorGame.objects.filter(
-                    game_id=two_factor_game_dto.game_id,
-                    user_receiver_id=user_receiver_id, user_requester_id=two_factor_game_dto.user_requester_id).adelete()
+                        game_id=two_factor_game_dto.game_id,
+                        user_receiver_id=user_receiver_id,
+                        user_requester_id=two_factor_game_dto.user_requester_id,
+                        code=code
+                    ).adelete()
+            return True
         except TwoFactorGame.DoesNotExist:
             return False
+
+    async def delete_two_factor_by_ids(self, ids: List[str]) -> bool:
+        await TwoFactorGame.objects.filter(id__in=ids).adelete()
+        return True
