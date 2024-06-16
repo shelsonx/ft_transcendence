@@ -1,0 +1,29 @@
+#### chosen language
+
+-> pegar o choosen language da eliaris
+
+#### two factor
+
+-> criar rota pra enviar two factor como convite (vai ser enviado id do jogo + usuario a receber o 2factor + usuario que esta enviado)
+
+-> criar tabela two_factor + usuario a receber + usuario que enviou + id do jogo + tipo de jogo
+-> validar o two factor do convite (id do jogo + username + codigo)
+
+
+#### cadastro
+
+-> adicionar sheela no ms de registro https://localhost:8020/user/<uuid>
+
+#### eliaris change
+
+-> rota para alterar two factor + username
+
+
+### api gateway
+
+-> router para sheela, eliaris, shelson
+-> usar a query string da language para transformar no formato /en/api /fr/api pt-br/api
+
+## detectar user online/offline
+
+browser event beforeunload => disparar mensagem pro shelson e eliaris
