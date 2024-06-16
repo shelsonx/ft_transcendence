@@ -24,3 +24,7 @@ class ITwoFactorGameRepository(ABC):
     @abstractmethod
     async def delete_two_factor_by_ids(self, ids: List[str]) -> bool:
         pass
+
+    @abstractmethod
+    async def find_validate_two_factor_by_game_details(self, two_factor: ValidateGame2FactorCodeDto) -> List[TwoFactorGame]:
+        pass

@@ -28,7 +28,7 @@ class ITwoGameFactorService(ABC):
         pass
 
     @abstractmethod
-    async def validate_code(self, user_id: str, code: str) -> bool:
+    async def validate_code(self, two_factor_code: ValidateGame2FactorCodeDto) -> bool:
         pass
 
     @abstractmethod
@@ -66,10 +66,6 @@ class ITwoGameFactorService(ABC):
             self.notify_user(user_receiver.email, two_factor_dto.code)
 
     async def validate_and_delete_two_factor(self, two_factor_game_dto: ValidateGame2FactorCodeDto) -> bool:
-        is_valid = await self.validate_code(user_id, code)
-        if is_valid:
-            await self.delete_two_factor(user_id)
-        return is_valid
-
+       return await self.validate_code(two_factor_game_dto)
     async def delete_two_factor(self, user_id: str) -> None:
         await self.two_factor_game_repository.delete_two_factor_by_user_id(user_id)

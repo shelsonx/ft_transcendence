@@ -21,7 +21,7 @@ class UUIDArrayField(forms.Field):
         except:
             raise ValidationError(self.error_messages['invalid_uuid'])
 
-class CodeUUIDArrayField(forms.Field):
+class CodeUUIDField(forms.Field):
     def is_valid_uuid(self, uuid_str):
         try:
             uuid.UUID(uuid_str)
@@ -30,22 +30,20 @@ class CodeUUIDArrayField(forms.Field):
             return False
 
     def is_valid_data(self, data):
-        if not isinstance(data, list) or len(data) > MAX_UUIDS:
+        if not isinstance(data, dict) or len(data.keys()) > MAX_UUIDS:
             return False
-        for item in data:
-            if not isinstance(item, dict) or len(item) != 1:
-                return False
-            key, value = next(iter(item.items()))
-            if not isinstance(key, str) or len(key) != 6 or not key.isdigit() or not self.is_valid_uuid(value):
+        for code, id in data.items():
+            if not isinstance(code, str) or len(code) != 6 or not code.isdigit() or not self.is_valid_uuid(id):
                 return False
         return True
 
     def clean(self, value):
-        if not isinstance(value, list):
-            raise ValidationError(self.error_messages['not_a_list'])
+        if not isinstance(value, dict):
+            raise ValidationError(self.error_messages['not_correct_format'])
         if not self.is_valid_data(value):
             raise ValidationError(self.error_messages['invalid_uuid'])
-        return value
+        dict_value = {code: uuid.UUID(v) for code, v in value.items()}
+        return dict_value
 
 class SendGame2FactorCodeForm(forms.Form):
     user_receiver_ids = UUIDArrayField(required=True,
@@ -73,11 +71,12 @@ class SendGame2FactorCodeDto(models.Model):
 
 class ValidateGame2FactorCodeForm(forms.Form):
     user_requester_id = forms.UUIDField(required=True)
-    code_user_receiver_id = CodeUUIDArrayField(required=True,
+    code_user_receiver_id = CodeUUIDField(required=True,
                                       error_messages={
                                           'not_correct_format': _('The code_user_receiver_id field must be an array of code and uuids.'),
                                           'too_many_values': _('The code_user_receiver_id field must contain at most %(max_uuids)d uuids.') % {'max_uuids': MAX_UUIDS},
-                                          'invalid_uuid': _('The code_user_receiver_id field must contain only valid uuids.')})
+                                          'invalid_uuid': _('The code_user_receiver_id field must contain only valid uuids.')}
+                                          )
     game_id = forms.IntegerField(required=True)
     game_type = forms.CharField(max_length=50, required=True)
 

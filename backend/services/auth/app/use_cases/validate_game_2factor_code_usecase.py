@@ -22,19 +22,18 @@ class ValidateGame2FactorCodeUseCase(BaseUseCase):
     async def execute(self, two_factor_dto: ValidateGame2FactorCodeDto):
         user = None
         try:
-            ids = [two_factor_dto.user_requester_id] + two_factor_dto.user_receiver_ids
+            ids = [two_factor_dto.user_requester_id] + list(dict(two_factor_dto.code_user_receiver_id).values())
             users = await self.user_repository.get_users_by_ids(ids)
             if len(users) != len(ids):
                 raise UserNotFoundException()
         except ObjectDoesNotExist:
             raise UserNotFoundException()
-        for user in users:
-            if user.id != two_factor_dto.user_requester_id:
-                is_valid = await self.two_factor_service.validate_and_delete_two_factor(
-                    user.id, code=two_factor_dto.two_factor_code
-                )
-            if not is_valid:
-                invalid_code = _("Invalid two factor code")
-                raise TwoFactorCodeException(invalid_code)
+
+        is_valid = await self.two_factor_service.validate_and_delete_two_factor(
+            two_factor_dto
+        )
+        if not is_valid:
+            invalid_code = _("Invalid two factor code")
+            raise TwoFactorCodeException(invalid_code)
         result = {"message": "Two factor code validated successfully"}
         return result

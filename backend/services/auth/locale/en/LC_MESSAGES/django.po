@@ -119,3 +119,6 @@ msgstr "Invalid email list"
 
 msgid "The code_user_receiver_id field must be an array of code and uuids."
 msgstr "The code_user_receiver_id field must be an array of code and uuids."
+
+msgid "Two factor code not founds %(codes)s"
+msgstr "Two factor code not founds %(codes)s"

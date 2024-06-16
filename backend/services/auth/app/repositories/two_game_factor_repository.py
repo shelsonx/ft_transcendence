@@ -48,3 +48,18 @@ class TwoGameFactorRepository(ITwoFactorGameRepository):
     async def delete_two_factor_by_ids(self, ids: List[str]) -> bool:
         await TwoFactorGame.objects.filter(id__in=ids).adelete()
         return True
+
+    async def find_validate_two_factor_by_game_details(self, two_factor: ValidateGame2FactorCodeDto) -> List[TwoFactorGame]:
+        two_factors = []
+        try:
+            for code, user_receiver_id in two_factor.code_user_receiver_id.items():
+                cur_two_factor = await TwoFactorGame.objects.aget(
+                    game_id=two_factor.game_id,
+                    user_receiver_id=user_receiver_id,
+                    user_requester_id=two_factor.user_requester_id,
+                    code=code
+                )
+                two_factors.append(cur_two_factor)
+            return two_factors
+        except TwoFactorGame.DoesNotExist:
+            return None

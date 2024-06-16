@@ -42,16 +42,19 @@ class ValidateGame2FactorCodeController(BaseController):
         return await self.validate_game_2factor_code_usecase.execute(dto)
 
     async def handle_put(self, request: HttpRequest) -> JsonResponse:
-        forms = ValidateGame2FactorCodeForm(json.loads(request.body))
-        dict_form = forms.cleaned_data
+        try:
+            form_data = json.loads(request.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        two_factor_form = ValidateGame2FactorCodeForm(form_data)
+        if not two_factor_form.is_valid():
+            return self.to_json_response(error=two_factor_form.errors)
+        dict_form = two_factor_form.cleaned_data
         dto = ValidateGame2FactorCodeDto(
             user_requester_id=dict_form["user_requester_id"],
             code_user_receiver_id=dict_form["code_user_receiver_id"],
             game_id=dict_form["game_id"],
             game_type=dict_form["game_type"],
         )
-        dto = self.validate_form(forms)
-        if not dto.two_factor_code:
-            raise TwoFactorCodeException()
         data = await self.execute_put(dto)
         return self.to_json_response(data=ApiDataResponse(data=data))

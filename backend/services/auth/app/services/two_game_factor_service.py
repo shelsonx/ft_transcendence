@@ -1,5 +1,7 @@
 import random
 
+from ..exceptions.two_factor_exception import TwoFactorCodeException
+
 from ..interfaces.services.email_service import IEmailService
 from ..models.two_factor import TwoFactor
 from ..interfaces.services.two_factor_game_service import ITwoGameFactorService
@@ -30,18 +32,23 @@ class TwoGameFactorService(ITwoGameFactorService):
         )
 
     async def validate_code(self, two_factor_code: ValidateGame2FactorCodeDto) -> bool:
-        for code, user_requester_id in dict(two_factor_code.code_user_receiver_id).items():
-            is_valid = await self.validate_and_delete_two_factor(
-                user_requester_id, code=code
-            )
-            if not is_valid:
-                return False
-        if two_factor_code.code is None or code == "":
-            return False
         try:
-            two_factor_code = (
-                await self.two_factor_repository.find_two_factor_by_user_id(user_id)
+            dict_code_user_receiver_id = dict(two_factor_code.code_user_receiver_id)
+            two_factor_codes = (
+                await self.two_factor_game_repository.find_validate_two_factor_by_game_details(two_factor_code)
             )
+            if not two_factor_codes:
+                raise TwoFactorCodeException(_("Invalid Access Token"))
+            codes = dict_code_user_receiver_id.keys()
+            if len(two_factor_codes) != len(codes):
+                codes_not_found = list(filter(lambda code: code not in two_factor_codes, codes))
+                raise TwoFactorCodeException(_("Two factor code not founds %(codes)s") % {"codes": ','.join(codes_not_found)})
         except TwoFactor.DoesNotExist:
             return False
-        return two_factor_code.is_valid(code)
+
+        if two_factor_code is not None:
+            await self.two_factor_game_repository.delete_two_factor_by_ids(
+                [two_factor.id for two_factor in two_factor_codes]
+            )
+
+        return True
