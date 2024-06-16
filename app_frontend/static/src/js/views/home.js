@@ -16,23 +16,27 @@ class HomeView extends BaseLoggedView {
 
 const userLabel = "My games"
 const allUsersLabel = "All games"
-let userData = false
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
     <h2 id="hello-user"></h2>
-    <div >
+    <div>
       <button id="btn-data-switch" type="button" class="btn btn-info">
         ${userLabel}
       </button>
+      <button id="btn-play" type="button" class="btn btn-primary"
+        onclick="window.location='#play';"
+      >
+        Play
+      </button>
     </div>
   </div>
-  <div id="swap-container" class="container-fluid main mt-3"></div>
+  <div id="home-container" class="container-fluid main mt-3"></div>
 `
 
 const swap = (response) => {
   // TODO: lidar quando retornar erro ou não responder
-  const swapContainer = document.getElementById("swap-container");
+  const swapContainer = document.getElementById("home-container");
   swapContainer.innerHTML = response;
 }
 
@@ -60,6 +64,7 @@ const start = async (user) => {
 
   await gameService.allGames().then(swap);
 
+  let userData = false
   const btnDataSwitch = document.getElementById("btn-data-switch");
   btnDataSwitch.addEventListener("click", async () => {
     userData = !userData
@@ -67,7 +72,7 @@ const start = async (user) => {
     if (userData) {
       await gameService.userGames(user.id).then(swap);
       btnDataSwitch.innerHTML = allUsersLabel;
-    }
+      }
     else {
       await gameService.allGames().then(swap);
       btnDataSwitch.innerHTML = userLabel;

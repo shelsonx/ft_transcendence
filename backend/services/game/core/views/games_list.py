@@ -25,7 +25,7 @@ logger = logging.getLogger("eqlog")
 class GamesView(generic.ListView):
     model = Game
     ordering = ["-game_datetime", "status"]
-    template_name = "games_table.html"
+    template_name = "games_list.html"
     is_public_view = False
     # paginate_by = 20
     excluded_status = [
@@ -70,9 +70,12 @@ class GamesView(generic.ListView):
         context["GameStatus"] = GameStatus
 
         game_list = []
+        count = 0
         for game in context["game_list"]:
             game_list.append(self.get_game_data(game))
+            count += 1
         context["game_list"] = game_list
+        context["total_games"] = count
 
         return context
 

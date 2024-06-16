@@ -111,7 +111,7 @@ class AddGameView(generic.View):
 
 class GameView(generic.View):
     @JWTAuthentication()
-    def get(self, request: HttpRequest, pk: int = None) -> HttpResponse:
+    def get(self, request: HttpRequest, pk: int) -> HttpResponse:
         game = Game.objects.filter(pk=pk).first()
         if not game:
             return json_response.not_found()
@@ -123,7 +123,6 @@ class GameView(generic.View):
 
     # @JWTAuthentication()
     # def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-    #     # TODO: SHEELA - protect route
     #     self.game = get_object_or_404(Game, pk=pk)
     #     # verificar acesso ao jogo
 

@@ -102,3 +102,24 @@ msgstr "Votre mot de passe doit contenir au moins %(upper_case_min)d caractère(
 
 msgid "Password is valid"
 msgstr "Le mot de passe est valide"
+
+msgid "Transcendence Journey - Two Factor Authentication (Game Authentication)"
+msgstr "Transcendence Journey - Authentification à deux facteurs (Authentification de jeu)"
+
+msgid "The user_receiver_id field must be an array of uuids."
+msgstr "Le champ user_receiver_id doit être un tableau de uuids."
+
+msgid "The user_receiver_id field must contain at most %(max_uuids)d uuids."
+msgstr "Le champ user_receiver_id doit contenir au maximum %(max_uuids)d"
+
+msgid "The user_receiver_id field must contain only valid uuids."
+msgstr "Le champ user_receiver_id doit contenir uniquement des uuids valides."
+
+msgid "Invalid email list"
+msgstr "Liste d'e-mails invalide"
+
+msgid "The code_user_receiver_id field must be an array of code and uuids."
+msgstr "Le champ code_user_receiver_id doit être un tableau de code et uuids."
+
+msgid "Two factor code not founds %(codes)s"
+msgstr "Code à deux facteurs introuvable %(codes)s"

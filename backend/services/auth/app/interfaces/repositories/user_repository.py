@@ -34,3 +34,7 @@ class IUserRepository(ABC):
     @abstractmethod
     async def delete_user(self, username: str) -> bool:
         pass
+
+    @abstractmethod
+    async def get_users_by_ids(self, ids: List[str]) -> List[User]:
+        pass

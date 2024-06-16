@@ -1,0 +1,92 @@
+{% load i18n %}
+
+<div class="main d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
+  <div class="tournament-rules pb-2" id="tournament-rules">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
+        {% translate "Tournament Rules" %}
+      </button>
+    </div>
+    <div class="collapse py-2" id="rules-collapse">
+      <ol>
+        <li class="pt-2">
+          {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
+        </li>
+        <ul>
+          <li>
+            {% blocktrans %}
+            <span class="text-emphasis"><strong>W</strong></span>
+            and
+            <span class="text-emphasis"><strong>S</strong></span> for left player
+            {% endblocktrans %}
+          </li>
+          <li>
+            {% blocktrans %}
+            <span class="text-emphasis"><strong>ArrowUp</strong></span> and <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
+            {% endblocktrans %}
+          </li>
+        </ul>
+        <li class="pt-2">
+          {% blocktrans %}
+            Each game ends when a player riches
+            <span class="text-emphasis"><strong>11 points</strong></span>.
+          {% endblocktrans %}
+        </li>
+        <p>{% translate "You may customize this value or change how each tournament game ends, considering:" %}</p>
+        <ul>
+          <li>{% translate "game total points" %}</li>
+          <li>{% translate "game duration" %}</li>
+        </ul>
+      </ol>
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-secondary" id="set-rules-btn" type="btn">
+          {% translate "Customize Tournament's Games Rules" %}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form id="match-form">
+    <div class="pb-2">
+      {% csrf_token %}
+
+      <fieldset class="fieldset-game-rules py-2">
+        <div id="form-game-rules" class="d-none">
+          <legend class="d-flex justify-content-between">
+            <u>
+              <span class="game-rules-group">{% translate "Customize Tournament's Games Rules" %}</span>
+            </u>
+            <span data-bs-theme="dark" class="close-button">
+              <button type="button" class="btn-close" id="close-rules-btn" aria-label="Close"></button>
+            </span>
+          </legend>
+          <div class="px-2">
+            {% include "form.html" with form=rules_form %}
+            <div class="d-flex justify-content-center">
+              <button class="btn btn-secondary" id="default-rules-btn" type="button">
+                {% translate "Use Default Rules" %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      {% include "form.html" with form=tournament_form %}
+
+      <label class="pt-3">{% translate "Include players:" %}</label>
+      {% for form in users_form %}
+        {% include "form.html" with form=form %}
+      {% endfor %}
+      <div id="user-form" class="d-none">
+        {% include "form.html" with form=form %}
+      </div>
+
+    </div>
+
+    <button class="btn btn-primary w-100" id="button-invite" type="submit">
+      {% translate "Create and invite players" %}
+    </button>
+  </form>
+
+  </div>
+</div>
