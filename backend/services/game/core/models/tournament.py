@@ -11,10 +11,9 @@ from django.utils.translation import gettext_lazy as _
 
 # Local Folder
 from .game_rules import GameRules, GameRuleType
-from .game_status import GameStatus
+from .status import GameStatus, RoundStatus, TournamentStatus
 from .game import Game
 from .round import Round
-from .tournament_status import TournamentStatus
 from .tournament_type import TournamentType
 
 # First Party
@@ -220,7 +219,10 @@ class Challenge(Tournament):
         users = [u for u in self._players.all()]
         for i in range(self.number_of_rounds):
             round = Round.objects.create(
-                tournament=self, round_number=(i + 1), number_of_games=1
+                tournament=self,
+                round_number=(i + 1),
+                number_of_games=1,
+                status=RoundStatus.ON_GOING if i == 0 else RoundStatus.WAITING,
             )
             game = Game.objects.create(
                 status=GameStatus.SCHEDULED,
@@ -265,6 +267,7 @@ class RoundRobin(Tournament):
                     tournament=self,
                     round_number=(j + i * rounds_base + 1),
                     number_of_games=number_of_games,
+                    status=RoundStatus.ON_GOING if j == 0 else RoundStatus.WAITING,
                 )
 
                 for players_match in matches_scheduling[j]:

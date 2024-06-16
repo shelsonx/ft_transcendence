@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from core.models.status import TournamentStatus
 from user.models import User
 from core.models import *
 from utils.generator import Generator
