@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 from .game import Game
+from .status import RoundStatus
 from .tournament_type import TournamentType
 
 
@@ -18,6 +19,11 @@ class Round(models.Model):
         verbose_name=_("Games"),
     )
     round_number = models.IntegerField(default=1)
+    status = models.IntegerField(
+        choices=RoundStatus.choices,
+        default=RoundStatus.WAITING,
+        verbose_name=_("Tournament Status"),
+    )
 
     @property
     def number_of_players(self) -> int:

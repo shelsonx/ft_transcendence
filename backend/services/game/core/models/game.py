@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 from user.models import User
 
 # Local Folder
-from .game_status import GameStatus
+from .status import GameStatus
 from .game_rules import GameRules
 from .game_player_position import GamePlayerPosition
 from .rating import GameRating, TournamentGameRating
