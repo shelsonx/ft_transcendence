@@ -49,8 +49,6 @@ const html = /*html*/`
 
 const start = async () => {
 
-  const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
-
   const searchButton = document.getElementById('searchButton');
   const searchInput = document.getElementById('searchInput');
   const searchResultsContainer = document.getElementById('searchResultsContainer');
@@ -58,8 +56,8 @@ const start = async () => {
   const activeUsers = document.getElementById('activeUsers');
 
   const searchUsersService = new SearchUsersService();
-  const friendshipRequestService = new FriendshipRequestService(userId);
-  const blockingService = new BlockingService(userId);
+  const friendshipRequestService = new FriendshipRequestService();
+  const blockingService = new BlockingService();
 
   const isBlocked = async (user) => {
     const blockedUsers = await blockingService.getBlockedUsers();

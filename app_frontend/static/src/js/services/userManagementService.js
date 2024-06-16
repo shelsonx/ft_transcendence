@@ -1,4 +1,5 @@
 import { HttpClient, HttpClientRequestData } from './httpClient.js';
+import { getUserId } from '../utils/getUserId.js';
 
 /**
  * All the services related to user management.
@@ -10,9 +11,9 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
  * @class
  */
 class FriendshipService {
-  constructor(userId) {
-    this.httpClient =
-      new HttpClient(`https://localhost:8006/user/${userId}/`);
+  constructor() {
+    const userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriends() {
@@ -22,8 +23,7 @@ class FriendshipService {
   }
 
   async deleteFriend(friendId) {
-    const requestData =
-      new HttpClientRequestData('DELETE', `friends/${friendId}/`);
+    const requestData = new HttpClientRequestData('DELETE', `friends/${friendId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -34,7 +34,8 @@ class FriendshipService {
  * @class
  */
 class BlockingService {
-  constructor(userId) {
+  constructor() {
+    const userId = getUserId();
     this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
@@ -62,7 +63,8 @@ class BlockingService {
  * @class
  */
 class FriendshipRequestService {
-  constructor(userId) {
+  constructor() {
+    const userId = getUserId();
     this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
   }
 
@@ -72,8 +74,8 @@ class FriendshipRequestService {
     return response;
   }
 
-  async acceptFriendRequest(request_id) {
-    const requestData = new HttpClientRequestData('PUT', `friend_request/${request_id}/`);
+  async acceptFriendRequest(requestId) {
+    const requestData = new HttpClientRequestData('PUT', `friend_request/${requestId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -97,8 +99,8 @@ class FriendshipRequestService {
  * @class
  */
 class UserInformationService {
-
-  constructor(userId) {
+  constructor() {
+    const userId = getUserId();
     this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}`);
 
   }

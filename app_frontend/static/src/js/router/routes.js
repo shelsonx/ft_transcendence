@@ -42,7 +42,6 @@ const hashRoutes = {
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },
-  "user-management": { title: "User Management", render: userManagement, description: "Manage users."},
   "view-user-games": { title: "View user Games", render: SeeUserGamesView, description: "View user games", isProtected: true },
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },
   "tournament": { title: "Tournament Detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
