@@ -28,6 +28,12 @@ class GamePlayer(models.Model):
         db_table = "game_player"
         unique_together = [["game", "user"]]
 
+    @property
+    def name(self):
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]
+
     def to_json(self) -> dict:
         user = self.user
         return {

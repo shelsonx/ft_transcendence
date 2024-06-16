@@ -35,6 +35,19 @@ class TournamentPlayer(models.Model):
     losses = models.PositiveIntegerField(default=0)
     ties = models.PositiveIntegerField(default=0)
     _updated_players = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "tournament_player"
+        unique_together = [["tournament", "user"]]
+
+    @property
+    def name(self) -> str:
+        if self.alias_name:
+            return self.alias_name
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]
 
     def update_user(self, *, force: bool = False):
         if self._updated_players and not force:
@@ -52,18 +65,6 @@ class TournamentPlayer(models.Model):
         user.save()
         self._updated_players = True
         self.save()
-
-    class Meta:
-        db_table = "tournament_player"
-        unique_together = [["tournament", "user"]]
-
-    @property
-    def name(self) -> str:
-        if self.alias_name:
-            return self.alias_name
-        if self.user:
-            return self.user.username
-        return User.anonymous()["username"]
 
     def __str__(self) -> str:
         return self.name

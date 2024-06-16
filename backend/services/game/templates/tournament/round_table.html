@@ -1,0 +1,58 @@
+{% load i18n %}
+{% load timedelta_tags %}
+
+<div id="round-{{ r.round_number }}" class="py-3">
+  <h5 class="subtitle d-flex justify-content-center py-2">
+    {{ r.label }}
+  </h5>
+
+  <div class="d-flex justify-content-center py-2">
+    <div id="round-table-{{ r.round_number }}"
+      class="table-responsive main border border-white border-opacity-10 rounded-3 align-content-center"
+    >
+      <table
+        class="table table-dark align-middle"
+      >
+        <thead>
+          <tr>
+            <th>{% translate "Result" %}</th>
+            <th>{% translate "Date / Status" %}</th>
+            <th>{% translate "Duration" %}</th>
+            {% if t.is_owner %}
+              <th>owner</th>
+            {% endif %}
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for game in r.ordered_games %}
+            <tr>
+              <td>{% include "game_result.html" %}</td>
+
+              <td>
+                {% if game.status == GameStatus.ENDED %}
+                  {{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}
+                {% else %}
+                  {{ game.status_label }}
+                {% endif %}
+              </td>
+
+              <td>
+                {% if game.status == GameStatus.ENDED %}
+                  {{ game.duration|format_timedelta }}
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+
+              {% if t.is_owner %}
+                <td>owner</td>
+              {% endif %}
+
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

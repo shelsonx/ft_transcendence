@@ -7,4 +7,4 @@ from .tournament_type import TournamentType
 from .rating import GameRating, TournamentGameRating, TournamentRatingWeight
 from .round import Round
 from .tournament import Tournament
-from .tounament_player import TournamentPlayer
+from .tournament_player import TournamentPlayer

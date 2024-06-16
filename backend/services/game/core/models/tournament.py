@@ -2,6 +2,7 @@
 from pprint import pprint
 import random
 import math
+from typing import Any
 
 # django
 from django.db import models
@@ -62,17 +63,34 @@ class Tournament(models.Model):
     # value calculated for ELIMINATION based on number_of_players
     number_of_rounds = models.PositiveSmallIntegerField(default=2)
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._proxy = None
+        self.__players = None
+        self._winner = None
+
     @property
     def players(self) -> QuerySet:
-        return self.tournament_players.all().order_by("-rating")
+        if self.__players:
+            return self.__players
+
+        self.__players = (
+            self.tournament_players.all()
+            .select_related("user")
+            .order_by("-score", "-rating")
+        )
+        return self.__players
 
     @property
     def winner(self):
         if self.status != TournamentStatus.ENDED:
             return None
-        # players = self.players
-        # if players[0].score > players[1].score
-        return self.players.first()
+
+        if self._winner:
+            return self._winner
+
+        self._winner = self.players.first()
+        return self._winner
 
     def add_player(self, user: User):
         self._players.add(user)
@@ -150,10 +168,6 @@ class Tournament(models.Model):
         if self.status == TournamentStatus.ENDED:
             raise ValueError("An Ended tournament can't have its rounds deleted")
         self.rounds.all().delete()
-
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self._proxy = None
 
     def __get_proxy(self):
         if self._proxy and self._proxy.tournament_type == self.tournament_type:
