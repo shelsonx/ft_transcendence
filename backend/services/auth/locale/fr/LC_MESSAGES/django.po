@@ -120,3 +120,6 @@ msgstr "Liste d'e-mails invalide"
 
 msgid "The code_user_receiver_id field must be an array of code and uuids."
 msgstr "Le champ code_user_receiver_id doit être un tableau de code et uuids."
+
+msgid "Two factor code not founds %(codes)s"
+msgstr "Code à deux facteurs introuvable %(codes)s"
