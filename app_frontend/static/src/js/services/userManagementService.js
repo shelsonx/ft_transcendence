@@ -112,13 +112,17 @@ class UserInformationService {
   }
 
   async updateUserData(formData) {
+    const userData = await this.getUserData();
+    const email = userData.user.email;
+
     const data = {
       name: formData.get('name'),
       nickname: formData.get('nickname'),
       two_factor_enabled: formData.get('two-factor-enabled') === 'on' ? true : false,
       avatar: formData.get('avatar'),
       chosen_language: formData.get('language'),
-      user_uuid: getUserId()
+      user_uuid: getUserId(),
+      email: email,
       };
 
     const requestData = new HttpClientRequestData('PATCH', '/', data);
