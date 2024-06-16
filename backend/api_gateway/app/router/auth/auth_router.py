@@ -74,6 +74,7 @@ class AuthRouter(IRouter):
             "nickname": auth_data_json["user_name"],
             "email": auth_data_json['email'],
             "two_factor_enabled": auth_data_json['enable_2fa'],
+            "avatar": "/media/avatars/default_avatar.jpeg",
             "chosen_language": "en"
         }).encode('utf-8')
 

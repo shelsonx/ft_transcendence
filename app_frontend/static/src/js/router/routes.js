@@ -8,7 +8,6 @@ import home from "../views/home.js";
 import userProfile from "../views/user_management/user-profile.js";
 import searchUsers from "../views/user_management/search-users.js";
 import userSettings from "../views/user_management/user-settings.js";
-import userManagement from "../views/user_management/user_management.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import SeeUserGamesView from "../views/game/view_user_games.js";
 import NewGameView from "../views/game/new_game.js";
