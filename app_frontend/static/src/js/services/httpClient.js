@@ -91,6 +91,10 @@ export class HttpClient {
     try {
       const error = await response.json()
       apiError = new ApiError(error?.message ?? JSON.stringify(error) , response.status);
+      if (response.status === 401) {
+        localStorage.removeItem(AuthConstants.AUTH_TOKEN);
+        window.location.href = '/#login';
+      }
     } catch(err) {
       apiError = new ApiError(
         'An error occurred while processing your request',

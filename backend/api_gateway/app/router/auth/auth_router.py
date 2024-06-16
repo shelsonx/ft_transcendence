@@ -30,6 +30,7 @@ class AuthRouter(IRouter):
       Route("/sign-in-42/", ['POST']),
       Route("/validate-2factor-code/", allowed_verbs=['POST', 'PUT'], handler_function=self.register),
       Route("/register-42/", ['GET'], handler_function=self.register_42),
+      Route("/game-2factor-code/", ['POST', 'PUT']),
     ]
     super().__init__(http_client, routes_auth)
 

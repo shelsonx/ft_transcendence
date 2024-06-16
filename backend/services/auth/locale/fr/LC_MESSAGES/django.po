@@ -123,3 +123,6 @@ msgstr "Le champ code_user_receiver_id doit être un tableau de code et uuids."
 
 msgid "Two factor code not founds %(codes)s"
 msgstr "Code à deux facteurs introuvable %(codes)s"
+
+msgid "Only Two players are allowed to this mode of game"
+msgstr "Seuls deux joueurs sont autorisés à ce mode de jeu"
