@@ -6,7 +6,7 @@ import logging
 import uuid
 
 # Third Party
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 
@@ -48,7 +48,9 @@ class TournamentsView(generic.ListView):
 
     def get_queryset(self) -> QuerySet[Tournament]:
         if self.user:
-            return self.user.tournaments.all()
+            return self.user.tournaments.all().exclude(
+                Q(status__in=[TournamentStatus.INVITATION]) & ~Q(owner=self.user)
+            )
 
         queryset = super().get_queryset()
         return queryset.exclude(status__in=self.excluded_status)

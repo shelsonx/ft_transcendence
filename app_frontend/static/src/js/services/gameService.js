@@ -103,14 +103,14 @@ class GameService {
   }
 
   async tournament(id) {
-    const requestData = new HttpClientRequestData("GET", `tournament/${id}`);
+    const requestData = new HttpClientRequestData("GET", `/tournament/${id}`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
 
   async deleteTournament(id) {
-    const requestData = new HttpClientRequestData("DELETE", `tournament/${id}`);
+    const requestData = new HttpClientRequestData("DELETE", `/tournament/${id}`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }

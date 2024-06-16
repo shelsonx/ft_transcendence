@@ -1,48 +1,42 @@
-import BaseLoggedView from '../baseLoggedView.js';
-import gameService from '../../services/gameService.js';
-
+import BaseLoggedView from "../baseLoggedView.js";
+import gameService from "../../services/gameService.js";
 
 class TournamentDetailView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
-      start
-    },
-  );
+      start,
+    });
   }
 }
 
-const html = /*html*/`
-<div id="tournament-container" class="container-fluid main"></div>
-  <div id="add-tournament" class="row justify-content-center">
-    <button class="btn btn-primary col-3" id="button">
-      Create New Tournament
-    </button>
+const html = /*html*/ `
+<!-- <div id="tournament-container" class="container-fluid main">
+  Oi
+</div> -->
+  <div id="tournament-container" class="main scroll-on static">
   </div>
-`
-
-let idTarget = "tournament-container";
+  <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  </div>
+`;
 
 const swap = (response) => {
-  const add_tournament = document.getElementById(idTarget)
-  // console.log(response)
-  // const headers = await response.headers
-  // console.log(...headers)
-  // console.log(response.body)
-  add_tournament.innerHTML = response
-  // test.innerHTML = await response.text()
-}
+  const add_tournament = document.getElementById("tournament-container");
+  add_tournament.innerHTML = response;
+};
 
 const start = async (user) => {
-  gameService.getFormTournament().then(swap);
-  console.log('Create Tournament View');
+  const tournament = new URLSearchParams(window.location.search).get("t");
+  if (tournament === null) {
+    const message = document.getElementById("message");
+    message.innerHTML = /*html*/ `
+      <h1 class="game-message" data-i18n-key="page-not-found--title">
+        Page not Found
+      </h1>`;
+    return;
+  }
 
-  const button = document.getElementById("button");
-  button.addEventListener("click", () => {
-    idTarget = "add-tournament";
-    gameService.getFormTournament().then(swap);
-  })
-
-}
+  await gameService.tournament(tournament).then(swap);
+};
 
 export default new TournamentDetailView(html, start);
