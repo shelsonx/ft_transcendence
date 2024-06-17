@@ -13,6 +13,7 @@ class GameStatus {
     GameStatus.PENDING,
     GameStatus.SCHEDULED,
     GameStatus.ONGOING,
+    GameStatus.PAUSED,
     GameStatus.ENDED,
     GameStatus.CANCELED,
   ];
