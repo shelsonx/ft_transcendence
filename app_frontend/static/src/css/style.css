@@ -486,15 +486,21 @@ body {
 
 .table {
     margin-bottom: 0;
+    font-family: "Turret Road", sans-serif !important;
 }
 
 .match-list-avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    /* margin-right: 10px; */
 }
 
-/* .static {
-    max-height: 80vh;
-} */
+.static {
+    max-height: calc(100vh - 140px);
+    padding-bottom: 20px;
+}
+
+.static-list {
+    max-height: calc(100vh - 210px);
+    padding-bottom: 20px;
+}

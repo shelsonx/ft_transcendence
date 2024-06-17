@@ -14,7 +14,8 @@ const html = /*html*/ `
 <!-- <div id="tournament-container" class="container-fluid main">
   Oi
 </div> -->
-  <div id="tournament-container" class="main scroll-on static">
+  <div class="container-fluid main scroll-on">
+    <div id="tournament-container" class="static"></div>
   </div>
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
