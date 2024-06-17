@@ -11,7 +11,8 @@ class NewGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="add-game-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  <div class="main scroll-on container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div id="add-game-container" class="static"></div>
   </div>
 `;
 

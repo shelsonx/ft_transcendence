@@ -32,7 +32,9 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div id="tournament-table-container" class="container-fluid main mt-5"></div>
+  <div class="container-fluid main scroll-on mt-3">
+    <div id="tournament-table-container" class="static-list"></div>
+  </div>
 `
 
 const swap = (response) => {
