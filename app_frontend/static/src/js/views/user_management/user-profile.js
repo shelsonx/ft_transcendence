@@ -157,7 +157,7 @@ async function loadBlockedUsers(blockingService) {
       unblockBtn.setAttribute('title', 'Unblock User');
       unblockBtn.setAttribute('data-i18n-key', 'profile--unblock');
       unblockBtn.addEventListener('click', function () {
-        unblockUser(blockedUser.id);
+        unblockUser(blockedUser.user_uuid);
       });
 
       li.appendChild(unblockBtn);
@@ -177,6 +177,7 @@ async function loadFriendRequests(friendshipRequestService) {
   const friendshipRequestDataResponse = await friendshipRequestService.getFriendRequests();
   const friendRequests = friendshipRequestDataResponse.friend_requests;
   const activeFriendRequests = friendRequests.filter(request => request.is_active == true);
+  console.log(activeFriendRequests);
 
   const friendRequestsList = document.getElementById('friendRequests');
 

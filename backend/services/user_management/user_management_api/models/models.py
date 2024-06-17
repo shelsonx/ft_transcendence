@@ -63,6 +63,8 @@ class User(AbstractBaseUser):
 class FriendshipRequest(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_request_sender')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_request_receiver')
+    sender_uuid = models.CharField(max_length=255, null=True, blank=True)
+    receiver_uuid = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

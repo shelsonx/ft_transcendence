@@ -36,7 +36,7 @@ class FriendshipService {
 class BlockingService {
   constructor() {
     const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getBlockedUsers() {
@@ -65,7 +65,7 @@ class BlockingService {
 class FriendshipRequestService {
   constructor() {
     const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/en/user/${userId}/`);
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriendRequests() {

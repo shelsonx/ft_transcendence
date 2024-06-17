@@ -110,13 +110,13 @@ const start = async () => {
                     </div>
                 </div>
                 <div>
-                    <button class="btn btn-primary btn-sm me-2" onclick="addFriend('${user.id}', this)">
+                    <button class="btn btn-primary btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)">
                       <i class="bi bi-person-plus"></i>
                     </button>
-                    <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.id}', this)">
+                    <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)">
                       <i class="bi bi-person-x"></i>
                     </button>
-                    <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.id}')">
+                    <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')">
                       <i class="bi bi-bar-chart"></i>
                     </button>
                 </div>
