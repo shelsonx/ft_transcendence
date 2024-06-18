@@ -46,6 +46,8 @@ const html = /*html*/ `
   </div>
 `;
 
+let match = null;
+
 const startMessages = [
   {
     msg: "3",
@@ -99,10 +101,23 @@ function loadEndMessage(pong) {
   `;
 }
 
+const updateGame = async (game) => {
+  gameService.updateGame(match, game).then((response) => {
+    if (response.status != undefined) {
+      loadErrorMessage(response);
+    }
+  })
+}
+
+const loadErrorMessage = (error) => {
+  const message = document.getElementById("message");
+  message.innerHTML = /*html*/ `
+    <h1 class="game-message">${error.status} ${error.message}</h1>`;
+}
+
 const settleGame = (response) => {
-  if (response.status === "not found") {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `<h1 class="game-message">404 not Found</h1>`;
+  if (response.status != undefined) {
+    loadErrorMessage(response);
     return;
   }
   const gameObj = response.data.game;
@@ -126,8 +141,7 @@ const settleGame = (response) => {
       loadEndMessage(pong);
       pong.end();
       window.cancelAnimationFrame(animationFrame);
-      // await gameService.updateGame().then();
-      // save in back
+      updateGame(match, pong.game);
     } else {
       pong.update();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -186,7 +200,7 @@ const settleGame = (response) => {
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
     pong.pause();
-    // TODO: salvar no back
+    updateGame(match, pong.game);
   });
 
   continueButton.addEventListener("click", (e) => {
@@ -195,7 +209,7 @@ const settleGame = (response) => {
     pauseButton.classList.remove("d-none");
     pong.continue();
     animate();
-    // TODO: salvar no back
+    updateGame(match, pong.game);
   });
 
   window.addEventListener("resize", (e) => {
@@ -207,7 +221,7 @@ const settleGame = (response) => {
 };
 
 const start = async (user) => {
-  const match = new URLSearchParams(window.location.search).get("match");
+  match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {
     const message = document.getElementById("message");
