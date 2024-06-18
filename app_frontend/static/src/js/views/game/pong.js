@@ -141,7 +141,7 @@ const settleGame = (response) => {
       loadEndMessage(pong);
       pong.end();
       window.cancelAnimationFrame(animationFrame);
-      updateGame(match, pong.game);
+      updateGame(pong.game);
     } else {
       pong.update();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -162,6 +162,7 @@ const settleGame = (response) => {
         pong.continue();
       animate();
       pauseButton.classList.remove("d-none");
+      updateGame(pong.game);
     }, startMessages[4].showMsgDelay);
 
     window.addEventListener("keydown", (e) => {
@@ -200,7 +201,7 @@ const settleGame = (response) => {
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
     pong.pause();
-    updateGame(match, pong.game);
+    updateGame(pong.game);
   });
 
   continueButton.addEventListener("click", (e) => {
@@ -209,7 +210,7 @@ const settleGame = (response) => {
     pauseButton.classList.remove("d-none");
     pong.continue();
     animate();
-    updateGame(match, pong.game);
+    updateGame(pong.game);
   });
 
   window.addEventListener("resize", (e) => {
