@@ -76,13 +76,11 @@ class GameService {
       game_datetime: game.game_datetime,
       status: game.status,
       duration: game.duration,
-      rules: game.rules,
       player_left: game.player_left,
       player_right: game.player_right,
     };
     const requestData = new HttpClientRequestData("PATCH", `/game/${id}`, data);
-    // requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
-    console.log("Request", requestData);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }

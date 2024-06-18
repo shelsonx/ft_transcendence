@@ -175,29 +175,37 @@ export class HttpClient {
    * @throws {Error} If the HTTP method is invalid.
    */
   async #patch(httpClientRequestData) {
-    const formData = new FormData();
-
-    for (const key in httpClientRequestData.data) {
-      if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
-        formData.append(key, httpClientRequestData.data[key]);
-      }
-    }
+    let formData = new FormData();
 
     if (
       httpClientRequestData.headers["Content-Type"] ===
       "application/x-www-form-urlencoded"
-    )
+    ) {
       formData = this.getFormUrlencodedBody(httpClientRequestData.data);
-
-    try {
       const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
         method: 'PATCH',
-        body: formData
+        headers: httpClientRequestData.headers,
+        body: formData,
       });
 
       return await this.#toResponse(response);
-    } catch (error) {
-      throw error;
+    }
+    else {
+      for (const key in httpClientRequestData.data) {
+        if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
+          formData.append(key, httpClientRequestData.data[key]);
+        }
+      }
+      try {
+        const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+          method: 'PATCH',
+          body: formData
+        });
+
+        return await this.#toResponse(response);
+      } catch (error) {
+        throw error;
+      }
     }
   }
 
