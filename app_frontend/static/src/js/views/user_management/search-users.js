@@ -1,5 +1,6 @@
 import { BlockingService, FriendshipRequestService, SearchUsersService } from '../../services/userManagementService.js';
 import UserManagementView from './baseUserManagementView.js';
+import { getUserId } from '../../utils/getUserId.js';
 
 class searchUsersView extends UserManagementView {
   constructor(html, start) {
@@ -75,10 +76,16 @@ const start = async () => {
     return filteredUsers;
   };
 
+  const filterYourself = async (users) => {
+    const userId = getUserId();
+    return users.filter(user => user.user_uuid !== userId);
+  };
+
   const performSearch = async () => {
     const query = searchInput.value;
     const response = await searchUsersService.searchUsers(query);
-    const filteredUsers = await filterBlockedUsers(response.users);
+    var filteredUsers = await filterBlockedUsers(response.users);
+    filteredUsers = await filterYourself(filteredUsers);
     displaySearchResults(filteredUsers);
   };
 
@@ -103,32 +110,37 @@ const start = async () => {
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
       const avatar = "https://localhost:8006" + user.avatar;
       userItem.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
-                    <div class="ms-3">
-                        <h5>${user.name} (@${user.nickname})</h5>
-                    </div>
-                </div>
-                <div>
-                    <button class="btn btn-primary btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)">
-                      <i class="bi bi-person-plus"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)">
-                      <i class="bi bi-person-x"></i>
-                    </button>
-                    <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')">
-                      <i class="bi bi-bar-chart"></i>
-                    </button>
-                </div>
-            `;
+        <div class="d-flex align-items-center">
+          <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
+          <div class="ms-3">
+            <h5>${user.name} (@${user.nickname})</h5>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend">
+            <i class="bi bi-person-plus"></i>
+          </button>
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User">
+            <i class="bi bi-person-x"></i>
+          </button>
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats">
+            <i class="bi bi-bar-chart"></i>
+          </button>
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches">
+            <i class="bi bi-controller"></i>
+          </button>
+        </div>
+      `;
       searchResults.appendChild(userItem);
     });
+    initializeTooltips(); // Initialize tooltips after adding elements
   };
 
   window.addFriend = async function (friendId, button) {
     const response = await friendshipRequestService.sendFriendRequest(friendId);
     alert(response.message);
     button.innerHTML = '<i class="bi bi-person-check"></i>';
+    initializeTooltips(); // Initialize tooltips after adding elements
   };
 
   window.blockUser = async function (blockId, button) {
@@ -152,16 +164,23 @@ const start = async () => {
       const userItem = document.createElement('div');
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
       userItem.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <img src="${user.avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
-                    <div class="ms-3">
-                        <h5>${user.name} (@${user.nickname})</h5>
-                    </div>
-                </div>
-            `;
+        <div class="d-flex align-items-center">
+          <img src="${user.avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
+          <div class="ms-3">
+            <h5>${user.name} (@${user.nickname})</h5>
+          </div>
+        </div>
+      `;
       activeUsers.appendChild(userItem);
     });
   };
+
+  const initializeTooltips = () => {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
 
   fetchActiveUsers();
 };

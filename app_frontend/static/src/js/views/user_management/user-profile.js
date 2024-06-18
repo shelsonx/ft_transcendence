@@ -118,7 +118,7 @@ async function loadFriendsList(friendshipService) {
       unfriendBtn.setAttribute('title', 'Unfriend User');
       unfriendBtn.setAttribute('data-i18n-key', 'profile--unfriend');
       unfriendBtn.addEventListener('click', function () {
-        unfriendUser(friend.id);
+        unfriendUser(friend.user_uuid);
       });
 
       li.appendChild(unfriendBtn);

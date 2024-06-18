@@ -78,6 +78,8 @@ class FriendshipRequest(models.Model):
 class Friendship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_creator')
     friend = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendship_receiver')
+    user_uuid = models.CharField(max_length=255, null=True, blank=True)
+    friend_uuid = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -90,6 +92,8 @@ class Friendship(models.Model):
 class BlockedUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blocking_user')
     blocked_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blocked_user')
+    user_uuid = models.CharField(max_length=255, null=True, blank=True)
+    blocked_user_uuid = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

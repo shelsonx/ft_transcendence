@@ -47,8 +47,8 @@ class FriendshipRequestView(View):
         friend_request = FriendshipRequest.objects.get(id=request_id)
         friend_request.is_active = False
         try:
-            Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver)
-            Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender)
+            Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver, user_uuid=friend_request.sender_uuid, friend_uuid=friend_request.receiver_uuid)
+            Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender, user_uuid=friend_request.receiver_uuid, friend_uuid=friend_request.sender_uuid)
         except:
             return JsonResponse({'status': 'error', 'message': friend_request_already_accepted_message, 'status_code': 400}, status=400)
         friend_request.save()
