@@ -11,7 +11,7 @@ class SeeUserGamesView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <div id="game-table-container" class="container-fluid main"></div>
+  <div id="game-table-container" class="container-fluid main-game"></div>
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `

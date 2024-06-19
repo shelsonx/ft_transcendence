@@ -32,7 +32,7 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div class="container-fluid main scroll-on mt-3">
+  <div class="container-fluid main-game scroll-on mt-3">
     <div id="tournament-table-container" class="static-list"></div>
   </div>
 `

@@ -400,6 +400,12 @@ body {
     display: none;
 }
 
+/* Game views */
+
+.main-game {
+    font-family: "Turret Road", sans-serif !important;
+}
+
 .game-message, .subtitle {
     color: var(--secondary-light);
     font-family: "Press Start 2P", sans-serif;
@@ -504,3 +510,5 @@ body {
     max-height: calc(100vh - 210px);
     padding-bottom: 20px;
 }
+
+/* End game views */
