@@ -34,7 +34,7 @@ const html = /*html*/ `
     <div class="d-flex justify-content-center">
       <canvas id="canvas"></canvas>
     </div>
-    <div class="d-flex justify-content-center py-5">
+    <div class="d-flex justify-content-center py-5" id="game-buttons">
       <button id="pause" class="btn btn-primary d-none">Pause</button>
       <button id="continue" class="btn btn-primary d-none">Continue</button>
     </div>
@@ -148,6 +148,8 @@ const settleGame = (response) => {
       loadEndMessage(pong);
       pong.end();
       window.cancelAnimationFrame(animationFrame);
+      const gameButtons = document.getElementById("game-buttons");
+      gameButtons.classList.add("d-none");
       saveGame(pong);
     } else {
       if (scored_point === true) saveGame(pong, true);

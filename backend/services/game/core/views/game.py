@@ -147,9 +147,16 @@ class GameView(generic.View):
         if data["player_right"]["user"]["id"] != str(player_right.user.pk):
             return json_response.bad_request("compromised data")
 
-        game_form.save()
+        game: Game = game_form.save()
         left_form.save()
         right_form.save()
+
+        if game.status == GameStatus.ENDED.value:
+            round = game.round.all().first()
+            if round is not None:
+                game.update_tournament()
+            else:
+                game.update_users()
         return json_response.success(msg="Game updated")
 
     @JWTAuthentication()
