@@ -140,16 +140,17 @@ const settleGame = (response) => {
     return loadEndMessage(pong);
 
   function animate() {
+    const scored_point = pong.update();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pong.draw(ctx);
+
     if (pong.checkGameEnded() === true) {
       loadEndMessage(pong);
       pong.end();
       window.cancelAnimationFrame(animationFrame);
       saveGame(pong);
     } else {
-      const scored_point = pong.update();
       if (scored_point === true) saveGame(pong, true);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pong.draw(ctx);
       animationFrame = requestAnimationFrame(animate);
     }
   }

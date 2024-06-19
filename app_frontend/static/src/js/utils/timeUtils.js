@@ -5,8 +5,9 @@ export const getTimeValue = (value) => {
 };
 
 export const timeDeltaToDuration = (delta) => {
-  const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((delta % (1000 * 60)) / 1000);
+  let seconds = delta / 1000;
+  const minutes = Math.floor((seconds / 60));
+  seconds = Math.floor((seconds % 60));
 
   return {
     minutes: minutes,
@@ -15,5 +16,6 @@ export const timeDeltaToDuration = (delta) => {
 };
 
 export const durationToTimeDelta = (duration) => {
+  if (duration === null) return null;
   return (duration.seconds + duration.minutes * 60) * 1000;
 };

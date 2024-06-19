@@ -102,9 +102,7 @@ class PongManager {
 
     if (points_to_win !== null) {
       players.forEach((player) => {
-        if (player.score === points_to_win) {
-          check = true;
-        }
+        if (player.score === points_to_win) check = true;
       });
     }
 
@@ -112,12 +110,14 @@ class PongManager {
       if (
         this.player_left.score + this.player_right.score ===
         game_total_points
-      ) {
-        check = true;
-      }
+      ) check = true;
     }
 
     if (this.game.rules.max_duration !== null) {
+      const now = new Date().getTime();
+      this.duration += now - this.controlDuration;
+      this.controlDuration = now;
+      if (this.duration >= this.game.rules.max_duration) check = true;
     }
     return check;
   }
