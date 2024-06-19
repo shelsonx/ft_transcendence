@@ -23,7 +23,7 @@ class UserBlockingView(View):
         blocked_users = user.blocked_users.all()
         blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
         return JsonResponse({'status': 'success', 'blocked_users': blocked_users_json, 'status_code': 200}, status=200)
-    
+
     def post(self, request, user_id, blocked_id):
         blocked_user_message = _('Blocked user added successfully')
         user = UserInfoView().get_user(user_id)
