@@ -5,6 +5,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.utils.translation import gettext_lazy as _
 
 DEFAULT_AVATAR = "/media/avatars/default_avatar.jpeg"
+USER_API = "https://localhost:8006"
 
 
 class User(models.Model):
@@ -46,7 +47,15 @@ class User(models.Model):
         if not self.avatar:
             self.avatar = DEFAULT_AVATAR
             self.save()
-        return f"https://localhost:8006{self.avatar}"
+        return f"{USER_API}{self.avatar}"
+
+    def reset(self):
+        self.score = 0
+        self.rating = 0
+        self.winnings = 0
+        self.losses = 0
+        self.ties = 0
+        self.save()
 
     def __str__(self):
         return self.username
@@ -61,4 +70,9 @@ class User(models.Model):
         return {
             "id": self.pk,
             "username": self.username,
+            "score": self.score,
+            "rating": self.rating,
+            "winnings": self.winnings,
+            "losses": self.losses,
+            "ties": self.ties,
         }

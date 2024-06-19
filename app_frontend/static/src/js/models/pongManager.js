@@ -43,20 +43,15 @@ class PongManager {
   }
 
   begin() {
-    this.game.game_datetime = new Date();
+    const now = new Date();
+    this.game.game_datetime = now;
     this.game.duration = {
       minutes: 0,
       seconds: 0,
     };
     this.duration = 0;
-    this.controlDuration = this.game.game_datetime.getTime();
+    this.controlDuration = now.getTime();
     this.game.status.value = GameStatus.ONGOING;
-    // send update to back?
-    console.log("begin:");
-    console.log(this.game.game_datetime);
-    console.log(this.controlDuration);
-    console.log(this.game.duration);
-    console.log(this.duration);
   }
 
   pause() {

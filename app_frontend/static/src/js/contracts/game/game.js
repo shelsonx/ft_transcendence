@@ -70,6 +70,18 @@ class Game {
       obj.player_right
     );
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      game_datetime: this.game_datetime.toISOString(),
+      status: this.status.value,
+      duration: this.duration,
+      rules: this.rules.toJSON(),
+      player_left: this.player_left.toJSON(),
+      player_right: this.player_right.toJSON(),
+    }
+  }
 }
 
 export { Game, GameStatus };

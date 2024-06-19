@@ -16,9 +16,6 @@ class GameService {
       const message = getErrorMessage(error.status);
       if (message != undefined)
         error.message = message;
-      // else
-      //   error.message = getErrorMessage(500);
-      //   error.status = 500;
       return error
     }
   }
@@ -72,15 +69,8 @@ class GameService {
   }
 
   async updateGame(id, game) {
-    const data = {
-      game_datetime: game.game_datetime,
-      status: game.status,
-      duration: game.duration,
-      player_left: game.player_left,
-      player_right: game.player_right,
-    };
-    const requestData = new HttpClientRequestData("PATCH", `/game/${id}`, data);
-    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const data = game.toJSON();
+    const requestData = new HttpClientRequestData("PUT", `/game/${id}`, data);
     const response = await this.handleResponse(requestData);
     return response;
   }

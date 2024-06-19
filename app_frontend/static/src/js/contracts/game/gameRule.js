@@ -50,6 +50,15 @@ class GameRules {
       obj.max_duration
     );
   }
+
+  toJSON() {
+    return {
+      rule_type: this.rule_type.value,
+      points_to_win: this.points_to_win,
+      game_total_points: this.game_total_points,
+      max_duration: this.max_duration,
+    }
+  }
 }
 
 // const obj = {
