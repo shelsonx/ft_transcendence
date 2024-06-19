@@ -241,7 +241,7 @@ class Game(models.Model):
 
         return {
             "id": self.pk,
-            "game_datetime": self.game_datetime,
+            "game_datetime": self.game_datetime.isoformat(),
             "status": self.status,
             "duration": {
                 "minutes": minutes,

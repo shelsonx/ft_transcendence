@@ -1,31 +1,29 @@
 # python std library
-import pprint
-import random
-import uuid
+from datetime import timedelta
 from http import HTTPStatus
+import json
 import logging
+import uuid
 
 # Django
 from django.forms import ValidationError
 from django.http import (
     HttpRequest,
     HttpResponse,
-    JsonResponse,
     QueryDict,
 )
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
-from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
 # First Party
-from common.validators import is_valid_uuid4
 from common.models import json_response
 from user.decorators import JWTAuthentication
 from core.models import Game, GameStatus, GameRules
-from core.forms import GameForm, GameEditForm, GameRulesForm
+from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
 
@@ -123,21 +121,35 @@ class GameView(generic.View):
     @JWTAuthentication()
     def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
         game = Game.objects.filter(pk=pk).first()
-        print(pk)
+
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
             print(game.owner, request.user)
             return json_response.forbidden()
 
-        # a edição na verdade vai seguir outras regras... salvar scores, status
-        # self.set_forms(request.POST)
-        # context = self.get_context_data()
-        # if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
-        #     return render(request, self.template_name, context)
-        #     # return HttpResponseBadRequest()
+        data = json.loads(request.body)
+        data["game_datetime"] = timezone.datetime.fromisoformat(data["game_datetime"])
+        duration = data["duration"]
+        data["duration"] = timedelta(
+            minutes=duration["minutes"], seconds=duration["seconds"]
+        )
+        game_form = UpdateGameForm(data, instance=game)
 
-        # game: Game = self.game_form.save()
+        player_left, player_right = game.players
+        left_form = UpdateGamePlayerForm(data["player_left"], instance=player_left)
+        right_form = UpdateGamePlayerForm(data["player_right"], instance=player_right)
+
+        if not all([game_form.is_valid(), left_form.is_valid(), right_form.is_valid()]):
+            return json_response.bad_request("invalid data")
+        if data["player_left"]["user"]["id"] != str(player_left.user.pk):
+            return json_response.bad_request("compromised data")
+        if data["player_right"]["user"]["id"] != str(player_right.user.pk):
+            return json_response.bad_request("compromised data")
+
+        game_form.save()
+        left_form.save()
+        right_form.save()
         return json_response.success(msg="Game updated")
 
     @JWTAuthentication()

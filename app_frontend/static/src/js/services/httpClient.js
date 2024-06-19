@@ -175,22 +175,21 @@ export class HttpClient {
    * @throws {Error} If the HTTP method is invalid.
    */
   async #patch(httpClientRequestData) {
-    let formData = new FormData();
+    if (httpClientRequestData.headers["Content-Type"] === "default") {
+      httpClientRequestData.headers["Content-Type"] = "application/json";
+      const body = JSON.stringify(httpClientRequestData.data);
 
-    if (
-      httpClientRequestData.headers["Content-Type"] ===
-      "application/x-www-form-urlencoded"
-    ) {
-      formData = this.getFormUrlencodedBody(httpClientRequestData.data);
       const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
         method: 'PATCH',
         headers: httpClientRequestData.headers,
-        body: formData,
+        body: body,
       });
 
       return await this.#toResponse(response);
     }
     else {
+      let formData = new FormData();
+
       for (const key in httpClientRequestData.data) {
         if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
           formData.append(key, httpClientRequestData.data[key]);

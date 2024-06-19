@@ -1,6 +1,5 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { GameRuleType } from "../../contracts/game/gameRule.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
@@ -16,7 +15,7 @@ class PongGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div class="static scroll-on">
+  <div class="static scroll-on" id="game-data">
     <h4 class="time d-flex justify-content-center">
       <span id="pong-time"></span>
     </h4>
@@ -47,6 +46,7 @@ const html = /*html*/ `
 `;
 
 let match = null;
+let animationFrame;
 
 const startMessages = [
   {
@@ -101,19 +101,23 @@ function loadEndMessage(pong) {
   `;
 }
 
-const updateGame = async (game) => {
-  gameService.updateGame(match, game).then((response) => {
-    if (response.status != undefined) {
-      loadErrorMessage(response);
-    }
-  })
-}
-
 const loadErrorMessage = (error) => {
   const message = document.getElementById("message");
   message.innerHTML = /*html*/ `
-    <h1 class="game-message">${error.status} ${error.message}</h1>`;
-}
+    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
+};
+
+const saveGame = async (pong, update = false) => {
+  if (update) pong.updateToSave();
+  pong.save().then((response) => {
+    if (response.status != undefined) {
+      loadErrorMessage(response);
+      window.cancelAnimationFrame(animationFrame);
+      const gameData = document.getElementById("game-data");
+      gameData.classList.add("d-none");
+    }
+  });
+};
 
 const settleGame = (response) => {
   if (response.status != undefined) {
@@ -127,7 +131,7 @@ const settleGame = (response) => {
   canvas.width = canvasWidth();
   canvas.height = canvasHeight();
 
-  const pong = new PongManager(gameObj, canvas.width, canvas.height);
+  const pong = new PongManager(match, gameObj, canvas.width, canvas.height);
   pong.table.draw(ctx);
   pong.player_left.draw(ctx);
   pong.player_right.draw(ctx);
@@ -135,15 +139,15 @@ const settleGame = (response) => {
   if ([GameStatus.ENDED, GameStatus.CANCELED].includes(pong.game.status.value))
     return loadEndMessage(pong);
 
-  let animationFrame;
   function animate() {
     if (pong.checkGameEnded() === true) {
       loadEndMessage(pong);
       pong.end();
       window.cancelAnimationFrame(animationFrame);
-      updateGame(pong.game);
+      saveGame(pong);
     } else {
-      pong.update();
+      const scored_point = pong.update();
+      if (scored_point === true) saveGame(pong, true);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       pong.draw(ctx);
       animationFrame = requestAnimationFrame(animate);
@@ -156,13 +160,11 @@ const settleGame = (response) => {
   startButton.addEventListener("click", (e) => {
     loadStartMessages();
     setTimeout(() => {
-      if (pong.game.status.value == GameStatus.SCHEDULED)
-        pong.begin();
-      else
-        pong.continue();
+      if (pong.game.status.value == GameStatus.SCHEDULED) pong.begin();
+      else pong.continue();
       animate();
       pauseButton.classList.remove("d-none");
-      updateGame(pong.game);
+      saveGame(pong);
     }, startMessages[4].showMsgDelay);
 
     window.addEventListener("keydown", (e) => {
@@ -201,7 +203,7 @@ const settleGame = (response) => {
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
     pong.pause();
-    updateGame(pong.game);
+    saveGame(pong);
   });
 
   continueButton.addEventListener("click", (e) => {
@@ -210,7 +212,7 @@ const settleGame = (response) => {
     pauseButton.classList.remove("d-none");
     pong.continue();
     animate();
-    updateGame(pong.game);
+    saveGame(pong);
   });
 
   window.addEventListener("resize", (e) => {

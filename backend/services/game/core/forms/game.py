@@ -8,8 +8,8 @@ class GameForm(forms.ModelForm):
         model = Game
         exclude = ["_players", "owner"]
 
-class GameEditForm(GameForm):
+class UpdateGameForm(GameForm):
 
     class Meta:
         model = Game
-        fields = ["duration", "game_datetime", "status", "rules"]
+        fields = ["duration", "game_datetime", "status"]

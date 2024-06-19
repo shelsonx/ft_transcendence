@@ -62,7 +62,7 @@ class Game {
     validateObj(Game, obj);
     return new Game(
       obj.id,
-      obj.game_datetime,
+      new Date(obj.game_datetime),
       obj.status,
       obj.duration,
       obj.rules,

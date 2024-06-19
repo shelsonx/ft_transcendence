@@ -23,7 +23,7 @@ class TournamentForm(forms.ModelForm):
         self.fields["number_of_rounds"].widget.attrs = {"class": "form-control"}
 
 
-class TournamentEditForm(TournamentForm):
+class UpdateTournamentForm(TournamentForm):
 
     class Meta:
         model = Tournament

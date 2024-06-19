@@ -15,7 +15,7 @@ class GameService {
     } catch (error) {
       const message = getErrorMessage(error.status);
       if (message != undefined)
-        error.message = message;
+        error.message = "Ooops! An error occured.<br>Try again later";
       return error
     }
   }
@@ -70,7 +70,8 @@ class GameService {
 
   async updateGame(id, game) {
     const data = game.toJSON();
-    const requestData = new HttpClientRequestData("PUT", `/game/${id}`, data);
+    const requestData = new HttpClientRequestData("PATCH", `/game/${id}`, data);
+    requestData.headers["Content-Type"] = "default";
     const response = await this.handleResponse(requestData);
     return response;
   }
