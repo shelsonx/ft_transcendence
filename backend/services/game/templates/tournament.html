@@ -1,5 +1,24 @@
 {% load i18n %}
-<h1>{% translate "Tournament" %}</h1>
+
+<h2 class="title d-flex justify-content-center mb-4">{{ t.name }}</h2>
+
+{% if t.status == TournamentStatus.INVITATION %}
+  {% if t.is_owner %}
+    tela de validação
+  {% else %}
+    {% include "tournament/participants_table.html" %}
+  {% endif %}
+{% else %}
+  {% if t.status == TournamentStatus.ENDED or t.status == TournamentStatus.ON_GOING %}
+    {% include "tournament/rating_table.html" %}
+  {% endif %}
+
+  {% for r in rounds %}
+    {% if r.status != RoundStatus.WAITING %}
+      {% include "tournament/round_table.html" %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
 
 {% comment %} {{ tournament_form.as_table }}
 {{ rules_form.as_table }} {% endcomment %}

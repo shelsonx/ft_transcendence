@@ -104,11 +104,11 @@ class AddGameView(generic.View):
 
     def set_forms(self, data=None) -> None:
         self.opponent = self.get_opponent(data)
-        print(self.opponent)  # TODO: SHEELA - remove it!
         self.rules_form = GameRulesForm(data)
         self.user_form = UserSearchForm(data, instance=self.opponent)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class GameView(generic.View):
     @JWTAuthentication()
     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
@@ -118,25 +118,27 @@ class GameView(generic.View):
         if game.owner != request.user:
             return json_response.forbidden()
 
-        data = {"status": "success", "data": {"game": game.to_json()}}
-        return JsonResponse(data, status=HTTPStatus.OK)
+        return json_response.success({"game": game.to_json()})
 
-    # @JWTAuthentication()
-    # def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-    #     self.game = get_object_or_404(Game, pk=pk)
-    #     # verificar acesso ao jogo
+    @JWTAuthentication()
+    def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+        game = Game.objects.filter(pk=pk).first()
+        print(pk)
+        if not game:
+            return json_response.not_found()
+        if game.owner != request.user:
+            print(game.owner, request.user)
+            return json_response.forbidden()
 
-    #     # a edição na verdade vai seguir outras regras... salvar scores, status
-    #     self.set_forms(request.POST)
-    #     context = self.get_context_data()
-    #     if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
-    #         return render(request, self.template_name, context)
-    #         # return HttpResponseBadRequest()
+        # a edição na verdade vai seguir outras regras... salvar scores, status
+        # self.set_forms(request.POST)
+        # context = self.get_context_data()
+        # if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
+        #     return render(request, self.template_name, context)
+        #     # return HttpResponseBadRequest()
 
-    #     game: Game = self.game_form.save()
-    #     print("Game updated: ", game)
-    #     return render(request, self.template_name, context)
-    # return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        # game: Game = self.game_form.save()
+        return json_response.success(msg="Game updated")
 
     @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:

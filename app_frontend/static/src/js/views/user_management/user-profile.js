@@ -47,12 +47,11 @@ const html = /*html*/`
  * @returns {Promise<void>} - A promise that resolves when the view is started.
  */
 const start = async () => {
-  const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
 
-  const userInformationService = new UserInformationService(userId);
-  const friendshipService = new FriendshipService(userId);
-  const blockingService = new BlockingService(userId);
-  const friendshipRequestService = new FriendshipRequestService(userId);
+  const userInformationService = new UserInformationService();
+  const friendshipService = new FriendshipService();
+  const blockingService = new BlockingService();
+  const friendshipRequestService = new FriendshipRequestService();
 
   await loadUserData(userInformationService);
   await loadFriendsList(friendshipService);
@@ -119,7 +118,7 @@ async function loadFriendsList(friendshipService) {
       unfriendBtn.setAttribute('title', 'Unfriend User');
       unfriendBtn.setAttribute('data-i18n-key', 'profile--unfriend');
       unfriendBtn.addEventListener('click', function () {
-        unfriendUser(friend.id);
+        unfriendUser(friend.user_uuid);
       });
 
       li.appendChild(unfriendBtn);
@@ -158,7 +157,7 @@ async function loadBlockedUsers(blockingService) {
       unblockBtn.setAttribute('title', 'Unblock User');
       unblockBtn.setAttribute('data-i18n-key', 'profile--unblock');
       unblockBtn.addEventListener('click', function () {
-        unblockUser(blockedUser.id);
+        unblockUser(blockedUser.user_uuid);
       });
 
       li.appendChild(unblockBtn);
@@ -178,6 +177,7 @@ async function loadFriendRequests(friendshipRequestService) {
   const friendshipRequestDataResponse = await friendshipRequestService.getFriendRequests();
   const friendRequests = friendshipRequestDataResponse.friend_requests;
   const activeFriendRequests = friendRequests.filter(request => request.is_active == true);
+  console.log(activeFriendRequests);
 
   const friendRequestsList = document.getElementById('friendRequests');
 
@@ -230,7 +230,7 @@ async function loadFriendRequests(friendshipRequestService) {
  * is accepted.
  */
 async function acceptFriendRequest(requestId) {
-  const friendshipRequestService = new FriendshipRequestService('fc9bf5b0-8099-4a7a-a1f3-67c04102578d');
+  const friendshipRequestService = new FriendshipRequestService();
   await friendshipRequestService.acceptFriendRequest(requestId);
 }
 
@@ -241,7 +241,7 @@ async function acceptFriendRequest(requestId) {
  * is rejected.
  */
 async function rejectFriendRequest(requestId) {
-  const friendshipRequestService = new FriendshipRequestService('fc9bf5b0-8099-4a7a-a1f3-67c04102578d');
+  const friendshipRequestService = new FriendshipRequestService();
   await friendshipRequestService.rejectFriendRequest(requestId);
 }
 
@@ -251,7 +251,7 @@ async function rejectFriendRequest(requestId) {
  * @returns {Promise<void>} - A promise that resolves when the user is unfriended.
  */
 async function unfriendUser(friendId) {
-  const friendshipService = new FriendshipService('fc9bf5b0-8099-4a7a-a1f3-67c04102578d');
+  const friendshipService = new FriendshipService();
   await friendshipService.deleteFriend(friendId);
 }
 
@@ -261,7 +261,7 @@ async function unfriendUser(friendId) {
  * @returns {Promise<void>} - A promise that resolves when the user is unblocked.
  */
 async function unblockUser(blockedUserId) {
-  const blockingService = new BlockingService('fc9bf5b0-8099-4a7a-a1f3-67c04102578d');
+  const blockingService = new BlockingService();
   await blockingService.unblockUser(blockedUserId);
 }
 

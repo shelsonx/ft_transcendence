@@ -6,10 +6,9 @@ import logging
 import uuid
 
 # Third Party
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404
 
 # from django.utils.translation import gettext_lazy as _
 from django.views import generic
@@ -17,7 +16,7 @@ from django.views import generic
 from core.models import Tournament, TournamentStatus, TournamentType
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from user.models import User
+from user.models import DEFAULT_AVATAR, User
 
 logger = logging.getLogger("eqlog")
 
@@ -49,7 +48,9 @@ class TournamentsView(generic.ListView):
 
     def get_queryset(self) -> QuerySet[Tournament]:
         if self.user:
-            return self.user.tournaments.all()
+            return self.user.tournaments.all().exclude(
+                Q(status__in=[TournamentStatus.INVITATION]) & ~Q(owner=self.user)
+            )
 
         queryset = super().get_queryset()
         return queryset.exclude(status__in=self.excluded_status)
@@ -66,6 +67,7 @@ class TournamentsView(generic.ListView):
             count += 1
         context["tournament_list"] = tournament_list
         context["total_tournaments"] = count
+        context["default_avatar"] = f"https://localhost:8006{DEFAULT_AVATAR}"
 
         return context
 
@@ -78,9 +80,9 @@ class TournamentsView(generic.ListView):
         )
         tournament.games_count = tournament.all_rounds["number_of_games__sum"]
 
-        tournament.winner = None  # TODO
+        winner = tournament.winner
         tournament.is_winner = False
-        if self.user and tournament.winner and tournament.winner.user:
+        if self.user and winner and winner.user:
             tournament.is_winner = self.user.pk == tournament.winner.user.pk
 
         tournament.is_owner = False

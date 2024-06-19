@@ -88,7 +88,7 @@ const updateUserData = async (userInformationService, formData) => {
 const initFormSubmission = (userInformationService) => {
     const form = document.getElementById('user-settings-form');
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         const formData = new FormData(form);
         formData.append('avatar', document.getElementById('avatar-input').files[0]);
@@ -123,12 +123,11 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = 'fc9bf5b0-8099-4a7a-a1f3-67c04102578d';
-    const userInformationService = new UserInformationService(userId);
+    const userInformationService = new UserInformationService();
 
     await loadUserData(userInformationService);
-    initAvatarChange();  // Initialize avatar change functionality
-    initFormSubmission(userInformationService);  // Initialize form submission handling
+    initAvatarChange(); 
+    initFormSubmission(userInformationService);
 };
 
 export default new UserProfileView({ html, start: action });

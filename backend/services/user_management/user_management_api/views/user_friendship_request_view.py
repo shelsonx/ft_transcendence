@@ -16,7 +16,7 @@ class FriendshipRequestView(View):
     """
 
     def get(self, request, user_id):
-        friend_requests = FriendshipRequest.objects.filter(receiver_id=user_id)
+        friend_requests = FriendshipRequest.objects.filter(receiver_uuid=user_id, is_active=True)
         friend_requests_list = []
         for request in friend_requests:
             friend_requests_list.append({
@@ -36,7 +36,7 @@ class FriendshipRequestView(View):
         receiver = UserInfoView().get_user(friend_id)
         if FriendshipRequest.objects.filter(sender=sender, receiver=receiver, is_active=True).exists():
             return JsonResponse({'status': 'error', 'message': friend_request_already_sent_message, 'status_code': 400}, status=400)
-        FriendshipRequest.objects.create(sender=sender, receiver=receiver)
+        FriendshipRequest.objects.create(sender=sender, receiver=receiver, sender_uuid=sender.user_uuid, receiver_uuid=receiver.user_uuid)
         return JsonResponse({'status': 'success', 'message': sent_friend_request_message, 'status_code': 200}, status=200)
 
     def put(self, request, user_id, request_id=None):
@@ -47,8 +47,8 @@ class FriendshipRequestView(View):
         friend_request = FriendshipRequest.objects.get(id=request_id)
         friend_request.is_active = False
         try:
-            Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver)
-            Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender)
+            Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver, user_uuid=friend_request.sender_uuid, friend_uuid=friend_request.receiver_uuid)
+            Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender, user_uuid=friend_request.receiver_uuid, friend_uuid=friend_request.sender_uuid)
         except:
             return JsonResponse({'status': 'error', 'message': friend_request_already_accepted_message, 'status_code': 400}, status=400)
         friend_request.save()

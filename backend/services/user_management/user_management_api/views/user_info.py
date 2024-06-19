@@ -62,9 +62,7 @@ class UserInfoView(View):
     def get(self, request, user_id=None):
         if user_id:
             user = self.get_user(user_id)
-            if request.headers.get('Content-Type') == 'application/json':
-                return JsonResponse({'status': 'success', 'user': user.as_json()}, status=200)
-            return render(request, 'user_profile.html', {'user': user.as_json()})
+            return JsonResponse({'status': 'success', 'user': user.as_json()}, status=200)
         else:
             nickname = request.GET.get('nickname')
             name = request.GET.get('name')
@@ -90,7 +88,7 @@ class UserInfoView(View):
         invalid_form_data_message = _('Invalid form data')
         multipart_form_data_message = _('Content-Type must be multipart/form-data')
         parser_error_message = _('Error parsing multipart data')
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(user_uuid=user_id)
 
         if request.headers.get('Content-Type', '').startswith('multipart/form-data'):
             try:

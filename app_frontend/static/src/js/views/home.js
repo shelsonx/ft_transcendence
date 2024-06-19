@@ -31,7 +31,9 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div id="home-container" class="container-fluid main mt-3"></div>
+  <div class="container-fluid main scroll-on mt-3">
+    <div id="home-container" class="static-list"></div>
+  </div>
 `
 
 const swap = (response) => {

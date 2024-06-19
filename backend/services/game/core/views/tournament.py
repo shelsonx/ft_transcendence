@@ -17,8 +17,12 @@ from django.utils.decorators import method_decorator
 from user.forms import UserSearchForm
 from common.models import json_response
 from core.models import (
+    Game,
     GameRules,
     GameRuleType,
+    GameStatus,
+    Round,
+    RoundStatus,
     Tournament,
     TournamentStatus,
     TournamentType,
@@ -26,6 +30,7 @@ from core.models import (
 from core.forms import GameRulesForm, TournamentForm
 from user.decorators import JWTAuthentication
 from user.models import User
+
 
 @method_decorator(csrf_exempt, name="dispatch")  # remove csrf protection...
 class AddTournamentView(generic.View):
@@ -105,7 +110,7 @@ class TournamentView(generic.View):
         # context = self.get_context_data()
         # if not self.tournament_form.is_valid():  # or not self.rules_form.is_valid():
         #     return render(request, self.template_name, context)
-            # return HttpResponseBadRequest()
+        # return HttpResponseBadRequest()
         # tournament: Tournament = self.tournament_form.save()
 
         return json_response.success(msg="Tournament updated")
@@ -122,7 +127,32 @@ class TournamentView(generic.View):
         return json_response.success(msg="Tournament deleted")
 
     def get_context_data(self, **kwargs) -> dict:
+        rounds = self.tournament.get_rounds()
+        for r in rounds:
+            r: Round
+            r.ordered_games = r.games.all().order_by("game_datetime")
+            for g in r.ordered_games:
+                g: Game
+                g.status_label = GameStatus(g.status).label
+
+                player_left, player_right = g.players
+                player_left.is_winner = False
+                player_right.is_winner = False
+                winner = g.winner
+                if winner is not None:
+                    if player_left and winner.pk == player_left.pk:
+                        player_left.is_winner = True
+                    else:
+                        player_right.is_winner = True
+
+                g.player_left = player_left
+                g.player_right = player_right
+                g.has_winner = bool(winner)
+
+        self.tournament.status_label = TournamentStatus(self.tournament.status).label
         return {
-            "tournament": self.tournament,
+            "t": self.tournament,
+            "rounds": rounds,
             "TournamentStatus": TournamentStatus,
+            "RoundStatus": RoundStatus,
         }

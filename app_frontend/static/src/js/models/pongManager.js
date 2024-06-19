@@ -2,8 +2,12 @@ import PongTable from "./pongTable.js";
 import PongBall from "./ball.js";
 import PlayerManager from "./playerManager.js";
 import { Game, GameStatus } from "../contracts/game/game.js";
-import { getTimeValue } from "../utils/timeUtils.js";
-import { PLAYER_WIDTH, PONG_BALL_SIZE, TABLE_PADDING } from "../constants/game.js";
+import { getTimeValue, timeDeltaToDuration, durationToTimeDelta } from "../utils/timeUtils.js";
+import {
+  PLAYER_WIDTH,
+  PONG_BALL_SIZE,
+  TABLE_PADDING,
+} from "../constants/game.js";
 import { proportionalWidth } from "../utils/size.js";
 
 class PongManager {
@@ -11,6 +15,8 @@ class PongManager {
     this.game = Game.createGameFromObj(game);
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
+    this.controlDuration = 0;
+    this.duration = durationToTimeDelta(game.duration);
 
     this.table = new PongTable(0, 0, gameWidth, gameHeight);
     this.ball = new PongBall(
@@ -38,21 +44,52 @@ class PongManager {
 
   begin() {
     this.game.game_datetime = new Date();
+    this.game.duration = {
+      minutes: 0,
+      seconds: 0,
+    };
+    this.duration = 0;
+    this.controlDuration = this.game.game_datetime.getTime();
     this.game.status.value = GameStatus.ONGOING;
     // send update to back?
+    console.log("begin:");
+    console.log(this.game.game_datetime);
+    console.log(this.controlDuration);
+    console.log(this.game.duration);
+    console.log(this.duration);
+  }
+
+  pause() {
+    this.duration += new Date().getTime() - this.controlDuration;
+    this.game.duration = timeDeltaToDuration(this.duration);
+    this.game.status.value = GameStatus.PAUSED;
+    this.game.player_left.score = this.player_left.score;
+    this.game.player_right.score = this.player_right.score;
+    // send update to back?
+    console.log("pause:");
+    console.log(this.game.game_datetime);
+    console.log(this.controlDuration);
+    console.log(this.game.duration);
+    console.log(this.duration);
+  }
+
+  continue() {
+    this.controlDuration = new Date().getTime();
+    this.game.status.value = GameStatus.ONGOING;
+    // send update to back?
+    console.log("continue:");
+    console.log(this.game.game_datetime);
+    console.log(this.controlDuration);
+    console.log(this.game.duration);
+    console.log(this.duration);
   }
 
   end() {
-    const now = new Date();
-    const delta = now - this.game.game_datetime;
-    const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((delta % (1000 * 60)) / 1000);
-
-    this.game.status.value = GameStatus.ENDED;
-    this.game.duration.minutes = minutes;
-    this.game.duration.seconds = seconds;
+    this.duration += new Date().getTime() - this.controlDuration;
+    this.game.duration = timeDeltaToDuration(this.duration);
     this.game.player_left.score = this.player_left.score;
     this.game.player_right.score = this.player_right.score;
+    this.game.status.value = GameStatus.ENDED;
   }
 
   checkGameEnded() {
@@ -220,12 +257,11 @@ class PongManager {
 
   updateHtmlTime() {
     const now = new Date().getTime();
-    const delta = now - this.game.game_datetime;
-    const minutes = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((delta % (1000 * 60)) / 1000);
+    const delta = now - this.controlDuration;
+    const duration = timeDeltaToDuration(this.duration + delta);
 
     this.timeHtml.innerText = `
-      ${getTimeValue(minutes)}:${getTimeValue(seconds)}
+      ${getTimeValue(duration.minutes)}:${getTimeValue(duration.seconds)}
     `;
   }
 

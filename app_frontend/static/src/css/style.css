@@ -42,7 +42,7 @@
     --yellow-light: #FFD76B;
     --yellow-normal: #FFCE52;
     --yellow-dark: #D9B043;
-    --purple-light: #bb95db;
+    --purple-light: #9034db;
     --purple-normal: #510093;
     --purple-dark: #231037;
     --table-dark-bg: #10151c;
@@ -400,8 +400,14 @@ body {
     display: none;
 }
 
-.game-message {
+.game-message, .subtitle {
     color: var(--secondary-light);
+    font-family: "Press Start 2P", sans-serif;
+}
+
+.title {
+    color: var(--purple-light);
+    font-family: "Press Start 2P", sans-serif;
 }
 
 .score {
@@ -427,7 +433,7 @@ body {
     --bs-table-bg: var(--table-dark-bg) !important;
 }
 
-.main {
+.scroll-on {
     overflow: auto !important;
 }
 
@@ -478,9 +484,23 @@ body {
     font-size: 14px;
 }
 
+.table {
+    margin-bottom: 0;
+    font-family: "Turret Road", sans-serif !important;
+}
+
 .match-list-avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    /* margin-right: 10px; */
+}
+
+.static {
+    max-height: calc(100vh - 140px);
+    padding-bottom: 20px;
+}
+
+.static-list {
+    max-height: calc(100vh - 210px);
+    padding-bottom: 20px;
 }

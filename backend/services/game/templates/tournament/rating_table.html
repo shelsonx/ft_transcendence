@@ -1,0 +1,49 @@
+{% load i18n %}
+{% load player_tags %}
+
+<div id="tounament-ranking" class="py-3">
+  <h5 class="subtitle d-flex justify-content-center">
+    {% translate "Rating Table" %}
+  </h5>
+
+  <div class="d-flex justify-content-center py-2">
+    <div id="tounament-ranking-table"
+      class="table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
+    >
+      <table
+        class="table table-dark align-middle"
+      >
+        <thead>
+          <tr>
+            <th>{% translate "Player" %}</th>
+            <th>{% translate "Total points" %}</th>
+            <th>{% translate "Points/game" %}</th>
+            <th>{% translate "Winnings" %}</th>
+            <th>{% translate "Losses" %}</th>
+            <th>{% translate "Ties" %}</th>
+            <th>{% translate "Rating" %}</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for p in t.players %}
+            <tr>
+              <td>
+                <span >
+                  <img class="match-list-avatar" src="{{ p.user.avatarUrl }}" alt="user avatar">
+                </span>
+                {{ p.name }}
+              </td>
+              <td>{{ p.score }}</td>
+              <td>{{ p|points_per_game }}</td>
+              <td>{{ p.winnings }}</td>
+              <td>{{ p.losses }}</td>
+              <td>{{ p.ties }}</td>
+              <td>{{ p.rating }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

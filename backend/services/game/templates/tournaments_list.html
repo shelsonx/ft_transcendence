@@ -2,15 +2,16 @@
 {% load timedelta_tags %}
 
 <div id="tournaments-table"
-  class="table-responsive main border border-white border-opacity-10 rounded-3 align-content-center"
+  class="table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
 >
   <table
     class="table table-dark align-middle table-hover"
   >
     <thead>
       <tr>
+        <th>{% translate "Name" %}</th>
+        <th>{% translate "Type" %}</th>
         <th>{% translate "Date / Status" %}</th>
-        <th>{% translate "Tournament Type" %}</th>
         <th>{% translate "Players" %}</th>
         <th>{% translate "Total Games" %}</th>
         <th>{% translate "Winner" %}</th>
@@ -24,22 +25,31 @@
     <tbody>
       {% if total_tournaments %}
 
-        {% for tournament in tournament_list %}
-            <tr class="tournament-row" onclick="window.location='?t={{tournament.pk}}#tournament';">
+        {% for t in tournament_list %}
+            <tr class="tournament-row" onclick="window.location='?t={{t.pk}}#tournament';">
 
-              {% if tournament.status == TournamentStatus.ENDED %}
-                <td>{{ tournament.date }}</td>
+              <td>{{ t.name }}</td>
+              <td>{{ t.type_label }}</td>
+
+              {% if t.status == TournamentStatus.ENDED %}
+                <td>{{ t.tournament_date }}</td>
               {% else %}
-                <td>{{ tournament.status_label }}</td>
+                <td>{{ t.status_label }}</td>
               {% endif %}
 
-              <td>{{ tournament.type_label }}</td>
-              <td>{{ tournament.number_of_players }}</td>
-              <td>{{ tournament.games_count }}</td>
+              <td>{{ t.number_of_players }}</td>
+              <td>{{ t.games_count }}</td>
 
               <td>
-                {% if tournament.status == tournamentStatus.ENDED %}
-                  {{ tournament.winner }}
+                {% if t.status == TournamentStatus.ENDED %}
+                  <span >
+                    {% if t.winner.user is not None %}
+                      <img class="match-list-avatar" src="{{ t.winner.user.avatarUrl }}" alt="user avatar">
+                    {% else %}
+                      <img class="match-list-avatar" src="{{ default_avatar }}" alt="user avatar">
+                    {% endif %}
+                  </span>
+                  <span class="username">{{ t.winner.name }}</span>
                 {% else %}
                   -
                 {% endif %}

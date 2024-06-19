@@ -28,6 +28,7 @@ class UserFriendshipView(View):
         return JsonResponse({'status': 'success', 'friends': friends_json, 'status_code': 200}, status=200)
 
     def delete(self, request, user_id, friend_id=None):
+        print("user_id: ", user_id)
         friend_removed_message = _('Friend removed successfully')
         if friend_id is None:
             raise MissingParameterException("friend_id")
