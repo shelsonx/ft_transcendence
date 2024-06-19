@@ -85,8 +85,7 @@ class AddGameView(generic.View):
         game.add_player(self.opponent)
         game.set_players_position()
 
-        data = {"status": "success", "data": {"game": game.pk}}
-        return json_response.success(data=data, status=HTTPStatus.CREATED)
+        return json_response.success(data={"game": game.pk}, status=HTTPStatus.CREATED)
 
     def get_opponent(self, post_data: QueryDict | None) -> User | None:
         opponent = post_data.get("username") if post_data else None

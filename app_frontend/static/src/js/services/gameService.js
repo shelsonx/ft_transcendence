@@ -14,7 +14,7 @@ class GameService {
       return response;
     } catch (error) {
       const message = getErrorMessage(error.status);
-      if (message != undefined)
+      if (message !== undefined)
         error.message = "Ooops! An error occured.<br>Try again later";
       return error
     }

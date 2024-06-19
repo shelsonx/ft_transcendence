@@ -16,9 +16,20 @@ const html = /*html*/ `
   </div>
 `;
 
-const swapGameForm = async (response_content) => {
+const loadErrorMessage = (error) => {
   const swapContainer = document.getElementById("add-game-container");
-  swapContainer.innerHTML = response_content;
+  swapContainer.innerHTML = /*html*/ `
+    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
+};
+
+const putGameForm = async (response) => {
+  if (response.status !== undefined) {
+    loadErrorMessage(response);
+    return;
+  }
+
+  const swapContainer = document.getElementById("add-game-container");
+  swapContainer.innerHTML = response;
 
   const addGameForm = document.getElementById("match-form");
   addGameForm.addEventListener("submit", submitGameForm);
@@ -42,7 +53,6 @@ const submitGameForm = async (e) => {
   const addGameForm = document.getElementById("match-form");
   const formData = new FormData(addGameForm);
 
-  // await gameService.getFormGame().then(addGameResult);
   await gameService.addGame(formData).then(addGameResult);
 };
 
@@ -79,7 +89,9 @@ const updateGameRulesFields = () => {
   const pointsToWinField = document.getElementById("points_to_win");
   const pointsToWinFieldInput = document.getElementById("id_points_to_win");
   const gameTotalPointsField = document.getElementById("game_total_points");
-  const gameTotalPointsFieldInput = document.getElementById("id_game_total_points");
+  const gameTotalPointsFieldInput = document.getElementById(
+    "id_game_total_points"
+  );
   const maxDurationField = document.getElementById("max_duration");
   const maxDurationFieldInput = document.getElementById("id_max_duration");
 
@@ -113,40 +125,29 @@ const updateGameRulesFields = () => {
   }
 };
 
-const addGameResult = async (response_content) => {
-  console.log(response_content);
-  if (typeof response_content == "string") {
-    swapGameForm(response_content);
+const addGameResult = async (response) => {
+  if (typeof response === "string") {
+    putGameForm(response);
   } else {
-    if (response_content.hasOwnProperty("status") && response_content.status !== "success") {
-      console.log("error");
-      return;
-    }
-    if (
-      response_content.hasOwnProperty("data") &&
-      response_content.data.hasOwnProperty("game") &&
-      response_content.data.game !== null
-    ) {
-      // window.location.href = '?match=' + response.data.game + '#pong';
-      // return;
-    }
 
-    const gameForm = document.getElementById("match-form");
-    gameForm.classList.add("d-none");
-    const gameRules = document.getElementById("game-rules");
-    gameRules.classList.add("d-none");
-    const rulesElement = document.getElementById("match-confirmation");
-    rulesElement.classList.remove("d-none");
-
-    // const confirmButton = document.getElementById("button-start");
-    // confirmButton.addEventListener("click", (e) => {})
+    if (response.hasOwnProperty("is_success") && response.is_success === true) {
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("game") &&
+        response.data.game !== null
+      ) {
+        window.location.href =
+          "?match=" + response.data.game + "#verify-player";
+        return;
+      }
+    }
   }
+
+  loadErrorMessage(response);
 };
 
-// new URLSearchParams(obj).toString();
-
 const start = async (user) => {
-  await gameService.getFormGame().then(swapGameForm);
+  await gameService.getFormGame().then(putGameForm);
 };
 
 export default new NewGameView(html, start);

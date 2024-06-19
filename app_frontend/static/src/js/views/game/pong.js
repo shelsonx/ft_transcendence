@@ -110,7 +110,7 @@ const loadErrorMessage = (error) => {
 const saveGame = async (pong, update = false) => {
   if (update) pong.updateToSave();
   pong.save().then((response) => {
-    if (response.status != undefined) {
+    if (response.status !== undefined) {
       loadErrorMessage(response);
       window.cancelAnimationFrame(animationFrame);
       const gameData = document.getElementById("game-data");
@@ -120,7 +120,7 @@ const saveGame = async (pong, update = false) => {
 };
 
 const settleGame = (response) => {
-  if (response.status != undefined) {
+  if (response.status !== undefined) {
     loadErrorMessage(response);
     return;
   }
@@ -163,7 +163,7 @@ const settleGame = (response) => {
   startButton.addEventListener("click", (e) => {
     loadStartMessages();
     setTimeout(() => {
-      if (pong.game.status.value == GameStatus.SCHEDULED) pong.begin();
+      if (pong.game.status.value === GameStatus.SCHEDULED) pong.begin();
       else pong.continue();
       animate();
       pauseButton.classList.remove("d-none");
