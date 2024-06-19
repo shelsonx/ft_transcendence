@@ -2,7 +2,6 @@
 from datetime import timedelta
 from http import HTTPStatus
 import json
-import logging
 import uuid
 
 # Django
@@ -28,7 +27,7 @@ from user.forms import UserSearchForm
 from user.models import User
 
 
-@method_decorator(csrf_exempt, name="dispatch")  # remove csrf protection...
+@method_decorator(csrf_exempt, name="dispatch")
 class AddGameView(generic.View):
     template_name = "add_game.html"
     rules_form = None
@@ -40,7 +39,6 @@ class AddGameView(generic.View):
         response = render(request, self.template_name, self.get_context_data())
         return response
 
-    # @csrf_protect
     @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
         post_data = request.POST
@@ -49,9 +47,13 @@ class AddGameView(generic.View):
         forms = [self.rules_form, self.user_form]
         if not self.opponent:
             [form.is_valid() for form in forms]
-            self.user_form.add_error(
-                "username", ValidationError(message="user does not exist")
-            )
+            msg = _("User does not exist")
+            self.user_form.add_error("username", ValidationError(message=msg))
+            return render(request, self.template_name, context)
+        if self.opponent == request.user:
+            [form.is_valid() for form in forms]
+            msg = _("You can't play against yourself")
+            self.user_form.add_error("username", ValidationError(message=msg))
             return render(request, self.template_name, context)
         if not all(form.is_valid() for form in forms):
             return render(request, self.template_name, context)
@@ -66,15 +68,15 @@ class AddGameView(generic.View):
             rules = self.rules_form.save()
 
         data = {
-            "status": GameStatus.SCHEDULED,  # TODO: deixar como PENDING
+            "status": GameStatus.PENDING,
             "rules": rules,
         }
         game_form = GameForm(data)
         if not game_form.is_valid():
-            message = _("An internal error occured while creating the game")
-            log = message + ": " + game_form.errors.as_text()
-            logging.error(log)  # TODO: remove it!
-            return json_response.error(msg=message)
+            msg = _("An internal error occured while creating the game")
+            # log = message + ": " + game_form.errors.as_text()
+            # logging.error(log)
+            return json_response.error(msg=msg)
 
         game: Game = game_form.save(commit=False)
         game.owner = request.user
