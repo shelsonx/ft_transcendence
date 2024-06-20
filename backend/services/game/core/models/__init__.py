@@ -8,3 +8,4 @@ from .rating import GameRating, TournamentGameRating, TournamentRatingWeight
 from .round import Round
 from .tournament import Tournament
 from .tournament_player import TournamentPlayer
+from .validation import VerificationType

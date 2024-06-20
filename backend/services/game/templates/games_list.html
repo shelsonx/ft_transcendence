@@ -82,7 +82,7 @@
                 {% elif game.status == GameStatus.PENDING %}
                   <button
                     class="btn btn-secondary action"
-                    onclick="window.location='?match={{game.pk}}#pong';"
+                    onclick="window.location='?match={{game.pk}}#verify-player';"
                   >
                     {% translate "Validate" %}
                   </button>

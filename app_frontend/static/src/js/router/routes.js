@@ -11,11 +11,11 @@ import userSettings from "../views/user_management/user-settings.js";
 import GameInfoView from "../views/game-info/game_info.js";
 import SeeUserGamesView from "../views/game/view_user_games.js";
 import NewGameView from "../views/game/new_game.js";
+import ValidateGameView from "../views/game/validate_game.js";
 import PongGameView from "../views/game/pong.js";
 import TournamentsView from "../views/game/tournaments.js";
 import NewTournamentView from "../views/game/new_tournament.js";
 import TournamentDetailView from "../views/game/tournament.js";
-
 
 /**
  * An object representing the routes in the application.
@@ -41,6 +41,7 @@ const hashRoutes = {
   "user-settings": { title: "Settings", render: userSettings, description: "Change user settings."},
   "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
+  "verify-player": { title: "Verify player", render: ValidateGameView, description: "Verify", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },
   "view-user-games": { title: "View user Games", render: SeeUserGamesView, description: "View user games", isProtected: true },
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },

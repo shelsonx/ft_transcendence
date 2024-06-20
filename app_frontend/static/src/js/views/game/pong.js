@@ -125,6 +125,10 @@ const settleGame = (response) => {
     return;
   }
   const gameObj = response.data.game;
+  if (gameObj.status === GameStatus.PENDING) {
+    window.location.replace(`?match=${match}#verify-player`);
+    return ;
+  }
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");

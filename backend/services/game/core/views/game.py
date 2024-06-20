@@ -84,6 +84,7 @@ class AddGameView(generic.View):
         game.add_player(request.user)
         game.add_player(self.opponent)
         game.set_players_position()
+        # TODO: pedido para gerar o token para o oponente
 
         return json_response.success(data={"game": game.pk}, status=HTTPStatus.CREATED)
 
