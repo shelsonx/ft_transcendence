@@ -34,10 +34,23 @@ const html = /*html*/`
   <div class="container-fluid main-game scroll-on mt-3">
     <div id="home-container" class="static-list"></div>
   </div>
+
+  <div id="error-message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  </div>
 `
 
+const loadErrorMessage = (error) => {
+  const message = document.getElementById("error-message");
+  message.innerHTML = /*html*/ `
+    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
+};
+
 const swap = (response) => {
-  // TODO: lidar quando retornar erro ou não responder
+  if (response.status !== undefined) {
+    loadErrorMessage(response);
+    return;
+  }
+
   const swapContainer = document.getElementById("home-container");
   swapContainer.innerHTML = response;
 }
