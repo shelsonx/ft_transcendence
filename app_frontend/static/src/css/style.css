@@ -522,4 +522,8 @@ body {
     padding-bottom: 20px;
 }
 
+ol li::marker {
+    color: var(--secondary-light);
+}
+
 /* End game views */

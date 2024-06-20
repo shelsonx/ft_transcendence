@@ -93,7 +93,6 @@ class AddGameView(generic.View):
     def get_context_data(self, **kwargs) -> dict:
         return {
             "invalid": False,
-            "GameStatus": GameStatus,
             "rules_form": self.rules_form,
             "user_form": self.user_form,
         }
