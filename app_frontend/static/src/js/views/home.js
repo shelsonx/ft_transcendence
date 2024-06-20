@@ -4,6 +4,7 @@ import {
   UserInformationService
 } from '../services/userManagementService.js';
 import BaseLoggedView from './baseLoggedView.js';
+
 class HomeView extends BaseLoggedView {
   constructor(html, start) {
     super({
@@ -14,15 +15,14 @@ class HomeView extends BaseLoggedView {
   }
 }
 
-const userLabel = "My games"
-const allUsersLabel = "All games"
-
 const html = /*html*/`
   <div class="d-flex justify-content-between">
     <h2 id="hello-user"></h2>
     <div>
-      <button id="btn-data-switch" type="button" class="btn btn-info">
-        ${userLabel}
+      <button id="btn-my-games" type="button" class="btn btn-info"
+        onclick="window.location='#my-games';"
+      >
+        My games
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
         onclick="window.location='#play';"
@@ -65,22 +65,6 @@ const start = async (user) => {
   helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
-
-  let userData = false
-  const btnDataSwitch = document.getElementById("btn-data-switch");
-  btnDataSwitch.addEventListener("click", async () => {
-    userData = !userData
-
-    if (userData) {
-      await gameService.userGames(user.id).then(swap);
-      btnDataSwitch.innerHTML = allUsersLabel;
-      }
-    else {
-      await gameService.allGames().then(swap);
-      btnDataSwitch.innerHTML = userLabel;
-    }
-  });
-
 }
 
 export default new HomeView(html, start);

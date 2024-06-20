@@ -9,11 +9,13 @@ import userProfile from "../views/user_management/user-profile.js";
 import searchUsers from "../views/user_management/search-users.js";
 import userSettings from "../views/user_management/user-settings.js";
 import GameInfoView from "../views/game-info/game_info.js";
+import MyGamesView from "../views/game/my_games.js";
 import SeeUserGamesView from "../views/game/view_user_games.js";
 import NewGameView from "../views/game/new_game.js";
 import ValidateGameView from "../views/game/validate_game.js";
 import PongGameView from "../views/game/pong.js";
 import TournamentsView from "../views/game/tournaments.js";
+import MyTournamentsView from "../views/game/my_tournaments.js";
 import NewTournamentView from "../views/game/new_tournament.js";
 import TournamentDetailView from "../views/game/tournament.js";
 
@@ -43,8 +45,10 @@ const hashRoutes = {
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "verify-player": { title: "Verify player", render: ValidateGameView, description: "Verify", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },
+  "my-games": { title: "My Games", render: MyGamesView, description: "My games", isProtected: true },
   "view-user-games": { title: "View user Games", render: SeeUserGamesView, description: "View user games", isProtected: true },
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },
+  "my-tournaments": { title: "My Tournaments", render: MyTournamentsView, description: "My Tournaments", isProtected: true },
   "add-tournament": { title: "Create a Tournament", render: NewTournamentView, description: "Create a Tournament", isProtected: true },
   "tournament": { title: "Tournament detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
 };
