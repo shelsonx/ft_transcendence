@@ -58,8 +58,8 @@ class AddTournamentView(generic.View):
         context = self.get_context_data()
         # forms = [self.rules_form, self.user_form]
 
-        data = {"status": "success", "data": {"tournament": "tournament"}}
-        return json_response.success(data=data, status=HTTPStatus.CREATED)
+        # data = {"tournament": tournament.pk}
+        return json_response.success(status=HTTPStatus.CREATED)
 
     def get_players(self, post_data: QueryDict) -> list[User]:
         usernames = post_data.getlist("username") if post_data else None
@@ -153,7 +153,7 @@ class TournamentView(generic.View):
                 g: Game
                 g.status_label = GameStatus(g.status).label
 
-                player_left, player_right = g.usernames
+                player_left, player_right = g.players
                 player_left.is_winner = False
                 player_right.is_winner = False
                 winner = g.winner

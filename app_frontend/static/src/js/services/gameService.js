@@ -130,9 +130,20 @@ class GameService {
     return response;
   }
 
-  async addTournament() {
-    const data = {};
-    const requestData = new HttpClientRequestData("POST", "/tournament", data);
+  async addTournament(formData) {
+    // const data = {
+    //   username: formData.get("username"),
+    //   rule_type: formData.get("rule_type"),
+    //   points_to_win: formData.get("points_to_win"),
+    //   game_total_points: formData.get("game_total_points"),
+    //   max_duration: formData.get("max_duration"),
+    // };
+    const requestData = new HttpClientRequestData(
+      "POST",
+      "/tournament",
+      formData
+    );
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
@@ -143,11 +154,42 @@ class GameService {
     return response;
   }
 
+  async cancelTournament(id) {
+    const requestData = new HttpClientRequestData("PUT", `/tournament/${id}`);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
   async deleteTournament(id) {
     const requestData = new HttpClientRequestData(
       "DELETE",
       `/tournament/${id}`
     );
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async validateTournamentForm(id) {
+    const requestData = new HttpClientRequestData(
+      "GET",
+      `/tournament-validation/${id}`
+    );
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async validateTournament(id, formData) {
+    const data = {
+      token: formData.get("token"),
+    };
+    const requestData = new HttpClientRequestData(
+      "PATCH",
+      `/tournament-validation/${id}`,
+      data
+    );
+
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }

@@ -2,7 +2,7 @@ import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 
-class ValidateGameView extends BaseLoggedView {
+class ValidateTournamentView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
@@ -13,19 +13,19 @@ class ValidateGameView extends BaseLoggedView {
 
 const html = /*html*/ `
   <div class="main-game scroll-on container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
-    <div id="verify-game-container" class="static"></div>
+    <div id="verify-tournament-container" class="static"></div>
   </div>
 `;
 
-let match = null;
+let tournament = null;
 
 const putVerifyForm = async (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response, "verify-game-container");
+    loadErrorMessage(response, "verify-tournament-container");
     return;
   }
 
-  const swapContainer = document.getElementById("verify-game-container");
+  const swapContainer = document.getElementById("verify-tournament-container");
   swapContainer.innerHTML = response;
 
   const verifyForm = document.getElementById("validation-form");
@@ -37,7 +37,7 @@ const submitVerifyForm = async (e) => {
   const verifyForm = document.getElementById("validation-form");
   const formData = new FormData(verifyForm);
 
-  await gameService.validateGame(match, formData).then(verifyPlayerResult);
+  await gameService.validateTournament(tournament, formData).then(verifyPlayerResult);
 };
 
 const verifyPlayerResult = async (response) => {
@@ -45,21 +45,22 @@ const verifyPlayerResult = async (response) => {
     putVerifyForm(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
-      window.location.href = "?match=" + match + "#pong";
+      window.location.href = "?tournament=" + tournament + "#pong";
       return;
     }
   }
-  loadErrorMessage(response, "verify-game-container");
+  loadErrorMessage(response, "verify-tournament-container");
 };
 
 const start = async (user) => {
-  match = new URLSearchParams(window.location.search).get("match");
-  if (match === null) {
-    pageNotFoundMessage("message");
-    return;
-  }
+  // tournament = new URLSearchParams(window.location.search).get("tournament");
+  // if (tournament === null) {
+  //   pageNotFoundMessage("message");
+  //   return;
+  // }
 
-  await gameService.validateGameForm(match).then(putVerifyForm);
+  // await gameService.validateTournamentForm(tournament).then(putVerifyForm);
+  await gameService.validateTournamentForm(1016).then(putVerifyForm);
 };
 
-export default new ValidateGameView(html, start);
+export default new ValidateTournamentView(html, start);

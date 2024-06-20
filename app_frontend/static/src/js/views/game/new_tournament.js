@@ -38,23 +38,25 @@ const submitTournamentForm = async (e) => {
   const addTournamentForm = document.getElementById("tournament-form");
   const formData = new FormData(addTournamentForm);
 
-  await gameService.addTournament(formData).then(addGameResult);
+  await gameService.addTournament(formData).then(addTournamentResult);
 };
 
-const addGameResult = async (response) => {
+const addTournamentResult = async (response) => {
   if (typeof response === "string") {
-    putGameForm(response);
+    putTournamentForm(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
-      if (
-        response.hasOwnProperty("data") &&
-        response.data.hasOwnProperty("game") &&
-        response.data.game !== null
-      ) {
-        window.location.href =
-          "?match=" + response.data.game + "#verify-player";
-        return;
-      }
+      // if (
+      //   response.hasOwnProperty("data") &&
+      //   response.data.hasOwnProperty("tournament") &&
+      //   response.data.tournament !== null
+      // ) {
+      //   window.location.href =
+      //     "?tournament=" + response.data.tournament + "#verify-players";
+      //   return;
+      // }
+      window.location.href = "#verify-players";
+      return ;
     }
   }
 
