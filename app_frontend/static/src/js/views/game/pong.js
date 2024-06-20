@@ -4,6 +4,7 @@ import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
 import { PLAYER_VELOCITY } from "../../constants/game.js";
+import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -77,7 +78,7 @@ const loadStartMessages = () => {
   startMessages.forEach((obj) => {
     setTimeout(() => {
       message.innerHTML = /*html*/ `
-        <h1 class="game-message">
+        <h1 class="error-message">
           ${obj.msg}
         </h1>
       `;
@@ -95,23 +96,17 @@ function loadEndMessage(pong) {
     msg = "This game was cancelled";
 
   messageHtml.innerHTML = /*html*/ `
-    <h1 class="game-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
+    <h1 class="error-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
       ${msg}
     </h1>
   `;
 }
 
-const loadErrorMessage = (error) => {
-  const message = document.getElementById("message");
-  message.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
-
 const saveGame = async (pong, update = false) => {
   if (update) pong.updateToSave();
   pong.save().then((response) => {
     if (response.status !== undefined) {
-      loadErrorMessage(response);
+      loadErrorMessage(response, "message");
       window.cancelAnimationFrame(animationFrame);
       const gameData = document.getElementById("game-data");
       gameData.classList.add("d-none");
@@ -121,13 +116,13 @@ const saveGame = async (pong, update = false) => {
 
 const settleGame = (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "message");
     return;
   }
   const gameObj = response.data.game;
   if (gameObj.status === GameStatus.PENDING) {
     window.location.replace(`?match=${match}#verify-player`);
-    return ;
+    return;
   }
 
   const canvas = document.getElementById("canvas");
@@ -234,11 +229,7 @@ const start = async (user) => {
   match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `
-      <h1 class="game-message" data-i18n-key="page-not-found--title">
-        Page not Found
-      </h1>`;
+    pageNotFoundMessage("message");
     return;
   }
 

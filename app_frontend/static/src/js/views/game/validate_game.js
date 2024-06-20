@@ -1,5 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
+import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 
 class ValidateGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -18,15 +19,9 @@ const html = /*html*/ `
 
 let match = null;
 
-const loadErrorMessage = (error) => {
-  const swapContainer = document.getElementById("verify-game-container");
-  swapContainer.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
-
 const putVerifyForm = async (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "verify-game-container");
     return;
   }
 
@@ -54,18 +49,14 @@ const verifyPlayerResult = async (response) => {
       return;
     }
   }
-  loadErrorMessage(response);
+  loadErrorMessage(response, "verify-game-container");
 };
 
 const start = async (user) => {
   match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `
-      <h1 class="game-message" data-i18n-key="page-not-found--title">
-        Page not Found
-      </h1>`;
+    pageNotFoundMessage("message");
     return;
   }
 

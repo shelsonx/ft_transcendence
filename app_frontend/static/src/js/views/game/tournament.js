@@ -1,5 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
+import { pageNotFoundMessage } from "../../utils/errors.js";
 
 class TournamentDetailView extends BaseLoggedView {
   constructor(html, start) {
@@ -29,11 +30,7 @@ const swap = (response) => {
 const start = async (user) => {
   const tournament = new URLSearchParams(window.location.search).get("t");
   if (tournament === null) {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `
-      <h1 class="game-message" data-i18n-key="page-not-found--title">
-        Page not Found
-      </h1>`;
+    pageNotFoundMessage("message");
     return;
   }
 

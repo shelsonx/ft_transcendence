@@ -1,17 +1,17 @@
-import gameService from '../../services/gameService.js';
-import BaseLoggedView from '../baseLoggedView.js';
+import gameService from "../../services/gameService.js";
+import BaseLoggedView from "../baseLoggedView.js";
+import { loadErrorMessage } from "../../utils/errors.js";
 
 class MyGamesView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
-      start
-    },
-    );
+      start,
+    });
   }
 }
 
-const html = /*html*/`
+const html = /*html*/ `
   <div class="d-flex justify-content-between">
     <h2 id="hello-user"></h2>
     <div>
@@ -33,15 +33,9 @@ const html = /*html*/`
 
   <div id="error-message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
-`
+`;
 
 let u = null;
-
-const loadErrorMessage = (error) => {
-  const message = document.getElementById("error-message");
-  message.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
 
 const cancelGame = async (e) => {
   e.preventDefault();
@@ -52,10 +46,10 @@ const cancelGame = async (e) => {
       // TODO: toast erro
       return;
     }
-  })
+  });
   await gameService.userGames(u.id).then(swap);
   // TODO: toast sucesso
-}
+};
 
 const deleteGame = async (e) => {
   e.preventDefault();
@@ -66,14 +60,14 @@ const deleteGame = async (e) => {
       // TODO: toast erro
       return;
     }
-  })
+  });
   await gameService.userGames(u.id).then(swap);
   // TODO: toast sucesso
-}
+};
 
 const swap = (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "error-message");
     return;
   }
 
@@ -89,7 +83,7 @@ const swap = (response) => {
   deleteButtons.forEach((element) => {
     element.addEventListener("click", deleteGame);
   });
-}
+};
 
 const start = async (user) => {
   const helloUser = document.getElementById("hello-user");
@@ -97,6 +91,6 @@ const start = async (user) => {
 
   await gameService.userGames(user.id).then(swap);
   u = user;
-}
+};
 
 export default new MyGamesView(html, start);

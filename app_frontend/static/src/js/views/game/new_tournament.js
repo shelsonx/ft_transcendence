@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { setGameRulesLogic } from "./rules.js";
+import { loadErrorMessage } from "../../utils/errors.js";
 
 class NewTournamentView extends BaseLoggedView {
   constructor(html, start) {
@@ -17,15 +18,9 @@ const html = /*html*/ `
   </div>
 `;
 
-const loadErrorMessage = (error) => {
-  const swapContainer = document.getElementById("add-tournament-container");
-  swapContainer.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
-
 const putTournamentForm = (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "add-tournament-container");
     return;
   }
 
@@ -44,6 +39,26 @@ const submitTournamentForm = async (e) => {
   const formData = new FormData(addTournamentForm);
 
   await gameService.addTournament(formData).then(addGameResult);
+};
+
+const addGameResult = async (response) => {
+  if (typeof response === "string") {
+    putGameForm(response);
+  } else {
+    if (response.hasOwnProperty("is_success") && response.is_success === true) {
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("game") &&
+        response.data.game !== null
+      ) {
+        window.location.href =
+          "?match=" + response.data.game + "#verify-player";
+        return;
+      }
+    }
+  }
+
+  loadErrorMessage(response, "add-tournament-container");
 };
 
 const start = async (user) => {

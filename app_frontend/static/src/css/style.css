@@ -406,7 +406,7 @@ body {
     font-family: "Turret Road", sans-serif !important;
 }
 
-.game-message, .subtitle {
+.error-message, .subtitle {
     color: var(--secondary-light);
     font-family: "Press Start 2P", sans-serif;
 }

@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { setGameRulesLogic } from "./rules.js";
+import { loadErrorMessage } from "../../utils/errors.js";
 
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -17,15 +18,9 @@ const html = /*html*/ `
   </div>
 `;
 
-const loadErrorMessage = (error) => {
-  const swapContainer = document.getElementById("add-game-container");
-  swapContainer.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
-
 const putGameForm = async (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "add-game-container");
     return;
   }
 
@@ -63,7 +58,7 @@ const addGameResult = async (response) => {
     }
   }
 
-  loadErrorMessage(response);
+  loadErrorMessage(response, "add-game-container");
 };
 
 const start = async (user) => {

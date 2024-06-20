@@ -3,6 +3,7 @@ import gameService from '../services/gameService.js';
 import {
   UserInformationService
 } from '../services/userManagementService.js';
+import { loadErrorMessage } from '../utils/errors.js';
 import BaseLoggedView from './baseLoggedView.js';
 
 class HomeView extends BaseLoggedView {
@@ -39,21 +40,16 @@ const html = /*html*/`
   </div>
 `
 
-const loadErrorMessage = (error) => {
-  const message = document.getElementById("error-message");
-  message.innerHTML = /*html*/ `
-    <h1 class="game-message text-center">${error.status} <br> ${error.message}</h1>`;
-};
 
 const swap = (response) => {
   if (response.status !== undefined) {
-    loadErrorMessage(response);
+    loadErrorMessage(response, "error-message");
     return;
   }
 
   const swapContainer = document.getElementById("home-container");
   swapContainer.innerHTML = response;
-}
+};
 
 const changeLanguageWhenLogin = async (userId) => {
   // TODO
@@ -67,7 +63,7 @@ const changeLanguageWhenLogin = async (userId) => {
     console.error(err);
   }
   languageHandler.changeLanguage(userChoosenLanguage);
-}
+};
 
 const start = async (user) => {
   if (user) {
@@ -78,6 +74,6 @@ const start = async (user) => {
   helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
-}
+};
 
 export default new HomeView(html, start);
