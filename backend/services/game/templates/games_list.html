@@ -41,7 +41,7 @@
 
         {% for game in game_list %}
         <tr class="match-row">
-          <td>{% include "game_result.html" %}</td>
+          <td>{% include "game/result.html" %}</td>
 
           <td>
             {% if game.status == GameStatus.ENDED %}

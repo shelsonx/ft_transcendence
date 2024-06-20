@@ -20,7 +20,7 @@ from user.models import User
 
 @method_decorator(csrf_exempt, name="dispatch")
 class ValidateGameView(generic.View):
-    template_name = "validate_game.html"
+    template_name = "game/validate.html"
 
     @JWTAuthentication()
     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
