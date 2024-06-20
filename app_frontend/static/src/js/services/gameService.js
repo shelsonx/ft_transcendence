@@ -99,6 +99,13 @@ class GameService {
     return response;
   }
 
+  async cancelGame(id) {
+    const requestData = new HttpClientRequestData("PUT", `/game/${id}`);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
   async deleteGame(id) {
     const requestData = new HttpClientRequestData("DELETE", `/game/${id}`);
     const response = await this.handleResponse(requestData);

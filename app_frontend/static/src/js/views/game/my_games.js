@@ -32,10 +32,50 @@ const html = /*html*/`
   </div>
 `
 
+let u = null;
+
+const cancelGame = async (e) => {
+  e.preventDefault();
+
+  const match = e.srcElement.id.split("-").pop();
+  await gameService.cancelGame(match).then((response) => {
+    if (response.status !== undefined) {
+      // TODO: toast erro
+      return;
+    }
+  })
+  await gameService.userGames(u.id).then(swap);
+  // TODO: toast sucesso
+}
+
+const deleteGame = async (e) => {
+  e.preventDefault();
+
+  const match = e.srcElement.id.split("-").pop();
+  await gameService.deleteGame(match).then((response) => {
+    if (response.status !== undefined) {
+      // TODO: toast erro
+      return;
+    }
+  })
+  await gameService.userGames(u.id).then(swap);
+  // TODO: toast sucesso
+}
+
 const swap = (response) => {
   // TODO: lidar quando retornar erro ou não responder
   const swapContainer = document.getElementById("my-games-container");
   swapContainer.innerHTML = response;
+
+  const cancelButtons = document.querySelectorAll(".cancel");
+  cancelButtons.forEach((element) => {
+    element.addEventListener("click", cancelGame);
+  });
+
+  const deleteButtons = document.querySelectorAll(".delete");
+  deleteButtons.forEach((element) => {
+    element.addEventListener("click", deleteGame);
+  });
 }
 
 const start = async (user) => {
@@ -43,6 +83,7 @@ const start = async (user) => {
   helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.userGames(user.id).then(swap);
+  u = user;
 }
 
 export default new MyGamesView(html, start);

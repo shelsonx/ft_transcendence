@@ -95,16 +95,14 @@
 
                 {% if game.status == GameStatus.PENDING %}
                   <button
-                    class="btn btn-dark"
-                    {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
+                    class="btn btn-dark delete" id="delete-{{ game.pk }}"
                   >
                     {% translate "Delete" %}
                   </button>
 
                 {% elif game.status == GameStatus.SCHEDULED or game.status == GameStatus.PAUSED %}
                   <button
-                    class="btn btn-dark"
-                    {% comment %} onclick="window.location='?match={{game.pk}}#pong';" {% endcomment %}
+                    class="btn btn-dark cancel" id="cancel-{{ game.pk }}"
                   >
                     {% translate "Cancel" %}
                   </button>

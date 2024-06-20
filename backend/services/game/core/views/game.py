@@ -6,11 +6,7 @@ import uuid
 
 # Django
 from django.forms import ValidationError
-from django.http import (
-    HttpRequest,
-    HttpResponse,
-    QueryDict,
-)
+from django.http import HttpRequest, HttpResponse, QueryDict
 from django.shortcuts import render
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -162,11 +158,31 @@ class GameView(generic.View):
         return json_response.success(msg="Game updated")
 
     @JWTAuthentication()
+    def put(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+        game = Game.objects.filter(pk=pk).first()
+
+        if not game:
+            return json_response.not_found()
+        if game.owner != request.user:
+            print(game.owner, request.user)
+            return json_response.forbidden()
+
+        valid_status = [GameStatus.SCHEDULED, GameStatus.PAUSED, GameStatus.ONGOING]
+        if game.status not in valid_status:
+            return json_response.forbidden()
+
+        game.status = GameStatus.CANCELED
+        game.save()
+        return json_response.success(msg="Game canceled")
+
+    @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
         game = Game.objects.filter(pk=pk).first()
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
+            return json_response.forbidden()
+        if game.status != GameStatus.PENDING:
             return json_response.forbidden()
 
         game.delete()
