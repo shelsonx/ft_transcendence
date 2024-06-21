@@ -54,8 +54,8 @@ class AddTournamentView(generic.View):
     def post(self, request: HttpRequest) -> HttpResponse:
         self.user = request.user
         post_data = request.POST
-        self.set_forms(post_data)
-        context = self.get_context_data()
+        # self.set_forms(post_data)
+        # context = self.get_context_data()
         # forms = [self.rules_form, self.user_form]
 
         # data = {"tournament": tournament.pk}
@@ -74,6 +74,8 @@ class AddTournamentView(generic.View):
             # "invalid": False,
             "empty": False,
             "user": self.user,
+            "type": TournamentType.ROUND_ROBIN,  # change
+            "TournamentType": TournamentType,
             "rules_form": self.rules_form,
             "tournament_form": self.tournament_form,
             "players_forms": self.players_forms,

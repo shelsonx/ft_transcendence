@@ -26,17 +26,17 @@ class TournamentForm(forms.ModelForm):
         #     attrs={"class": "form-control"}
         # )
         self.fields["number_of_rounds"].widget.attrs = {"class": "form-control"}
+
+        self.fields["number_of_rounds"].initial = 3
         self.fields["tournament_type"].initial = TournamentType.ROUND_ROBIN
+        self.fields["number_of_players"].disabled = True
 
         tournament_type = self["tournament_type"].value()
         if tournament_type == TournamentType.CHALLENGE:
-            self.fields["number_of_players"].disabled = True
             self.fields["number_of_players"].initial = 2
-            self.fields["number_of_rounds"].initial = 3
         if tournament_type == TournamentType.ROUND_ROBIN:
             self.fields["number_of_rounds"].disabled = True
             self.fields["number_of_players"].initial = 3
-            self.fields["number_of_rounds"].initial = 3
 
     def clean(self) -> dict[str, Any]:
         cleaned_data = super().clean()

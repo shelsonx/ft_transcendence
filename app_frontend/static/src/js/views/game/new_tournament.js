@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { setGameRulesLogic } from "./rules.js";
+import { setGameRulesDynamicBehavior } from "./rules.js";
+import { setTournamentFormDynamicBehavior } from "./tournament_dynamic.js";
 import { loadErrorMessage } from "../../utils/errors.js";
 
 class NewTournamentView extends BaseLoggedView {
@@ -30,7 +31,8 @@ const putTournamentForm = (response) => {
   const addTournamentForm = document.getElementById("tournament-form");
   addTournamentForm.addEventListener("submit", submitTournamentForm);
 
-  setGameRulesLogic();
+  setGameRulesDynamicBehavior();
+  setTournamentFormDynamicBehavior();
 };
 
 const submitTournamentForm = async (e) => {

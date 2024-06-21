@@ -1,6 +1,6 @@
 import { GameRuleType } from "../../contracts/game/gameRule.js";
 
-export const setGameRulesLogic = () => {
+export const setGameRulesDynamicBehavior = () => {
   const setRulesButton = document.getElementById("set-rules-btn");
   setRulesButton.addEventListener("click", showRules);
 
@@ -13,7 +13,7 @@ export const setGameRulesLogic = () => {
   updateGameRulesFields();
   const ruleTypeField = document.getElementById("id_rule_type");
   ruleTypeField.addEventListener("change", updateGameRulesFields);
-}
+};
 
 const showRules = () => {
   const setRulesButton = document.getElementById("set-rules-btn");

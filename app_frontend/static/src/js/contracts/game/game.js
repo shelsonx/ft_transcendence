@@ -18,7 +18,7 @@ class GameStatus {
     GameStatus.CANCELED,
   ];
 
-  constructor(value = GameStatus.SCHEDULED) {
+  constructor(value = GameStatus.PENDING) {
     if (!GameStatus.statusTypes.includes(value)) {
       throw new Error(
         `Invalid game status: ${value}.
