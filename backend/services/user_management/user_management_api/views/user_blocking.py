@@ -18,14 +18,6 @@ class UserBlockingView(View):
     - `delete`: Unblocks a previously blocked user for the specified user.
     """
 
-<<<<<<< HEAD
-    def get(self, request, user_id):
-        user = UserInfoView().get_user(user_id)
-        blocked_users = user.blocked_users.all()
-        blocked_users_json = [blocked_user.as_json() for blocked_user in blocked_users]
-        return JsonResponse({'status': 'success', 'blocked_users': blocked_users_json, 'status_code': 200}, status=200)
-
-=======
     def get(self, request, user_id, blocked_id=None):
         if not blocked_id:
             user = UserInfoView().get_user(user_id)
@@ -36,8 +28,7 @@ class UserBlockingView(View):
             user = UserInfoView().get_user(user_id)
             is_blocked = user.blocked_users.filter(user_uuid=blocked_id).exists()
             return JsonResponse({'status': 'success', 'is_blocked': is_blocked, 'status_code': 200}, status=200)
-    
->>>>>>> 1381e9fd1f47f5d7c503092815105f83c3e656b3
+
     def post(self, request, user_id, blocked_id):
         blocked_user_message = _('Blocked user added successfully')
         user = UserInfoView().get_user(user_id)

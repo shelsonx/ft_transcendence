@@ -133,7 +133,7 @@ class AuthRouter(IRouter):
 
   def get_blocked_users(self, user_id:str, headers:dict):
      data = self.notify_microservices("GET", ApiUrls.USER_MANAGEMENT, HttpClientData(
-        url=f"{user_id}/block/",
+        url=f"/{user_id}/block/",
         data={},
         headers=headers
      ))
