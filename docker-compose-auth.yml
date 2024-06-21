@@ -4,7 +4,6 @@ services:
   frontend:
     build: ./app_frontend
     container_name: frontend
-    command: python manage.py runserver 0.0.0.0:3000
     volumes:
       - ./app_frontend:/code
     ports:
@@ -13,19 +12,17 @@ services:
       - .env.web
     depends_on:
       - auth-api
-  #change the database name
+
   auth-db:
-    image: postgres:16
+    image: postgres:bullseye
     container_name: auth-db
     volumes:
-      #change the volume name
       - auth-db-data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      # add in the .env the name of the db
       - POSTGRES_DB=${POSTGRES_AUTH_DB}
     ports:
       - "5433:5432"
@@ -59,7 +56,8 @@ services:
       - auth-db
 
   game-info-db:
-    image: postgres:16
+    image: postgres:bullseye
+    container_name: game-info-db
     volumes:
       - game-info-db-data:/var/lib/postgresql/data
     env_file:
@@ -103,7 +101,7 @@ services:
 
   user-management-api:
     build: ./backend/services/user_management
-    command: python3 manage.py runserver 0.0.0.0:8000
+    container_name: user-management-api
     volumes:
       - ./backend/services/user_management:/user_management
     ports:
@@ -112,7 +110,8 @@ services:
       - user-management-db
 
   user-management-db:
-    image: postgres
+    image: postgres:bullseye
+    container_name: user-management-db
     volumes:
       - user-management-db:/var/lib/postgresql/data
     environment:
@@ -122,9 +121,51 @@ services:
     ports:
       - "5435:5432"
 
+  game-db:
+    container_name: game-db
+    image: postgres:bullseye
+    volumes:
+      - game-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
+    restart: unless-stopped
+    ports:
+      - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 4s
+      timeout: 2s
+      retries: 5
+
+  game-api:
+    container_name: game-api
+    image: game-api
+    build: ./backend/services/game
+    volumes:
+      - ./backend/services/game:/api
+    restart: unless-stopped
+    ports:
+      - 8020:8000
+    env_file:
+    - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
+    depends_on:
+      game-db:
+        condition: service_healthy
+
 volumes:
   #change the volume name
   auth-db-data:
   game-info-db-data:
   user-management-db:
+  game-db-data:
 

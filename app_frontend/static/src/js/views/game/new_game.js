@@ -1,6 +1,8 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { GameRuleType } from "../../contracts/game/gameRule.js";
+import { setGameRulesDynamicBehavior } from "./rules.js";
+import { loadErrorMessage } from "../../utils/errors.js";
+
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
     super({
@@ -11,90 +13,56 @@ class NewGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="swap-container" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+  <div class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div id="add-game-container"></div>
   </div>
 `;
 
-const swapGameForm = async (response_content) => {
-  const swapContainer = document.getElementById("swap-container");
-  swapContainer.innerHTML = response_content;
+const putGameForm = async (response) => {
+  if (response.status !== undefined) {
+    loadErrorMessage(response, "add-game-container");
+    return;
+  }
 
-  const addGameForm = document.getElementById('match-form');
+  const swapContainer = document.getElementById("add-game-container");
+  swapContainer.innerHTML = response;
+
+  const addGameForm = document.getElementById("match-form");
   addGameForm.addEventListener("submit", submitGameForm);
 
-  const setRulesButton = document.getElementById('set-rules-btn');
-  setRulesButton.addEventListener("click", setRules);
+  setGameRulesDynamicBehavior();
 };
 
 const submitGameForm = async (e) => {
   e.preventDefault();
-  const addGameForm = document.getElementById('match-form');
+  const addGameForm = document.getElementById("match-form");
   const formData = new FormData(addGameForm);
 
-  await gameService.getFormGame().then(addGameResult);
-  // await gameService.addGame(formData).then(addGameResult);
-}
-
-const setRules = () => {
-  const setRulesButton = document.getElementById('set-rules-btn');
-  setRulesButton.classList.add("d-none");
-
-  const formGameRules = document.getElementById('form-game-rules');
-  const gameTotalPointsField = document.getElementById('game_total_points');
-  const maxDurationField = document.getElementById('max_duration');
-  formGameRules.classList.remove("d-none");
-  gameTotalPointsField.classList.add("d-none");
-  maxDurationField.classList.add("d-none");
-
-  const ruleTypeField = document.getElementById('id_rule_type');
-  ruleTypeField.addEventListener("change", updateGameRulesFields);
-}
-
-const updateGameRulesFields = () => {
-  const ruleTypeField = document.getElementById('id_rule_type');
-  const pointsToWinField = document.getElementById("points_to_win");
-  const gameTotalPointsField = document.getElementById('game_total_points');
-  const maxDurationField = document.getElementById('max_duration');
-
-  if (ruleTypeField.value === GameRuleType.PLAYER_POINTS) {
-    pointsToWinField.classList.remove("d-none");
-    gameTotalPointsField.classList.add("d-none");
-    maxDurationField.classList.add("d-none");
-  }
-  else if (ruleTypeField.value === GameRuleType.GAME_TOTAL_POINTS) {
-    pointsToWinField.classList.add("d-none");
-    gameTotalPointsField.classList.remove("d-none");
-    maxDurationField.classList.add("d-none");
-  }
-  else if (ruleTypeField.value === GameRuleType.GAME_DURATION) {
-    pointsToWinField.classList.add("d-none");
-    gameTotalPointsField.classList.add("d-none");
-    maxDurationField.classList.remove("d-none");
-  }
-}
-
-const addGameResult = async (response) => {
-  // console.log(response);
-  // if (typeof response == "string") {
-  //   swapGameForm(response);
-  // } else {
-
-    const gameForm = document.getElementById("match-form");
-    gameForm.classList.add("d-none");
-    const gameRules = document.getElementById("game-rules");
-    gameRules.classList.add("d-none");
-    const rulesElement = document.getElementById("match-confirmation");
-    rulesElement.classList.remove("d-none");
-
-    // const confirmButton = document.getElementById("button-start");
-    // confirmButton.addEventListener("click", (e) => {})
-  // }
+  await gameService.addGame(formData).then(addGameResult);
 };
 
-// new URLSearchParams(obj).toString();
+const addGameResult = async (response) => {
+  if (typeof response === "string") {
+    putGameForm(response);
+  } else {
+    if (response.hasOwnProperty("is_success") && response.is_success === true) {
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("game") &&
+        response.data.game !== null
+      ) {
+        window.location.href =
+          "?match=" + response.data.game + "#verify-player";
+        return;
+      }
+    }
+  }
 
-const start = async () => {
-  await gameService.getFormGame().then(swapGameForm);
+  loadErrorMessage(response, "add-game-container");
+};
+
+const start = async (user) => {
+  await gameService.getFormGame().then(putGameForm);
 };
 
 export default new NewGameView(html, start);

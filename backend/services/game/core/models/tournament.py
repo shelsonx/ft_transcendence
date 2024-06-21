@@ -2,18 +2,19 @@
 from pprint import pprint
 import random
 import math
+from typing import Any
 
 # django
 from django.db import models
+from django.db.models import Count, F, Prefetch, Q, QuerySet, Sum
 from django.utils.translation import gettext_lazy as _
 
 
 # Local Folder
 from .game_rules import GameRules, GameRuleType
-from .game_status import GameStatus
+from .status import GameStatus, RoundStatus, TournamentStatus
 from .game import Game
 from .round import Round
-from .tournament_status import TournamentStatus
 from .tournament_type import TournamentType
 
 # First Party
@@ -27,6 +28,7 @@ class Tournament(models.Model):
     - The winner wins a bonus of 10 points in platform score
     """
 
+    name = models.CharField(max_length=50)
     tournament_type = models.SmallIntegerField(
         choices=TournamentType.choices,
         default=TournamentType.CHALLENGE,
@@ -47,33 +49,87 @@ class Tournament(models.Model):
     )
 
     number_of_players = models.PositiveSmallIntegerField(default=2)
-    players = models.ManyToManyField(
+    _players = models.ManyToManyField(
         to=User,
         through="core.TournamentPlayer",
         related_name="tournaments",
         verbose_name=_("Tournament Players"),
     )
+    _updated_players = models.BooleanField(default=False)
+    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
 
-    # total games in CHALLENGE (is the same as total games for each player) - inputed
-    # total games for each player against each other in ROUND_ROBIN - inputed
-    # total games in ELIMINATION (it is calculated based on number_of_players)
-    # number_of_games = models.PositiveSmallIntegerField(default=0)
-    number_of_rounds = models.PositiveSmallIntegerField(default=1)
-    rounds = models.ManyToManyField(
-        to=Round, related_name="tournament", verbose_name=_("Rounds")
-    )
+    # value inputed for CHALLENGE (is the same as total games for each player)
+    # value calculated for ROUND_ROBIN based on number_of_players
+    # value calculated for ELIMINATION based on number_of_players
+    number_of_rounds = models.PositiveSmallIntegerField(default=2)
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self._proxy = None
+        self.__players = None
+        self._winner = None
+
+    @property
+    def players(self) -> QuerySet:
+        if self.__players:
+            return self.__players
+
+        self.__players = (
+            self.tournament_players.all()
+            .select_related("user")
+            .order_by("-score", "-rating")
+        )
+        return self.__players
+
+    @property
+    def winner(self):
+        if self.status != TournamentStatus.ENDED:
+            return None
+
+        if self._winner:
+            return self._winner
+
+        self._winner = self.players.first()
+        return self._winner
+
+    def add_player(self, user: User):
+        self._players.add(user)
+
+    def add_players(self, users: list[User]):
+        self._players.add(*users)
+
+    def get_rounds(self) -> QuerySet:
+        return self.rounds.all().order_by("round_number")
+
+    def update_users(self, *, force: bool = False) -> None:
+        if self.status != TournamentStatus.ENDED:
+            return
+        if self._updated_players and not force:
+            return
+
+        for p in self.players:
+            p.update_user(force=force)
 
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight
     def generate_rounds(self, *args, **kwargs) -> None:
-        if self.status == TournamentStatus.ENDED:
+        if self.status not in [TournamentStatus.INVITATION, TournamentStatus.SCHEDULED]:
             return
 
-        if self.rounds.all().count():
+        rounds = self.rounds.all()
+        if rounds.count():
             raise ValueError("Can't regenerate games if there are preexisting rounds")
 
         self.validate_number_of_players()
         self.__get_proxy().generate_rounds(*args, **kwargs)
+
+        for r in rounds:
+            r: Round
+            games = r.games.all()
+            for g in games:
+                g: Game
+                g.owner = self.owner
+                g.save()
 
     def generate_tiebreaker_game(self, player_a: User, player_b: User) -> Game:
         """
@@ -91,14 +147,15 @@ class Tournament(models.Model):
                 points_to_win=11,
             ),
         )
-        game.players.add(*[player_a, player_b])
+        game.add_players([player_a, player_b])
+        game.set_players_position()
         round.games.add(game)
         self.rounds.add(round)
 
         return game
 
     def validate_number_of_players(self) -> None:
-        current_number_of_players = self.players.all().count()
+        current_number_of_players = self.players.count()
 
         if current_number_of_players != self.number_of_players:
             raise ValueError(
@@ -112,10 +169,6 @@ class Tournament(models.Model):
             raise ValueError("An Ended tournament can't have its rounds deleted")
         self.rounds.all().delete()
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self._proxy = None
-
     def __get_proxy(self):
         if self._proxy and self._proxy.tournament_type == self.tournament_type:
             return self._proxy
@@ -128,16 +181,12 @@ class Tournament(models.Model):
                 self._proxy = Challenge.objects.get(pk=self.pk)
             case TournamentType.ROUND_ROBIN:
                 self._proxy = RoundRobin.objects.get(pk=self.pk)
-            case TournamentType.ELIMINATION:
-                self._proxy = Elimination.objects.get(pk=self.pk)
+            # case TournamentType.ELIMINATION:
+            #     self._proxy = Elimination.objects.get(pk=self.pk)
             # case TournamentType.LEAGUE_WITH_PLAYOFF:
             #     self._proxy = LeaguePlayoff.objects.get(pk=self.pk)
 
         return self._proxy
-
-    def delete(self, using=None, keep_parents=False) -> tuple[int, dict[str, int]]:
-        self.rounds.all().delete()
-        return super().delete(using, keep_parents)
 
     def save(self, *args, **kwargs) -> None:
         if self.number_of_players:
@@ -146,10 +195,23 @@ class Tournament(models.Model):
                     self.number_of_rounds = (
                         self.number_of_players - 1 + self.number_of_players % 2
                     )
-                case TournamentType.ELIMINATION:
-                    self.number_of_rounds = math.ceil(math.log2(self.number_of_players))
+                # case TournamentType.ELIMINATION:
+                #     self.number_of_rounds = math.ceil(math.log2(self.number_of_players))
+
+        if not self.name:
+            self.__set_name()
 
         return super().save(*args, **kwargs)
+
+    def __set_name(self):
+        if self.tournament_type == TournamentType.CHALLENGE:
+            self.name = f"Best of {self.number_of_rounds}"
+        else:
+            nb = Tournament.objects.count()
+            self.name = f"Tournament {nb + 1}"
+
+    def __str__(self):
+        return self.name
 
 
 # critério de desempate: a soma de pontos feitos
@@ -168,15 +230,22 @@ class Challenge(Tournament):
         proxy = True
 
     def generate_rounds(self, *args, **kwargs) -> None:
+        users = [u for u in self._players.all()]
         for i in range(self.number_of_rounds):
-            round = Round.objects.create(round_number=(i + 1), number_of_games=1)
+            round = Round.objects.create(
+                tournament=self,
+                round_number=(i + 1),
+                number_of_games=1,
+                status=RoundStatus.ON_GOING if i == 0 else RoundStatus.WAITING,
+            )
             game = Game.objects.create(
                 status=GameStatus.SCHEDULED,
                 rules=self.rules,
             )
-            game.players.add(*self.players.all())
+            game.add_players(users)
+            game.set_players_position()
             round.games.add(game)
-            self.rounds.add(round)
+            round.save()
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
         if current_number_of_players != 2:
@@ -209,8 +278,10 @@ class RoundRobin(Tournament):
 
             for j in range(rounds_base):
                 round = Round.objects.create(
+                    tournament=self,
                     round_number=(j + i * rounds_base + 1),
                     number_of_games=number_of_games,
+                    status=RoundStatus.ON_GOING if j == 0 else RoundStatus.WAITING,
                 )
 
                 for players_match in matches_scheduling[j]:
@@ -219,10 +290,9 @@ class RoundRobin(Tournament):
                             status=GameStatus.SCHEDULED,
                             rules=self.rules,
                         )
-                        game.players.add(*players_match)
+                        game.add_players(players_match)
+                        game.set_players_position()
                         round.games.add(game)
-
-                self.rounds.add(round)
 
     def generate_matches_scheduling(self) -> list[list[User | str]]:
         """
@@ -234,7 +304,7 @@ class RoundRobin(Tournament):
         - for each rotation, the last element goes to second place in the list and all
         other elements are moved one index forward
         """
-        rotation = list(self.players.all())
+        rotation = list(self._players.all())
         if self.number_of_players % 2:
             rotation.append(None)
         random.shuffle(rotation)
@@ -266,7 +336,7 @@ class Elimination(Tournament):
     In a Elimination Tournament:
     - who wins in each round pass to the next round
     - number_of_players must be even
-    - maximum of 32 players?
+    - maximum of 32 players
     - The number of rounds is n for 2 ** n = number_of_players
     """
 
@@ -277,7 +347,7 @@ class Elimination(Tournament):
         perfect_players_number = int(math.pow(2, self.number_of_rounds))
         first_round_missing_players = perfect_players_number - self.number_of_players
 
-        players_list = list(self.players.all())
+        players_list = list(self._players.all())
         random.shuffle(players_list)  # blind
         players_list.extend([None] * first_round_missing_players)
         half = int(perfect_players_number / 2)
@@ -298,7 +368,8 @@ class Elimination(Tournament):
                     rules=self.rules,
                 )
                 if i == 0:
-                    pprint(map(lambda p: game.players.add(p), players_pairs[j]))
+                    pprint(map(lambda p: game.add_player(p), players_pairs[j]))
+                    game.set_players_position()
                 round.games.add(game)
 
             self.rounds.add(round)
@@ -306,8 +377,8 @@ class Elimination(Tournament):
 
         # for round 1 and 2 we may add some players
         for players_match in players_pairs:
-            if all(p for p in players_match):
-                game.players.add(*players_match)
+            game.add_players(players_match)
+            game.set_players_position()
         # we also need to link the next game
 
     def validate_number_of_players(self, current_number_of_players: int):

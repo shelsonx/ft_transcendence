@@ -1,5 +1,6 @@
 GAME_FILE = ./docker-compose.yml
-PROJECT_NAME = transcendence
+PROJECT_NAME = the_transcendence_journey
+
 
 up:
 	docker-compose -f $(GAME_FILE) --project-name $(PROJECT_NAME) up
@@ -26,6 +27,9 @@ db-logs:
 
 runscript:
 	docker exec -it game-api bash -c "python manage.py shell < test.py"
+
+db:
+	docker exec -it game-api bash -c "python manage.py shell < utils/seed_base_data.py"
 
 shell:
 	docker exec -it game-api bash -c "python manage.py shell"

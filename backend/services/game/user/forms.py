@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["username", "avatar"]
 
 
 class UserSearchForm(UserForm):
@@ -20,7 +20,6 @@ class UserSearchForm(UserForm):
         widgets = {
             "username": forms.TextInput(
                 attrs={"class": "form-control", "placeholder": _("insert username")}
-                # attrs={"class": "form-control", "placeholder": _("search by username")}
             ),
         }
         labels = {

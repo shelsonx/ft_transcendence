@@ -27,7 +27,6 @@ class PlayerManager {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
-
   update() {
     this.position.y += this.velocity.y;
     if (this.position.y < 0)

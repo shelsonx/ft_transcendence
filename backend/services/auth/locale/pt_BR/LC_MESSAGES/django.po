@@ -68,7 +68,7 @@ msgid "Password is required for email sign up"
 msgstr "Senha é necessária para cadastro por e-mail"
 
 msgid "Transcendence Journey - Two Factor Authentication"
-msgstr "Jornada da Transcendência - Autenticação de Dois Fatores"
+msgstr "Transcendence Journey - Autenticação de Dois Fatores"
 
 msgid "Your two factor authentication code is %(code)s"
 msgstr "Votre code d'authentification à deux facteurs est %(code)s"
@@ -102,3 +102,28 @@ msgstr "Sua senha deve conter pelo menos %(upper_case_min)d caractere(s) em mai�
 
 msgid "Password is valid"
 msgstr "Senha é válida"
+
+
+msgid "Transcendence Journey - Two Factor Authentication (Game Authentication)"
+msgstr "Transcendence Journey - Autenticação de Dois Fatores (Autenticação do Jogo)"
+
+msgid "The user_receiver_id field must be an array of uuids."
+msgstr "O campo user_receiver_id deve ser um array de uuids."
+
+msgid "The user_receiver_id field must contain at most %(max_uuids)d uuids."
+msgstr "O campo user_receiver_id deve conter no máximo %(max_uuids)d"
+
+msgid "The user_receiver_id field must contain only valid uuids."
+msgstr "O campo user_receiver_id deve conter apenas uuids válidos."
+
+msgid "Invalid email list"
+msgstr "List de email invalida"
+
+msgid "The code_user_receiver_id field must be an array of code and uuids."
+msgstr "O campo code_user_receiver_id deve ser um array de código e uuids."
+
+msgid "Two factor code not founds %(codes)s"
+msgstr "Código de dois fatores não encontrado %(codes)s"
+
+msgid "Only Two players are allowed to this mode of game"
+msgstr "Apenas dois jogadores são permitidos neste modo de jogo"

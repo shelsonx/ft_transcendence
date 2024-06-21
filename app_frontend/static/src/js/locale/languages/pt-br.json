@@ -69,5 +69,6 @@
   "search--search-users": "Pesquisar usuários",
   "search--currently-online": "Usuários online",
   "search--no-results": "Nenhum resultado encontrado",
-  "search--no-currently-online": "Nenhum usuário online no momento :( "
+  "search--no-currently-online": "Nenhum usuário online no momento :( ",
+  "search--search-results": "Resultados da pesquisa"
 }

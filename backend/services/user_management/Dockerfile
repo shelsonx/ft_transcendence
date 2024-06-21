@@ -14,3 +14,4 @@ RUN pip install -r requirements.txt
 RUN chmod +x ./entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" ]
 
+CMD ["python", "manage.py", "runserver_plus", "--key-file", "selftest-key", "--cert-file", "selftest-cert", "0.0.0.0:8000"]

@@ -8,3 +8,5 @@ test
 vanilla_spa
 
 venv
+*.crt
+*.key

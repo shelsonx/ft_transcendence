@@ -25,7 +25,7 @@ class HttpClientRequest(IHttpClient):
     def _make_request(self, method: str, request_data: HttpClientData
     ) -> requests.Response:
         url_with_base = urljoin(self.base_url.container, request_data.url.lstrip('/'))
-        response = requests.request(method, url_with_base, data=request_data.data, headers=request_data.headers)
+        response = requests.request(method, url_with_base, data=request_data.data, headers=request_data.headers, verify=False)
         return response
 
     def deserialize(self, response: requests.Response)-> Union[Any, int]:

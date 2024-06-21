@@ -1,31 +1,65 @@
 # Third Party
+from functools import wraps
 from http import HTTPStatus
-from django.http import HttpRequest, HttpResponse
+from os import environ
+from django.http import Http404, HttpRequest, HttpResponse
+
+from common.exceptions import UnauthorizedException
+from common.services import JWTService
+from user.models import User
 
 
-def logged_permission():
-    """
+class JWTAuthentication:
+    def __init__(self, roles=[], func=None, secret=None, validate_user=True):
+        self.roles = roles
+        self.func = func
+        self.secret = secret
+        self.validate_user = validate_user
 
-    """
+    def unauthorized(self, message: str = "Unauthorized"):
+        return HttpResponse(
+            content=message,
+            status=HTTPStatus.UNAUTHORIZED,
+            headers={"WWW-Authenticate": "Bearer token68"},
+        )
 
-    def decorator(view_func):
-        def wrapper(view_class, request: HttpRequest, *args, **kwargs):
-            authorization = request.headers.get("authorization")
-            if not authorization:
-                return unauthorized()
-            auth_type, token = authorization.split(" ")
-            if auth_type != "Bearer":
-                return unauthorized(
-                    "Invalid token type - Bearer token required."
-                )
-            if not token:
-                return unauthorized("Token is missing")
+    def __call__(self, f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            token = None
 
-            return view_func(view_class, request, *args, **kwargs)
+            try:
+                request: HttpRequest = args[1]
 
-        return wrapper
+                if "authorization" in request.headers:
+                    auth_type, token = request.headers["authorization"].split(" ")
+                    if auth_type != "Bearer":
+                        return self.unauthorized(
+                            "Invalid token type - Bearer token required."
+                        )
 
-    def unauthorized(message: str = "Unauthorized"):
-        return HttpResponse(status=HTTPStatus.UNAUTHORIZED, content=message)
+                if not token:
+                    return self.unauthorized("Token is missing")
 
-    return decorator
+                try:
+                    secret = (
+                        environ.get("JWT_SECRET") if not self.secret else self.secret
+                    )
+
+                    jwt_service = JWTService()
+                    data = jwt_service.verify_token(token, secret)
+                    request.user = User.get_object(pk=data.sub)
+                    if not request.user and self.validate_user:
+                        return self.unauthorized("user not registered")
+                    if not self.validate_user:
+                        request.user_id = data.sub
+
+                    if self.func:
+                        self.func(*args, **kwargs)
+                except UnauthorizedException as e:
+                    return self.unauthorized(message=e.message)
+            except Exception:
+                return self.unauthorized()
+            return f(*args, **kwargs)
+
+        return decorated

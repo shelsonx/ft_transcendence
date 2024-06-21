@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'singlepage.apps.SinglepageConfig',
+    'django_extensions'
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

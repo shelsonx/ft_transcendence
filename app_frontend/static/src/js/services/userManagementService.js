@@ -1,4 +1,5 @@
 import { HttpClient, HttpClientRequestData } from './httpClient.js';
+import { getUserId } from '../utils/getUserId.js';
 
 /**
  * All the services related to user management.
@@ -10,9 +11,9 @@ import { HttpClient, HttpClientRequestData } from './httpClient.js';
  * @class
  */
 class FriendshipService {
-  constructor(userId) {
-    this.httpClient =
-      new HttpClient(`http://localhost:8006/user/${userId}/`);
+  constructor() {
+    const userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriends() {
@@ -22,8 +23,7 @@ class FriendshipService {
   }
 
   async deleteFriend(friendId) {
-    const requestData =
-      new HttpClientRequestData('DELETE', `friends/${friendId}/`);
+    const requestData = new HttpClientRequestData('DELETE', `friends/${friendId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -33,9 +33,10 @@ class FriendshipService {
  * A service for managing blocked users.
  * @class
  */
-class BlockingService {  
-  constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+class BlockingService {
+  constructor() {
+    const userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getBlockedUsers() {
@@ -62,8 +63,9 @@ class BlockingService {
  * @class
  */
 class FriendshipRequestService {
-  constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/en/user/${userId}/`);
+  constructor() {
+    const userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
   }
 
   async getFriendRequests() {
@@ -72,8 +74,8 @@ class FriendshipRequestService {
     return response;
   }
 
-  async acceptFriendRequest(request_id) {
-    const requestData = new HttpClientRequestData('PUT', `friend_request/${request_id}/`);
+  async acceptFriendRequest(requestId) {
+    const requestData = new HttpClientRequestData('PUT', `friend_request/${requestId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -97,9 +99,9 @@ class FriendshipRequestService {
  * @class
  */
 class UserInformationService {
-
-  constructor(userId) {
-    this.httpClient = new HttpClient(`http://localhost:8006/user/${userId}`);
+  constructor() {
+    const userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}`);
 
   }
 
@@ -110,15 +112,18 @@ class UserInformationService {
   }
 
   async updateUserData(formData) {
+    const userData = await this.getUserData();
+    const email = userData.user.email;
+
     const data = {
-      email: formData.get('email'),
       name: formData.get('name'),
       nickname: formData.get('nickname'),
       two_factor_enabled: formData.get('two-factor-enabled') === 'on' ? true : false,
       avatar: formData.get('avatar'),
       chosen_language: formData.get('language'),
-      avatar_name: formData.get('avatar').name
-    };
+      user_uuid: getUserId(),
+      email: email,
+      };
 
     const requestData = new HttpClientRequestData('PATCH', '/', data);
     const response = await this.httpClient.makeRequest(requestData);
@@ -135,7 +140,7 @@ class UserInformationService {
 class SearchUsersService {
 
   constructor() {
-    this.httpClient = new HttpClient('http://localhost:8006/user/');
+    this.httpClient = new HttpClient('https://localhost:8006/user/');
   }
 
   async searchUsers(query) {
@@ -143,7 +148,7 @@ class SearchUsersService {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
-  
+
   async viewOnlineUsers() {
     const requestData = new HttpClientRequestData('GET', '?status=active');
     const response = await this.httpClient.makeRequest(requestData);
@@ -153,9 +158,7 @@ class SearchUsersService {
 
 
 export {
-  FriendshipService,
   BlockingService,
-  FriendshipRequestService,
-  UserInformationService,
-  SearchUsersService
+  FriendshipRequestService, FriendshipService, SearchUsersService, UserInformationService
 };
+

@@ -65,6 +65,17 @@ export class HttpClient {
     }
   }
 
+  getFormUrlencodedBody(data) {
+    const params = [];
+    for (var property in data) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(data[property]);
+      params.push(encodedKey + "=" + encodedValue);
+    }
+
+    return params.join("&");
+  }
+
   async #toResponse(response) {
     if (response.ok) {
       const content_type = response.headers.get("content-type")
@@ -80,6 +91,10 @@ export class HttpClient {
     try {
       const error = await response.json()
       apiError = new ApiError(error?.message ?? JSON.stringify(error) , response.status);
+      if (response.status === 401) {
+        localStorage.removeItem(AuthConstants.AUTH_TOKEN);
+        window.location.href = '/#login';
+      }
     } catch(err) {
       apiError = new ApiError(
         'An error occurred while processing your request',
@@ -95,10 +110,17 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #post(httpClientRequestData) {
+    let body = JSON.stringify(httpClientRequestData.data);
+    if (
+      httpClientRequestData.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+    )
+      body = this.getFormUrlencodedBody(httpClientRequestData.data);
+
     const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
       method: 'POST',
       headers: httpClientRequestData.headers,
-      body: JSON.stringify(httpClientRequestData.data)
+      body: body
     });
     return await this.#toResponse(response);
   }
@@ -122,10 +144,17 @@ export class HttpClient {
  * @returns {Promise<Object>} The response data.
  */
   async #put(httpClientRequestData) {
+    let body = JSON.stringify(httpClientRequestData.data);
+    if (
+      httpClientRequestData.headers["Content-Type"] ===
+      "application/x-www-form-urlencoded"
+    )
+      body = this.getFormUrlencodedBody(httpClientRequestData.data);
+
     const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
       method: 'PUT',
       headers: httpClientRequestData.headers,
-      body: JSON.stringify(httpClientRequestData.data)
+      body: body
     });
     return await this.#toResponse(response);
   }
@@ -150,19 +179,43 @@ export class HttpClient {
    * @throws {Error} If the HTTP method is invalid.
    */
   async #patch(httpClientRequestData) {
-    const formData = new FormData();
+    const contentTypes = ["application/x-www-form-urlencoded", "default"];
+    const contentType = httpClientRequestData.headers["Content-Type"];
+
+    if (contentTypes.includes(contentType)) {
+      let body;
+
+      if (contentType === "default") {
+        httpClientRequestData.headers["Content-Type"] = "application/json";
+        body = JSON.stringify(httpClientRequestData.data);
+      }
+      else body = this.getFormUrlencodedBody(httpClientRequestData.data);
+
+      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+        method: 'PATCH',
+        headers: httpClientRequestData.headers,
+        body: body,
+      });
+      return await this.#toResponse(response);
+    }
+
+    let formData = new FormData();
 
     for (const key in httpClientRequestData.data) {
       if (httpClientRequestData.data[key] !== null && httpClientRequestData.data[key] !== undefined) {
         formData.append(key, httpClientRequestData.data[key]);
       }
     }
+    try {
+      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+        method: 'PATCH',
+        body: formData
+      });
 
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
-      method: 'PATCH',
-      body: formData
-    });
-    return await this.#toResponse(response);
+      return await this.#toResponse(response);
+    } catch (error) {
+      throw error;
+    }
   }
 
 
@@ -174,7 +227,6 @@ export class HttpClient {
    */
 
   async makeRequest(httpClientRequestData) {
-    console.log(httpClientRequestData);
     if (!httpClientRequestData) {
       throw new Error('Request data is required');
     }

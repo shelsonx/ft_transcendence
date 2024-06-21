@@ -1,0 +1,5 @@
+<div class="d-inline-flex  align-items-center">
+  {% include "game/user_match_component.html" with player=game.player_left position="L" %}
+  <div class="px-2"> x </div>
+  {% include "game/user_match_component.html" with player=game.player_right position="R" %}
+</div>

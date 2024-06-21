@@ -32,7 +32,6 @@ class Generator:
             return rules
 
         if size >= 2 or (size == 1 and fields.get("points_to_win")):
-            # TODO: talvez passar um full clean?
             return GameRules.objects.create(**fields)
 
         return GameRules.objects.get(pk=1)
@@ -51,10 +50,12 @@ class Generator:
     def seedGame(self, **fields) -> Game:
         players = fields.pop("players", None) or [self.seedUser(), self.seedUser()]
         game = Game.objects.create(**(self.game(**fields)))
+        game.add_players(players)
 
-        for player in players:
-            # game.players.add(player)
-            self.seedGamePlayer(game=game, user=player)
+        if not game.owner:
+            game.owner = players[0]
+            game.save()
+        game.set_players_position()
         return game
 
     def gamePlayer(self, **fields) -> dict:
@@ -107,10 +108,10 @@ class Generator:
             for _ in range(tournament.number_of_players):
                 players.append(self.seedUser())
 
-        for player in players:
-            # tournament.players.add(player)
-            self.seedTournamentPlayer(tournament=tournament, user=player)
-
+        tournament.add_players(players)
+        if not tournament.owner:
+            tournament.owner = players[0]
+            tournament.save()
         tournament.generate_rounds()
         return tournament
 

@@ -5,23 +5,27 @@ DOCKER_CMD = $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE)
 DOCKER_COMPOSE_SERVICE_NAME = auth-api # This is the service name in the docker-compose file
 DOCKER_COMPOSE_PROJECT_NAME = auth_api # This is the app name -> name of the folder
 DOCKER_COMPOSE_BUILD_PATH = ./backend/services/auth # This is the path to the Dockerfile
+PROJECT_NAME = the_transcendence_journey
 
 create_api:
 	./config_django_project.sh $(DOCKER_COMPOSE_FILE) $(DOCKER_COMPOSE_SERVICE_NAME) $(DOCKER_COMPOSE_PROJECT_NAME) $(DOCKER_COMPOSE_BUILD_PATH)
 
 run_first_api:
-	$(DOCKER_CMD) up -d
+	$(DOCKER_CMD) --project-name $(PROJECT_NAME) up -d
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) python manage.py migrate
 	$(DOCKER_CMD) run $(DOCKER_COMPOSE_SERVICE_NAME) python manage.py createsuperuser
 
 up:
-	$(DOCKER_CMD) up -d --build
+	$(DOCKER_CMD) --project-name $(PROJECT_NAME) up -d
+
+build:
+	$(DOCKER_CMD) --project-name $(PROJECT_NAME) up -d --build
 
 stop:
-	$(DOCKER_CMD) stop
+	$(DOCKER_CMD) --project-name $(PROJECT_NAME) stop
 
 down:
-	$(DOCKER_CMD) down --remove-orphans
+	$(DOCKER_CMD) --project-name $(PROJECT_NAME) down --remove-orphans
 
 exec:
 	$(DOCKER_CMD) exec $(filter-out $@,$(MAKECMDGOALS)) /bin/sh

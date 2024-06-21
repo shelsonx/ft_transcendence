@@ -23,7 +23,7 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 STATIC_URL = '/static/'
 ROOT_URLCONF = 'urls'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = Path(BASE_DIR.parent, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LANGUAGE_CODE = 'en-us'
 USE_I18N = True
 USE_L10N = True
@@ -61,10 +61,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_management_api',
     'corsheaders',
+    'django_extensions'
 ]
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 CORS_ALLOWED_ORIGINS = [
+    "https://localhost:3000",
     "http://localhost:3000",
+    "https://0.0.0.0:3000",
     "http://0.0.0.0:3000",
 ]
 

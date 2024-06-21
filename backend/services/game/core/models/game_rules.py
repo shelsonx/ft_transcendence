@@ -1,7 +1,7 @@
-from datetime import timedelta
-from typing import Collection
+from typing import Any, Collection
 
 # Third Party
+from django import forms
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -48,13 +48,15 @@ class GameRules(models.Model):
     )  # min=11
 
     max_duration = models.DurationField(
-        default=timedelta(minutes=3),
+        default=None,
         null=True,
         blank=True,
         verbose_name=_("Game maximum duration"),
     )
 
-    # paddle speed
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.rule_type = GameRuleType(self.rule_type)
 
     class Meta:
         verbose_name_plural = _("Game Rules")
@@ -110,10 +112,32 @@ class GameRules(models.Model):
     # ) -> None:
     #     return super().full_clean(exclude, validate_unique, validate_constraints)
 
+    def __str__(self):
+        text = f"{self.rule_type.label}"
+
+        if self.rule_type == GameRuleType.PLAYER_POINTS:
+            text += f" - {self.points_to_win} points"
+        elif self.rule_type == GameRuleType.GAME_TOTAL_POINTS:
+            text += f" - {self.game_total_points} points"
+        elif self.rule_type == GameRuleType.GAME_DURATION:
+            text += f" - {self.points_to_win}"
+
+        return text
+
     def to_json(self) -> dict:
+        max_duration = self.max_duration
+        if max_duration:
+            seconds = self.max_duration.seconds
+            minutes = seconds // 60
+            seconds = seconds % 60
+            max_duration = {
+                "minutes": minutes,
+                "seconds": seconds,
+            }
+
         return {
-            "rule_type": self.rule_type,
+            "rule_type": self.rule_type.value,
             "points_to_win": self.points_to_win,
             "game_total_points": self.game_total_points,
-            "max_duration": self.max_duration,
+            "max_duration": max_duration
         }

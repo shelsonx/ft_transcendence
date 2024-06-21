@@ -33,10 +33,10 @@
     "model": "core.gamerules",
     "pk": 4,
     "fields": {
-      "rule_type": "3",
-      "points_to_win": 11,
-      "game_total_points": 21,
-      "max_duration": "00:05:00"
+      "rule_type": "1",
+      "points_to_win": null,
+      "game_total_points": 42,
+      "max_duration": null
     }
   }
 ]

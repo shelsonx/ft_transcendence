@@ -5,10 +5,9 @@ from django.utils.translation import gettext_lazy as _
 # First Party
 from user.models import User
 
+# Local Folder
+from .game_player_position import GamePlayerPosition
 
-class PlayerPosition(models.IntegerChoices):
-    LEFT = "0", _("Left")
-    RIGHT = "1", _("Right")
 
 class GamePlayer(models.Model):
     game = models.ForeignKey(
@@ -23,18 +22,27 @@ class GamePlayer(models.Model):
         null=True,
     )
     score = models.IntegerField(default=0, verbose_name=_("Player' score in the game"))
-    # position = models.IntegerField(default=0)
+    position = models.IntegerField(choices=GamePlayerPosition, default=0)
 
     class Meta:
         db_table = "game_player"
         unique_together = [["game", "user"]]
 
+    @property
+    def name(self):
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]
+
     def to_json(self) -> dict:
         user = self.user
         return {
-            "user": {
-                "id": user.id,
-                "username": user.username,
-            },
+            "user": user.resume_to_json() if user else User.anonymous(),
             "score": self.score,
+            "position": self.position,
         }
+
+    def __str__(self) -> str:
+        if self.user:
+            return self.user.username
+        return User.anonymous()["username"]

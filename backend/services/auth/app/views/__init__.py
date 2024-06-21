@@ -6,3 +6,4 @@ from .redirect_oauth42_view import RedirectOAuth42View
 from .sign_in_oauth42_view import SignInOAuth42View
 from .validate_2factor_code_view import Validate2FactorCodeView
 from .forgot_password_view import ForgotPasswordView
+from .validate_game_2factor_code import ValidateGame2FactorCodeView

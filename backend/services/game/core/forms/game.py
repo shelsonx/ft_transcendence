@@ -6,9 +6,9 @@ class GameForm(forms.ModelForm):
 
     class Meta:
         model = Game
-        exclude = ["players", "rules"]
+        exclude = ["_players", "owner"]
 
-class GameEditForm(GameForm):
+class UpdateGameForm(GameForm):
 
     class Meta:
         model = Game

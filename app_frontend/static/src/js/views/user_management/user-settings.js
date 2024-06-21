@@ -1,5 +1,5 @@
-import UserManagementView from './baseUserManagementView.js';
 import { UserInformationService } from '../../services/userManagementService.js';
+import UserManagementView from './baseUserManagementView.js';
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -21,11 +21,6 @@ const html = /*html*/`
         <input type="file" id="avatar-input" accept="image/*" style="display: none;" />
     </div>
     <form id="user-settings-form">
-        <!-- Email -->
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
         <!-- Name -->
         <div class="form-group">
             <label for="name" data-i18n-key="settings--name">Name:</label>
@@ -66,18 +61,16 @@ const loadUserData = async (userInformationService) => {
     var userData = await userInformationService.getUserData();
     userData = userData.user;
 
-    const email = document.getElementById('email');
     const name = document.getElementById('name');
     const nickname = document.getElementById('nickname');
     const twoFactorEnabled = document.getElementById('two-factor-enabled');
     const avatar = document.querySelector('.avatar img');
     const language = document.getElementById('language');
 
-    email.value = userData.email;
     name.value = userData.name;
     nickname.value = userData.nickname;
     twoFactorEnabled.checked = userData.two_factor_enabled;
-    avatar.src = `http://localhost:8006${userData.avatar}`;
+    avatar.src = `https://localhost:8006${userData.avatar}`;
     language.value = userData.chosen_language;
 }
 
@@ -95,7 +88,7 @@ const updateUserData = async (userInformationService, formData) => {
 const initFormSubmission = (userInformationService) => {
     const form = document.getElementById('user-settings-form');
     form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         const formData = new FormData(form);
         formData.append('avatar', document.getElementById('avatar-input').files[0]);
@@ -130,12 +123,11 @@ const initAvatarChange = () => {
  * The action to run when the view is started.
  */
 const action = async () => {
-    const userId = 'af7aa1aa-d877-484d-b2a9-3d392531b8ab';
-    const userInformationService = new UserInformationService(userId);
+    const userInformationService = new UserInformationService();
 
     await loadUserData(userInformationService);
-    initAvatarChange();  // Initialize avatar change functionality
-    initFormSubmission(userInformationService);  // Initialize form submission handling
+    initAvatarChange(); 
+    initFormSubmission(userInformationService);
 };
 
 export default new UserProfileView({ html, start: action });

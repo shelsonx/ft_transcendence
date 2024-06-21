@@ -1,65 +1,96 @@
 # python std library
-import uuid
 from http import HTTPStatus
+import json
+import uuid
 
 # Django
-from django.http import (
-    HttpRequest,
-    HttpResponse,
-    JsonResponse,
-    HttpResponseBadRequest,
-)
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpRequest, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
+# First Party
+from user.decorators import JWTAuthentication
+from common.models import json_response
+from common.validators import is_valid_uuid4
+
 # Local Folder
-from .decorators import logged_permission
 from .models import User
 from .forms import UserForm
 
 
-# TODO: SHEELA - check to remove this, csrf is important
 @method_decorator(csrf_exempt, name="dispatch")
 class UserView(generic.View):
     form_class = UserForm
 
     # talvez use a get para o Shelson, se ele precisar pedir em algum momento
-    # def get(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+    # def get(self, request: HttpRequest, pk: uuid) -> JsonResponse:
     #     print(request.path)
     #     if request.path == reverse_lazy("user:user_add"):
     #         return HttpResponseNotAllowed(permitted_methods=["POST"])
 
-    # TODO: SHEELA - protect route to only gateway
-    def post(self, request: HttpRequest) -> HttpResponse:
-        id = request.POST.get("id")  # TODO: validate uuid
-        # id = uuid.uuid4()
+    @JWTAuthentication(validate_user=False)
+    def post(self, request: HttpRequest) -> JsonResponse:
+        data = json.loads(request.body)
+        id = data.get("id")
 
-        form = self.form_class(request.POST, instance=User(id=id))
-        if not form.is_valid():
-            return HttpResponseBadRequest()
+        if id is None:
+            return json_response.bad_request(msg="Missing user reference id")
+        if not is_valid_uuid4(id):
+            return json_response.bad_request(msg="Invalid user id format")
+        if id != request.user_id:
+            return json_response.bad_request(msg="Data mismatch")
 
-        user: User = form.save()
-        print("User created: ", user)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        user = User.objects.filter(id=id)
+        if user.exists():
+            return json_response.bad_request(msg="User already registered")
 
-    @logged_permission()
-    def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        # TODO: SHEELA - protect route
+        self.form = self.form_class(data, instance=User(id=id))
+        if not self.form.is_valid():
+            return json_response.bad_request(
+                data=self.get_form_errors(), msg="Invalid data"
+            )
+
+        user: User = self.form.save()
+        return json_response.success(msg="User created", status=HTTPStatus.CREATED)
+
+    @JWTAuthentication()
+    def patch(self, request: HttpRequest, pk: uuid) -> JsonResponse:
         user = User.objects.filter(pk=pk).first()
-        form = self.form_class(request.POST, instance=user)
-        if not form.is_valid():
-            return HttpResponseBadRequest
+        if not user:
+            return json_response.not_found(
+                msg="User not found. Register it with POST method."
+            )
+        if request.user != user:
+            return json_response.forbidden()
 
-        user: User = form.save()
-        print("User deleted: ", user)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        data = json.loads(request.body)
+        self.form = self.form_class(data, instance=user)
+        if not self.form.is_valid():
+            return json_response.bad_request(
+                data=self.get_form_errors(), msg="Invalid data"
+            )
 
-    # TODO: SHEELA - protect route to only gateway
-    def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        # TODO: SHEELA - protect route
-        user = get_object_or_404(User, pk=pk)
+        user: User = self.form.save()
+        return json_response.success(msg="User updated")
+
+    @JWTAuthentication()
+    def delete(self, request: HttpRequest, pk: uuid) -> JsonResponse:
+        user = User.objects.filter(pk=pk).first()
+        if not user:
+            return json_response.not_found()
+        if request.user != user:
+            return json_response.forbidden()
+
         user.delete()
-        print("User deleted: ", user)
-        return HttpResponse(status=HTTPStatus.NO_CONTENT)
+        user = User.objects.filter(pk=pk).first()
+        if user:
+            return json_response.error(msg="User wasn't deleted")
+
+        return json_response.success(msg="User deleted")
+
+    def get_form_errors(self) -> dict:
+        errors = {}
+        for error, msg in self.form.errors.items():
+            errors[error] = msg
+        return errors

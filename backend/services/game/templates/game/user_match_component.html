@@ -1,0 +1,24 @@
+<div class="player">
+
+  {% if position == "R" %}
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+      <strong>{{ player.score}}</strong>
+    </span>
+  {% else %}
+    <span >
+      <img class="match-list-avatar" src="{{ player.user.avatarUrl }}" alt="user avatar">
+    </span>
+  {% endif %}
+  <span class="username">{{ player.name}}</span>
+
+  {% if position == "L" %}
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+      <strong>{{ player.score}}</strong>
+    </span>
+  {% else %}
+    <span >
+      <img class="match-list-avatar" src="{{ player.user.avatarUrl }}" alt="user avatar">
+    </span>
+  {% endif %}
+
+</div>

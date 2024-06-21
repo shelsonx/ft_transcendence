@@ -15,7 +15,7 @@ class Router {
     const app = document.getElementById("app");
     document.title = view.title;
     app.innerHTML = view.render.renderHtml();
-    view.render.start();
+    view.render.start(this.user);
   }
 
   start() {

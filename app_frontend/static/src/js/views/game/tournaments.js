@@ -13,29 +13,34 @@ class TournamentsView extends BaseLoggedView {
 }
 
 const html = /*html*/`
-  <div id="swap-container" class="container-fluid main"></div>
+  <div class="d-flex justify-content-between">
+    <h3 id="tournament-title">Tournaments</h3>
+    <div >
+      <button id="btn-data-switch" type="button" class="btn btn-info"
+        onclick="window.location='#my-tournaments';"
+      >
+        My tournaments
+      </button>
+      <button id="btn-play" type="button" class="btn btn-primary"
+        onclick="window.location='#add-tournament';"
+      >
+        Create tournament
+      </button>
+    </div>
+  </div>
+  <div class="container-fluid main-game scroll-on mt-3">
+    <div id="tournament-table-container" class="static-list"></div>
+  </div>
 `
 
-let tournamentsRows = document.getElementsByClassName("tournament-row");
-
 const swap = (response) => {
-  const swapContainer = document.getElementById("swap-container");
+  // TODO: lidar quando retornar erro ou não responder
+  const swapContainer = document.getElementById("tournament-table-container");
   swapContainer.innerHTML = response;
-
-  tournamentsRows = document.getElementsByClassName("tournament-row");
-  tournamentsRows.array.forEach(match => {
-    match.addEventListener("click", () => {
-      // check if we do this without changing route because we gonna need to
-      window.location = '#tournament';
-    })
-  });
 }
 
-const start = async () => {
-  gameService.userTournaments().then(swap);
-
-  // const tbody = document.getElementsByTagName("tbody");
-  // tbody.className = "main";
+const start = async (user) => {
+  await gameService.allTournaments().then(swap);
 }
 
 export default new TournamentsView(html, start);

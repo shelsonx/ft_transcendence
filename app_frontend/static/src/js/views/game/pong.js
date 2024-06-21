@@ -1,10 +1,10 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { GameRuleType } from "../../contracts/game/gameRule.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
 import { PLAYER_VELOCITY } from "../../constants/game.js";
+import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -16,29 +16,38 @@ class PongGameView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <h4 class="time d-flex justify-content-center">
-    <span id="pong-time"></span>
-  </h4>
+  <div class="static scroll-on" id="game-data">
+    <h4 class="time d-flex justify-content-center">
+      <span id="pong-time"></span>
+    </h4>
 
-  <div class="d-flex justify-content-between container-sm">
-    <div>
-      <span class="sm name" id="name-left"></span>
-      <span class="score mx-1" id="score-left"></span>
+    <div class="d-flex justify-content-between container-sm">
+      <div>
+        <span class="sm name" id="name-left"></span>
+        <span class="score mx-1" id="score-left"></span>
+      </div>
+      <div>
+        <span class="score mx-1" id="score-right"></span>
+        <span class="sm name" id="name-right"></span>
+      </div>
     </div>
-    <div>
-      <span class="score mx-1" id="score-right"></span>
-      <span class="sm name" id="name-right"></span>
-    </div>
-  </div>
 
-  <div class="d-flex justify-content-center">
-    <canvas id="canvas"></canvas>
+    <div class="d-flex justify-content-center">
+      <canvas id="canvas"></canvas>
+    </div>
+    <div class="d-flex justify-content-center py-5" id="game-buttons">
+      <button id="pause" class="btn btn-primary d-none">Pause</button>
+      <button id="continue" class="btn btn-primary d-none">Continue</button>
+    </div>
   </div>
 
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
     <button id="start" class="btn btn-primary">Start</button>
   </div>
 `;
+
+let match = null;
+let animationFrame;
 
 const startMessages = [
   {
@@ -69,7 +78,7 @@ const loadStartMessages = () => {
   startMessages.forEach((obj) => {
     setTimeout(() => {
       message.innerHTML = /*html*/ `
-        <h1 class="game-message">
+        <h1 class="error-message">
           ${obj.msg}
         </h1>
       `;
@@ -87,26 +96,41 @@ function loadEndMessage(pong) {
     msg = "This game was cancelled";
 
   messageHtml.innerHTML = /*html*/ `
-    <h1 class="game-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
+    <h1 class="error-message align-items-center border border-white border-opacity-10 rounded-3 form-container">
       ${msg}
     </h1>
   `;
 }
 
+const saveGame = async (pong, update = false) => {
+  if (update) pong.updateToSave();
+  pong.save().then((response) => {
+    if (response.status !== undefined) {
+      loadErrorMessage(response, "message");
+      window.cancelAnimationFrame(animationFrame);
+      const gameData = document.getElementById("game-data");
+      gameData.classList.add("d-none");
+    }
+  });
+};
+
 const settleGame = (response) => {
-  if (response.status === "not found") {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `<h1 class="game-message">404 not Found</h1>`;
+  if (response.status !== undefined) {
+    loadErrorMessage(response, "message");
     return;
   }
   const gameObj = response.data.game;
+  if (gameObj.status === GameStatus.PENDING) {
+    window.location.replace(`?match=${match}#verify-player`);
+    return;
+  }
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
   canvas.width = canvasWidth();
   canvas.height = canvasHeight();
 
-  const pong = new PongManager(gameObj, canvas.width, canvas.height);
+  const pong = new PongManager(match, gameObj, canvas.width, canvas.height);
   pong.table.draw(ctx);
   pong.player_left.draw(ctx);
   pong.player_right.draw(ctx);
@@ -114,27 +138,35 @@ const settleGame = (response) => {
   if ([GameStatus.ENDED, GameStatus.CANCELED].includes(pong.game.status.value))
     return loadEndMessage(pong);
 
-  let animationFrame;
   function animate() {
+    const scored_point = pong.update();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pong.draw(ctx);
+
     if (pong.checkGameEnded() === true) {
       loadEndMessage(pong);
       pong.end();
-      // save in back
-      // window.cancelAnimationFrame(animationFrame);
+      window.cancelAnimationFrame(animationFrame);
+      const gameButtons = document.getElementById("game-buttons");
+      gameButtons.classList.add("d-none");
+      saveGame(pong);
     } else {
-      pong.update();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pong.draw(ctx);
+      if (scored_point === true) saveGame(pong, true);
       animationFrame = requestAnimationFrame(animate);
     }
   }
 
   const startButton = document.getElementById("start");
+  const pauseButton = document.getElementById("pause");
+  const continueButton = document.getElementById("continue");
   startButton.addEventListener("click", (e) => {
     loadStartMessages();
     setTimeout(() => {
-      pong.begin();
+      if (pong.game.status.value === GameStatus.SCHEDULED) pong.begin();
+      else pong.continue();
       animate();
+      pauseButton.classList.remove("d-none");
+      saveGame(pong);
     }, startMessages[4].showMsgDelay);
 
     window.addEventListener("keydown", (e) => {
@@ -168,6 +200,23 @@ const settleGame = (response) => {
     });
   });
 
+  pauseButton.addEventListener("click", (e) => {
+    window.cancelAnimationFrame(animationFrame);
+    pauseButton.classList.add("d-none");
+    continueButton.classList.remove("d-none");
+    pong.pause();
+    saveGame(pong);
+  });
+
+  continueButton.addEventListener("click", (e) => {
+    window.cancelAnimationFrame(animationFrame);
+    continueButton.classList.add("d-none");
+    pauseButton.classList.remove("d-none");
+    pong.continue();
+    animate();
+    saveGame(pong);
+  });
+
   window.addEventListener("resize", (e) => {
     canvas.width = canvasWidth();
     canvas.height = canvasHeight();
@@ -176,15 +225,11 @@ const settleGame = (response) => {
   });
 };
 
-const start = async () => {
-  const match = new URLSearchParams(window.location.search).get("match");
+const start = async (user) => {
+  match = new URLSearchParams(window.location.search).get("match");
 
   if (match === null) {
-    const message = document.getElementById("message");
-    message.innerHTML = /*html*/ `
-      <h1 class="game-message" data-i18n-key="page-not-found--title">
-        Page not Found
-      </h1>`;
+    pageNotFoundMessage("message");
     return;
   }
 
