@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 import json
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
+import uuid
 
 from .models import UserInfo
 
@@ -95,3 +95,32 @@ def update_scores_user(request: HttpRequest) -> HttpResponse:
         return HttpResponse("OK", status=200)
     except Http404:
         return HttpResponse("Error: Failed to update scores", status=400)
+
+@csrf_exempt
+def update_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.full_name = payload.get('full_name')
+        user.nickname = payload.get('nickname')
+        user.status = payload.get('status')
+        user.playing = payload.get('playing')
+        user.scores = payload.get('scores')
+        user.winnings = payload.get('winnings')
+        user.losses = payload.get('losses')
+        user.save()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to update user", status=400)
+
+@csrf_exempt
+def delete_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.delete()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to delete user", status=400)
