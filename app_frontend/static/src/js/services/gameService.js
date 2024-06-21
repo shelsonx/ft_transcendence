@@ -180,9 +180,11 @@ class GameService {
     return response;
   }
 
-  async validateTournament(id, formData) {
+  async validateTournament(id, player_id, formData) {
     const data = {
+      user: formData.get("user"),
       token: formData.get("token"),
+      player: player_id,
     };
     const requestData = new HttpClientRequestData(
       "PATCH",

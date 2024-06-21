@@ -3,11 +3,22 @@
 <h2 class="title d-flex justify-content-center mb-4">{{ t.name }}</h2>
 
 {% if t.status == TournamentStatus.INVITATION %}
+  <h5 class="subtitle d-flex justify-content-center">
+    {{ t.status_label }}
+  </h5>
+
   {% if t.is_owner %}
-    tela de validação
-  {% else %}
-    {% include "tournament/participants_table.html" %}
+    <div class="d-flex justify-content-center pb-5 pt-2">
+      <button
+        class="btn btn-primary action align-items-center"
+        onclick="window.location='?t={{t.pk}}#verify-players';"
+      >
+        <h5 class="pt-2">{% translate "Validate Players" %}</h5>
+      </button>
+    </div>
   {% endif %}
+
+  {% include "tournament/rating_table.html" %}
 {% else %}
   {% if t.status == TournamentStatus.ENDED or t.status == TournamentStatus.ON_GOING %}
     {% include "tournament/rating_table.html" %}

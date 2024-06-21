@@ -19,7 +19,7 @@ const html = /*html*/ `
 
 let tournament = null;
 
-const putVerifyForm = async (response) => {
+const putVerifyTable = async (response) => {
   if (response.status !== undefined) {
     loadErrorMessage(response, "verify-tournament-container");
     return;
@@ -28,23 +28,26 @@ const putVerifyForm = async (response) => {
   const swapContainer = document.getElementById("verify-tournament-container");
   swapContainer.innerHTML = response;
 
-  const verifyForm = document.getElementById("validation-form");
-  verifyForm.addEventListener("submit", submitVerifyForm);
+  const verifyForms = document.querySelectorAll("form");
+  verifyForms.forEach((form) => {
+    form.addEventListener("submit", submitVerifyForm);
+  });
 };
 
 const submitVerifyForm = async (e) => {
   e.preventDefault();
-  const verifyForm = document.getElementById("validation-form");
-  const formData = new FormData(verifyForm);
+  const form = e.srcElement;
+  const player = form.id.split("-").pop();
+  const formData = new FormData(form);
 
   await gameService
-    .validateTournament(tournament, formData)
+    .validateTournament(tournament, player, formData)
     .then(verifyPlayerResult);
 };
 
 const verifyPlayerResult = async (response) => {
   if (typeof response === "string") {
-    putVerifyForm(response);
+    putVerifyTable(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       window.location.href = "?t=" + tournament + "#tournament";
@@ -61,7 +64,7 @@ const start = async (user) => {
     return;
   }
 
-  await gameService.validateTournamentForm(tournament).then(putVerifyForm);
+  await gameService.validateTournamentForm(tournament).then(putVerifyTable);
 };
 
 export default new ValidateTournamentView(html, start);

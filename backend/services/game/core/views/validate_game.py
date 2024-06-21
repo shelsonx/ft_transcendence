@@ -13,9 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, VerificationType
-from core.forms import ValidationForm
-from user.models import User
+from core.models import Game, GameStatus
+from core.forms import GameValidationForm
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -39,7 +38,7 @@ class ValidateGameView(generic.View):
 
         context = {
             "game": game,
-            "form": ValidationForm(),
+            "form": GameValidationForm(),
             "user": player_to_validate.user,
         }
         response = render(request, self.template_name, context)
@@ -61,7 +60,7 @@ class ValidateGameView(generic.View):
             return json_response.not_found()
 
         data = QueryDict(request.body)
-        form = ValidationForm(data)
+        form = GameValidationForm(data)
         if not form.is_valid():
             context = {
                 "game": game,

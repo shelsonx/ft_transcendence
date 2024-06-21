@@ -24,3 +24,7 @@ class RoundStatus(models.IntegerChoices):
     WAITING = 0, _("Didn't started")
     ON_GOING = 1, _("On going")
     ENDED = 2, _("Ended")
+
+class PlayerStatus(models.IntegerChoices):
+    PENDING = 0, _("Pending")
+    ACCEPTED = 1, _("Accepted")

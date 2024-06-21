@@ -1,5 +1,6 @@
 # python std library
 from http import HTTPStatus
+import uuid
 
 # Django
 from django.forms import ValidationError
@@ -13,9 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, VerificationType, Tournament, TournamentStatus
-from core.forms import ValidationForm
-from user.models import User
+from core.models import Tournament, TournamentPlayer, TournamentStatus
+from core.forms import TournamentValidationForm
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -27,20 +27,19 @@ class ValidateTournamentView(generic.View):
         t = Tournament.objects.filter(pk=pk).first()
         if not t:
             return json_response.not_found()
-        # if t.owner != request.user:
-        #     return json_response.forbidden()
-        # if t.status != TournamentStatus.INVITATION:
-        #     return json_response.bad_request()
+        if t.owner != request.user:
+            return json_response.forbidden()
+        if t.status != TournamentStatus.INVITATION:
+            return json_response.bad_request()
 
-        # left, right = game.players
-        # player_to_validate = right if game.owner == left else right
-        # if not player_to_validate.user:
-        #     return json_response.not_found()
+        players = t.players
+        for p in players:
+            initial = {"user": p.user.id if p.user else None}
+            p.form = TournamentValidationForm(initial=initial)
 
         context = {
-            "tournament": t,
-            "form": ValidationForm(),
-            # "user": player_to_validate.user,
+            "t": t,
+            "players": players,
         }
         response = render(request, self.template_name, context)
         return response
@@ -55,27 +54,49 @@ class ValidateTournamentView(generic.View):
         if t.status != TournamentStatus.INVITATION:
             return json_response.bad_request()
 
-        # left, right = game.players
-        # player_to_validate = right if game.owner == left else right
-        # if not player_to_validate.user:
-        #     return json_response.not_found()
-
         data = QueryDict(request.body)
-        form = ValidationForm(data)
+        player = data.get("player")
+        user_id = data.get("user")
+        if not player or not user_id:
+            return json_response.bad_request()
+        player = TournamentPlayer.objects.filter(pk=player).first()
+        if not player:
+            return json_response.not_found()
+        if player.verified or not player.user:
+            return json_response.bad_request()
+
+        user_id = uuid.UUID(user_id)
+        if player.user.id != user_id:
+            return json_response.bad_request()
+
+        data = {
+            "user": player.user.id,
+            "token": data["token"],
+        }
+        form = TournamentValidationForm(data)
         if not form.is_valid():
+            players = t.players
+            for p in players:
+                if p != player:
+                    initial = {"user": p.user.id if p.user else None}
+                    p.form = TournamentValidationForm(initial=initial)
+                else:
+                    p.form = form
             context = {
-                "tournament": t,
-                # "form": form,
-                # "user": player_to_validate.user,
+                "t": t,
+                "players": players,
             }
             return render(request, self.template_name, context)
 
         # TODO: verificação do token - Bruno
-        # player.is_verified = True
-        # player.save()
+        player.verified = True
+        player.save()
 
-        # se todos os jogadores estiverem validados:
-        # t.status = GameStatus.SCHEDULED
-        # t.save()
+        if not all(p.verified for p in t.players):
+            print("entrou")
+            return self.get(request, pk)
+
+        t.status = TournamentStatus.SCHEDULED
+        t.save()
+        t.generate_rounds()
         return json_response.success(msg="Tournament validated")
-        # caso contrário, devolve a página com o status atualizado

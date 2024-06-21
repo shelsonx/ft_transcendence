@@ -96,9 +96,12 @@ class AddTournamentView(generic.View):
         for player_form in self.players_forms:
             p: TournamentPlayer = player_form.save(commit=False)
             p.tournament = t
+            if p.user == self.user:
+                p.verified = True
             p.save()
 
         data = {"tournament": t.pk}
+        # TODO: mandar pro Bruno gerar os tokens
         return json_response.success(data=data, status=HTTPStatus.CREATED)
 
     def get_context_data(self, **kwargs) -> dict:
