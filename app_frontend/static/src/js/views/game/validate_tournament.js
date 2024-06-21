@@ -53,14 +53,13 @@ const verifyPlayerResult = async (response) => {
 };
 
 const start = async (user) => {
-  // tournament = new URLSearchParams(window.location.search).get("tournament");
-  // if (tournament === null) {
-  //   pageNotFoundMessage("message");
-  //   return;
-  // }
+  tournament = new URLSearchParams(window.location.search).get("tournament");
+  if (tournament === null) {
+    pageNotFoundMessage("message");
+    return;
+  }
 
-  // await gameService.validateTournamentForm(tournament).then(putVerifyForm);
-  await gameService.validateTournamentForm(1016).then(putVerifyForm);
+  await gameService.validateTournamentForm(tournament).then(putVerifyForm);
 };
 
 export default new ValidateTournamentView(html, start);

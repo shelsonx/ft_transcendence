@@ -67,4 +67,15 @@ class TournamentPlayer(models.Model):
         self.save()
 
     def __str__(self) -> str:
-        return self.name
+        description = ""
+        an = self.alias_name if self.alias_name else ""
+        user = self.user.username if self.user else ""
+        if an and user:
+            description = f"{user} as {an}"
+        elif an:
+            description = an
+        elif user:
+            description = user
+        else:
+            description = User.anonymous()["username"]
+        return description

@@ -131,18 +131,19 @@ class GameService {
   }
 
   async addTournament(formData) {
-    // const data = {
-    //   username: formData.get("username"),
-    //   rule_type: formData.get("rule_type"),
-    //   points_to_win: formData.get("points_to_win"),
-    //   game_total_points: formData.get("game_total_points"),
-    //   max_duration: formData.get("max_duration"),
-    // };
-    const requestData = new HttpClientRequestData(
-      "POST",
-      "/tournament",
-      formData
-    );
+    const data = {
+      rule_type: formData.get("rule_type"),
+      points_to_win: formData.get("points_to_win"),
+      game_total_points: formData.get("game_total_points"),
+      max_duration: formData.get("max_duration"),
+      name: formData.get("name"),
+      tournament_type: formData.get("tournament_type"),
+      number_of_players: formData.get("number_of_players"),
+      number_of_rounds: formData.get("number_of_rounds"),
+      username: formData.getAll("username"),
+      alias_name: formData.getAll("alias_name"),
+    };
+    const requestData = new HttpClientRequestData("POST", "/tournament", data);
     requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;

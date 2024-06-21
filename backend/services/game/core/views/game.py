@@ -70,8 +70,6 @@ class AddGameView(generic.View):
         game_form = GameForm(data)
         if not game_form.is_valid():
             msg = _("An internal error occured while creating the game")
-            # log = message + ": " + game_form.errors.as_text()
-            # logging.error(log)
             return json_response.error(msg=msg)
 
         game: Game = game_form.save(commit=False)

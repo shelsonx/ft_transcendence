@@ -67,12 +67,8 @@
   </table>
 
   {% if total_tournaments == 0 %}
-    <div class="error-message d-flex justify-content-center">
-      {% if user %}
-        <h3>{% translate "You haven't participated in any tournament yet..." %}</h3>
-      {% else %}
+    <div class="error-message d-flex justify-content-center py-5">
         <h3>{% translate "No tournaments registered" %}</h3>
-      {% endif %}
     </div>
   {% endif %}
 

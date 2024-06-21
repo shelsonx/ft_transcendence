@@ -33,14 +33,14 @@
 
   {% else %}
 
-    {% for form in players_forms %}
-      <div id="round-robin-forms">
+    <div id="round-robin-forms">
+      {% for form in players_forms %}
         {% if forloop.counter > 2 %}
           <li>
             <div class="row">
               {% include "form.html" with form=form css_class="col-sm" %}
               {% if forloop.counter > 3 %}
-                <div data-bs-theme="dark" class="close-button col-1">
+                <div data-bs-theme="dark" class="close-button col-1 pt-4">
                   <button type="button" class="btn-close delete-player" id="close-rules-btn" aria-label="Close"></button>
                 </div>
               {% else %}
@@ -49,8 +49,8 @@
             </div>
           </li>
         {% endif %}
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
 
   {% endif %}
 </ol>

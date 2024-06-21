@@ -98,6 +98,11 @@ class TournamentAdmin(admin.ModelAdmin):
 class TournamentPlayerAdmin(admin.ModelAdmin):
     model = TournamentPlayer
 
+    list_display = [
+        "__str__",
+        "tournament",
+    ]
+
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
