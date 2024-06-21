@@ -44,9 +44,11 @@ const updateTournamentTypeFields = () => {
 
 const addPlayer = (e) => {
   e.preventDefault();
-  const playerBaseForm = document.getElementById("player-base-form");
+  const playerBaseForm = document
+    .getElementById("player-base-form")
+    .getElementsByTagName("li")[0];
   const roundRobinForms = document.getElementById("round-robin-forms");
-  roundRobinForms.innerHTML += playerBaseForm.innerHTML;
+  roundRobinForms.appendChild(playerBaseForm.cloneNode(true));
 
   const numberOfPlayersField = document.getElementById("id_number_of_players");
   const number_of_players = Number(numberOfPlayersField.value) + 1;
