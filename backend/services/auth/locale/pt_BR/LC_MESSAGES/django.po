@@ -124,3 +124,6 @@ msgstr "O campo code_user_receiver_id deve ser um array de código e uuids."
 
 msgid "Two factor code not founds %(codes)s"
 msgstr "Código de dois fatores não encontrado %(codes)s"
+
+msgid "Only Two players are allowed to this mode of game"
+msgstr "Apenas dois jogadores são permitidos neste modo de jogo"

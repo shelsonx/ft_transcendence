@@ -1,4 +1,6 @@
 import asyncio
+
+from ..exceptions.individual_game_exception import IndividualGameException
 from ..interfaces.usecase.base_usecase import BaseUseCase
 from ..exceptions.user_not_found_exception import UserNotFoundException
 from ..dtos.validate_game_2factor_code_dto import SendGame2FactorCodeDto
@@ -9,7 +11,7 @@ from ..interfaces.usecase.base_sign_in_usecase import BaseSignInUseCase
 from ..interfaces.services.two_factor_game_service import ITwoGameFactorService
 from ..interfaces.repositories.user_repository import IUserRepository
 from asgiref.sync import sync_to_async
-
+from ..models.two_factor_game import TwoFactorGame
 class Send2GameFactorCodeUseCase(BaseUseCase):
     def __init__(
         self,
@@ -23,7 +25,8 @@ class Send2GameFactorCodeUseCase(BaseUseCase):
         user = None
         try:
             ids = two_factor_dto.user_receiver_ids + [two_factor_dto.user_requester_id]
-
+            if two_factor_dto.game_type == TwoFactorGame.GameType.INDIVIDUAL_GAME.value and len(two_factor_dto.user_receiver_ids) >= 2:
+                raise IndividualGameException()
             user = await self.user_repository.get_users_by_ids(ids=ids)
             if len(user) != len(ids):
                 raise UserNotFoundException()
