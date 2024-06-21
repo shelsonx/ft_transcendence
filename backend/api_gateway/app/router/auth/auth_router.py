@@ -46,6 +46,13 @@ class AuthRouter(IRouter):
     data_json = self.convert_to_json_response(auth_data)
     return data_json
 
+  def unregister_game_info_ms(self, auth_data_json, headers_dict):
+    return self.notify_microservices("DELETE", ApiUrls.GAME_INFO, HttpClientData(
+        url=f"/{auth_data_json['id']}/",
+        data={},
+        headers=headers_dict
+    ))
+
   def register_game_info_ms(self, auth_data_json, headers_dict):
     body = json.dumps({
                     "id_msc": auth_data_json['id'],
@@ -59,6 +66,13 @@ class AuthRouter(IRouter):
         headers=headers_dict
     ))
 
+  def unregister_game_ms(self, auth_data_json, headers_dict):
+    return self.notify_microservices("DELETE", ApiUrls.GAME, HttpClientData(
+        url=f"/user/{auth_data_json['id']}/",
+        data={},
+        headers=headers_dict
+    ))
+
   def register_game_ms(self, auth_data_json, headers_dict):
      body = json.dumps({
             "id": auth_data_json['id'],
@@ -69,6 +83,14 @@ class AuthRouter(IRouter):
         data=body,
         headers=headers_dict
      ))
+
+
+  def unregister_user_management_ms(self, auth_data_json, headers_dict):
+    return self.notify_microservices("DELETE", ApiUrls.USER_MANAGEMENT, HttpClientData(
+        url=f"/{auth_data_json['id']}/",
+        data={},
+        headers=headers_dict
+    ))
 
   def register_user_management_ms(self, auth_data_json, headers_dict):
     body = json.dumps({
