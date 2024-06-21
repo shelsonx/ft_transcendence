@@ -106,8 +106,8 @@ names = [
     "miniRT",
     "The Transcendence Journey",
 ]
-# if not all([u.tournaments.all().exists() for u in users]):
-if True:
+# if True:
+if not all([u.tournaments.all().exists() for u in users]):
     control = True
 
     for i, user in enumerate(users):

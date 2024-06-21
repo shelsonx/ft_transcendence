@@ -14,12 +14,9 @@ class GameService {
       return response;
     } catch (error) {
       const message = getErrorMessage(error.status);
-      if (message != undefined)
-        error.message = message;
-      // else
-      //   error.message = getErrorMessage(500);
-      //   error.status = 500;
-      return error
+      if (message !== undefined)
+        error.message = "Ooops! An error occured.<br>Try again later";
+      return error;
     }
   }
 
@@ -60,7 +57,6 @@ class GameService {
     };
     const requestData = new HttpClientRequestData("POST", "/game", data);
     requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
-    console.log("Request", requestData);
     const response = await this.handleResponse(requestData);
     return response;
   }
@@ -72,24 +68,40 @@ class GameService {
   }
 
   async updateGame(id, game) {
-    const data = {
-      game_datetime: game.game_datetime,
-      status: game.status,
-      duration: game.duration,
-      player_left: game.player_left,
-      player_right: game.player_right,
-    };
+    const data = game.toJSON();
     const requestData = new HttpClientRequestData("PATCH", `/game/${id}`, data);
+    requestData.headers["Content-Type"] = "default";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async validateGameForm(id) {
+    const requestData = new HttpClientRequestData(
+      "GET",
+      `/game-validation/${id}`
+    );
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async validateGame(id, formData) {
+    const data = {
+      token: formData.get("token"),
+    };
+    const requestData = new HttpClientRequestData(
+      "PATCH",
+      `/game-validation/${id}`,
+      data
+    );
+
     requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
 
-  async validateGame(id) {
-    const requestData = new HttpClientRequestData(
-      "PATCH",
-      `/game-validation/${id}`
-    );
+  async cancelGame(id) {
+    const requestData = new HttpClientRequestData("PUT", `/game/${id}`);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
@@ -131,9 +143,11 @@ class GameService {
     return response;
   }
 
-
   async deleteTournament(id) {
-    const requestData = new HttpClientRequestData("DELETE", `/tournament/${id}`);
+    const requestData = new HttpClientRequestData(
+      "DELETE",
+      `/tournament/${id}`
+    );
     const response = await this.handleResponse(requestData);
     return response;
   }

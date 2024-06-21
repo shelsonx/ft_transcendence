@@ -3,7 +3,7 @@
 {% endfor %}
 
 {% for field in form.visible_fields %}
-    <div class="fieldWrapper mb-3" id="{{ field.name }}">
+    <div class="fieldWrapper mb-3 {% if css_class %}{{ css_class }}{% endif %}" id="{{ field.name }}">
 
       {% if field.label %}
         {{ field.label_tag }}
@@ -12,7 +12,7 @@
       {{ field }}
 
       {% if field.help_text %}
-        <p class="help p-sm" id="{{ field.auto_id }}_helptext">
+        <p class="small" id="{{ field.auto_id }}_helptext">
           {{ field.help_text|safe }}
         </p>
       {% endif %}

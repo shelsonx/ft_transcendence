@@ -125,9 +125,19 @@ class GameRules(models.Model):
         return text
 
     def to_json(self) -> dict:
+        max_duration = self.max_duration
+        if max_duration:
+            seconds = self.max_duration.seconds
+            minutes = seconds // 60
+            seconds = seconds % 60
+            max_duration = {
+                "minutes": minutes,
+                "seconds": seconds,
+            }
+
         return {
             "rule_type": self.rule_type.value,
             "points_to_win": self.points_to_win,
             "game_total_points": self.game_total_points,
-            "max_duration": self.max_duration,
+            "max_duration": max_duration
         }

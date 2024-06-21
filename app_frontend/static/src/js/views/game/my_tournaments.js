@@ -2,7 +2,7 @@ import BaseLoggedView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
 
 
-class TournamentsView extends BaseLoggedView {
+class MyTournamentsView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
@@ -14,12 +14,12 @@ class TournamentsView extends BaseLoggedView {
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
-    <h3 id="tournament-title">Tournaments</h3>
+    <h3 id="tournament-title">Your tournaments</h3>
     <div >
       <button id="btn-data-switch" type="button" class="btn btn-info"
-        onclick="window.location='#my-tournaments';"
+        onclick="window.location='#tournaments';"
       >
-        My tournaments
+        All tournaments
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
         onclick="window.location='#add-tournament';"
@@ -40,7 +40,7 @@ const swap = (response) => {
 }
 
 const start = async (user) => {
-  await gameService.allTournaments().then(swap);
+  await gameService.userTournaments(user.id).then(swap);
 }
 
-export default new TournamentsView(html, start);
+export default new MyTournamentsView(html, start);

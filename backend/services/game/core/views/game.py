@@ -1,36 +1,29 @@
 # python std library
-import pprint
-import random
-import uuid
+from datetime import timedelta
 from http import HTTPStatus
-import logging
+import json
+import uuid
 
 # Django
 from django.forms import ValidationError
-from django.http import (
-    HttpRequest,
-    HttpResponse,
-    JsonResponse,
-    QueryDict,
-)
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpRequest, HttpResponse, QueryDict
+from django.shortcuts import render
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
-from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.csrf import csrf_exempt
 
 # First Party
-from common.validators import is_valid_uuid4
 from common.models import json_response
 from user.decorators import JWTAuthentication
 from core.models import Game, GameStatus, GameRules
-from core.forms import GameForm, GameEditForm, GameRulesForm
+from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
 
 
-@method_decorator(csrf_exempt, name="dispatch")  # remove csrf protection...
+@method_decorator(csrf_exempt, name="dispatch")
 class AddGameView(generic.View):
     template_name = "add_game.html"
     rules_form = None
@@ -42,7 +35,6 @@ class AddGameView(generic.View):
         response = render(request, self.template_name, self.get_context_data())
         return response
 
-    # @csrf_protect
     @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
         post_data = request.POST
@@ -51,9 +43,13 @@ class AddGameView(generic.View):
         forms = [self.rules_form, self.user_form]
         if not self.opponent:
             [form.is_valid() for form in forms]
-            self.user_form.add_error(
-                "username", ValidationError(message="user does not exist")
-            )
+            msg = _("User does not exist")
+            self.user_form.add_error("username", ValidationError(message=msg))
+            return render(request, self.template_name, context)
+        if self.opponent == request.user:
+            [form.is_valid() for form in forms]
+            msg = _("You can't play against yourself")
+            self.user_form.add_error("username", ValidationError(message=msg))
             return render(request, self.template_name, context)
         if not all(form.is_valid() for form in forms):
             return render(request, self.template_name, context)
@@ -68,15 +64,15 @@ class AddGameView(generic.View):
             rules = self.rules_form.save()
 
         data = {
-            "status": GameStatus.SCHEDULED,  # TODO: deixar como PENDING
+            "status": GameStatus.PENDING,
             "rules": rules,
         }
         game_form = GameForm(data)
         if not game_form.is_valid():
-            message = _("An internal error occured while creating the game")
-            log = message + ": " + game_form.errors.as_text()
-            logging.error(log)  # TODO: remove it!
-            return json_response.error(msg=message)
+            msg = _("An internal error occured while creating the game")
+            # log = message + ": " + game_form.errors.as_text()
+            # logging.error(log)
+            return json_response.error(msg=msg)
 
         game: Game = game_form.save(commit=False)
         game.owner = request.user
@@ -84,9 +80,9 @@ class AddGameView(generic.View):
         game.add_player(request.user)
         game.add_player(self.opponent)
         game.set_players_position()
+        # TODO: pedido para gerar o token para o oponente
 
-        data = {"status": "success", "data": {"game": game.pk}}
-        return json_response.success(data=data, status=HTTPStatus.CREATED)
+        return json_response.success(data={"game": game.pk}, status=HTTPStatus.CREATED)
 
     def get_opponent(self, post_data: QueryDict | None) -> User | None:
         opponent = post_data.get("username") if post_data else None
@@ -97,7 +93,6 @@ class AddGameView(generic.View):
     def get_context_data(self, **kwargs) -> dict:
         return {
             "invalid": False,
-            "GameStatus": GameStatus,
             "rules_form": self.rules_form,
             "user_form": self.user_form,
         }
@@ -123,22 +118,61 @@ class GameView(generic.View):
     @JWTAuthentication()
     def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
         game = Game.objects.filter(pk=pk).first()
-        print(pk)
+
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
             print(game.owner, request.user)
             return json_response.forbidden()
 
-        # a edição na verdade vai seguir outras regras... salvar scores, status
-        # self.set_forms(request.POST)
-        # context = self.get_context_data()
-        # if not self.game_form.is_valid():  # or not self.rules_form.is_valid():
-        #     return render(request, self.template_name, context)
-        #     # return HttpResponseBadRequest()
+        data = json.loads(request.body)
+        data["game_datetime"] = timezone.datetime.fromisoformat(data["game_datetime"])
+        duration = data["duration"]
+        data["duration"] = timedelta(
+            minutes=duration["minutes"], seconds=duration["seconds"]
+        )
+        game_form = UpdateGameForm(data, instance=game)
 
-        # game: Game = self.game_form.save()
+        player_left, player_right = game.players
+        left_form = UpdateGamePlayerForm(data["player_left"], instance=player_left)
+        right_form = UpdateGamePlayerForm(data["player_right"], instance=player_right)
+
+        if not all([game_form.is_valid(), left_form.is_valid(), right_form.is_valid()]):
+            return json_response.bad_request("invalid data")
+        if data["player_left"]["user"]["id"] != str(player_left.user.pk):
+            return json_response.bad_request("compromised data")
+        if data["player_right"]["user"]["id"] != str(player_right.user.pk):
+            return json_response.bad_request("compromised data")
+
+        game: Game = game_form.save()
+        left_form.save()
+        right_form.save()
+
+        if game.status == GameStatus.ENDED.value:
+            round = game.round.all().first()
+            if round is not None:
+                game.update_tournament()
+            else:
+                game.update_users()
         return json_response.success(msg="Game updated")
+
+    @JWTAuthentication()
+    def put(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+        game = Game.objects.filter(pk=pk).first()
+
+        if not game:
+            return json_response.not_found()
+        if game.owner != request.user:
+            print(game.owner, request.user)
+            return json_response.forbidden()
+
+        valid_status = [GameStatus.SCHEDULED, GameStatus.PAUSED, GameStatus.ONGOING]
+        if game.status not in valid_status:
+            return json_response.forbidden()
+
+        game.status = GameStatus.CANCELED
+        game.save()
+        return json_response.success(msg="Game canceled")
 
     @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
@@ -146,6 +180,8 @@ class GameView(generic.View):
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
+            return json_response.forbidden()
+        if game.status != GameStatus.PENDING:
             return json_response.forbidden()
 
         game.delete()

@@ -13,6 +13,13 @@ class GameUser {
     validateObj(GameUser, obj);
     return new GameUser(obj.id, obj.username);
   }
+
+  toJSON() {
+    return {
+      id: this.id,
+      username: this.username,
+    }
+  }
 }
 
 class GamePlayer {
@@ -29,8 +36,12 @@ class GamePlayer {
     return new GamePlayer(obj.user, obj.score);
   }
 
-  draw() {};
-  update() {};
+  toJSON() {
+    return {
+      user: this.user.toJSON(),
+      score: this.score,
+    }
+  }
 }
 
 export { GamePlayer };

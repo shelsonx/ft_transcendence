@@ -1,8 +1,13 @@
+import gameService from "../services/gameService.js";
 import PongTable from "./pongTable.js";
 import PongBall from "./ball.js";
 import PlayerManager from "./playerManager.js";
 import { Game, GameStatus } from "../contracts/game/game.js";
-import { getTimeValue, timeDeltaToDuration, durationToTimeDelta } from "../utils/timeUtils.js";
+import {
+  getTimeValue,
+  timeDeltaToDuration,
+  durationToTimeDelta,
+} from "../utils/timeUtils.js";
 import {
   PLAYER_WIDTH,
   PONG_BALL_SIZE,
@@ -11,7 +16,8 @@ import {
 import { proportionalWidth } from "../utils/size.js";
 
 class PongManager {
-  constructor(game, gameWidth, gameHeight) {
+  constructor(id, game, gameWidth, gameHeight) {
+    this.id = id;
     this.game = Game.createGameFromObj(game);
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
@@ -43,20 +49,15 @@ class PongManager {
   }
 
   begin() {
-    this.game.game_datetime = new Date();
+    const now = new Date();
+    this.game.game_datetime = now;
     this.game.duration = {
       minutes: 0,
       seconds: 0,
     };
     this.duration = 0;
-    this.controlDuration = this.game.game_datetime.getTime();
+    this.controlDuration = now.getTime();
     this.game.status.value = GameStatus.ONGOING;
-    // send update to back?
-    console.log("begin:");
-    console.log(this.game.game_datetime);
-    console.log(this.controlDuration);
-    console.log(this.game.duration);
-    console.log(this.duration);
   }
 
   pause() {
@@ -65,23 +66,11 @@ class PongManager {
     this.game.status.value = GameStatus.PAUSED;
     this.game.player_left.score = this.player_left.score;
     this.game.player_right.score = this.player_right.score;
-    // send update to back?
-    console.log("pause:");
-    console.log(this.game.game_datetime);
-    console.log(this.controlDuration);
-    console.log(this.game.duration);
-    console.log(this.duration);
   }
 
   continue() {
     this.controlDuration = new Date().getTime();
     this.game.status.value = GameStatus.ONGOING;
-    // send update to back?
-    console.log("continue:");
-    console.log(this.game.game_datetime);
-    console.log(this.controlDuration);
-    console.log(this.game.duration);
-    console.log(this.duration);
   }
 
   end() {
@@ -92,6 +81,19 @@ class PongManager {
     this.game.status.value = GameStatus.ENDED;
   }
 
+  async save() {
+    return await gameService.updateGame(this.id, this.game);
+  }
+
+  updateToSave() {
+    const now = new Date().getTime();
+    this.duration += now - this.controlDuration;
+    this.game.duration = timeDeltaToDuration(this.duration);
+    this.controlDuration = now;
+    this.game.player_left.score = this.player_left.score;
+    this.game.player_right.score = this.player_right.score;
+  }
+
   checkGameEnded() {
     const points_to_win = this.game.rules.points_to_win;
     const game_total_points = this.game.rules.game_total_points;
@@ -100,9 +102,7 @@ class PongManager {
 
     if (points_to_win !== null) {
       players.forEach((player) => {
-        if (player.score === points_to_win) {
-          check = true;
-        }
+        if (player.score === points_to_win) check = true;
       });
     }
 
@@ -110,36 +110,42 @@ class PongManager {
       if (
         this.player_left.score + this.player_right.score ===
         game_total_points
-      ) {
-        check = true;
-      }
+      ) check = true;
     }
 
     if (this.game.rules.max_duration !== null) {
+      const now = new Date().getTime();
+      this.duration += now - this.controlDuration;
+      this.controlDuration = now;
+      if (this.duration >= this.game.rules.max_duration) check = true;
     }
     return check;
   }
 
   checkPoint() {
+    let scored_point = false;
+
     if (
       this.ball.position.x + this.ball.size + this.ball.velocity.x >
       this.gameWidth
     ) {
       this.player_left.score += 1;
       this.updateHtmlPoints();
-      // send update to back?
       this.ball.position.x = proportionalWidth(TABLE_PADDING);
       this.ball.position.y = Math.random() * (this.gameHeight - this.ball.size);
       this.ball.startVelocity();
+      scored_point = true;
     } else if (this.ball.position.x + this.ball.velocity.x < 0) {
       this.player_right.score += 1;
       this.updateHtmlPoints();
-      // send update to back?
       this.ball.position.x =
         this.gameWidth - proportionalWidth(TABLE_PADDING) - this.ball.size;
       this.ball.position.y = Math.random() * (this.gameHeight - this.ball.size);
       this.ball.startVelocity();
+      scored_point = true;
     }
+
+    return scored_point;
   }
 
   checkBallColisionSidePlayer(player) {
@@ -215,11 +221,13 @@ class PongManager {
 
   update() {
     this.checkBallColision();
-    this.checkPoint();
+    const scored_point = this.checkPoint();
     this.ball.update();
     this.player_left.update();
     this.player_right.update();
     this.updateHtmlTime();
+
+    return scored_point;
   }
 
   draw(ctx) {

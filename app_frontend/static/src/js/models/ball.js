@@ -42,7 +42,7 @@ export default class PongBall {
 
   startVelocity() {
     let angle = Math.random() * degToRad(BALL_MAX_ANGLE);
-    if (angle == 0) angle = degToRad(BALL_MAX_ANGLE);
+    if (angle === 0) angle = degToRad(BALL_MAX_ANGLE);
     const vx = Math.cos(angle) * BALL_VELOCITY;
     const vy = Math.sin(angle) * BALL_VELOCITY;
 

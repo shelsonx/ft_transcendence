@@ -1,3 +1,4 @@
+import { durationToTimeDelta, timeDeltaToDuration } from "../../utils/timeUtils.js";
 import { objValidation as validateObj } from "../validation/objValidation.js";
 
 class GameRuleType {
@@ -47,8 +48,17 @@ class GameRules {
       obj.rule_type,
       obj.points_to_win,
       obj.game_total_points,
-      obj.max_duration
+      durationToTimeDelta(obj.max_duration),
     );
+  }
+
+  toJSON() {
+    return {
+      rule_type: this.rule_type.value,
+      points_to_win: this.points_to_win,
+      game_total_points: this.game_total_points,
+      max_duration: timeDeltaToDuration(this.max_duration),
+    }
   }
 }
 

@@ -3,7 +3,9 @@ import gameService from '../services/gameService.js';
 import {
   UserInformationService
 } from '../services/userManagementService.js';
+import { loadErrorMessage } from '../utils/errors.js';
 import BaseLoggedView from './baseLoggedView.js';
+
 class HomeView extends BaseLoggedView {
   constructor(html, start) {
     super({
@@ -14,15 +16,14 @@ class HomeView extends BaseLoggedView {
   }
 }
 
-const userLabel = "My games"
-const allUsersLabel = "All games"
-
 const html = /*html*/`
   <div class="d-flex justify-content-between">
     <h2 id="hello-user"></h2>
     <div>
-      <button id="btn-data-switch" type="button" class="btn btn-info">
-        ${userLabel}
+      <button id="btn-my-games" type="button" class="btn btn-info"
+        onclick="window.location='#my-games';"
+      >
+        My games
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
         onclick="window.location='#play';"
@@ -31,16 +32,24 @@ const html = /*html*/`
       </button>
     </div>
   </div>
-  <div class="container-fluid main scroll-on mt-3">
+  <div class="container-fluid main-game scroll-on mt-3">
     <div id="home-container" class="static-list"></div>
+  </div>
+
+  <div id="error-message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `
 
+
 const swap = (response) => {
-  // TODO: lidar quando retornar erro ou não responder
+  if (response.status !== undefined) {
+    loadErrorMessage(response, "error-message");
+    return;
+  }
+
   const swapContainer = document.getElementById("home-container");
   swapContainer.innerHTML = response;
-}
+};
 
 const changeLanguageWhenLogin = async (userId) => {
   // TODO
@@ -54,7 +63,7 @@ const changeLanguageWhenLogin = async (userId) => {
     console.error(err);
   }
   languageHandler.changeLanguage(userChoosenLanguage);
-}
+};
 
 const start = async (user) => {
   if (user) {
@@ -65,22 +74,6 @@ const start = async (user) => {
   helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
-
-  let userData = false
-  const btnDataSwitch = document.getElementById("btn-data-switch");
-  btnDataSwitch.addEventListener("click", async () => {
-    userData = !userData
-
-    if (userData) {
-      await gameService.userGames(user.id).then(swap);
-      btnDataSwitch.innerHTML = allUsersLabel;
-      }
-    else {
-      await gameService.allGames().then(swap);
-      btnDataSwitch.innerHTML = userLabel;
-    }
-  });
-
-}
+};
 
 export default new HomeView(html, start);

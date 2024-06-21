@@ -400,7 +400,13 @@ body {
     display: none;
 }
 
-.game-message, .subtitle {
+/* Game views */
+
+.main-game {
+    font-family: "Turret Road", sans-serif !important;
+}
+
+.error-message, .subtitle {
     color: var(--secondary-light);
     font-family: "Press Start 2P", sans-serif;
 }
@@ -495,6 +501,12 @@ body {
     border-radius: 50%;
 }
 
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
 .static {
     max-height: calc(100vh - 140px);
     padding-bottom: 20px;
@@ -504,3 +516,14 @@ body {
     max-height: calc(100vh - 210px);
     padding-bottom: 20px;
 }
+
+.static-user-list {
+    max-height: calc(100vh - 270px);
+    padding-bottom: 20px;
+}
+
+ol li::marker {
+    color: var(--secondary-light);
+}
+
+/* End game views */
