@@ -78,7 +78,7 @@ class TournamentsView(generic.ListView):
         tournament.all_rounds = tournament.rounds.all().aggregate(
             Sum("number_of_games")
         )
-        tournament.games_count = tournament.all_rounds["number_of_games__sum"]
+        tournament.games_count = tournament.all_rounds["number_of_games__sum"] or 0
 
         winner = tournament.winner
         tournament.is_winner = False

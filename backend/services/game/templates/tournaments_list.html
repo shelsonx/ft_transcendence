@@ -16,7 +16,7 @@
         <th>{% translate "Total Games" %}</th>
         <th>{% translate "Winner" %}</th>
         {% if user %}
-          {% comment %} column to indicate that the user won {% endcomment %}
+          {% comment %} column to indicate that the user won or make actions {% endcomment %}
           <th></th>
         {% endif %}
       </tr>
@@ -26,7 +26,8 @@
       {% if total_tournaments %}
 
         {% for t in tournament_list %}
-            <tr class="tournament-row" onclick="window.location='?t={{t.pk}}#tournament';">
+            <tr class="tournament-row"
+              onclick="window.location='?t={{t.pk}}#tournament';">
 
               <td>{{ t.name }}</td>
               <td>{{ t.type_label }}</td>
@@ -56,7 +57,29 @@
               </td>
 
               {% if user %}
-                <td></td>
+                <td>
+                  {% if t.is_winner %}
+                    <span class="winner">{% translate "Winner" %}</span>
+                  {% elif t.is_owner %}
+
+                    {% if t.status == TournamentStatus.SCHEDULED %}
+                      <button class="btn btn-primary action">
+                        {% translate "Start" %}
+                      </button>
+
+                    {% elif t.status == TournamentStatus.ON_GOING %}
+                      <button class="btn btn-primary action">
+                        {% translate "Continue" %}
+                      </button>
+
+                    {% elif t.status == TournamentStatus.INVITATION %}
+                      <button class="btn btn-secondary action">
+                        {% translate "Validate" %}
+                      </button>
+                    {% endif %}
+
+                  {% endif %}
+                </td>
               {% endif %}
 
             </tr>

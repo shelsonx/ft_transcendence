@@ -54,7 +54,7 @@ const addTournamentResult = async (response) => {
         response.data.tournament !== null
       ) {
         window.location.href =
-          "?tournament=" + response.data.tournament + "#verify-players";
+          "?t=" + response.data.tournament + "#verify-players";
         return;
       }
     }

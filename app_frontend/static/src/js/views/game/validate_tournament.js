@@ -37,7 +37,9 @@ const submitVerifyForm = async (e) => {
   const verifyForm = document.getElementById("validation-form");
   const formData = new FormData(verifyForm);
 
-  await gameService.validateTournament(tournament, formData).then(verifyPlayerResult);
+  await gameService
+    .validateTournament(tournament, formData)
+    .then(verifyPlayerResult);
 };
 
 const verifyPlayerResult = async (response) => {
@@ -45,7 +47,7 @@ const verifyPlayerResult = async (response) => {
     putVerifyForm(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
-      window.location.href = "?tournament=" + tournament + "#pong";
+      window.location.href = "?t=" + tournament + "#tournament";
       return;
     }
   }
@@ -53,7 +55,7 @@ const verifyPlayerResult = async (response) => {
 };
 
 const start = async (user) => {
-  tournament = new URLSearchParams(window.location.search).get("tournament");
+  tournament = new URLSearchParams(window.location.search).get("t");
   if (tournament === null) {
     pageNotFoundMessage("message");
     return;
