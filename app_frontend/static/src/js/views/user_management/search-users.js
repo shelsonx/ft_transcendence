@@ -149,6 +149,14 @@ const start = async () => {
     button.closest('.list-group-item').remove();
   };
 
+  window.viewUserStats = async function (userId) {
+    window.location.href = '#game-info';
+  };
+
+  window.viewUserMatches = async function (userId) {
+    window.location.href = '?user=' + userId + '#view-user-games';
+  };
+
   const fetchActiveUsers = async () => {
     const response = await searchUsersService.viewOnlineUsers();
     if (response.users.length === 0) {
@@ -165,7 +173,7 @@ const start = async () => {
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
       userItem.innerHTML = `
         <div class="d-flex align-items-center">
-          <img src="${user.avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
+          <img src="https://localhost:8006${user.avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
           <div class="ms-3">
             <h5>${user.name} (@${user.nickname})</h5>
           </div>

@@ -97,7 +97,6 @@ const initFormSubmission = (userInformationService) => {
 };
 
 const initAvatarChange = () => {
-    console.log('initAvatarChange');
     const avatarButton = document.querySelector('.change-avatar');
     const avatarInput = document.getElementById('avatar-input');
 

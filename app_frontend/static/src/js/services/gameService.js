@@ -196,6 +196,18 @@ class GameService {
     const response = await this.handleResponse(requestData);
     return response;
   }
+
+  async updateUserDetails(id, formData) {
+    const data = {
+      username: formData.get("username"),
+      avatar: formData.get("avatar")
+    };
+    const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, data);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+  
 }
 
 export default new GameService();
