@@ -166,9 +166,6 @@ class LanguageHandler {
   }
 
   async handleLocation(newLocale) {
-    if (newLocale === this.getLocale()) {
-      return ;
-    }
     this.setLocale(newLocale);
     const newTranslations = await this.fetchTranslationsFor(
       newLocale,
