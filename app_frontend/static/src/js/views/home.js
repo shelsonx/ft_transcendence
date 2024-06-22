@@ -1,3 +1,4 @@
+import { AuthConstants } from '../constants/auth-constants.js';
 import languageHandler from '../locale/languageHandler.js';
 import gameService from '../services/gameService.js';
 import {
@@ -53,12 +54,13 @@ const swap = (response) => {
 
 const changeLanguageWhenLogin = async (userId) => {
   // TODO
-  let userChoosenLanguage = 'en';
+  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE);
   try {
     const userInfoService = new UserInformationService(userId);
     const { user: userManagement } = await userInfoService.getUserData();
     const { chosen_language } = userManagement;
     userChoosenLanguage = chosen_language;
+    languageHandler.setDefaultLocale(userChoosenLanguage);
   } catch (err) {
     console.error(err);
   }

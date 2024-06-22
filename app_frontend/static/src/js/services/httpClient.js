@@ -1,8 +1,10 @@
 import { AuthConstants } from "../constants/auth-constants.js";
 import { ApiError } from "../contracts/apiError.js";
 import { ApiResonse } from "../contracts/apiResponse.js";
+import languageHandler from "../locale/languageHandler.js";
 import { getCookie } from "../utils/getCookie.js";
 import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCookie.js";
+
 /**
  * Class representing the data for an HTTP client request.
  */
@@ -39,8 +41,11 @@ export class HttpClient {
    * Create a new HttpClient.
    * @param {string} baseUrl - The base URL for the HTTP client.
    */
-  constructor(baseUrl) {
+  constructor(baseUrl, shouldAppendLanguage = true) {
     this.baseUrl = baseUrl;
+    this.baseUrlWithLanguage = baseUrl;
+    this.languageHandler = languageHandler;
+    this.shouldAppendLanguage = shouldAppendLanguage;
   }
 
   /**
@@ -118,7 +123,7 @@ export class HttpClient {
     )
       body = this.getFormUrlencodedBody(httpClientRequestData.data);
 
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+    const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
       method: 'POST',
       headers: httpClientRequestData.headers,
       body: body
@@ -132,7 +137,7 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #get(httpClientRequestData) {
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+    const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
       method: 'GET',
       headers: httpClientRequestData.headers
     });
@@ -152,7 +157,7 @@ export class HttpClient {
     )
       body = this.getFormUrlencodedBody(httpClientRequestData.data);
 
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+    const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
       method: 'PUT',
       headers: httpClientRequestData.headers,
       body: body
@@ -165,7 +170,7 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    */
   async #delete(httpClientRequestData) {
-    const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+    const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
       method: 'DELETE',
       headers: httpClientRequestData.headers,
     });
@@ -192,7 +197,7 @@ export class HttpClient {
       }
       else body = this.getFormUrlencodedBody(httpClientRequestData.data);
 
-      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+      const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
         method: 'PATCH',
         headers: httpClientRequestData.headers,
         body: body,
@@ -208,7 +213,7 @@ export class HttpClient {
       }
     }
     try {
-      const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
+      const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
         method: 'PATCH',
         body: formData
       });
@@ -226,6 +231,22 @@ export class HttpClient {
    * @returns {Promise<Object>} The response data.
    * @throws {Error} If the HTTP method is invalid.
    */
+  //lalala => lalala/pt-br
+  //lalala/
+
+  appendLanguage() {
+    if (this.languageHandler.getLocale() === "en") {
+      this.baseUrlWithLanguage = this.baseUrl;
+      return ;
+    }
+    const locale = languageHandler.getLocale();
+    const baseUrl = this.baseUrl;
+    if (baseUrl.endsWith('/')) {
+      this.baseUrlWithLanguage = `${baseUrl}${locale}/`;
+    } else {
+      this.baseUrlWithLanguage = `${baseUrl}/${locale}`;
+    }
+  }
 
   async makeRequest(httpClientRequestData) {
     if (!httpClientRequestData) {
@@ -236,6 +257,9 @@ export class HttpClient {
     const httpRequest = httpVerb?.[httpClientRequestData.method?.toUpperCase()];
     if (!httpRequest) {
       throw new Error('Invalid HTTP method');
+    }
+    if (this.shouldAppendLanguage) {
+      this.appendLanguage();
     }
     replaceCookieTokenToStorage(AuthConstants.AUTH_TOKEN);
     this.addJwtToken(httpClientRequestData);

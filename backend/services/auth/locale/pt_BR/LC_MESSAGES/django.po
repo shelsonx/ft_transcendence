@@ -71,7 +71,7 @@ msgid "Transcendence Journey - Two Factor Authentication"
 msgstr "Transcendence Journey - Autenticação de Dois Fatores"
 
 msgid "Your two factor authentication code is %(code)s"
-msgstr "Votre code d'authentification à deux facteurs est %(code)s"
+msgstr "Seu código de 2 fatores é %(code)s"
 
 msgid "old password is missing"
 msgstr "senha antiga está faltando"

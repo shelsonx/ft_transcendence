@@ -2,7 +2,7 @@ import { AuthConstants } from '../constants/auth-constants.js';
 import { HttpClientRequestData } from './httpClient.js';
 import { LanguageService } from './languageService.js';
 
-class AuthService extends LanguageService{
+class AuthService extends LanguageService {
 
   constructor() {
     super('https://localhost:8010/api/auth/');
@@ -69,6 +69,29 @@ class AuthService extends LanguageService{
 
   async getMe() {
     const requestData = new HttpClientRequestData('GET', 'user/');
+    const response = await this.makeRequest(requestData);
+    return response;
+  }
+
+  /**
+   * Asynchronously updates user data.
+   *
+   * This function sends a PUT request to update user data such as username, password, and two-factor authentication status.
+   * It constructs a request with the provided data and sends it using the `makeRequest` method.
+   *
+   * @param {Object} data - The data to update for the user.
+   * @param {string} data.user_name - The new username of the user.
+   * @param {string} data.password - The new password of the user.
+   * @param {string} data.old_password - The old password of the user, required for authentication.
+   * @param {boolean} data.enable_2fa - Indicates whether two-factor authentication should be enabled or disabled.
+   *
+   * @returns {Promise<Object>} The response from the server after attempting to update the user data. The response object includes:
+   * - `data`: An object containing the updated user data, including `id`, `user_name`, `email`, `login_type`, `enable_2fa`, `created_at`, `updated_at`, and `is_active` fields.
+   * - `message`: A string indicating the result of the request.
+   * - `is_success`: A boolean indicating whether the update was successful.
+   */
+  async updateUserData(userId, data) {
+    const requestData = new HttpClientRequestData('PUT', `user/${userId}`, data);
     const response = await this.makeRequest(requestData);
     return response;
   }

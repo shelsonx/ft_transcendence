@@ -83,11 +83,11 @@ class HashRouter extends Router {
   start() {
     window.addEventListener("hashchange", () => {
       this.route();
-      languageHandler.onInit(true);
+      languageHandler.onInit();
     });
     window.addEventListener("DOMContentLoaded", () => {
       this.route();
-      languageHandler.onInit();
+      languageHandler.onInit(true);
     });
     const logout = document.getElementById('logout-button');
     if (logout) {
