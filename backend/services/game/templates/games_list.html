@@ -27,6 +27,7 @@
         <th>{% translate "Result" %}</th>
         <th>{% translate "Date / Status" %}</th>
         <th>{% translate "Duration" %}</th>
+        <th>{% translate "Tournament" %}</th>
         {% if user %}
           {% comment %} column to indicate that the user won or to make some action if owner {% endcomment %}
           <th></th>
@@ -59,8 +60,18 @@
             {% endif %}
           </td>
 
+          <td>
+            {% if game.tournament %}
+              <a class="t-link" href="?t={{ game.tournament.pk }}#tournament">
+                {{ game.tournament.name }}
+              </a>
+            {% else %}
+              -
+            {% endif %}
+          </td>
+
           {% if user %}
-            {% comment %} column to indicate that the user won or makeactions {% endcomment %}
+            {% comment %} column to indicate that the user won or make actions {% endcomment %}
             <td>
               {% if game.is_winner %}
                 <span class="winner">{% translate "Winner" %}</span>
@@ -94,7 +105,7 @@
             </td>
 
             <td>
-              {% if not is_public_view and game.is_owner %}
+              {% if not is_public_view and game.is_owner and not game.tournament %}
 
                 {% if game.status == GameStatus.PENDING %}
                   <button
@@ -122,11 +133,11 @@
   </table>
 
   {% if total_games == 0 %}
-    <div class="error-message d-flex justify-content-center">
+    <div class="error-message d-flex justify-content-center pt-5">
       {% if is_public_view %}
         <h3>{% translate "This user has no matches" %}</h3>
       {% else %}
-        <h3>{% translate "You have no matches yet..." %}</h3>
+        <h3>{% translate "No matches yet..." %}</h3>
       {% endif %}
     </div>
   {% endif %}

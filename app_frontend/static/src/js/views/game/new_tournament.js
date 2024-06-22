@@ -48,17 +48,15 @@ const addTournamentResult = async (response) => {
     putTournamentForm(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
-      // if (
-      //   response.hasOwnProperty("data") &&
-      //   response.data.hasOwnProperty("tournament") &&
-      //   response.data.tournament !== null
-      // ) {
-      //   window.location.href =
-      //     "?tournament=" + response.data.tournament + "#verify-players";
-      //   return;
-      // }
-      window.location.href = "#verify-players";
-      return ;
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("tournament") &&
+        response.data.tournament !== null
+      ) {
+        window.location.href =
+          "?t=" + response.data.tournament + "#verify-players";
+        return;
+      }
     }
   }
 

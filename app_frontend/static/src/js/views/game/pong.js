@@ -124,6 +124,10 @@ const settleGame = (response) => {
     window.location.replace(`?match=${match}#verify-player`);
     return;
   }
+  if (gameObj.status === GameStatus.TOURNAMENT) {
+    window.location.replace(`?t=${gameObj.tournament}#tournament`);
+    return;
+  }
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");

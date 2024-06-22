@@ -67,9 +67,10 @@ export class HttpClient {
 
   getFormUrlencodedBody(data) {
     const params = [];
-    for (var property in data) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(data[property]);
+    for (const property in data) {
+      const encodedKey = encodeURIComponent(property);
+      let encodedValue = encodeURIComponent(data[property]);
+      if (!data[property]) encodedValue = encodeURIComponent("");
       params.push(encodedKey + "=" + encodedValue);
     }
 

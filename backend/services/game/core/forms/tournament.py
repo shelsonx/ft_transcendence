@@ -32,18 +32,19 @@ class TournamentForm(forms.ModelForm):
         self.fields["number_of_players"].disabled = True
 
         tournament_type = self["tournament_type"].value()
-        if tournament_type == TournamentType.CHALLENGE:
+        if TournamentType(int(tournament_type)) == TournamentType.CHALLENGE:
             self.fields["number_of_players"].initial = 2
-        if tournament_type == TournamentType.ROUND_ROBIN:
+        if TournamentType(int(tournament_type)) == TournamentType.ROUND_ROBIN:
             self.fields["number_of_rounds"].disabled = True
+            self.fields["number_of_rounds"].required = False
             self.fields["number_of_players"].initial = 3
 
     def clean(self) -> dict[str, Any]:
         cleaned_data = super().clean()
 
         tournament_type = cleaned_data["tournament_type"]
-        number_of_players = cleaned_data["number_of_players"]
-        number_of_rounds = cleaned_data["number_of_rounds"]
+        number_of_players = cleaned_data.get("number_of_players")
+        number_of_rounds = cleaned_data.get("number_of_rounds")
         match tournament_type:
             case TournamentType.CHALLENGE:
                 if number_of_players != 2:
@@ -52,13 +53,13 @@ class TournamentForm(forms.ModelForm):
                 if number_of_rounds < 3:
                     msg = _("Challenge tournament must have at least 3 rounds")
                     self.add_error("number_of_rounds", forms.ValidationError(msg))
-            case TournamentType.ROUND_ROBIN:
-                if number_of_players < 3:
-                    msg = _("Round Robin tournaments needs at least 3 players")
-                    self.add_error("number_of_players", forms.ValidationError(msg))
-                if number_of_players > 42:
-                    msg = _("Maximum number of players for Round Robin is 42")
-                    self.add_error("number_of_players", forms.ValidationError(msg))
+            # case TournamentType.ROUND_ROBIN:
+            #     if number_of_players < 3:
+            #         msg = _("Round Robin tournaments needs at least 3 players")
+            #         self.add_error("number_of_players", forms.ValidationError(msg))
+            #     if number_of_players > 42:
+            #         msg = _("Maximum number of players for Round Robin is 42")
+            #         self.add_error("number_of_players", forms.ValidationError(msg))
 
         return cleaned_data
 

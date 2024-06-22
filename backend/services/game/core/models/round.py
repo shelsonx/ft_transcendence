@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 from .game import Game
-from .status import RoundStatus
+from .status import GameStatus, RoundStatus
 from .tournament_type import TournamentType
 
 
@@ -36,6 +36,27 @@ class Round(models.Model):
                 return t.number_of_players
             # case TournamentType.ELIMINATION:
             #     return tournament.number_of_players >> self.round_number - 1
+
+    def get_next_or_current_game(self) -> Game | None:
+        not_completed_games = None
+
+        match self.status:
+            case RoundStatus.ENDED:
+                return None
+            case RoundStatus.WAITING:
+                not_completed_games = self.games.filter(status=GameStatus.TOURNAMENT)
+            case RoundStatus.ON_GOING:
+                status = [GameStatus.SCHEDULED, GameStatus.ONGOING, GameStatus.PAUSED]
+                not_completed_games = self.games.filter(status__in=status)
+                if not not_completed_games.exists():
+                    status = GameStatus.TOURNAMENT
+                    not_completed_games = self.games.filter(status=status)
+            case _:
+                raise NotImplementedError()
+
+        if not_completed_games is None:
+            return None
+        return not_completed_games.order_by("game_datetime").first()
 
     def label(self):
         # t = self.tournament

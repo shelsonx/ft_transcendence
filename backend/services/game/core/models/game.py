@@ -217,18 +217,16 @@ class Game(models.Model):
         self._updated_players = True
         self.save()
 
-    def get_player_name(self, player) -> str:
-        """
-        player is a GamePlayer instance
-        """
-        if player and player.user:
-            return player.user.username
-        return User.anonymous()["username"]
+    def get_tournament(self):
+        round = self.round.all().first()
+        if not round:
+            return None
+        return round.tournament
 
     def __str__(self) -> str:
         player_left, player_right = self.players
-        p1 = self.get_player_name(player_left)
-        p2 = self.get_player_name(player_right)
+        p1 = player_left.name
+        p2 = player_right.name
 
         return f"{p1} x {p2} - {str(self.game_datetime.date())}"
 
@@ -238,6 +236,8 @@ class Game(models.Model):
         seconds = self.duration.seconds
         minutes = seconds // 60
         seconds = seconds % 60
+
+        t = self.get_tournament()
 
         return {
             "id": self.pk,
@@ -251,4 +251,5 @@ class Game(models.Model):
             "player_left": player_left.to_json() if player_left else User.anonymous(),
             "player_right": player_right.to_json() if player_left else User.anonymous(),
             "owner": self.owner.resume_to_json() if self.owner else User.anonymous(),
+            "tournament": t.pk if t else None,
         }

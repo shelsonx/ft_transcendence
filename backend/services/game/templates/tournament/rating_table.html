@@ -15,6 +15,7 @@
       >
         <thead>
           <tr>
+            <th>{% translate "Rank" %}</th>
             <th>{% translate "Player" %}</th>
             <th>{% translate "Total points" %}</th>
             <th>{% translate "Points/game" %}</th>
@@ -28,6 +29,7 @@
         <tbody>
           {% for p in t.players %}
             <tr>
+              <td>{{ forloop.counter }}</td>
               <td>
                 <span >
                   <img class="match-list-avatar" src="{{ p.user.avatarUrl }}" alt="user avatar">

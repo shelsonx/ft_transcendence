@@ -1,111 +1,75 @@
 {% load i18n %}
+{% load player_tags %}
 
-<div class="tournament-rules pb-2" id="tournament-rules">
+<ol>
+  <li class="pt-2">
+    {% blocktrans %}
+      A win gives the player <span class="text-emphasis"><strong>3 rating points</strong></span>.
+      A tie, <span class="text-emphasis"><strong>1 rating point</strong></span>.
+    {% endblocktrans %}
+  </li>
 
-  <div class="d-flex justify-content-center">
-    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
-      {% translate "Tournament Rules" %}
-    </button>
-    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#intructions-collapse" aria-expanded="false" aria-controls="intructions-collapse">
-      {% translate "Instructions to play" %}
-    </button>
-  </div>
+  <li class="pt-2">
+    {% translate "The tournament winner is the player with highest rating." %}
+  </li>
 
-  <div class="collapse py-2" id="rules-collapse">
-    <ol>
+  <li class="pt-2">
+    {% translate "In case of tie, the winner is determined by the one with more wins." %}
+  </li>
 
-      <li class="pt-2">
-        {% blocktrans %}
-          A win gives the player <span class="text-emphasis"><strong>3 rating points</strong></span>.
-          A tie, <span class="text-emphasis"><strong>1 rating point</strong></span>.
-        {% endblocktrans %}
-      </li>
+  <li class="pt-2">
+    {% translate "If there is still a tie, the winner is the one with more total points during tournament." %}
+  </li>
 
-      <li class="pt-2">
-        {% translate "The tournament winner is the player with highest rating." %}
-      </li>
+  {% if t.tournament_type == TournamentType.ROUND_ROBIN %}
 
-      <li class="pt-2">
-        {% translate "In case of tie, the winner is determined by the one with more wins." %}
-      </li>
+    <li class="pt-2">
+      {% blocktrans %}
+        This is a <span class="text-emphasis"><strong>Round Robin</strong></span> tournament
+        which means all players play against each other
+      {% endblocktrans %}
+    </li>
 
-      <li class="pt-2">
-        {% translate "If there is still a tie, the winner is the one with more total points during tournament." %}
-      </li>
+  {% elif t.tournament_type == TournamentType.CHALLENGE %}
 
-      <li class="pt-2">
-        {% blocktrans %}
-          The default tournament type is <span class="text-emphasis"><strong>Round Robin</strong></span>.
-          To played, it is necessary at least <span class="text-emphasis"><strong>3 players</strong></span>.
-          <p class="small mb-0">In a Round Robin tournament all players play against each other</p>
-        {% endblocktrans %}
-      </li>
+    <li class="pt-2">
+      {% blocktrans with rounds=t.number_of_rounds %}
+        This is a <span class="text-emphasis"><strong>Challenge</strong></span> tournament
+        with {{ rounds }} matches
+      {% endblocktrans %}
+    </li>
 
-      <li class="pt-2">
-        {% blocktrans %}
-          For <span class="text-emphasis"><strong>Round Robin</strong></span> tournament the
-          <span class="text-emphasis"><strong>maximum number of players is 42</strong></span>.
-        {% endblocktrans %}
-      </li>
+  {% endif %}
 
-      <li class="pt-2">
-        {% blocktrans %}
-          Optionally you can change the tournament type to <span class="text-emphasis"><strong>Challenge</strong></span>,
-          which is played with only <span class="text-emphasis"><strong>2 players</strong></span>.
-          <p class="small mb-0">A Challenge tournament is the type "Best of x", x being the total games.</p>
-        {% endblocktrans %}
-      </li>
+  {% if t.rules.points_to_win %}
+    <li class="pt-2">
+      {% blocktrans with points=t.rules.points_to_win %}
+        Each game ends when a player riches
+        <span class="text-emphasis">
+          <strong>{{ points }} points</strong>
+        </span>
+      {% endblocktrans %}
+    </li>
+  {% endif %}
 
-      <li class="pt-2">
-        {% blocktrans %}
-          The <span class="text-emphasis"><strong>Round Robin</strong></span> tournament has an
-          <span class="text-emphasis"><strong>auto calculated number of rounds</strong></span> accordind to the number of players.
-        {% endblocktrans %}
-      </li>
+  {% if t.rules.game_total_points %}
+    <li class="pt-2">
+      {% blocktrans with points=t.rules.game_total_points %}
+        Each game ends when the match total points riches
+        <span class="text-emphasis">
+          <strong>{{ points }} points</strong>
+        </span>
+      {% endblocktrans %}
+    </li>
+  {% endif %}
 
-      <li class="pt-2">
-        {% blocktrans %}
-          For a <span class="text-emphasis"><strong>Challenge</strong></span> tournament the
-          <span class="text-emphasis"><strong>minimum number of rounds is 3</strong></span>.
-        {% endblocktrans %}
-      </li>
+  {% if t.rules.max_duration %}
+    <li class="pt-2">
+      {% translate "Each game ends within" %}
+      <span class="text-emphasis">
+        <strong>{{ t.rules.max_duration|time:"H:i" }}</strong>
+      </span>
+    </li>
+  {% endif %}
 
-      <li class="pt-2">
-        {% blocktrans %}
-          Each game ends when a player riches
-          <span class="text-emphasis"><strong>11 points</strong></span>.
-        {% endblocktrans %}
-      </li>
-      <p>{% translate "You may customize this value or change how each game ends, considering:" %}</p>
-      <ul>
-        <li>{% translate "game total points" %}</li>
-        <li>{% translate "game duration" %}</li>
-      </ul>
-
-    </ol>
-  </div>
-
-  <div class="collapse py-2" id="intructions-collapse">
-    <ol>
-      <li class="pt-2">
-        {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
-      </li>
-      <ul>
-        <li>
-          {% blocktrans %}
-            <span class="text-emphasis"><strong>W</strong></span>
-            and
-            <span class="text-emphasis"><strong>S</strong></span> for left player
-          {% endblocktrans %}
-        </li>
-        <li>
-          {% blocktrans %}
-            <span class="text-emphasis"><strong>ArrowUp</strong></span> and
-            <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
-          {% endblocktrans %}
-        </li>
-      </ul>
-    </ol>
-  </div>
-
-</div>
+</ol>

@@ -41,28 +41,30 @@ const cancelGame = async (e) => {
   e.preventDefault();
 
   const match = e.srcElement.id.split("-").pop();
-  await gameService.cancelGame(match).then((response) => {
+  await gameService.cancelGame(match).then(async (response) => {
     if (response.status !== undefined) {
+      loadErrorMessage(response, "error-message");
       // TODO: toast erro
       return;
     }
+    await gameService.userGames(u.id).then(swap);
+    // TODO: toast sucesso
   });
-  await gameService.userGames(u.id).then(swap);
-  // TODO: toast sucesso
 };
 
 const deleteGame = async (e) => {
   e.preventDefault();
 
   const match = e.srcElement.id.split("-").pop();
-  await gameService.deleteGame(match).then((response) => {
+  await gameService.deleteGame(match).then(async (response) => {
     if (response.status !== undefined) {
+      loadErrorMessage(response, "error-message");
       // TODO: toast erro
       return;
     }
+    await gameService.userGames(u.id).then(swap);
+    // TODO: toast sucesso
   });
-  await gameService.userGames(u.id).then(swap);
-  // TODO: toast sucesso
 };
 
 const swap = (response) => {

@@ -30,6 +30,10 @@ export const getErrorMessage = (error) => {
 };
 
 export const loadErrorMessage = (error, elementId) => {
+  if (error.status === undefined || error.status === null) {
+    error.status = 500;
+    error.message = getErrorMessage(500);
+  }
   const swapContainer = document.getElementById(elementId);
   swapContainer.innerHTML = /*html*/ `
     <h1 class="error-message text-center">

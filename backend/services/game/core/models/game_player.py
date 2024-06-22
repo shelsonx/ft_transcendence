@@ -31,6 +31,12 @@ class GamePlayer(models.Model):
     @property
     def name(self):
         if self.user:
+            t = self.game.get_tournament()
+            if t:
+                u = self.user
+                tp = u.tournaments_player.filter(tournament=t, user=self.user).first()
+                if tp:
+                    return tp.name
             return self.user.username
         return User.anonymous()["username"]
 
