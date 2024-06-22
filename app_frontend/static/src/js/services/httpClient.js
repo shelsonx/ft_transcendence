@@ -29,7 +29,6 @@ export class HttpClientRequestData {
       ...this.#defaultHeaders,
       ...headers
     };
-    this.languageHandler = languageHandler;
   }
 }
 
@@ -45,6 +44,7 @@ export class HttpClient {
   constructor(baseUrl, shouldAppendLanguage = true) {
     this.baseUrl = baseUrl;
     this.baseUrlWithLanguage = baseUrl;
+    this.languageHandler = languageHandler;
     this.shouldAppendLanguage = shouldAppendLanguage;
   }
 
@@ -235,7 +235,7 @@ export class HttpClient {
   //lalala/
 
   appendLanguage() {
-    if (this.languageHandler.getLocale() === this.languageHandler.getDefaultLocale()) {
+    if (this.languageHandler.getLocale() === "en") {
       this.baseUrlWithLanguage = this.baseUrl;
       return ;
     }

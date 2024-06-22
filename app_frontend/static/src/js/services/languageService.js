@@ -9,7 +9,7 @@ export class LanguageService {
   }
 
   addLanguageQueryString(httpClientRequestData){
-    if (this.languageHandler.getLocale() === this.languageHandler.getDefaultLocale()) {
+    if (this.languageHandler.getLocale() === "en") {
       return ;
     }
     httpClientRequestData.endpoint += '?language=' + this.languageHandler.getLocale();

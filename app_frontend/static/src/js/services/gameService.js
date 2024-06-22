@@ -1,11 +1,10 @@
-import { AuthConstants } from "../constants/auth-constants.js";
 import { getErrorMessage } from "../utils/errors.js";
 import { HttpClient, HttpClientRequestData } from "./httpClient.js";
 
 class GameService {
   constructor() {
     this.baseUrl = "https://localhost:8020";
-    this.httpClient = new HttpClient(this.baseUrl);
+    this.httpClient = new HttpClient(this.baseUrl, false);
   }
 
   async handleResponse(requestData) {
@@ -207,7 +206,7 @@ class GameService {
     const response = await this.handleResponse(requestData);
     return response;
   }
-  
+
 }
 
 export default new GameService();
