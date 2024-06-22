@@ -526,4 +526,22 @@ ol li::marker {
     color: var(--secondary-light);
 }
 
+.t-link {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+    color: var(--secondary-light);
+}
+
+.rules-container {
+    border: 1px solid hsla(0, 0%, 65%, 0.158);
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    z-index: 99;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
 /* End game views */

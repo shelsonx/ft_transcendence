@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { setGameRulesLogic } from "./rules.js";
+import { setGameRulesDynamicBehavior } from "./rules.js";
+import { setTournamentFormDynamicBehavior } from "./tournament_dynamic.js";
 import { loadErrorMessage } from "../../utils/errors.js";
 
 class NewTournamentView extends BaseLoggedView {
@@ -30,7 +31,8 @@ const putTournamentForm = (response) => {
   const addTournamentForm = document.getElementById("tournament-form");
   addTournamentForm.addEventListener("submit", submitTournamentForm);
 
-  setGameRulesLogic();
+  setGameRulesDynamicBehavior();
+  setTournamentFormDynamicBehavior();
 };
 
 const submitTournamentForm = async (e) => {
@@ -38,21 +40,21 @@ const submitTournamentForm = async (e) => {
   const addTournamentForm = document.getElementById("tournament-form");
   const formData = new FormData(addTournamentForm);
 
-  await gameService.addTournament(formData).then(addGameResult);
+  await gameService.addTournament(formData).then(addTournamentResult);
 };
 
-const addGameResult = async (response) => {
+const addTournamentResult = async (response) => {
   if (typeof response === "string") {
-    putGameForm(response);
+    putTournamentForm(response);
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       if (
         response.hasOwnProperty("data") &&
-        response.data.hasOwnProperty("game") &&
-        response.data.game !== null
+        response.data.hasOwnProperty("tournament") &&
+        response.data.tournament !== null
       ) {
         window.location.href =
-          "?match=" + response.data.game + "#verify-player";
+          "?t=" + response.data.tournament + "#verify-players";
         return;
       }
     }

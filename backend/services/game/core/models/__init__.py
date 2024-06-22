@@ -1,4 +1,4 @@
-from .status import GameStatus, RoundStatus, TournamentStatus
+from .status import GameStatus, PlayerStatus, RoundStatus, TournamentStatus
 from .game_rules import GameRules, GameRuleType
 from .game import Game
 from .game_player_position import GamePlayerPosition

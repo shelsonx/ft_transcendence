@@ -1,6 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
-import { setGameRulesLogic } from "./rules.js";
+import { setGameRulesDynamicBehavior } from "./rules.js";
 import { loadErrorMessage } from "../../utils/errors.js";
 
 class NewGameView extends BaseLoggedView {
@@ -30,7 +30,7 @@ const putGameForm = async (response) => {
   const addGameForm = document.getElementById("match-form");
   addGameForm.addEventListener("submit", submitGameForm);
 
-  setGameRulesLogic();
+  setGameRulesDynamicBehavior();
 };
 
 const submitGameForm = async (e) => {

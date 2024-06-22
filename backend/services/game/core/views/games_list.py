@@ -24,7 +24,7 @@ logger = logging.getLogger("eqlog")
 
 class GamesView(generic.ListView):
     model = Game
-    ordering = ["-game_datetime", "status"]
+    ordering = ["status", "-game_datetime"]
     template_name = "games_list.html"
     is_public_view = False
     # paginate_by = 20
@@ -32,6 +32,7 @@ class GamesView(generic.ListView):
         GameStatus.PENDING,
         GameStatus.SCHEDULED,
         GameStatus.CANCELED,
+        GameStatus.TOURNAMENT,
     ]
 
     @JWTAuthentication()
@@ -56,7 +57,7 @@ class GamesView(generic.ListView):
         if self.user and not self.is_public_view:
             return self.user.games.all().exclude(
                 Q(status__in=self.excluded_status) & ~Q(owner=self.user)
-            )
+            ).exclude(status=GameStatus.TOURNAMENT)
         elif self.user:
             return self.user.games.all().exclude(status__in=self.excluded_status)
 
@@ -103,5 +104,10 @@ class GamesView(generic.ListView):
         game.is_winner = False
         if winner and winner.user and self.user and winner.user.pk == self.user.pk:
             game.is_winner = True
+
+        game.tournament = None
+        round = game.round.all().first()
+        if round:
+            game.tournament = round.tournament
 
         return game

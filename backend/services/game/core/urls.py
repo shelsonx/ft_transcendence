@@ -18,4 +18,5 @@ urlpatterns = [
     path("tournaments/<uuid:pk>", views.TournamentsView.as_view(), name="tournaments"),
     path("tournament", views.AddTournamentView.as_view(), name="add_tournament"),
     path("tournament/<int:pk>", views.TournamentView.as_view(), name="tournament"),
+    path("tournament-validation/<int:pk>", views.ValidateTournamentView.as_view(), name="validate_tournament"),
 ]

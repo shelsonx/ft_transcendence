@@ -1,5 +1,6 @@
 import BaseLoggedView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
+import { loadErrorMessage } from '../../utils/errors.js';
 
 
 class MyTournamentsView extends BaseLoggedView {
@@ -29,13 +30,17 @@ const html = /*html*/`
     </div>
   </div>
   <div class="container-fluid main-game scroll-on mt-3">
-    <div id="tournament-table-container" class="static-list"></div>
+    <div id="my-tournaments-container" class="static-list"></div>
   </div>
 `
 
 const swap = (response) => {
-  // TODO: lidar quando retornar erro ou não responder
-  const swapContainer = document.getElementById("tournament-table-container");
+  if (response.status !== undefined) {
+    loadErrorMessage(response, "my-tournaments-container");
+    return;
+  }
+
+  const swapContainer = document.getElementById("my-tournaments-container");
   swapContainer.innerHTML = response;
 }
 

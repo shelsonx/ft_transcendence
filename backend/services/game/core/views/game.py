@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, GameRules
+from core.models import Game, GameStatus, GameRules, Tournament, TournamentStatus
 from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
@@ -70,8 +70,6 @@ class AddGameView(generic.View):
         game_form = GameForm(data)
         if not game_form.is_valid():
             msg = _("An internal error occured while creating the game")
-            # log = message + ": " + game_form.errors.as_text()
-            # logging.error(log)
             return json_response.error(msg=msg)
 
         game: Game = game_form.save(commit=False)
@@ -148,6 +146,13 @@ class GameView(generic.View):
         left_form.save()
         right_form.save()
 
+        t = data.get("tournament")
+        if t:
+            t = Tournament.objects.filter(pk=t).first()
+            if t and t.status == TournamentStatus.SCHEDULED:
+                t.status = TournamentStatus.ON_GOING
+                t.save()
+
         if game.status == GameStatus.ENDED.value:
             round = game.round.all().first()
             if round is not None:
@@ -163,7 +168,6 @@ class GameView(generic.View):
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
-            print(game.owner, request.user)
             return json_response.forbidden()
 
         valid_status = [GameStatus.SCHEDULED, GameStatus.PAUSED, GameStatus.ONGOING]

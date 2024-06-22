@@ -1,3 +1,4 @@
+import os
 import uuid
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
@@ -98,7 +99,14 @@ class UserInfoView(View):
 
                 form = UserForm(data, files, instance=user)
                 if form.is_valid():
-                    form.save()
+                    user = form.save(commit=False)
+
+                    if 'avatar' in files:
+                        avatar = files['avatar']
+                        avatar_name = f'{user_id}{os.path.splitext(avatar.name)[1]}'                        
+                        user.avatar.save(avatar_name, avatar)
+
+                    user.save()
                     return JsonResponse({'status': 'success', 'message': user_updated_message, 'status_code': 200}, status=200)
                 else:
                     return JsonResponse({'status': 'error', 'message': invalid_form_data_message, 'status_code': 400, 'errors': form.errors}, status=400)

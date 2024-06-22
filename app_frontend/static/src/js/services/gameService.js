@@ -130,15 +130,34 @@ class GameService {
     return response;
   }
 
-  async addTournament() {
-    const data = {};
+  async addTournament(formData) {
+    const data = {
+      rule_type: formData.get("rule_type"),
+      points_to_win: formData.get("points_to_win"),
+      game_total_points: formData.get("game_total_points"),
+      max_duration: formData.get("max_duration"),
+      name: formData.get("name"),
+      tournament_type: formData.get("tournament_type"),
+      number_of_players: formData.get("number_of_players"),
+      number_of_rounds: formData.get("number_of_rounds"),
+      username: formData.getAll("username"),
+      alias_name: formData.getAll("alias_name"),
+    };
     const requestData = new HttpClientRequestData("POST", "/tournament", data);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
 
   async tournament(id) {
     const requestData = new HttpClientRequestData("GET", `/tournament/${id}`);
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async cancelTournament(id) {
+    const requestData = new HttpClientRequestData("PUT", `/tournament/${id}`);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
@@ -151,6 +170,44 @@ class GameService {
     const response = await this.handleResponse(requestData);
     return response;
   }
+
+  async validateTournamentForm(id) {
+    const requestData = new HttpClientRequestData(
+      "GET",
+      `/tournament-validation/${id}`
+    );
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async validateTournament(id, player_id, formData) {
+    const data = {
+      user: formData.get("user"),
+      token: formData.get("token"),
+      player: player_id,
+    };
+    const requestData = new HttpClientRequestData(
+      "PATCH",
+      `/tournament-validation/${id}`,
+      data
+    );
+
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
+  async updateUserDetails(id, formData) {
+    const data = {
+      username: formData.get("username"),
+      avatar: formData.get("avatar")
+    };
+    const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, data);
+    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+  
 }
 
 export default new GameService();

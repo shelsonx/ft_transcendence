@@ -17,6 +17,7 @@ import PongGameView from "../views/game/pong.js";
 import TournamentsView from "../views/game/tournaments.js";
 import MyTournamentsView from "../views/game/my_tournaments.js";
 import NewTournamentView from "../views/game/new_tournament.js";
+import ValidateTournamentView from "../views/game/validate_tournament.js";
 import TournamentDetailView from "../views/game/tournament.js";
 
 /**
@@ -50,6 +51,7 @@ const hashRoutes = {
   "tournaments": { title: "Tournaments", render: TournamentsView, description: "Tournaments", isProtected: true },
   "my-tournaments": { title: "My Tournaments", render: MyTournamentsView, description: "My Tournaments", isProtected: true },
   "add-tournament": { title: "Create a Tournament", render: NewTournamentView, description: "Create a Tournament", isProtected: true },
+  "verify-players": { title: "Verify players", render: ValidateTournamentView, description: "Verify", isProtected: true },
   "tournament": { title: "Tournament detail", render: TournamentDetailView, description: "Tournament detail", isProtected: true },
 };
 

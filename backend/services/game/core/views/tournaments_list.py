@@ -71,22 +71,24 @@ class TournamentsView(generic.ListView):
 
         return context
 
-    def get_tournament_data(self, tournament: Tournament) -> Tournament:
-        tournament.status_label = TournamentStatus(tournament.status).label
-        tournament.type_label = TournamentType(tournament.tournament_type).label
+    def get_tournament_data(self, t: Tournament) -> Tournament:
+        t.status_label = TournamentStatus(t.status).label
+        t.type_label = TournamentType(t.tournament_type).label
 
-        tournament.all_rounds = tournament.rounds.all().aggregate(
+        t.all_rounds = t.rounds.all().aggregate(
             Sum("number_of_games")
         )
-        tournament.games_count = tournament.all_rounds["number_of_games__sum"]
+        t.games_count = t.all_rounds["number_of_games__sum"] or 0
 
-        winner = tournament.winner
-        tournament.is_winner = False
+        winner = t.winner
+        t.is_winner = False
         if self.user and winner and winner.user:
-            tournament.is_winner = self.user.pk == tournament.winner.user.pk
+            t.is_winner = self.user.pk == t.winner.user.pk
 
-        tournament.is_owner = False
-        if self.user and tournament.owner and self.user.pk == tournament.owner.pk:
-            tournament.is_owner = True
+        t.is_owner = False
+        if self.user and t.owner and self.user.pk == t.owner.pk:
+            t.is_owner = True
 
-        return tournament
+        t.current_game = t.get_next_or_current_game()
+
+        return t

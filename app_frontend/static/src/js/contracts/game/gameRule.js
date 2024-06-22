@@ -62,13 +62,4 @@ class GameRules {
   }
 }
 
-// const obj = {
-//   rule_type: GameRuleType.GAME_DURATION,
-//   points_to_win: null,
-//   game_total_points: null,
-//   max_duration: 10,
-// }
-// const rule = GameRules.createGameRulesFromObj(obj);
-// console.log(rule)
-
 export { GameRules, GameRuleType };

@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Local Folder
 from .tournament import Tournament
+from .status import PlayerStatus
 
 # First Party
 from user.models import User
@@ -49,6 +50,12 @@ class TournamentPlayer(models.Model):
             return self.user.username
         return User.anonymous()["username"]
 
+    @property
+    def status(self) -> str:
+        if self.verified:
+            return PlayerStatus.ACCEPTED.label
+        return PlayerStatus.PENDING.label
+
     def update_user(self, *, force: bool = False):
         if self._updated_players and not force:
             return
@@ -67,4 +74,15 @@ class TournamentPlayer(models.Model):
         self.save()
 
     def __str__(self) -> str:
-        return self.name
+        description = ""
+        an = self.alias_name if self.alias_name else ""
+        user = self.user.username if self.user else ""
+        if an and user:
+            description = f"{user} as {an}"
+        elif an:
+            description = an
+        elif user:
+            description = user
+        else:
+            description = User.anonymous()["username"]
+        return description

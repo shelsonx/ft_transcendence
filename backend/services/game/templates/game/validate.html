@@ -1,90 +1,100 @@
 {% load i18n %}
 {% load timedelta_tags %}
 
-<div class="main-game d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
-  <div class="game-rules pb-2 {% if invalid %}d-none{% endif %}" id="game-rules">
+{% if game.status == GameStatus.PENDING %}
+
+  <div class="main-game d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
+    <div class="game-rules pb-2 {% if invalid %}d-none{% endif %}" id="game-rules">
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
+          {% translate "Your Transcendence Journey's Pong Game Rules" %}
+        </button>
+      </div>
+      <div class="collapse py-2" id="rules-collapse">
+        <ol>
+          <li class="pt-2">
+            {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
+          </li>
+          <ul>
+            <li>
+              {% blocktrans %}
+              <span class="text-emphasis"><strong>W</strong></span>
+              and
+              <span class="text-emphasis"><strong>S</strong></span> for left player
+              {% endblocktrans %}
+            </li>
+            <li>
+              {% blocktrans %}
+              <span class="text-emphasis"><strong>ArrowUp</strong></span> and <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
+              {% endblocktrans %}
+            </li>
+          </ul>
+
+          {% if game.rules.points_to_win %}
+            <li class="pt-2">
+              {% blocktrans with points=game.rules.points_to_win %}
+                Each game ends when a player riches
+                <span class="text-emphasis">
+                  <strong>{{ points }} points</strong>
+                </span>
+              {% endblocktrans %}
+            </li>
+          {% endif %}
+
+          {% if game.rules.game_total_points %}
+            <li class="pt-2">
+              {% blocktrans with points=game.rules.game_total_points %}
+                Each game ends when the match total points riches
+                <span class="text-emphasis">
+                  <strong>{{ points }} points</strong>
+                </span>
+              {% endblocktrans %}
+            </li>
+          {% endif %}
+
+          {% if game.rules.max_duration %}
+            <li class="pt-2">
+              {% translate "Each game ends within" %}
+              <span class="text-emphasis">
+                <strong>{{ game.rules.max_duration|time:"H:i" }}</strong>
+              </span>
+            </li>
+          {% endif %}
+
+        </ol>
+
+      </div>
+    </div>
+
+    <form id="validation-form" class="main-game my-3">
+      {% csrf_token %}
+
+      <label class="pt-3" for="id_token">
+        {% translate "Enter the verification code for" %}
+        <span class="text-emphasis"> {{ user.username }}</span>:
+      </label>
+
+      {% include "form.html" with form=form %}
+
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-primary action px-3" id="button-invite" type="submit">
+          {% translate "Verify" %}
+        </button>
+      </div>
+    </form>
     <div class="d-flex justify-content-center">
-      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
-        {% translate "Your Transcendence Journey's Pong Game Rules" %}
+      <button class="btn btn-secondary px-3" id="button-invite" type="submit">
+        {% translate "Resend code to email" %}
       </button>
     </div>
-    <div class="collapse py-2" id="rules-collapse">
-      <ol>
-        <li class="pt-2">
-          {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
-        </li>
-        <ul>
-          <li>
-            {% blocktrans %}
-            <span class="text-emphasis"><strong>W</strong></span>
-            and
-            <span class="text-emphasis"><strong>S</strong></span> for left player
-            {% endblocktrans %}
-          </li>
-          <li>
-            {% blocktrans %}
-            <span class="text-emphasis"><strong>ArrowUp</strong></span> and <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
-            {% endblocktrans %}
-          </li>
-        </ul>
+    <h4>Por hora é só apertar a vericação que vai pro jogo...</p>
 
-        {% if game.rules.points_to_win %}
-          <li class="pt-2">
-            {% blocktrans with points=game.rules.points_to_win %}
-              The game ends when a player riches
-              <span class="text-emphasis">
-                <strong>{{ points }} points</strong>
-              </span>.
-            {% endblocktrans %}
-          </li>
-        {% endif %}
-
-        {% if game.rules.game_total_points %}
-          <li class="pt-2">
-            {% blocktrans with points=game.rules.game_total_points %}
-              The game ends when the match total points riches
-              <span class="text-emphasis">
-                <strong>{{ points }} points</strong>
-              </span>.
-            {% endblocktrans %}
-          </li>
-        {% endif %}
-
-        {% if game.rules.max_duration %}
-          <li class="pt-2">
-            {% translate "The game ends within" %}
-            <span class="text-emphasis">
-              <strong>{{ game.rules.max_duration|time:"H:i" }}</strong>
-            </span>
-          </li>
-        {% endif %}
-
-      </ol>
-
-    </div>
   </div>
 
-  <form id="validation-form" class="main-game my-3">
-    {% csrf_token %}
+{% else %}
 
-    <label class="pt-3" for="id_token">
-      {% translate "Enter the verification code for" %}
-      <span class="text-emphasis"> {{ user.username }}</span>:
-    </label>
+  <h1 class="error-message text-center">
+    {% translate "Game already validated" %}
+  </h1>
 
-    {% include "form.html" with form=form %}
-
-    <div class="d-flex justify-content-center">
-      <button class="btn btn-primary action px-3" id="button-invite" type="submit">
-        {% translate "Verify" %}
-      </button>
-    </div>
-  </form>
-  <div class="d-flex justify-content-center">
-    <button class="btn btn-secondary px-3" id="button-invite" type="submit">
-      {% translate "Resend code to email" %}
-    </button>
-  </div>
-  <h4>Por hora é só apertar a vericação que vai pro jogo...</p>
-
-</div>
+{% endif %}

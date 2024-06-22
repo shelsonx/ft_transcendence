@@ -54,7 +54,6 @@ const verifyPlayerResult = async (response) => {
 
 const start = async (user) => {
   match = new URLSearchParams(window.location.search).get("match");
-
   if (match === null) {
     pageNotFoundMessage("message");
     return;

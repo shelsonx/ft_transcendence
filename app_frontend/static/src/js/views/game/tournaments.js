@@ -34,7 +34,11 @@ const html = /*html*/`
 `
 
 const swap = (response) => {
-  // TODO: lidar quando retornar erro ou não responder
+  if (response.status !== undefined) {
+    loadErrorMessage(response, "tournament-table-container");
+    return;
+  }
+
   const swapContainer = document.getElementById("tournament-table-container");
   swapContainer.innerHTML = response;
 }
