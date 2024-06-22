@@ -22,6 +22,7 @@ from core.models import (
     Tournament,
     TournamentPlayer,
     TournamentStatus,
+    TournamentType,
 )
 from core.forms import TournamentValidationForm
 
@@ -48,6 +49,7 @@ class ValidateTournamentView(generic.View):
         context = {
             "t": t,
             "players": players,
+            "TournamentType": TournamentType,
         }
         response = render(request, self.template_name, context)
         return response
@@ -93,6 +95,7 @@ class ValidateTournamentView(generic.View):
             context = {
                 "t": t,
                 "players": players,
+                "TournamentType": TournamentType,
             }
             return render(request, self.template_name, context)
 

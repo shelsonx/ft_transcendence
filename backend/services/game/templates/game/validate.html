@@ -33,10 +33,10 @@
           {% if game.rules.points_to_win %}
             <li class="pt-2">
               {% blocktrans with points=game.rules.points_to_win %}
-                The game ends when a player riches
+                Each game ends when a player riches
                 <span class="text-emphasis">
                   <strong>{{ points }} points</strong>
-                </span>.
+                </span>
               {% endblocktrans %}
             </li>
           {% endif %}
@@ -44,17 +44,17 @@
           {% if game.rules.game_total_points %}
             <li class="pt-2">
               {% blocktrans with points=game.rules.game_total_points %}
-                The game ends when the match total points riches
+                Each game ends when the match total points riches
                 <span class="text-emphasis">
                   <strong>{{ points }} points</strong>
-                </span>.
+                </span>
               {% endblocktrans %}
             </li>
           {% endif %}
 
           {% if game.rules.max_duration %}
             <li class="pt-2">
-              {% translate "The game ends within" %}
+              {% translate "Each game ends within" %}
               <span class="text-emphasis">
                 <strong>{{ game.rules.max_duration|time:"H:i" }}</strong>
               </span>

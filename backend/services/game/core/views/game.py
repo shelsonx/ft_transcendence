@@ -168,7 +168,6 @@ class GameView(generic.View):
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
-            print(game.owner, request.user)
             return json_response.forbidden()
 
         valid_status = [GameStatus.SCHEDULED, GameStatus.PAUSED, GameStatus.ONGOING]

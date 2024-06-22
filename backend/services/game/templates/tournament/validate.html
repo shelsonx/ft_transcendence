@@ -1,78 +1,121 @@
 {% load i18n %}
 {% load player_tags %}
 
-<h2 class="title d-flex justify-content-center mb-4">{{ t.name }}</h2>
+<h5 class="subtitle d-flex justify-content-center mb-4">
+  {% blocktrans with name=t.name %}Validate participants of {{ name }} Tournament{% endblocktrans %}
+</h5>
 
-<div id="tounament-validate" class="py-3">
-  <div class="d-flex justify-content-center py-2">
-    <div id="tounament-validate-table"
-      class="table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
-    >
-      <table
-        class="table table-dark align-middle"
+<div class="main-game d-flex flex-column align-items-center justify-content border border-white border-opacity-10 rounded-3 p-4 form-container">
+  <div class="game-rules pb-2 {% if invalid %}d-none{% endif %}" id="game-rules">
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rules-collapse" aria-expanded="false" aria-controls="rules-collapse">
+        {% blocktrans with name=t.name %}{{ name }} Tournament Rules{% endblocktrans %}
+      </button>
+      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#intructions-collapse" aria-expanded="false" aria-controls="intructions-collapse">
+        {% translate "Instructions to play" %}
+      </button>
+    </div>
+    <div class="collapse py-2" id="rules-collapse">
+      {% include "tournament/rules.html" %}
+    </div>
+
+    <div class="collapse py-2" id="intructions-collapse">
+      <ol>
+        <li class="pt-2">
+          {% translate "To move your paddle up and down, use respectively the keyboard keys:" %}
+        </li>
+        <ul>
+          <li>
+            {% blocktrans %}
+              <span class="text-emphasis"><strong>W</strong></span>
+              and
+              <span class="text-emphasis"><strong>S</strong></span> for left player
+            {% endblocktrans %}
+          </li>
+          <li>
+            {% blocktrans %}
+              <span class="text-emphasis"><strong>ArrowUp</strong></span> and
+              <span class="text-emphasis"><strong>ArrowDown</strong></span> for right player
+            {% endblocktrans %}
+          </li>
+        </ul>
+      </ol>
+    </div>
+  </div>
+
+  <div id="tounament-validate" class="py-3">
+    <div class="d-flex justify-content-center py-2">
+      <div id="tounament-validate-table"
+        class="table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
       >
-        <thead>
-          <tr>
-            <th>{% translate "Player" %}</th>
-            <th>{% translate "Status" %}</th>
-            <th>{% translate "Verification code" %}</th>
-            <th></th>
-          </tr>
-        </thead>
+        <table
+          class="table table-dark align-middle"
+        >
+          <thead>
+            <tr>
+              <th>{% translate "Player" %}</th>
+              <th>{% translate "Status" %}</th>
+              <th>{% translate "Verification code" %}</th>
+              <th></th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {% for p in players %}
-            <tr class="align-items-center">
-
-              <td>
-                <span >
-                  <img class="match-list-avatar" src="{{ p.user.avatarUrl }}" alt="user avatar">
-                </span>
-                {{ p.name }}
-              </td>
-
-              <td >
-                {% if p.user != t.owner %}
-                  <span class="{% if not p.verified %} loser {% else %}winner{% endif %}">
-                    {{ p.status }}
-                  </span>
-                {% endif %}
-              </td>
-
-              {% if not p.verified %}
-                <td class="d-flex justify-content-between align-items-center p-3">
-
-                  <form id="validate-{{ p.pk }}" class="d-flex justify-content-between align-items-center">
-                    {% csrf_token %}
-
-                    {% include "form.html" with form=p.form css_class="col-sm" no_mb=True %}
-
-                    <div class="d-flex justify-content-center px-3">
-                      <button class="btn btn-primary action " id="button-invite" type="submit">
-                        {% translate "Verify" %}
-                      </button>
-                    </div>
-                  </form>
-
-                </td>
+          <tbody>
+            {% for p in players %}
+              <tr class="align-items-center">
 
                 <td>
-                  <div class="d-flex justify-content-center">
-                    <button class="btn btn-secondary px-3" id="button-invite" type="submit">
-                      {% translate "Resend code to email" %}
-                    </button>
-                  </div>
+                  <span >
+                    <img class="match-list-avatar" src="{{ p.user.avatarUrl }}" alt="user avatar">
+                  </span>
+                  {{ p.name }}
                 </td>
 
-              {% else %}
-                <td></td>
-                <td></td>
-              {% endif %}
+                <td >
+                  {% if p.user != t.owner %}
+                    <span class="{% if not p.verified %} loser {% else %}winner{% endif %}">
+                      {{ p.status }}
+                    </span>
+                  {% else %}
+                    {% translate "Owner" %}
+                  {% endif %}
+                </td>
 
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                {% if not p.verified %}
+                  <td class="d-flex justify-content-between align-items-center p-3">
+
+                    <form id="validate-{{ p.pk }}" class="d-flex justify-content-between align-items-center">
+                      {% csrf_token %}
+
+                      {% include "form.html" with form=p.form css_class="col-sm" no_mb=True %}
+
+                      <div class="d-flex justify-content-center px-3">
+                        <button class="btn btn-primary action " id="button-invite" type="submit">
+                          {% translate "Verify" %}
+                        </button>
+                      </div>
+                    </form>
+
+                  </td>
+
+                  <td>
+                    <div class="d-flex justify-content-center">
+                      <button class="btn btn-secondary px-3" id="button-invite" type="submit">
+                        {% translate "Resend code to email" %}
+                      </button>
+                    </div>
+                  </td>
+
+                {% else %}
+                  <td></td>
+                  <td></td>
+                {% endif %}
+
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

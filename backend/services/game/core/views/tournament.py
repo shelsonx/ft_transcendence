@@ -161,39 +161,47 @@ class AddTournamentView(generic.View):
         self.tournament_form = TournamentForm(data, initial=initial)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class TournamentView(generic.View):
     template_name = "tournament.html"
 
     @JWTAuthentication()
     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
-        self.tournament = Tournament.objects.filter(pk=pk).first()
-        if not self.tournament:
+        self.t = Tournament.objects.filter(pk=pk).first()
+        if not self.t:
             return json_response.not_found()
 
-        self.tournament.is_owner = False
-        if self.tournament.owner == request.user:
-            self.tournament.is_owner = True
+        self.t.is_owner = False
+        if self.t.owner == request.user:
+            self.t.is_owner = True
 
         response = render(request, self.template_name, self.get_context_data())
         return response
 
     @JWTAuthentication()
-    def patch(self, request: HttpRequest, pk: uuid) -> HttpResponse:
-        tournament = Tournament.objects.filter(pk=pk).first()
-        if not tournament:
+    def put(self, request: HttpRequest, pk: uuid) -> HttpResponse:
+        t = Tournament.objects.filter(pk=pk).first()
+        if not t:
             return json_response.not_found()
-        if tournament.owner != request.user:
+        if t.owner != request.user:
             return json_response.forbidden()
 
-        # só pode mudar o status?
-        # self.set_forms(request.POST)
-        # context = self.get_context_data()
-        # if not self.tournament_form.is_valid():  # or not self.rules_form.is_valid():
-        #     return render(request, self.template_name, context)
-        # return HttpResponseBadRequest()
-        # tournament: Tournament = self.tournament_form.save()
+        valid_status = [TournamentStatus.SCHEDULED, TournamentStatus.ON_GOING]
+        if t.status not in valid_status:
+            return json_response.forbidden()
 
-        return json_response.success(msg="Tournament updated")
+        t.status = TournamentStatus.CANCELED
+        t.save()
+
+        rounds = t.get_rounds()
+        change_status = [GameStatus.SCHEDULED, GameStatus.PAUSED, GameStatus.ONGOING]
+        for r in rounds:
+            games = r.games.filter(status__in=change_status)
+            for g in games:
+                g.status = GameStatus.CANCELED
+                g.save()
+
+        return json_response.success(msg="Tournament canceled")
 
     @JWTAuthentication()
     def delete(self, request: HttpRequest, pk: uuid) -> HttpResponse:
@@ -202,12 +210,14 @@ class TournamentView(generic.View):
             return json_response.not_found()
         if tournament.owner != request.user:
             return json_response.forbidden()
+        if tournament.status != TournamentStatus.INVITATION:
+            return json_response.forbidden()
 
         tournament.delete()
         return json_response.success(msg="Tournament deleted")
 
     def get_context_data(self, **kwargs) -> dict:
-        rounds = self.tournament.get_rounds()
+        rounds = self.t.get_rounds()
         for r in rounds:
             r: Round
             r.ordered_games = r.games.all().order_by("game_datetime", "-status")
@@ -236,9 +246,10 @@ class TournamentView(generic.View):
                 if g == current_game:
                     g.is_current_game = True
 
-        self.tournament.status_label = TournamentStatus(self.tournament.status).label
+        self.t.status_label = TournamentStatus(self.t.status).label
+        self.t.type_label = TournamentType(self.t.tournament_type).label
         return {
-            "t": self.tournament,
+            "t": self.t,
             "rounds": rounds,
             "TournamentStatus": TournamentStatus,
             "RoundStatus": RoundStatus,
