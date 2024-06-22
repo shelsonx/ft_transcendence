@@ -28,8 +28,6 @@ class ValidateGameView(generic.View):
             return json_response.not_found()
         if game.owner != request.user:
             return json_response.forbidden()
-        if game.status != GameStatus.PENDING:
-            return json_response.bad_request()
 
         left, right = game.players
         player_to_validate = right if game.owner == left else right
@@ -40,6 +38,7 @@ class ValidateGameView(generic.View):
             "game": game,
             "form": GameValidationForm(),
             "user": player_to_validate.user,
+            "GameStatus": GameStatus,
         }
         response = render(request, self.template_name, context)
         return response
@@ -66,6 +65,7 @@ class ValidateGameView(generic.View):
                 "game": game,
                 "form": form,
                 "user": player_to_validate.user,
+                "GameStatus": GameStatus,
             }
             return render(request, self.template_name, context)
 
