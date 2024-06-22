@@ -210,10 +210,13 @@ class TournamentView(generic.View):
         rounds = self.tournament.get_rounds()
         for r in rounds:
             r: Round
-            r.ordered_games = r.games.all().order_by("game_datetime")
+            r.ordered_games = r.games.all().order_by("game_datetime", "-status")
+            current_game = r.get_next_or_current_game()
             for g in r.ordered_games:
                 g: Game
                 g.status_label = GameStatus(g.status).label
+                if g.status == GameStatus.TOURNAMENT:
+                    g.status_label = GameStatus.SCHEDULED.label
 
                 player_left, player_right = g.players
                 player_left.is_winner = False
@@ -229,10 +232,15 @@ class TournamentView(generic.View):
                 g.player_right = player_right
                 g.has_winner = bool(winner)
 
+                g.is_current_game = False
+                if g == current_game:
+                    g.is_current_game = True
+
         self.tournament.status_label = TournamentStatus(self.tournament.status).label
         return {
             "t": self.tournament,
             "rounds": rounds,
             "TournamentStatus": TournamentStatus,
             "RoundStatus": RoundStatus,
+            "GameStatus": GameStatus,
         }

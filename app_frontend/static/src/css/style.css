@@ -526,4 +526,10 @@ ol li::marker {
     color: var(--secondary-light);
 }
 
+.t-link {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+    color: var(--secondary-light);
+}
+
 /* End game views */

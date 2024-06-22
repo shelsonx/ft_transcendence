@@ -19,7 +19,7 @@
             <th>{% translate "Date / Status" %}</th>
             <th>{% translate "Duration" %}</th>
             {% if t.is_owner %}
-              <th>owner</th>
+              <th></th>
             {% endif %}
           </tr>
         </thead>
@@ -46,7 +46,20 @@
               </td>
 
               {% if t.is_owner %}
-                <td>owner</td>
+                <td>
+                  {% if game.is_current_game %}
+                    <button
+                      class="btn btn-primary action"
+                      onclick="window.location='?match={{game.pk}}#pong';"
+                    >
+                      {% if game.status == GameStatus.PAUSED or game.status == GameStatus.ONGOING %}
+                        {% translate "Continue" %}
+                      {% else %}
+                        {% translate "Play" %}
+                      {% endif %}
+                    </button>
+                  {% endif %}
+                </td>
               {% endif %}
 
             </tr>

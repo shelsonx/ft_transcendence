@@ -27,6 +27,7 @@
         <th>{% translate "Result" %}</th>
         <th>{% translate "Date / Status" %}</th>
         <th>{% translate "Duration" %}</th>
+        <th>{% translate "Tournament" %}</th>
         {% if user %}
           {% comment %} column to indicate that the user won or to make some action if owner {% endcomment %}
           <th></th>
@@ -54,6 +55,16 @@
           <td>
             {% if game.status == GameStatus.ENDED %}
               {{ game.duration|format_timedelta }}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+
+          <td>
+            {% if game.tournament %}
+              <a class="t-link" href="?t={{ game.tournament.pk }}#tournament">
+                {{ game.tournament.name }}
+              </a>
             {% else %}
               -
             {% endif %}
@@ -94,7 +105,7 @@
             </td>
 
             <td>
-              {% if not is_public_view and game.is_owner %}
+              {% if not is_public_view and game.is_owner and not game.tournament %}
 
                 {% if game.status == GameStatus.PENDING %}
                   <button

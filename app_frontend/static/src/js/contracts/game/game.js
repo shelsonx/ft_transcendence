@@ -4,13 +4,15 @@ import { GamePlayer } from "./gamePlayer.js";
 
 class GameStatus {
   static PENDING = 0;
-  static SCHEDULED = 1;
-  static ONGOING = 2;
-  static PAUSED = 3;
-  static ENDED = 4;
-  static CANCELED = 5;
+  static TOURNAMENT = 1;
+  static SCHEDULED = 2;
+  static ONGOING = 3;
+  static PAUSED = 4;
+  static ENDED = 5;
+  static CANCELED = 6;
   static statusTypes = [
     GameStatus.PENDING,
+    GameStatus.TOURNAMENT,
     GameStatus.SCHEDULED,
     GameStatus.ONGOING,
     GameStatus.PAUSED,
@@ -38,6 +40,7 @@ class Game {
     "rules",
     "player_left",
     "player_right",
+    "tournament",
   ];
 
   constructor(
@@ -47,7 +50,8 @@ class Game {
     duration,
     rules,
     player_left,
-    player_right
+    player_right,
+    tournament
   ) {
     this.id = id;
     this.game_datetime = game_datetime;
@@ -56,6 +60,7 @@ class Game {
     this.rules = GameRules.createGameRulesFromObj(rules);
     this.player_left = GamePlayer.createGamePlayerFromObj(player_left);
     this.player_right = GamePlayer.createGamePlayerFromObj(player_right);
+    this.tournament = tournament;
   }
 
   static createGameFromObj(obj) {
@@ -67,7 +72,8 @@ class Game {
       obj.duration,
       obj.rules,
       obj.player_left,
-      obj.player_right
+      obj.player_right,
+      obj.tournament
     );
   }
 
@@ -80,7 +86,8 @@ class Game {
       rules: this.rules.toJSON(),
       player_left: this.player_left.toJSON(),
       player_right: this.player_right.toJSON(),
-    }
+      tournament: this.tournament,
+    };
   }
 }
 

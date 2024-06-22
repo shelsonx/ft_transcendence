@@ -14,7 +14,15 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Tournament, TournamentPlayer, TournamentStatus
+from core.models import (
+    Game,
+    GameStatus,
+    Round,
+    RoundStatus,
+    Tournament,
+    TournamentPlayer,
+    TournamentStatus,
+)
 from core.forms import TournamentValidationForm
 
 
@@ -99,4 +107,11 @@ class ValidateTournamentView(generic.View):
         t.status = TournamentStatus.SCHEDULED
         t.save()
         t.generate_rounds()
+        first_round: Round = t.get_rounds().first()
+        first_game: Game = first_round.get_next_or_current_game()
+        first_round.status = RoundStatus.ON_GOING
+        first_game.status = GameStatus.SCHEDULED
+        first_round.save()
+        first_game.save()
+
         return json_response.success(msg="Tournament validated")

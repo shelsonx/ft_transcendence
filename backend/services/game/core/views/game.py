@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, GameRules
+from core.models import Game, GameStatus, GameRules, Tournament, TournamentStatus
 from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
@@ -145,6 +145,13 @@ class GameView(generic.View):
         game: Game = game_form.save()
         left_form.save()
         right_form.save()
+
+        t = data.get("tournament")
+        if t:
+            t = Tournament.objects.filter(pk=t).first()
+            if t and t.status == TournamentStatus.SCHEDULED:
+                t.status = TournamentStatus.ON_GOING
+                t.save()
 
         if game.status == GameStatus.ENDED.value:
             round = game.round.all().first()

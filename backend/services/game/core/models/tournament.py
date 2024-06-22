@@ -6,7 +6,7 @@ from typing import Any
 
 # django
 from django.db import models
-from django.db.models import Count, F, Prefetch, Q, QuerySet, Sum
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 
@@ -77,7 +77,7 @@ class Tournament(models.Model):
         self.__players = (
             self.tournament_players.all()
             .select_related("user")
-            .order_by("-score", "-rating")
+            .order_by("-score", "-winnings", "-rating")
         )
         return self.__players
 
@@ -100,6 +100,31 @@ class Tournament(models.Model):
 
     def get_rounds(self) -> QuerySet:
         return self.rounds.all().order_by("round_number")
+
+    def get_next_or_current_round(self) -> Round:
+        if self.status in [
+            TournamentStatus.INVITATION,
+            TournamentStatus.ENDED,
+            TournamentStatus.CANCELED,
+        ]:
+            return None
+
+        rounds = self.get_rounds().exclude(status=RoundStatus.ENDED)
+        return rounds.first()
+
+    def get_next_or_current_game(self) -> Game | None:
+        if self.status in [
+            TournamentStatus.INVITATION,
+            TournamentStatus.ENDED,
+            TournamentStatus.CANCELED,
+        ]:
+            return None
+
+        r = self.get_next_or_current_round()
+        if r:
+            return r.get_next_or_current_game()
+
+        return None
 
     def update_users(self, *, force: bool = False) -> None:
         if self.status != TournamentStatus.ENDED:
@@ -236,10 +261,10 @@ class Challenge(Tournament):
                 tournament=self,
                 round_number=(i + 1),
                 number_of_games=1,
-                status=RoundStatus.ON_GOING if i == 0 else RoundStatus.WAITING,
+                status=RoundStatus.WAITING,
             )
             game = Game.objects.create(
-                status=GameStatus.SCHEDULED,
+                status=GameStatus.TOURNAMENT,
                 rules=self.rules,
             )
             game.add_players(users)
@@ -281,13 +306,13 @@ class RoundRobin(Tournament):
                     tournament=self,
                     round_number=(j + i * rounds_base + 1),
                     number_of_games=number_of_games,
-                    status=RoundStatus.ON_GOING if j == 0 else RoundStatus.WAITING,
+                    status=RoundStatus.WAITING,
                 )
 
                 for players_match in matches_scheduling[j]:
                     if all(p for p in players_match):
                         game = Game.objects.create(
-                            status=GameStatus.SCHEDULED,
+                            status=GameStatus.TOURNAMENT,
                             rules=self.rules,
                         )
                         game.add_players(players_match)
