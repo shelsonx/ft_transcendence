@@ -30,7 +30,7 @@ class AuthRouter(IRouter):
       Route("/sign-in/", ['POST']),
       Route("/sign-up/", ['POST']),
       Route("/user/", ['GET']),
-      Route("/user/<uuid:user_id>", ['PUT', 'DELETE']),
+      Route("/user/<uuid:user_id>/", ['PUT', 'DELETE']),
       Route("/sign-in-42/", ['POST']),
       Route("/validate-2factor-code/", allowed_verbs=['POST', 'PUT'], handler_function=self.register),
       Route("/register-42/", ['GET'], handler_function=self.register_42),
@@ -139,11 +139,13 @@ class AuthRouter(IRouter):
      if self.rollback_register:
             me = json.loads(self.me_data.content)['data']
             user_id = me['id']
-            self.http_client.delete(HttpClientData(
+            http_client_data = HttpClientData(
                 url=f"/user/{user_id}/",
                 data={},
                 headers=headers_dict
-            ))
+            )
+            resp = self.http_client.delete(http_client_data)
+            self.rollback_register = False
 
   def register_42(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
      try:

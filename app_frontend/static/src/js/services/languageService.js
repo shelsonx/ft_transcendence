@@ -1,10 +1,11 @@
 import LanguageHandler from '../locale/languageHandler.js';
 import { HttpClient } from './httpClient.js';
+
 export class LanguageService {
   constructor(baseUrl) {
     this.languageHandler = LanguageHandler;
     this.baseApi = baseUrl;
-    this.httpClient = new HttpClient(baseUrl);
+    this.httpClient = new HttpClient(baseUrl, false);
   }
 
   addLanguageQueryString(httpClientRequestData){
