@@ -19,6 +19,8 @@ from ...services.http_client import HttpClient
 from ...interfaces.services.http_client import IHttpClient, HttpClientData
 from ..api_urls import ApiUrls
 
+
+
 class AuthRouter(IRouter):
 
   def __init__(self, http_client: IHttpClient) -> None:
@@ -35,6 +37,10 @@ class AuthRouter(IRouter):
       Route("/game-2factor-code/", ['POST', 'PUT'], handler_function=self.game_2factor_validate),
     ]
     super().__init__(http_client, routes_auth)
+    self.register_functions = [self.register_game_info_ms, self.register_user_management_ms, self.register_game_ms]
+    self.unregister_functions = [self.unregister_game_info_ms, self.unregister_user_management_ms, self.unregister_game_ms]
+    self.rollback_register = False
+    self.me_data = None
 
   def get_me(self, headers_dict: dict):
     http_client_data_user_me = HttpClientData(
@@ -48,8 +54,10 @@ class AuthRouter(IRouter):
 
   def unregister_game_info_ms(self, auth_data_json, headers_dict):
     return self.notify_microservices("DELETE", ApiUrls.GAME_INFO, HttpClientData(
-        url=f"/{auth_data_json['id']}/",
-        data={},
+        url=f"/delete_user/",
+        data=json.dumps({
+            "id_msc": auth_data_json['id']
+        }).encode('utf-8'),
         headers=headers_dict
     ))
 
@@ -111,25 +119,38 @@ class AuthRouter(IRouter):
 
   def register_ms(self, default_response, headers_dict):
 
-        auth_me_data = self.get_me(headers_dict)
-        auth_data_json = json.loads(auth_me_data.content)['data']
+        self.me_data = self.get_me(headers_dict)
+        auth_data_json = json.loads(self.me_data.content)['data']
 
         if auth_data_json['enable_2fa']:
             return default_response
 
         if auth_data_json['is_first_login']:
-            game_info_data = self.register_game_info_ms(auth_data_json, headers_dict)
-            print(game_info_data)
-            user_management_data = self.register_user_management_ms(auth_data_json, headers_dict)
-            print(user_management_data)
-            game_data = self.register_game_ms(auth_data_json, headers_dict)
-            print(game_data)
+            for index, register_function in enumerate(self.register_functions):
+                response = register_function(auth_data_json, headers_dict)
+                if response.status_code >= 400:
+                    self.rollback_register = True
+                    for i in range(index):
+                        self.unregister_functions[i](auth_data_json, headers_dict)
+                    return response
         return default_response
+
+  def rollback_register_auth(self, headers_dict):
+     if self.rollback_register:
+            me = json.loads(self.me_data.content)['data']
+            user_id = me['id']
+            self.http_client.delete(HttpClientData(
+                url=f"/user/{user_id}/",
+                data={},
+                headers=headers_dict
+            ))
 
   def register_42(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
      try:
         data = ApiDataResponse(data={"message": "Ok"}, is_success=True, message="OK").to_dict()
-        return self.register_ms(JsonResponse(data=data, status=200, safe=False), request.headers)
+        response = self.register_ms(JsonResponse(data=data, status=200, safe=False), request.headers)
+        self.rollback_register_auth(request.headers)
+        return response
      except Exception as exception:
         return to_json_response(
             data=ApiDataResponse(message=str(exception), is_success=False), status=500
@@ -146,8 +167,9 @@ class AuthRouter(IRouter):
             return sign_up_data_json
 
         headers_dict = self.clone_header_with_auth(http_client_data.headers, sign_up_data.json()['data']['token'])
-        self.register_ms(sign_up_data_json, headers_dict)
-        return sign_up_data_json
+        response = self.register_ms(sign_up_data_json, headers_dict)
+        self.rollback_register_auth(headers_dict)
+        return response
     except Exception as exception:
         return to_json_response(
             data=ApiDataResponse(message=str(exception), is_success=False), status=500

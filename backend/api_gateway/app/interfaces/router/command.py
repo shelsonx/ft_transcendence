@@ -39,11 +39,23 @@ class CommandStack:
         self.undo()
         return False
 
+    def execute_all(self):
+        for command in self.stack:
+            if not command.execute():
+                self.undo_all()
+                return False
+        return True
+
     def undo(self):
-        while True:
-            command = self.remove_command()
-            if command is None:
-                break
+        command = self.remove_command()
+        if command is not None:
             command.undo()
+            return True
+        return False
+
+
+    def undo_all(self):
+        while self.undo():
+            pass
 
 
