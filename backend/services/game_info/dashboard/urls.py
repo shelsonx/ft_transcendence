@@ -1,6 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
+import uuid
 
 from . import views
 
@@ -13,4 +14,6 @@ urlpatterns = [
     path('set_status_user/', views.set_status_user, name='set_status_user'),
     path('set_playing_user/', views.set_playing_user, name='set_playing_user'),
     path('update_scores_user/', views.update_scores_user, name='update_scores_user'),
+    path('update_user/', views.update_user, name='update_user'),
+    path('delete_user/', views.delete_user, name='delete_user'),
 ]

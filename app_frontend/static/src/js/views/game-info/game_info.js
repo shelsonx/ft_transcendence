@@ -313,12 +313,16 @@ function setDetailsStatus(data) {
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
 
-function AddUserInList(data) {
+function AddUserInList(data, users_blocks) {
     let containers = document.getElementById('containers');
+
+    console.log(`Users Blocks: ${users_blocks}`);
+    if (users_blocks.includes(data.id_msc) === true) {
+        return ;
+    }
 
     const container = createMainContainer();
     containers.appendChild(container);
-
     const row = createRow(container);
     const col1 = createCol1();
     row.appendChild(col1);
@@ -347,11 +351,17 @@ function AddUserInList(data) {
 
 }
 
-const start = () => {
+const start = (user) => {
+    let users_blocks = [];
+    gameInfoService.getUsersBlocks(user.id).then(
+        res => {
+            users_blocks = res.blocked_users;
+    });
+
     gameInfoService.gameInfo().then(
       res => {
         res.forEach(data => {
-            AddUserInList(data);
+            AddUserInList(data, users_blocks);
         });
     });
 

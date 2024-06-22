@@ -4,6 +4,7 @@ class GameInfoService {
 
 	constructor() {
 		this.httpClient = new HttpClient('https://localhost:8003/dash/');
+		this.httpClientUserManager = new HttpClient('https://localhost:8006/user/');
 	}
 	async gameInfo() {
 		const home = new HttpClientRequestData('GET', 'home/');
@@ -18,6 +19,11 @@ class GameInfoService {
 	async get_user(id){
 		const user = new HttpClientRequestData('GET', `user/${id}/`);
 		const response = await this.httpClient.makeRequest(user);
+		return response;
+	}
+	async getUsersBlocks(user_id){
+		const users_blocks = new HttpClientRequestData('GET', `${user_id}/block/`);
+		const response = await this.httpClientUserManager.makeRequest(users_blocks);
 		return response;
 	}
 }
