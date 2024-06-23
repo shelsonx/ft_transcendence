@@ -212,18 +212,28 @@ const settleGame = (response) => {
     pong.draw(ctx);
   };
 
+  const beforeUnloadHandler = (event) => {
+    event.preventDefault();
+
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+  };
+
   const stopGlobalEvents = () => {
     window.cancelAnimationFrame(animationFrame);
     window.removeEventListener("keydown", keyDownHandler);
     window.removeEventListener("keyup", keyUpHandler);
     window.removeEventListener("resize", resizeHandler);
-  }
+    window.removeEventListener("beforeunload", beforeUnloadHandler);
+  };
 
   const initGlobalEvents = () => {
     window.addEventListener("keydown", keyDownHandler);
     window.addEventListener("keyup", keyUpHandler);
     window.addEventListener("resize", resizeHandler);
-  }
+    window.addEventListener("beforeunload", beforeUnloadHandler);
+  };
 
   function animate() {
     const scored_point = pong.update();
@@ -299,16 +309,6 @@ const settleGame = (response) => {
     }
   };
   document.addEventListener("visibilitychange", visibilityChangeHandler);
-
-  const beforeUnloadHandler = (event) => {
-    event.preventDefault();
-
-    // Included for legacy support, e.g. Chrome/Edge < 119
-    event.returnValue = true;
-    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
-  };
-
-  window.addEventListener("beforeunload", beforeUnloadHandler);
 };
 
 const start = async (user) => {
