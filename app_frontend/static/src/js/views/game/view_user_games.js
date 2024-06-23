@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
+import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
 
 class SeeUserGamesView extends BaseLoggedView {
   constructor(html, start) {
@@ -25,6 +26,7 @@ const swap = (response) => {
 
   const swapContainer = document.getElementById("game-table-container");
   swapContainer.innerHTML = response;
+  window.addEventListener("hashchange", hashChangeHandler);
 };
 
 const start = async (user) => {

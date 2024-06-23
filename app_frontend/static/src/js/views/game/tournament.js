@@ -1,6 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
+import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
 
 class TournamentDetailView extends BaseLoggedView {
   constructor(html, start) {
@@ -34,6 +35,8 @@ const tournamentDetail = (response) => {
   if (cancelBtn != null) cancelBtn.addEventListener("click", cancelTournament);
   const deleteBtn = document.getElementById("delete-btn");
   if (deleteBtn != null) deleteBtn.addEventListener("click", deleteTournament);
+
+  window.addEventListener("hashchange", hashChangeHandler);
 };
 
 const cancelTournament = async (e) => {
