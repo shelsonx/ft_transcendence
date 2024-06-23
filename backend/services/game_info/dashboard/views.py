@@ -82,15 +82,15 @@ def update_scores_user(request: HttpRequest) -> HttpResponse:
         payload = json.loads(request.body)
         id_msc = payload.get('id_msc')
         score = payload.get('score')
-        match_result = payload.get('match_result')
+        winnings = payload.get('winnings')
+        losses = payload.get('losses')
         user = get_object_or_404(UserInfo, id_msc=id_msc)
-        user.scores += score
-        if match_result == 'win':
-            user.winnings += 1
-        elif match_result == 'loss':
-            user.losses += 1
-        else:
-            return HttpResponse("Error: Invalid match result", status=400)
+        if score:
+            user.scores = score
+        if winnings:
+            user.winnings = winnings
+        if losses:
+            user.losses = losses
         user.save()
         return HttpResponse("OK", status=200)
     except Http404:

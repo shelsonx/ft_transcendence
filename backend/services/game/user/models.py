@@ -70,8 +70,18 @@ class User(models.Model):
         return {
             "id": self.pk,
             "username": self.username,
+            "avatar": self.avatarUrl,
             "score": self.score,
             "rating": self.rating,
+            "winnings": self.winnings,
+            "losses": self.losses,
+            "ties": self.ties,
+        }
+
+    def to_stats(self) -> dict:
+        return {
+            "id_msc": self.pk,
+            "score": self.rating,
             "winnings": self.winnings,
             "losses": self.losses,
             "ties": self.ties,

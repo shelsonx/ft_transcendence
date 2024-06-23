@@ -1,5 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
+import gameInfoService from "../../services/gameInfoService.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
@@ -102,6 +103,27 @@ function loadEndMessage(pong) {
   `;
 }
 
+const updateUserStats = async (users) => {
+  users.forEach((user) => {
+    try {
+      gameInfoService.updateScoresUser(user);
+    } catch (error) {}
+  })
+}
+
+const updateUsersPlaying = (pong, playing) => {
+  const users = [pong.player_left.user.id, pong.player_right.user.id]
+  users.forEach((user) => {
+    try {
+      const data = {
+        "id_msc": user,
+        playing: playing,
+      }
+      gameInfoService.updateUserPlaying(data);
+    } catch (error) {}
+  })
+}
+
 const saveGame = async (pong, update = false) => {
   if (update) pong.updateToSave();
   pong.save().then((response) => {
@@ -110,6 +132,16 @@ const saveGame = async (pong, update = false) => {
       window.cancelAnimationFrame(animationFrame);
       const gameData = document.getElementById("game-data");
       gameData.classList.add("d-none");
+    } else if (
+      pong.game.status.value === GameStatus.ENDED &&
+      response.hasOwnProperty("is_success") &&
+      response.is_success === true
+    ) {
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("stats") &&
+        response.data.stats !== null
+      ) updateUserStats(response.data.stats);
     }
   });
 };
@@ -204,9 +236,8 @@ const settleGame = (response) => {
       loadEndMessage(pong);
       const gameButtons = document.getElementById("game-buttons");
       gameButtons.classList.add("d-none");
-
       saveGame(pong);
-      // atualizar shelson
+      updateUsersPlaying(pong, false);
     } else {
       if (scored_point === true) saveGame(pong, true);
       animationFrame = requestAnimationFrame(animate);
@@ -226,10 +257,11 @@ const settleGame = (response) => {
       animate();
       pauseButton.classList.remove("d-none");
       saveGame(pong);
+      updateUsersPlaying(pong, true);
     }, startMessages[4].showMsgDelay);
 
     initGlobalEvents();
-  }
+  };
 
   const pauseGame = () => {
     pong.pause();
@@ -237,6 +269,7 @@ const settleGame = (response) => {
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
     saveGame(pong);
+    updateUsersPlaying(pong, false);
   };
 
   const continueGame = () => {
@@ -247,6 +280,7 @@ const settleGame = (response) => {
     animate();
     initGlobalEvents();
     saveGame(pong);
+    updateUsersPlaying(pong, true);
   };
 
   startButton.addEventListener("click", startGame);

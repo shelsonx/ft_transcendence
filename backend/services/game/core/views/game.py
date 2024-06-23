@@ -168,13 +168,25 @@ class GameView(generic.View):
                 t.status = TournamentStatus.ON_GOING
                 t.save()
 
+        data = {}
         if game.status == GameStatus.ENDED.value:
             round = game.round.all().first()
             if round is not None:
                 game.update_tournament()
             else:
                 game.update_users()
-        return json_response.success(msg="Game updated")
+
+            # esure to get data updated
+            users_pk = [player_left.user.pk, player_right.user.pk]
+            users = User.objects.filter(pk__in=users_pk)
+            game = Game.objects.get(pk=game.pk)
+            data = {
+                "game": game.to_json(),
+                "stats": [u.to_stats() for u in users],
+            }
+
+        # print("game status: ", GameStatus(game.status).label)
+        return json_response.success(data, msg="Game updated")
 
     @JWTAuthentication()
     def put(self, request: HttpRequest, pk: uuid) -> HttpResponse:
