@@ -70,5 +70,7 @@
   "search--currently-online": "Usuários online",
   "search--no-results": "Nenhum resultado encontrado",
   "search--no-currently-online": "Nenhum usuário online no momento :( ",
-  "search--search-results": "Resultados da pesquisa"
+  "search--search-results": "Resultados da pesquisa",
+
+  "invalid-access-token": "Token de acesso inválido"
 }
