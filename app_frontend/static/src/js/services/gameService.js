@@ -21,6 +21,17 @@ class GameService {
     }
   }
 
+  async updateUser(id, formData) {
+    const data = {
+      username: formData.get("username"),
+      avatar: formData.get("avatar"),
+    };
+    const requestData = new HttpClientRequestData("PATCH", `/game/${id}`, data);
+    requestData.headers["Content-Type"] = "default";
+    const response = await this.handleResponse(requestData);
+    return response;
+  }
+
   async allGames() {
     const requestData = new HttpClientRequestData("GET", "/games");
     const response = await this.handleResponse(requestData);
@@ -104,9 +115,8 @@ class GameService {
           status: error.status,
           is_success: false,
           error: error.message,
-        }
-      }
-      else {
+        };
+      } else {
         error.message = getFrontErrorMessage(error.status);
         if (error.status === undefined) error.status = 500;
         return error;
@@ -128,7 +138,6 @@ class GameService {
     const response = await this.handleResponse(requestData);
     return response;
   }
-
 
   async cancelGame(id) {
     const requestData = new HttpClientRequestData("PUT", `/game/${id}`);
@@ -230,9 +239,8 @@ class GameService {
           status: error.status,
           is_success: false,
           error: error.message,
-        }
-      }
-      else {
+        };
+      } else {
         error.message = getFrontErrorMessage(error.status);
         if (error.status === undefined) error.status = 500;
         return error;
