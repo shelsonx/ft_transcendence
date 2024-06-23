@@ -90,7 +90,7 @@
                       {% include "form.html" with form=p.form css_class="col-sm" no_mb=True %}
 
                       <div class="d-flex justify-content-center px-3">
-                        <button class="btn btn-primary action " id="button-invite" type="submit">
+                        <button class="btn btn-primary action " id="verify-{{ p.pk }}" type="submit">
                           {% translate "Verify" %}
                         </button>
                       </div>
@@ -100,7 +100,7 @@
 
                   <td>
                     <div class="d-flex justify-content-center">
-                      <button class="btn btn-secondary px-3" id="button-invite" type="submit">
+                      <button class="resend btn btn-secondary px-3" id="resend-{{ p.pk }}" type="submit">
                         {% translate "Resend code to email" %}
                       </button>
                     </div>

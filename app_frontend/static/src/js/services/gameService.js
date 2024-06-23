@@ -94,7 +94,6 @@ class GameService {
       game_id: id,
       game_type: VerificationType.GAME,
     };
-    console.log(auth_data)
 
     let auth_response = null;
     try {
@@ -113,6 +112,7 @@ class GameService {
         return error;
       }
     }
+
     const data = {
       user: formData.get("user"),
       token: formData.get("token"),
@@ -212,10 +212,38 @@ class GameService {
   }
 
   async validateTournament(id, player_id, formData) {
+    const auth_data = {
+      code_user_receiver_id: {
+        [formData.get("token")]: formData.get("user"),
+      },
+      user_requester_id: this.user.id,
+      game_id: id,
+      game_type: VerificationType.GAME,
+    };
+
+    let auth_response = null;
+    try {
+      auth_response = await authService.validateGame2Factor(auth_data);
+    } catch (error) {
+      if (error.status === 400 && error.message === "Invalid Access Token") {
+        auth_response = {
+          status: error.status,
+          is_success: false,
+          error: error.message,
+        }
+      }
+      else {
+        error.message = getFrontErrorMessage(error.status);
+        if (error.status === undefined) error.status = 500;
+        return error;
+      }
+    }
+
     const data = {
       user: formData.get("user"),
       token: formData.get("token"),
       player: player_id,
+      auth_data: auth_response,
     };
     const requestData = new HttpClientRequestData(
       "PATCH",
@@ -223,7 +251,7 @@ class GameService {
       data
     );
 
-    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    requestData.headers["Content-Type"] = "default";
     const response = await this.handleResponse(requestData);
     return response;
   }

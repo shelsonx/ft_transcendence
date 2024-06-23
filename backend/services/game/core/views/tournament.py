@@ -28,6 +28,7 @@ from core.models import (
     TournamentPlayer,
     TournamentStatus,
     TournamentType,
+    VerificationType,
 )
 from core.forms import GameRulesForm, TournamentForm, TournamentPlayerForm
 from user.decorators import JWTAuthentication
@@ -100,8 +101,16 @@ class AddTournamentView(generic.View):
                 p.verified = True
             p.save()
 
-        data = {"tournament": t.pk}
-        # TODO: mandar pro Bruno gerar os tokens
+        receivers = [tp.user.id for tp in t.players if tp.user != t.owner]
+        data = {
+            "tournament": t.pk,
+            "invite": {
+                "user_receiver_ids": receivers,
+                "user_requester_id": self.user.id,
+                "game_id": t.pk,
+                "game_type": VerificationType.TOURNAMENT.value,
+            },
+        }
         return json_response.success(data=data, status=HTTPStatus.CREATED)
 
     def get_context_data(self, **kwargs) -> dict:

@@ -1,9 +1,9 @@
 import BaseLoggedView from "../baseLoggedView.js";
+import authService from "../../services/authService.js";
 import gameService from "../../services/gameService.js";
+import wrapperLoadingService from '../../services/wrapperService.js';
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
-import authService from "../../services/authService.js";
-import wrapperLoadingService from '../../services/wrapperService.js';
 
 class ValidateGameView extends BaseLoggedView {
   constructor(html, start) {
