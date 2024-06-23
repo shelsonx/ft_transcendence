@@ -101,7 +101,7 @@ class Tournament(models.Model):
     def get_rounds(self) -> QuerySet:
         return self.rounds.all().order_by("round_number")
 
-    def get_next_or_current_round(self) -> Round:
+    def get_next_or_current_round(self) -> Round | None:
         if self.status in [
             TournamentStatus.INVITATION,
             TournamentStatus.ENDED,
@@ -138,7 +138,7 @@ class Tournament(models.Model):
     # There must be a matchmaking system: the tournament system organize the
     # matchmaking of the participants, and announce the next fight
     def generate_rounds(self, *args, **kwargs) -> None:
-        if self.status not in [TournamentStatus.INVITATION, TournamentStatus.SCHEDULED]:
+        if self.status != TournamentStatus.SCHEDULED:
             return
 
         rounds = self.rounds.all()
@@ -148,13 +148,20 @@ class Tournament(models.Model):
         self.validate_number_of_players()
         self.__get_proxy().generate_rounds(*args, **kwargs)
 
-        for r in rounds:
-            r: Round
-            games = r.games.all()
-            for g in games:
-                g: Game
-                g.owner = self.owner
-                g.save()
+    def generate_game(self) -> Game:
+        return Game.objects.create(
+            status=GameStatus.TOURNAMENT,
+            rules=self.rules,
+            owner=self.owner,
+        )
+
+    def generate_round(self, round_nbr: int, nbr_of_games: int) -> Round:
+        return Round.objects.create(
+            tournament=self,
+            round_number=round_nbr,
+            number_of_games=nbr_of_games,
+            status=RoundStatus.WAITING,
+        )
 
     def generate_tiebreaker_game(self, player_a: User, player_b: User) -> Game:
         """
@@ -257,20 +264,12 @@ class Challenge(Tournament):
     def generate_rounds(self, *args, **kwargs) -> None:
         users = [u for u in self._players.all()]
         for i in range(self.number_of_rounds):
-            round = Round.objects.create(
-                tournament=self,
-                round_number=(i + 1),
-                number_of_games=1,
-                status=RoundStatus.WAITING,
-            )
-            game = Game.objects.create(
-                status=GameStatus.TOURNAMENT,
-                rules=self.rules,
-            )
+            round = self.generate_round(i + 1, 1)
+            game = self.generate_game()
             game.add_players(users)
             game.set_players_position()
             round.games.add(game)
-            round.save()
+            # round.save()
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
         if current_number_of_players != 2:
@@ -302,19 +301,11 @@ class RoundRobin(Tournament):
             matches_scheduling = self.generate_matches_scheduling()
 
             for j in range(rounds_base):
-                round = Round.objects.create(
-                    tournament=self,
-                    round_number=(j + i * rounds_base + 1),
-                    number_of_games=number_of_games,
-                    status=RoundStatus.WAITING,
-                )
-
+                round_nbr = j + i * rounds_base + 1
+                round = self.generate_round(round_nbr, number_of_games)
                 for players_match in matches_scheduling[j]:
                     if all(p for p in players_match):
-                        game = Game.objects.create(
-                            status=GameStatus.TOURNAMENT,
-                            rules=self.rules,
-                        )
+                        game = self.generate_game()
                         game.add_players(players_match)
                         game.set_players_position()
                         round.games.add(game)

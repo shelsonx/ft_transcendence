@@ -22,6 +22,8 @@ from core.models import (
     GameStatus,
     GameRules,
     GameRuleType,
+    Round,
+    RoundStatus,
     Tournament,
     TournamentStatus,
     VerificationType,
@@ -149,7 +151,6 @@ class GameView(generic.View):
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
-            print(game.owner, request.user)
             return json_response.forbidden()
 
         data = json.loads(request.body)
@@ -184,9 +185,27 @@ class GameView(generic.View):
 
         data = {}
         if game.status == GameStatus.ENDED.value:
-            round = game.round.all().first()
+            round: Round = game.round.all().first()
             if round is not None:
+                if t != round.tournament:
+                    return json_response.bad_request("mismatch data")
                 game.update_tournament()
+                next_game = round.get_next_or_current_game()
+                if not next_game:
+                    round.status = RoundStatus.ENDED
+                    round.save()
+                    next_round = t.get_next_or_current_round()
+                    if next_round:
+                        next_game = next_round.get_next_or_current_game()
+                        next_round.status = RoundStatus.ON_GOING
+                        next_round.save()
+                    else:
+                        t.status = TournamentStatus.ENDED
+                        t.save()
+                        t.update_users()
+                if next_game:
+                    next_game.status = GameStatus.SCHEDULED
+                    next_game.save()
             else:
                 game.update_users()
 
