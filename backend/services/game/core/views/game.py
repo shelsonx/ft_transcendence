@@ -17,7 +17,14 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, GameRules, Tournament, TournamentStatus
+from core.models import (
+    Game,
+    GameStatus,
+    GameRules,
+    Tournament,
+    TournamentStatus,
+    VerificationType,
+)
 from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
@@ -78,9 +85,17 @@ class AddGameView(generic.View):
         game.add_player(request.user)
         game.add_player(self.opponent)
         game.set_players_position()
-        # TODO: pedido para gerar o token para o oponente
 
-        return json_response.success(data={"game": game.pk}, status=HTTPStatus.CREATED)
+        data = {
+            "game": game.pk,
+            "invite": {
+                "user_receiver_ids": [self.opponent.id],
+                "user_requester_id": request.user.id,
+                "game_id": game.pk,
+                "game_type": VerificationType.GAME.value,
+            },
+        }
+        return json_response.success(data, status=HTTPStatus.CREATED)
 
     def get_opponent(self, post_data: QueryDict | None) -> User | None:
         opponent = post_data.get("username") if post_data else None

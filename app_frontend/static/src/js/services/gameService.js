@@ -1,10 +1,13 @@
-import { getErrorMessage } from "../utils/errors.js";
+import { VerificationType } from "../contracts/game/validation.js";
+import { getFrontErrorMessage } from "../utils/errors.js";
+import authService from "./authService.js";
 import { HttpClient, HttpClientRequestData } from "./httpClient.js";
 
 class GameService {
   constructor() {
     this.baseUrl = "https://localhost:8020";
     this.httpClient = new HttpClient(this.baseUrl, false);
+    this.user = null;
   }
 
   async handleResponse(requestData) {
@@ -12,9 +15,8 @@ class GameService {
       const response = await this.httpClient.makeRequest(requestData);
       return response;
     } catch (error) {
-      const message = getErrorMessage(error.status);
-      if (message !== undefined)
-        error.message = "Ooops! An error occured.<br>Try again later";
+      error.message = getFrontErrorMessage(error.status);
+      if (error.status === undefined) error.status = 500;
       return error;
     }
   }
@@ -84,19 +86,49 @@ class GameService {
   }
 
   async validateGame(id, formData) {
+    const auth_data = {
+      code_user_receiver_id: {
+        [formData.get("token")]: formData.get("user"),
+      },
+      user_requester_id: this.user.id,
+      game_id: id,
+      game_type: VerificationType.GAME,
+    };
+    console.log(auth_data)
+
+    let auth_response = null;
+    try {
+      auth_response = await authService.validateGame2Factor(auth_data);
+    } catch (error) {
+      if (error.status === 400 && error.message === "Invalid Access Token") {
+        auth_response = {
+          status: error.status,
+          is_success: false,
+          error: error.message,
+        }
+      }
+      else {
+        error.message = getFrontErrorMessage(error.status);
+        if (error.status === undefined) error.status = 500;
+        return error;
+      }
+    }
     const data = {
+      user: formData.get("user"),
       token: formData.get("token"),
+      auth_data: auth_response,
     };
     const requestData = new HttpClientRequestData(
       "PATCH",
       `/game-validation/${id}`,
       data
     );
+    requestData.headers["Content-Type"] = "default";
 
-    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
+
 
   async cancelGame(id) {
     const requestData = new HttpClientRequestData("PUT", `/game/${id}`);
@@ -199,14 +231,13 @@ class GameService {
   async updateUserDetails(id, formData) {
     const data = {
       username: formData.get("username"),
-      avatar: formData.get("avatar")
+      avatar: formData.get("avatar"),
     };
     const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, data);
     requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
     const response = await this.handleResponse(requestData);
     return response;
   }
-
 }
 
 export default new GameService();

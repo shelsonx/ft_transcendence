@@ -1,5 +1,6 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
+import authService from "../../services/authService.js";
 import { setGameRulesDynamicBehavior } from "./rules.js";
 import { loadErrorMessage } from "../../utils/errors.js";
 
@@ -49,8 +50,13 @@ const addGameResult = async (response) => {
       if (
         response.hasOwnProperty("data") &&
         response.data.hasOwnProperty("game") &&
-        response.data.game !== null
+        response.data.hasOwnProperty("invite") &&
+        response.data.game !== null &&
+        response.data.invite != null
       ) {
+        try {
+          authService.sendGame2Factor(response.data.invite);
+        } catch (error) {}
         window.location.href =
           "?match=" + response.data.game + "#verify-player";
         return;

@@ -24,7 +24,7 @@ from core.models import (
     TournamentStatus,
     TournamentType,
 )
-from core.forms import TournamentValidationForm
+from core.forms import PlayerValidationForm
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -44,7 +44,7 @@ class ValidateTournamentView(generic.View):
         players = t.players
         for p in players:
             initial = {"user": p.user.id if p.user else None}
-            p.form = TournamentValidationForm(initial=initial)
+            p.form = PlayerValidationForm(initial=initial)
 
         context = {
             "t": t,
@@ -83,13 +83,13 @@ class ValidateTournamentView(generic.View):
             "user": player.user.id,
             "token": data["token"],
         }
-        form = TournamentValidationForm(data)
+        form = PlayerValidationForm(data)
         if not form.is_valid():
             players = t.players
             for p in players:
                 if p != player:
                     initial = {"user": p.user.id if p.user else None}
-                    p.form = TournamentValidationForm(initial=initial)
+                    p.form = PlayerValidationForm(initial=initial)
                 else:
                     p.form = form
             context = {

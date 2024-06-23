@@ -118,26 +118,14 @@ class AuthService extends LanguageService {
     return response;
   }
 
-  async sendGame2Factor(formData) {
-    const data = {
-      user_receiver_ids: formData.get('user-receiver-ids'),
-      user_requester_id: formData.get('user-requester-id'),
-      game_id: formData.get('game-id'),
-      game_type: formData.get('game-type'),
-    }
-    const requestData = new HttpClientRequestData('POST', 'game-2factor-code', data);
+  async sendGame2Factor(data) {
+    const requestData = new HttpClientRequestData('POST', 'game-2factor-code/', data);
     const response = await this.makeRequest(requestData);
     return response;
   }
 
-  async validateGame2Factor(formData) {
-    const data = {
-      code_user_receiver_id: formData.get('code-user-receiver-id'),
-      user_requester_id: formData.get('user-requester-id'),
-      game_id: formData.get('game-id'),
-      game_type: formData.get('game-type'),
-    }
-    const requestData = new HttpClientRequestData('PUT', 'game-2factor-code', data);
+  async validateGame2Factor(data) {
+    const requestData = new HttpClientRequestData('PUT', 'game-2factor-code/', data);
     const response = await this.makeRequest(requestData);
     return response;
   }
