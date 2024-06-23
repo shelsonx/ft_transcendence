@@ -180,21 +180,32 @@ const settleGame = (response) => {
     pong.draw(ctx);
   };
 
+  const stopGlobalEvents = () => {
+    window.cancelAnimationFrame(animationFrame);
+    window.removeEventListener("keydown", keyDownHandler);
+    window.removeEventListener("keyup", keyUpHandler);
+    window.removeEventListener("resize", resizeHandler);
+  }
+
+  const initGlobalEvents = () => {
+    window.addEventListener("keydown", keyDownHandler);
+    window.addEventListener("keyup", keyUpHandler);
+    window.addEventListener("resize", resizeHandler);
+  }
+
   function animate() {
     const scored_point = pong.update();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     pong.draw(ctx);
 
     if (pong.checkGameEnded() === true) {
-      loadEndMessage(pong);
       pong.end();
-      window.cancelAnimationFrame(animationFrame);
+      stopGlobalEvents();
+      loadEndMessage(pong);
       const gameButtons = document.getElementById("game-buttons");
       gameButtons.classList.add("d-none");
+
       saveGame(pong);
-      window.removeEventListener("keydown", keyDownHandler);
-      window.removeEventListener("keyup", keyUpHandler);
-      window.removeEventListener("resize", resizeHandler);
       // atualizar shelson
     } else {
       if (scored_point === true) saveGame(pong, true);
@@ -205,8 +216,10 @@ const settleGame = (response) => {
   const startButton = document.getElementById("start");
   const pauseButton = document.getElementById("pause");
   const continueButton = document.getElementById("continue");
-  startButton.addEventListener("click", (e) => {
+
+  const startGame = (e) => {
     loadStartMessages();
+
     setTimeout(() => {
       if (pong.game.status.value === GameStatus.SCHEDULED) pong.begin();
       else pong.continue();
@@ -215,40 +228,43 @@ const settleGame = (response) => {
       saveGame(pong);
     }, startMessages[4].showMsgDelay);
 
-    window.addEventListener("keydown", keyDownHandler);
-    window.addEventListener("keyup", keyUpHandler);
-  });
+    initGlobalEvents();
+  }
 
-  pauseButton.addEventListener("click", (e) => {
-    window.cancelAnimationFrame(animationFrame);
+  const pauseGame = () => {
+    pong.pause();
+    stopGlobalEvents();
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
-    pong.pause();
     saveGame(pong);
-  });
+  };
 
-  continueButton.addEventListener("click", (e) => {
+  const continueGame = () => {
     window.cancelAnimationFrame(animationFrame);
     continueButton.classList.add("d-none");
     pauseButton.classList.remove("d-none");
     pong.continue();
     animate();
+    initGlobalEvents();
     saveGame(pong);
-  });
+  };
 
-  window.addEventListener("resize", resizeHandler);
-  window.addEventListener("hashchange", (e) => {
-    window.removeEventListener("keydown", keyDownHandler);
-    window.removeEventListener("keyup", keyUpHandler);
-    window.removeEventListener("resize", resizeHandler);
+  startButton.addEventListener("click", startGame);
+  pauseButton.addEventListener("click", pauseGame);
+  continueButton.addEventListener("click", continueGame);
 
-    if (pong.game.status.value !== GameStatus.PAUSED) {
-      pong.pause();
-      saveGame(pong);
-    }
-
+  const hashChangeHandler = (e) => {
     window.location.href = window.location.origin + window.location.hash;
-  });
+    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+  };
+  window.addEventListener("hashchange", hashChangeHandler);
+
+  const visibilityChangeHandler = (e) => {
+    if (document.hidden) {
+      if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+    }
+  };
+  document.addEventListener("visibilitychange", visibilityChangeHandler);
 };
 
 const start = async (user) => {
