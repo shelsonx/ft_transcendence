@@ -265,6 +265,16 @@ const settleGame = (response) => {
     }
   };
   document.addEventListener("visibilitychange", visibilityChangeHandler);
+
+  const beforeUnloadHandler = (event) => {
+    event.preventDefault();
+
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+  };
+
+  window.addEventListener("beforeunload", beforeUnloadHandler);
 };
 
 const start = async (user) => {
