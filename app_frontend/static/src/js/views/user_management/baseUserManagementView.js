@@ -12,8 +12,8 @@ class userManagementView extends View {
       new NavItems('#user-settings', 'Settings', { 'data-i18n-key': 'user-management--settings',}),
       new NavItems('#search-users', 'Search', { 'data-i18n-key': 'user-management--search',}),
     ];
-    const addStart = () => {
-      start();
+    const addStart = (user) => {
+      start(user);
     };
 
     const navHandler = new NavHandler(navItems);

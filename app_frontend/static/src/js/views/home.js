@@ -53,8 +53,7 @@ const swap = (response) => {
 };
 
 const changeLanguageWhenLogin = async (userId) => {
-  // TODO
-  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE);
+  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE) || 'en';
   try {
     const userInfoService = new UserInformationService(userId);
     const { user: userManagement } = await userInfoService.getUserData();
@@ -63,17 +62,17 @@ const changeLanguageWhenLogin = async (userId) => {
     languageHandler.setDefaultLocale(userChoosenLanguage);
   } catch (err) {
     console.error(err);
-  }
-  languageHandler.changeLanguage(userChoosenLanguage);
+  } finally {
+    languageHandler.changeLanguage(userChoosenLanguage);
+   }
 };
 
 const start = async (user) => {
   if (user) {
     changeLanguageWhenLogin(user.id);
+    const helloUser = document.getElementById("hello-user");
+    helloUser.innerHTML = `Hello, ${user.userName}!`;
   }
-
-  const helloUser = document.getElementById("hello-user");
-  helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
 };

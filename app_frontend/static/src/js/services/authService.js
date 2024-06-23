@@ -91,7 +91,7 @@ class AuthService extends LanguageService {
    * - `is_success`: A boolean indicating whether the update was successful.
    */
   async updateUserData(userId, data) {
-    const requestData = new HttpClientRequestData('PUT', `user/${userId}`, data);
+    const requestData = new HttpClientRequestData('PUT', `user/${userId}/`, data);
     const response = await this.makeRequest(requestData);
     return response;
   }
@@ -99,6 +99,7 @@ class AuthService extends LanguageService {
   async login42() {
    window.location.assign(`${this.baseApi}redirect-42/`);
   }
+
 
   async register42() {
     const requestData = new HttpClientRequestData('GET', 'register-42/');

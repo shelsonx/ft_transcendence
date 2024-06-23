@@ -1,3 +1,4 @@
+import json
 from ..dtos.user_edit_dto import UserEditDto, UserEditDtoForm
 from ..interfaces.controllers.base_controller import BaseController
 from django.http import HttpRequest, JsonResponse
@@ -20,7 +21,7 @@ class UserController(BaseController):
         self.delete_user_usecase = delete_user_usecase
 
     def convert_to_form(self, request: HttpRequest) -> dict:
-        user_edit_form = UserEditDtoForm(QueryDict(request.body))
+        user_edit_form = UserEditDtoForm(json.loads(request.body))
         return user_edit_form
 
     def convert_to_dto(self, data: dict) -> UserEditDto:

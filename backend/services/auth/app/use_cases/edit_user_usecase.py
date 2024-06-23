@@ -42,7 +42,6 @@ class EditUserUseCase(BaseUseCase):
             raise UserNotFoundException()
 
         self.validate_password(user, user_edit_dto.old_password, user_edit_dto.password)
-
         if has_value(user_edit_dto.password):
             user_edit_dto.password = make_password(user_edit_dto.password)
         one_of_the_fields_changed = False
