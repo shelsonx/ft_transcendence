@@ -21,6 +21,7 @@ from core.models import (
     Game,
     GameStatus,
     GameRules,
+    GameRuleType,
     Tournament,
     TournamentStatus,
     VerificationType,
@@ -45,20 +46,33 @@ class AddGameView(generic.View):
     @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
         post_data = request.POST
+
+        is_valid = True
         self.set_forms(post_data)
         context = self.get_context_data()
         forms = [self.rules_form, self.user_form]
+        if not all(form.is_valid() for form in forms):
+            if not self.rules_form.is_valid():
+                context["rules_expanded"] = True
+            is_valid = False
+
         if not self.opponent:
             [form.is_valid() for form in forms]
             msg = _("User does not exist")
             self.user_form.add_error("username", ValidationError(message=msg))
-            return render(request, self.template_name, context)
+            is_valid = False
+
         if self.opponent == request.user:
             [form.is_valid() for form in forms]
             msg = _("You can't play against yourself")
             self.user_form.add_error("username", ValidationError(message=msg))
-            return render(request, self.template_name, context)
-        if not all(form.is_valid() for form in forms):
+            is_valid = False
+
+        rule_type = post_data.get("rule_type")
+        if rule_type and rule_type != str(GameRuleType.PLAYER_POINTS.value):
+            context["rules_expanded"] = True
+
+        if not is_valid:
             return render(request, self.template_name, context)
 
         rules = GameRules.objects.filter(
@@ -105,7 +119,7 @@ class AddGameView(generic.View):
 
     def get_context_data(self, **kwargs) -> dict:
         return {
-            "invalid": False,
+            "rules_expanded": False,
             "rules_form": self.rules_form,
             "user_form": self.user_form,
         }

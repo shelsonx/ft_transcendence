@@ -21,6 +21,7 @@ from common.models import json_response
 from core.models import (
     Game,
     GameRules,
+    GameRuleType,
     GameStatus,
     Round,
     RoundStatus,
@@ -57,8 +58,11 @@ class AddTournamentView(generic.View):
 
         is_valid = True
         self.set_forms(post_data)
+        context = self.get_context_data()
         forms = [self.rules_form, self.tournament_form, *self.players_forms]
         if not all([form.is_valid() for form in forms]):
+            if not self.rules_form.is_valid():
+                context["rules_expanded"] = True
             is_valid = False
 
         for i, p in enumerate(self.players):
@@ -72,8 +76,11 @@ class AddTournamentView(generic.View):
                     msg = _("You can't play against yourself")
                     self.players_forms[i].add_error("username", ValidationError(msg))
 
+        rule_type = post_data.get("rule_type")
+        if rule_type and rule_type != str(GameRuleType.PLAYER_POINTS.value):
+            context["rules_expanded"] = True
+
         if not is_valid:
-            context = self.get_context_data()
             context["empty"] = False
             return render(request, self.template_name, context)
 
@@ -115,7 +122,7 @@ class AddTournamentView(generic.View):
 
     def get_context_data(self, **kwargs) -> dict:
         return {
-            "invalid": False,
+            "rules_expanded": False,
             "empty": True,
             "user": self.user,
             "type": self.type,

@@ -4,7 +4,7 @@
   {% include "tournament/general_rules.html" %}
 
   <div class="d-flex justify-content-center">
-    <button class="btn btn-secondary" id="set-rules-btn" type="btn">
+    <button class="btn btn-secondary {% if rules_expanded %}d-none{% endif %}" id="set-rules-btn" type="btn">
       {% translate "Customize Tournament's Games Rules" %}
     </button>
   </div>
