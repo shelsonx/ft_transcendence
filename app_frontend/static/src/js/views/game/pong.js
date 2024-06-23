@@ -142,6 +142,44 @@ const settleGame = (response) => {
   if ([GameStatus.ENDED, GameStatus.CANCELED].includes(pong.game.status.value))
     return loadEndMessage(pong);
 
+  const keyDownHandler = (e) => {
+    e.preventDefault();
+    switch (e.code) {
+      case "ArrowUp":
+        pong.player_right.velocity.y = -PLAYER_VELOCITY;
+        break;
+      case "ArrowDown":
+        pong.player_right.velocity.y = PLAYER_VELOCITY;
+        break;
+      case "KeyW":
+        pong.player_left.velocity.y = -PLAYER_VELOCITY;
+        break;
+      case "KeyS":
+        pong.player_left.velocity.y = PLAYER_VELOCITY;
+        break;
+    }
+  };
+
+  const keyUpHandler = (e) => {
+    switch (e.code) {
+      case "ArrowUp":
+      case "ArrowDown":
+        pong.player_right.velocity.y = 0;
+        break;
+      case "KeyW":
+      case "KeyS":
+        pong.player_left.velocity.y = 0;
+        break;
+    }
+  };
+
+  const resizeHandler = (e) => {
+    canvas.width = canvasWidth();
+    canvas.height = canvasHeight();
+    pong.resize(canvas.width, canvas.height);
+    pong.draw(ctx);
+  };
+
   function animate() {
     const scored_point = pong.update();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -154,6 +192,10 @@ const settleGame = (response) => {
       const gameButtons = document.getElementById("game-buttons");
       gameButtons.classList.add("d-none");
       saveGame(pong);
+      window.removeEventListener("keydown", keyDownHandler);
+      window.removeEventListener("keyup", keyUpHandler);
+      window.removeEventListener("resize", resizeHandler);
+      // atualizar shelson
     } else {
       if (scored_point === true) saveGame(pong, true);
       animationFrame = requestAnimationFrame(animate);
@@ -173,35 +215,8 @@ const settleGame = (response) => {
       saveGame(pong);
     }, startMessages[4].showMsgDelay);
 
-    window.addEventListener("keydown", (e) => {
-      e.preventDefault();
-      switch (e.code) {
-        case "ArrowUp":
-          pong.player_right.velocity.y = -PLAYER_VELOCITY;
-          break;
-        case "ArrowDown":
-          pong.player_right.velocity.y = PLAYER_VELOCITY;
-          break;
-        case "KeyW":
-          pong.player_left.velocity.y = -PLAYER_VELOCITY;
-          break;
-        case "KeyS":
-          pong.player_left.velocity.y = PLAYER_VELOCITY;
-          break;
-      }
-    });
-    window.addEventListener("keyup", (e) => {
-      switch (e.code) {
-        case "ArrowUp":
-        case "ArrowDown":
-          pong.player_right.velocity.y = 0;
-          break;
-        case "KeyW":
-        case "KeyS":
-          pong.player_left.velocity.y = 0;
-          break;
-      }
-    });
+    window.addEventListener("keydown", keyDownHandler);
+    window.addEventListener("keyup", keyUpHandler);
   });
 
   pauseButton.addEventListener("click", (e) => {
@@ -221,11 +236,18 @@ const settleGame = (response) => {
     saveGame(pong);
   });
 
-  window.addEventListener("resize", (e) => {
-    canvas.width = canvasWidth();
-    canvas.height = canvasHeight();
-    pong.resize(canvas.width, canvas.height);
-    pong.draw(ctx);
+  window.addEventListener("resize", resizeHandler);
+  window.addEventListener("hashchange", (e) => {
+    window.removeEventListener("keydown", keyDownHandler);
+    window.removeEventListener("keyup", keyUpHandler);
+    window.removeEventListener("resize", resizeHandler);
+
+    if (pong.game.status.value !== GameStatus.PAUSED) {
+      pong.pause();
+      saveGame(pong);
+    }
+
+    window.location.href = window.location.origin + window.location.hash;
   });
 };
 
