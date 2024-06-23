@@ -62,4 +62,4 @@ class TwoGameFactorRepository(ITwoFactorGameRepository):
                 two_factors.append(cur_two_factor)
             return two_factors
         except TwoFactorGame.DoesNotExist:
-            return None
+            return two_factors

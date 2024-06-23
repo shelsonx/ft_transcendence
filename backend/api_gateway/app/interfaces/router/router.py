@@ -127,13 +127,11 @@ class IRouter(ABC):
         raise Http404()
 
     route.route_key = self.append_language_to_path_from_query_string(path)
-    print(route.route_key)
 
     if verb.upper() not in route.allowed_verbs:
       raise ValueError(f"verb '{verb}' not allowed for path '{path}'")
     if route.is_redirect:
       return HttpResponseRedirect(redirect_to=self.http_client.base_url.localhost + path.lstrip('/'))
-
     http_client_data = HttpClientData(url=route.route_key, data=request.body, headers=request.headers)
     if route.handler_function:
         return route.handler_function(http_client_data, request, *args, **kwargs)
