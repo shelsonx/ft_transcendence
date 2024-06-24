@@ -32,6 +32,7 @@ class User(models.Model):
         return {
             "id": None,
             "username": _("anonymous"),
+            "avatar": f"{USER_API}{DEFAULT_AVATAR}",
         }
 
     @property
