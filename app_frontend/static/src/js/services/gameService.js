@@ -6,7 +6,7 @@ import { HttpClient, HttpClientRequestData } from "./httpClient.js";
 class GameService {
   constructor() {
     this.baseUrl = "https://localhost:8020";
-    this.httpClient = new HttpClient(this.baseUrl, false);
+    this.httpClient = new HttpClient(this.baseUrl);
     this.user = null;
   }
 

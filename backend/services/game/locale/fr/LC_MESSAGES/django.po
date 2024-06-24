@@ -20,233 +20,233 @@ msgstr ""
 
 #: core/forms/tournament.py:51
 msgid "Challenge tournament can have only 2 players"
-msgstr ""
+msgstr "Le tournoi de Défi ne peut avoir que 2 joueurs"
 
 #: core/forms/tournament.py:54
 msgid "Challenge tournament must have at least 3 rounds"
-msgstr ""
+msgstr "Le tournoi de Défi doit avoir au moins 3 rounds"
 
 #: core/forms/validation.py:24
 msgid "The code was sent to the email registered by the user"
-msgstr ""
+msgstr "Le code a été envoyé à l'email enregistré par l'utilisateur"
 
 #: core/models/game.py:28 core/models/round.py:19
 msgid "Games"
-msgstr ""
+msgstr "Jeux"
 
 #: core/models/game.py:32
 msgid "Game date"
-msgstr ""
+msgstr "Date du jeu"
 
 #: core/models/game.py:37
 msgid "Game status"
-msgstr ""
+msgstr "Statut du jeu"
 
 #: core/models/game.py:42 core/models/game_rules.py:62
 msgid "Game Rules"
-msgstr ""
+msgstr "Règles du jeu"
 
 #: core/models/game_player.py:17 core/models/validation.py:6
 msgid "Game"
-msgstr ""
+msgstr "Jeu"
 
 #: core/models/game_player.py:24
 msgid "Player' score in the game"
-msgstr ""
+msgstr "Score du joueur dans le jeu"
 
 #: core/models/game_player_position.py:6
 msgid "Left"
-msgstr ""
+msgstr "Gauche"
 
 #: core/models/game_player_position.py:7
 msgid "Right"
-msgstr ""
+msgstr "Droite"
 
 #: core/models/game_rules.py:13
 msgid "Player winner points"
-msgstr ""
+msgstr "Points du joueur gagnant"
 
 #: core/models/game_rules.py:14 core/models/game_rules.py:46
 msgid "Game total points"
-msgstr ""
+msgstr "Points totaux du jeu"
 
 #: core/models/game_rules.py:15
 msgid "Game duration"
-msgstr ""
+msgstr "Durée du jeu"
 
 #: core/models/game_rules.py:26
 msgid "Game rule type"
-msgstr ""
+msgstr "Type de règle du jeu"
 
 #: core/models/game_rules.py:36
 msgid "Points to win"
-msgstr ""
+msgstr "Points pour gagner"
 
 #: core/models/game_rules.py:54
 msgid "Game maximum duration"
-msgstr ""
+msgstr "Durée maximale du jeu"
 
 #: core/models/round.py:25 core/models/tournament.py:40
 msgid "Tournament Status"
-msgstr ""
+msgstr "Statut du Tournoi"
 
 #: core/models/round.py:74
 #, python-brace-format
 msgid "Round {self.round_number}"
-msgstr ""
+msgstr "Tour {self.round_number}"
 
 #: core/models/status.py:7
 msgid "Pending confirmation"
-msgstr ""
+msgstr "Confirmation en attente"
 
 #: core/models/status.py:8 core/models/status.py:9 core/models/status.py:18
 msgid "Scheduled"
-msgstr ""
+msgstr "Programmé"
 
 #: core/models/status.py:10
 msgid "Ongoing"
-msgstr ""
+msgstr "En cours"
 
 #: core/models/status.py:11
 msgid "Paused"
-msgstr ""
+msgstr "En pause"
 
 #: core/models/status.py:12 core/models/status.py:20 core/models/status.py:27
 msgid "Ended"
-msgstr ""
+msgstr "Terminé"
 
 #: core/models/status.py:13 core/models/status.py:21
 msgid "Canceled"
-msgstr ""
+msgstr "Annulé"
 
 #: core/models/status.py:17
 msgid "Waiting all players confirmation"
-msgstr ""
+msgstr "En attente de la confirmation de tous les joueurs"
 
 #: core/models/status.py:19 core/models/status.py:26
 msgid "On going"
-msgstr ""
+msgstr "En cours"
 
 #: core/models/status.py:25
 msgid "Didn't started"
-msgstr ""
+msgstr "N'a pas commencé"
 
 #: core/models/status.py:30
 msgid "Pending"
-msgstr ""
+msgstr "En attente"
 
 #: core/models/status.py:31 core/models/validation.py:7
 msgid "Accepted"
-msgstr ""
+msgstr "Accepté"
 
 #: core/models/tournament.py:35
 msgid "Tournament Type"
-msgstr ""
+msgstr "Type de tournoi"
 
 #: core/models/tournament.py:42
 msgid "Tournament date"
-msgstr ""
+msgstr "Date du tournoi"
 
 #: core/models/tournament.py:48 templates/tournament.html:13
 #: templates/tournament/general_rules.html:7
 msgid "Tournament Rules"
-msgstr ""
+msgstr "Règles du tournoi"
 
 #: core/models/tournament.py:56
 msgid "Tournament Players"
-msgstr ""
+msgstr "Joueurs du tournoi"
 
 #: core/models/tournament_player.py:21 templates/games_list.html:25
 msgid "Tournament"
-msgstr ""
+msgstr "Tournoi"
 
 #: core/models/tournament_player.py:27
 msgid "Alias name"
-msgstr ""
+msgstr "Alias"
 
 #: core/models/tournament_player.py:30
 msgid "Score"
-msgstr ""
+msgstr "Score"
 
 #: core/models/tournament_player.py:33
 #: templates/tournament/rating_table.html:25
 msgid "Rating"
-msgstr ""
+msgstr "Classement"
 
 #: core/models/tournament_type.py:6
 msgid "Challenge"
-msgstr ""
+msgstr "Défi"
 
 #: core/models/tournament_type.py:7
 msgid "Round-robin"
-msgstr ""
+msgstr "Tous contre tous"
 
 #: core/validators/numbers.py:8
 #, python-format
 msgid "%(value)s is not an odd number"
-msgstr ""
+msgstr "%(value)s n'est pas un nombre impair"
 
 #: core/views/game.py:63 core/views/tournament.py:72
 msgid "User does not exist"
-msgstr ""
+msgstr "L'utilisateur n'existe pas"
 
 #: core/views/game.py:69 core/views/tournament.py:77
 msgid "You can't play against yourself"
-msgstr ""
+msgstr "Vous ne pouvez pas jouer contre vous-même"
 
 #: core/views/game.py:95
 msgid "An internal error occured while creating the game"
-msgstr ""
+msgstr "Une erreur interne est survenue lors de la création du jeu"
 
 #: game/settings.py:145
 msgid "English"
-msgstr ""
+msgstr "Anglais"
 
 #: game/settings.py:146
 msgid "French"
-msgstr ""
+msgstr "Français"
 
 #: game/settings.py:147
 msgid "Brazilian Portuguese"
-msgstr ""
+msgstr "Portugais brésilien"
 
 #: templates/add_game.html:8 templates/add_game.html:20
 msgid "Customize Game Rules"
-msgstr ""
+msgstr "Personnaliser les règles du jeu"
 
 #: templates/add_game.html:30
 msgid "Use Default Rules"
-msgstr ""
+msgstr "Utiliser les règles par défaut"
 
 #: templates/add_game.html:37
 msgid "Choose an oponent:"
-msgstr ""
+msgstr "Choisir un adversaire :"
 
 #: templates/add_game.html:43
 msgid "Invite"
-msgstr ""
+msgstr "Inviter"
 
 #: templates/add_tournament.html:8
 msgid "Customize Tournament's Games Rules"
-msgstr ""
+msgstr "Personnaliser les règles des jeux du tournoi"
 
 #: templates/add_tournament.html:27
 msgid "Add another player"
-msgstr ""
+msgstr "Ajouter un autre joueur"
 
 #: templates/add_tournament.html:33
 msgid "Create tournament"
-msgstr ""
+msgstr "Créer un tournoi"
 
 #: templates/game/rules.html:6
 msgid "The Transcendence Journey's Pong Game Rules"
-msgstr ""
+msgstr "Règles du jeu Pong du The Transcendence Journey"
 
 #: templates/game/rules.html:12 templates/game/validate.html:16
 #: templates/tournament/general_rules.html:91
 #: templates/tournament/validate.html:25
 msgid "To move your paddle up and down, use respectively the keyboard keys:"
-msgstr ""
+msgstr "Pour déplacer votre raquette vers le haut et vers le bas, utilisez respectivement les touches du clavier:"
 
 #: templates/game/rules.html:16 templates/tournament/general_rules.html:95
 msgid ""
@@ -257,6 +257,12 @@ msgid ""
 "player\n"
 "          "
 msgstr ""
+"\n"
+"            <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"            et\n"
+"            <span class=\"text-emphasis\"><strong>S</strong></span> pour le "
+"joueur de gauche\n"
+"          "
 
 #: templates/game/rules.html:23 templates/tournament/general_rules.html:102
 msgid ""
@@ -267,6 +273,12 @@ msgid ""
 "for right player\n"
 "          "
 msgstr ""
+"\n"
+"            <span class=\"text-emphasis\"><strong>flèche vers le haut</strong></span> "
+"et\n"
+"            <span class=\"text-emphasis\"><strong>flèche vers le bas</strong></span> "
+"pour le joueur de droite\n"
+"          "
 
 #: templates/game/rules.html:30
 msgid ""
@@ -275,78 +287,82 @@ msgid ""
 "          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
 "        "
 msgstr ""
+"\n"
+"          Le jeu se termine lorsqu'un joueur atteint\n"
+"          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
+"        "
 
 #: templates/game/rules.html:34
 msgid "You may customize this value or change how the game ends, considering:"
-msgstr ""
+msgstr "Vous pouvez personnaliser cette valeur ou modifier la façon dont le jeu se termine, en considérant:"
 
 #: templates/game/rules.html:36 templates/tournament/general_rules.html:81
 msgid "game total points"
-msgstr ""
+msgstr "points totaux du jeu"
 
 #: templates/game/rules.html:37 templates/tournament/general_rules.html:82
 msgid "game duration"
-msgstr ""
+msgstr "durée du jeu"
 
 #: templates/game/user_info.html:12
 msgid "Ranking:"
-msgstr ""
+msgstr "Classement"
 
 #: templates/game/user_info.html:13
 msgid "Score:"
-msgstr ""
+msgstr "Score"
 
 #: templates/game/user_info.html:22
 msgid "Winnings:"
-msgstr ""
+msgstr "Gains"
 
 #: templates/game/user_info.html:25
 msgid "Losses:"
-msgstr ""
+msgstr "Pertes"
 
 #: templates/game/user_info.html:28
 msgid "Ties:"
-msgstr ""
+msgstr "Cravates"
 
 #: templates/game/user_info.html:32
 msgid "Matches:"
-msgstr ""
+msgstr "Jeux"
 
 #: templates/game/user_info.html:42
 msgid "Total points in games:"
-msgstr ""
+msgstr "Total de points dans les jeux"
 
 #: templates/game/user_info.html:45
 msgid "Average points per game:"
-msgstr ""
+msgstr "Moyenne de points par match"
 
 #: templates/game/user_info.html:49
 msgid "Tournaments:"
-msgstr ""
+msgstr "Tournois"
 
 #: templates/game/user_info.html:52
 msgid "Points in tournaments:"
-msgstr ""
+msgstr "Points dans les tournois"
 
 #: templates/game/user_info.html:63
 msgid "Other statistics"
-msgstr ""
+msgstr "Autres statistiques"
 
 #: templates/game/user_info.html:67
 msgid "Maximum points in a game:"
-msgstr ""
+msgstr "Maximum de points dans un jeu"
 
 #: templates/game/user_info.html:70
 msgid "Longest game:"
-msgstr ""
+msgstr "Jeu le plus long"
 
 #: templates/game/user_info.html:80
 msgid "Fastest game:"
-msgstr ""
+msgstr "Jeu le plus rapide"
 
 #: templates/game/validate.html:10
 msgid "Your Transcendence Journey's Pong Game Rules"
-msgstr ""
+msgstr "Règles de votre Pong jeu"
 
 #: templates/game/validate.html:20
 msgid ""
@@ -357,6 +373,12 @@ msgid ""
 "left player\n"
 "              "
 msgstr ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"              et\n"
+"              <span class=\"text-emphasis\"><strong>S</strong></span> pour le "
+"joueur de gauche\n"
+"              "
 
 #: templates/game/validate.html:27
 msgid ""
@@ -366,6 +388,11 @@ msgid ""
 "right player\n"
 "              "
 msgstr ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>ArrowUp</strong></span> "
+"et <span class=\"text-emphasis\"><strong>ArrowDown</strong></span> pour le "
+"joueur de droite\n"
+"              "
 
 #: templates/game/validate.html:35
 #, python-format
@@ -377,6 +404,12 @@ msgid ""
 "                </span>\n"
 "              "
 msgstr ""
+"\n"
+"                Chaque jeu se termine lorsqu'un joueur s'enrichit\n"
+"                <span class=\"text-emphasis\">\n"
+"                  <strong>%(points)s points</strong>\n"
+"                </span>\n"
+"              "
 
 #: templates/game/validate.html:46
 #, python-format
@@ -388,104 +421,110 @@ msgid ""
 "                </span>\n"
 "              "
 msgstr ""
+"\n"
+"                Chaque jeu se termine lorsque le total des points du match est riche\n"
+"                <span class=\"text-emphasis\">\n"
+"                  <strong>%(points)s points</strong>\n"
+"                </span>\n"
+"              "
 
 #: templates/game/validate.html:57 templates/tournament/rules.html:68
 msgid "Each game ends within"
-msgstr ""
+msgstr "Chaque jeu se termine en"
 
 #: templates/game/validate.html:73
 msgid "Enter the verification code for"
-msgstr ""
+msgstr "Entrez le code de vérification pour"
 
 #: templates/game/validate.html:81 templates/tournament/validate.html:94
 msgid "Verify"
-msgstr ""
+msgstr "Vérifier"
 
 #: templates/game/validate.html:87 templates/tournament/validate.html:104
 msgid "Resend code to email"
-msgstr ""
+msgstr "Renvoyer le code par e-mail"
 
 #: templates/game/validate.html:96
 msgid "Game already validated"
-msgstr ""
+msgstr "Jeu déjà validé"
 
 #: templates/games_list.html:10
 msgid "Your matches"
-msgstr ""
+msgstr "vos matchs"
 
 #: templates/games_list.html:22 templates/tournament/round_table.html:18
 msgid "Result"
-msgstr ""
+msgstr "Résultat"
 
 #: templates/games_list.html:23 templates/tournament/round_table.html:19
 #: templates/tournaments_list.html:14
 msgid "Date / Status"
-msgstr ""
+msgstr "Date / Statut"
 
 #: templates/games_list.html:24 templates/tournament/round_table.html:20
 msgid "Duration"
-msgstr ""
+msgstr "Durée"
 
 #: templates/games_list.html:77 templates/tournaments_list.html:17
 #: templates/tournaments_list.html:63
 msgid "Winner"
-msgstr ""
+msgstr "Gagnant"
 
 #: templates/games_list.html:85 templates/tournament/round_table.html:58
 msgid "Play"
-msgstr ""
+msgstr "Jouer"
 
 #: templates/games_list.html:93 templates/tournament/round_table.html:56
 #: templates/tournaments_list.html:73
 msgid "Continue"
-msgstr ""
+msgstr "Continuer"
 
 #: templates/games_list.html:101 templates/tournaments_list.html:78
 msgid "Validate"
-msgstr ""
+msgstr "Valider"
 
 #: templates/games_list.html:114 templates/tournament.html:21
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: templates/games_list.html:121 templates/tournament.html:27
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: templates/games_list.html:138
 msgid "This user has no matches"
-msgstr ""
+msgstr "Cet utilisateur n'a pas de jeux"
 
 #: templates/games_list.html:140
 msgid "No matches yet..."
-msgstr ""
+msgstr "Pas de jeux pour l'instant..."
 
 #: templates/toast.html:9
 msgid "Success"
-msgstr ""
+msgstr "Succès"
 
 #: templates/toast.html:11
 msgid "Failed"
-msgstr ""
+msgstr "Échoué"
 
 #: templates/tournament.html:6
 #, python-format
 msgid "%(name)s Tournament"
-msgstr ""
+msgstr "Tournoi %(name)s"
 
 #: templates/tournament.html:37
 #, python-format
 msgid "status: %(status)s"
-msgstr ""
+msgstr "statut: %(status)s"
 
 #: templates/tournament.html:61
 msgid "Validate Players"
-msgstr ""
+msgstr "Valider les joueurs"
 
 #: templates/tournament/general_rules.html:10
 #: templates/tournament/validate.html:15
 msgid "Instructions to play"
-msgstr ""
+msgstr "Instructions pour jouer"
 
 #: templates/tournament/general_rules.html:18
 msgid ""
@@ -496,16 +535,22 @@ msgid ""
 "strong></span>.\n"
 "        "
 msgstr ""
+"\n"
+"          Une victoire donne au joueur <span class=\"text-emphasis\"><strong>3 "
+"points de classement</strong></span>.\n"
+"          Une égalité, <span class=\"text-emphasis\"><strong>1 point de classement</"
+"strong></span>.\n"
+"        "
 
 #: templates/tournament/general_rules.html:25
 #: templates/tournament/rules.html:13
 msgid "The tournament winner is the player with highest rating."
-msgstr ""
+msgstr "Le gagnant du tournoi est le joueur ayant la note la plus élevée."
 
 #: templates/tournament/general_rules.html:29
 #: templates/tournament/rules.html:17
 msgid "In case of tie, the winner is determined by the one with more wins."
-msgstr ""
+msgstr "En cas d'égalité, le gagnant est déterminé par celui ayant le plus de victoires."
 
 #: templates/tournament/general_rules.html:33
 #: templates/tournament/rules.html:21
@@ -513,6 +558,7 @@ msgid ""
 "If there is still a tie, the winner is the one with more total points during "
 "tournament."
 msgstr ""
+"S'il y a toujours égalité, le gagnant est celui ayant le plus de points totaux pendant le tournoi."
 
 #: templates/tournament/general_rules.html:37
 msgid ""
@@ -525,6 +571,14 @@ msgid ""
 "play against each other</p>\n"
 "        "
 msgstr ""
+"\n"
+"          Le type de tournoi par défaut est <span class=\"text-emphasis"
+"\"><strong>Tous Contre Tous</strong></span>.\n"
+"          Pour jouer, il est nécessaire d'avoir au moins <span class=\"text-emphasis"
+"\"><strong>3 joueurs</strong></span>.\n"
+"          <p class=\"small mb-0\">Dans un tournoi Tous Contre Tous, tous les joueurs "
+"jouent les uns contre les autres</p>\n"
+"        "
 
 #: templates/tournament/general_rules.html:45
 msgid ""
@@ -535,6 +589,12 @@ msgid ""
 "42</strong></span>.\n"
 "        "
 msgstr ""
+"\n"
+"          Pour un tournoi <span class=\"text-emphasis\"><strong>Tous Contre Tous</strong></"
+"span> le \n"
+"          <span class=\"text-emphasis\"><strong>nombre maximum de joueurs est de "
+"42</strong></span>.\n"
+"        "
 
 #: templates/tournament/general_rules.html:52
 msgid ""
@@ -547,6 +607,14 @@ msgid ""
 "of x\", x being the total games.</p>\n"
 "        "
 msgstr ""
+"\n"
+"          En option, vous pouvez changer le type de tournoi en <span class="
+"\"text-emphasis\"><strong>Défi</strong></span>,\n"
+"          qui se joue avec seulement <span class=\"text-emphasis\"><strong>2 "
+"joueurs</strong></span>.\n"
+"          <p class=\"small mb-0\">Un tournoi de Défi est du type \"Meilleur "
+"de x\", où x est le nombre total de jeux.</p>\n"
+"        "
 
 #: templates/tournament/general_rules.html:60
 msgid ""
@@ -557,6 +625,12 @@ msgid ""
 "rounds</strong></span> accordind to the number of players.\n"
 "        "
 msgstr ""
+"\n"
+"          Le tournoi <span class=\"text-emphasis\"><strong>Tous Contre Tous</strong></"
+"span> a un \n"
+"          <span class=\"text-emphasis\"><strong>nombre de rounds calculé "
+"automatiquement</strong></span> en fonction du nombre de joueurs.\n"
+"        "
 
 #: templates/tournament/general_rules.html:67
 msgid ""
@@ -567,6 +641,12 @@ msgid ""
 "3</strong></span>.\n"
 "        "
 msgstr ""
+"\n"
+"          Pour un tournoi de <span class=\"text-emphasis\"><strong>Défi</strong></"
+"span>, le\n"
+"          <span class=\"text-emphasis\"><strong>nombre minimum de rounds est "
+"3</strong></span>.\n"
+"        "
 
 #: templates/tournament/general_rules.html:74
 msgid ""
@@ -575,47 +655,51 @@ msgid ""
 "          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
 "        "
 msgstr ""
+"\n"
+"          Chaque jeu se termine lorsqu'un joueur gagne\n"
+"          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
+"        "
 
 #: templates/tournament/general_rules.html:79
 msgid "You may customize this value or change how each game ends, considering:"
-msgstr ""
+msgstr "Vous pouvez personnaliser cette valeur ou modifier la façon dont chaque partie se termine, en tenant compte:"
 
 #: templates/tournament/players_forms.html:3
 msgid "Include players:"
-msgstr ""
+msgstr "Inclure les joueurs"
 
 #: templates/tournament/rating_table.html:6
 msgid "Rating Table"
-msgstr ""
+msgstr "Tableau de classement"
 
 #: templates/tournament/rating_table.html:18
 msgid "Rank"
-msgstr ""
+msgstr "Classement"
 
 #: templates/tournament/rating_table.html:19
 #: templates/tournament/validate.html:56
 msgid "Player"
-msgstr ""
+msgstr "Joueur"
 
 #: templates/tournament/rating_table.html:20
 msgid "Total points"
-msgstr ""
+msgstr "Points totaux"
 
 #: templates/tournament/rating_table.html:21
 msgid "Points/game"
-msgstr ""
+msgstr "Points par jeu"
 
 #: templates/tournament/rating_table.html:22
 msgid "Winnings"
-msgstr ""
+msgstr "Gains"
 
 #: templates/tournament/rating_table.html:23
 msgid "Losses"
-msgstr ""
+msgstr "Pertes"
 
 #: templates/tournament/rating_table.html:24
 msgid "Ties"
-msgstr ""
+msgstr "Égalités"
 
 #: templates/tournament/rules.html:6
 msgid ""
@@ -626,6 +710,12 @@ msgid ""
 "span>.\n"
 "    "
 msgstr ""
+"\n"
+"      Gagner donne au joueur <span class=\"text-emphasis\"><strong>3 points "
+"de classement</strong></span>.\n"
+"      Une égalité, <span class=\"text-emphasis\"><strong>1 point de classement</strong></"
+"span>.\n"
+"    "
 
 #: templates/tournament/rules.html:27
 msgid ""
@@ -635,6 +725,11 @@ msgid ""
 "        which means all players play against each other\n"
 "      "
 msgstr ""
+"\n"
+"        Il s'agit d'un tournoi en <span class=\"text-emphasis\"><strong>Tous Contre Tous</"
+"strong></span>,\n"
+"        où tous les joueurs jouent les uns contre les autres\n"
+"      "
 
 #: templates/tournament/rules.html:36
 #, python-format
@@ -645,6 +740,11 @@ msgid ""
 "        with %(rounds)s matches\n"
 "      "
 msgstr ""
+"\n"
+"        Il s'agit d'un tournoi de <span class=\"text-emphasis\"><strong>Défi</strong></"
+"span> \n"
+"        avec %(rounds)s matchs\n"
+"      "
 
 #: templates/tournament/rules.html:46
 #, python-format
@@ -656,6 +756,13 @@ msgid ""
 "        </span>\n"
 "      "
 msgstr ""
+"\n"
+"        Chaque jeu se termine lorsqu'un joueur atteint\n"
+"        <span class=\"text-emphasis\">\n"
+"          <strong>%(points)s points</strong>\n"
+"        </span>\n"
+"      "
+
 
 #: templates/tournament/rules.html:57
 #, python-format
@@ -667,24 +774,30 @@ msgid ""
 "        </span>\n"
 "      "
 msgstr ""
+"\n"
+"        Chaque jeu se termine lorsque le total des points du match atteint \n"
+"        <span class=\"text-emphasis\">\n"
+"          <strong>%(points)s points</strong>\n"
+"        </span>\n"
+"      "
 
 #: templates/tournament/rules_form.html:8
 msgid "Customize Tournament's Rules"
-msgstr ""
+msgstr "Personnaliser les règles du tournoi"
 
 #: templates/tournament/rules_form.html:19
 msgid "Use Default Game Rules"
-msgstr ""
+msgstr "Utiliser les défaut règles"
 
 #: templates/tournament/validate.html:5
 #, python-format
 msgid "Validate participants of %(name)s Tournament"
-msgstr ""
+msgstr "Valider les participants du tournoi %(name)s"
 
 #: templates/tournament/validate.html:12
 #, python-format
 msgid "%(name)s Tournament Rules"
-msgstr ""
+msgstr "Règles du tournoi %(name)s"
 
 #: templates/tournament/validate.html:29
 msgid ""
@@ -695,6 +808,12 @@ msgid ""
 "left player\n"
 "            "
 msgstr ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"              et\n"
+"              <span class=\"text-emphasis\"><strong>S</strong></span> pour le "
+" joueur de gauche\n"
+"            "
 
 #: templates/tournament/validate.html:36
 msgid ""
@@ -705,47 +824,53 @@ msgid ""
 "span> for right player\n"
 "            "
 msgstr ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>flèche vers le haut</strong></span> "
+"et\n"
+"              <span class=\"text-emphasis\"><strong>flèche vers le bas</strong></"
+"span>pour le joueur de droite\n"
+"            "
 
 #: templates/tournament/validate.html:57
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: templates/tournament/validate.html:58
 msgid "Verification code"
-msgstr ""
+msgstr "Code de vérification"
 
 #: templates/tournament/validate.html:80
 msgid "Owner"
-msgstr ""
+msgstr "Créateur"
 
 #: templates/tournaments_list.html:12
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: templates/tournaments_list.html:13
 msgid "Type"
-msgstr ""
+msgstr "Taper"
 
 #: templates/tournaments_list.html:15
 msgid "Players"
-msgstr ""
+msgstr "Joueurs"
 
 #: templates/tournaments_list.html:16
 msgid "Total Games"
-msgstr ""
+msgstr "Total des jeux"
 
 #: templates/tournaments_list.html:68
 msgid "Start"
-msgstr ""
+msgstr "Démarrer"
 
 #: templates/tournaments_list.html:95
 msgid "No tournaments registered"
-msgstr ""
+msgstr "Aucun tournoi enregistré"
 
 #: user/forms.py:22
 msgid "insert username"
-msgstr ""
+msgstr "insérer nom d'utilisateur"
 
 #: user/models.py:34
 msgid "anonymous"
-msgstr ""
+msgstr "anonyme"
