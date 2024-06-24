@@ -28,7 +28,7 @@
 
         <tbody>
           {% for p in t.players %}
-            <tr>
+            <tr {% if t.status == TournamentStatus.ENDED and forloop.counter == 1 %}class="tournament-winner"{% endif %}>
               <td>{{ forloop.counter }}</td>
               <td>
                 <span >

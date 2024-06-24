@@ -1,5 +1,5 @@
-import { HttpClient, HttpClientRequestData } from './httpClient.js';
 import { getUserId } from '../utils/getUserId.js';
+import { HttpClient, HttpClientRequestData } from './httpClient.js';
 
 /**
  * All the services related to user management.
@@ -12,18 +12,18 @@ import { getUserId } from '../utils/getUserId.js';
  */
 class FriendshipService {
   constructor() {
-    const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
+    this.userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006`);
   }
 
   async getFriends() {
-    const requestData = new HttpClientRequestData('GET', 'friends/');
+    const requestData = new HttpClientRequestData('GET', `/user/${this.userId}/friends/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async deleteFriend(friendId) {
-    const requestData = new HttpClientRequestData('DELETE', `friends/${friendId}/`);
+    const requestData = new HttpClientRequestData('DELETE', `/user/${this.userId}/friends/${friendId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -35,24 +35,24 @@ class FriendshipService {
  */
 class BlockingService {
   constructor() {
-    const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
+    this.userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006`);
   }
 
   async getBlockedUsers() {
-    const requestData = new HttpClientRequestData('GET', 'block/');
+    const requestData = new HttpClientRequestData('GET', `/user/${this.userId}/block/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async blockUser(blockedUserId) {
-    const requestData = new HttpClientRequestData('POST', `block/${blockedUserId}/`);
+    const requestData = new HttpClientRequestData('POST', `/user/${this.userId}/block/${blockedUserId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async unblockUser(blockedUserId) {
-    const requestData = new HttpClientRequestData('DELETE', `block/${blockedUserId}/`);
+    const requestData = new HttpClientRequestData('DELETE', `/user/${this.userId}/block/${blockedUserId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -64,30 +64,30 @@ class BlockingService {
  */
 class FriendshipRequestService {
   constructor() {
-    const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}/`);
+    this.userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006`);
   }
 
   async getFriendRequests() {
-    const requestData = new HttpClientRequestData('GET', 'friend_request/');
+    const requestData = new HttpClientRequestData('GET', `/user/${this.userId}/friend_request/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async acceptFriendRequest(requestId) {
-    const requestData = new HttpClientRequestData('PUT', `friend_request/${requestId}/`);
+    const requestData = new HttpClientRequestData('PUT', `/user/${this.userId}/friend_request/${requestId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async rejectFriendRequest(requestId) {
-    const requestData = new HttpClientRequestData('DELETE', `friend_request/${requestId}/`);
+    const requestData = new HttpClientRequestData('DELETE', `/user/${this.userId}/friend_request/${requestId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async sendFriendRequest(friendId) {
-    const requestData = new HttpClientRequestData('POST', `friend_request/${friendId}/`);
+    const requestData = new HttpClientRequestData('POST', `/user/${this.userId}/friend_request/${friendId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -100,13 +100,13 @@ class FriendshipRequestService {
  */
 class UserInformationService {
   constructor() {
-    const userId = getUserId();
-    this.httpClient = new HttpClient(`https://localhost:8006/user/${userId}`);
+    this.userId = getUserId();
+    this.httpClient = new HttpClient(`https://localhost:8006`);
 
   }
 
   async getUserData() {
-    const requestData = new HttpClientRequestData('GET', '/');
+    const requestData = new HttpClientRequestData('GET', `/user/${this.userId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -126,14 +126,14 @@ class UserInformationService {
       avatar_name: formData.get('avatar_name')
       };
 
-    const requestData = new HttpClientRequestData('PATCH', '/', data);
+    const requestData = new HttpClientRequestData('PATCH', `/user/${this.userId}/`, data);
     const response = await this.httpClient.makeRequest(requestData);
 
     return response;
   }
 
   async deleteUser() {
-    const requestData = new HttpClientRequestData('DELETE', '/');
+    const requestData = new HttpClientRequestData('DELETE', `/user/${this.userId}/`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
@@ -141,17 +141,17 @@ class UserInformationService {
 class SearchUsersService {
 
   constructor() {
-    this.httpClient = new HttpClient('https://localhost:8006/user/');
+    this.httpClient = new HttpClient('https://localhost:8006');
   }
 
   async searchUsers(query) {
-    const requestData = new HttpClientRequestData('GET', `?nickname=${query}`);
+    const requestData = new HttpClientRequestData('GET', `/user/?nickname=${query}`);
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }
 
   async viewOnlineUsers() {
-    const requestData = new HttpClientRequestData('GET', '?status=active');
+    const requestData = new HttpClientRequestData('GET', '/user/?status=active');
     const response = await this.httpClient.makeRequest(requestData);
     return response;
   }

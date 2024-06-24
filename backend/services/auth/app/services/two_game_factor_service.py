@@ -37,7 +37,7 @@ class TwoGameFactorService(ITwoGameFactorService):
             two_factor_codes = (
                 await self.two_factor_game_repository.find_validate_two_factor_by_game_details(two_factor_code)
             )
-            if not two_factor_codes:
+            if not two_factor_codes or len(two_factor_codes) == 0:
                 raise TwoFactorCodeException(_("Invalid Access Token"))
             codes = dict_code_user_receiver_id.keys()
             if len(two_factor_codes) != len(codes):

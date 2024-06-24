@@ -32,17 +32,17 @@ const pathRoutes = {
 };
 
 const hashRoutes = {
-  "/": { title: "Home", render: home, description: "Pong games", isProtected: true },
   "login": { title: "Login", render: login, description: "Login to your account."},
   "sign-up": { title: "Signup", render: signup, description: "Create an account." },
   "404": { title: "Not Found", render: notFound, description: "The page you are looking for does not exist."},
   "two-factor-auth": { title: "Two Factor Auth", render: twoFactorAuth, description: "Two Factor Authentication."},
   "auth-register-temp": { title: "Register Auth 42", render: authRegisterTempView, description: "Register 42."},
   "forgot-password": { title: "Forgot Password", render: forgotPassword, description: "Forgot Password."},
-  "user-profile": { title: "User Profile", render: userProfile, description: "View user profile.", isProtected: true },
-  "search-users": { title: "Search Users", render: searchUsers, description: "Search for users.", isProtected: true },
-  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings.", isProtected: true },
-  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page."},
+  "/": { title: "Home", render: home, description: "Pong games", isProtected: true },
+  "user-profile": { title: "User Profile", render: userProfile, description: "View user profile.", isProtected: true},
+  "search-users": { title: "Search Users", render: searchUsers, description: "Search for users.", isProtected: true},
+  "user-settings": { title: "Settings", render: userSettings, description: "Change user settings.", isProtected: true},
+  "game-info": { title: "Game info", render: GameInfoView, description: "Game info page.", isProtected: true},
   "play": { title: "Play Pong", render: NewGameView, description: "Play pong", isProtected: true },
   "verify-player": { title: "Verify player", render: ValidateGameView, description: "Verify", isProtected: true },
   "pong": { title: "Play Pong", render: PongGameView, description: "Play pong", isProtected: true },

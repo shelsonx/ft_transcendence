@@ -1,9 +1,10 @@
+import { AuthConstants } from "../constants/auth-constants.js";
 class LanguageHandler {
   #locale;
   #defaultLocale;
   constructor() {
     this.#defaultLocale = 'en';
-    this.#locale = 'en';
+    this.#locale = localStorage.getItem(AuthConstants.AUTH_LOCALE) || 'en';
     this.dropDownMenu = document.getElementById('change-language-menu');
     this.hasSetup = false;
     this.translations = {};
@@ -40,7 +41,12 @@ class LanguageHandler {
   }
 
   setDefaultLocale(locale) {
+    const langSelected = Object.values(this.supportedLanguages).find(lg => lg.code === locale);
+    if (!langSelected) {
+      locale = 'en';
+    }
     this.#defaultLocale = locale;
+    localStorage.setItem(AuthConstants.AUTH_LOCALE, locale);
   }
 
   getDefaultLocale() {
@@ -163,11 +169,8 @@ class LanguageHandler {
     return await response.json();
   }
 
-  async handleLocation(newLocale, isFirstLoad = false) {
-    if (newLocale === this.#locale && !isFirstLoad) return;
-
+  async handleLocation(newLocale) {
     this.setLocale(newLocale);
-
     const newTranslations = await this.fetchTranslationsFor(
       newLocale,
     );
@@ -208,7 +211,8 @@ class LanguageHandler {
 
   onInit(isFirstLoad = false) {
     this.addLanguagesToDropdown();
-    this.handleLocation(this.#locale, isFirstLoad);
+    const localeToUpdate = isFirstLoad ? this.getDefaultLocale() : this.getLocale();
+    this.handleLocation(localeToUpdate);
   }
 }
 

@@ -23,12 +23,6 @@ from .forms import UserForm
 class UserView(generic.View):
     form_class = UserForm
 
-    # talvez use a get para o Shelson, se ele precisar pedir em algum momento
-    # def get(self, request: HttpRequest, pk: uuid) -> JsonResponse:
-    #     print(request.path)
-    #     if request.path == reverse_lazy("user:user_add"):
-    #         return HttpResponseNotAllowed(permitted_methods=["POST"])
-
     @JWTAuthentication(validate_user=False)
     def post(self, request: HttpRequest) -> JsonResponse:
         data = json.loads(request.body)

@@ -1,6 +1,10 @@
 import BaseLoggedView from "../baseLoggedView.js";
+import authService from "../../services/authService.js";
 import gameService from "../../services/gameService.js";
+import wrapperLoadingService from '../../services/wrapperService.js';
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
+import { VerificationType } from "../../contracts/game/validation.js";
+import { isValidToken } from "../../contracts/validation/tokenValidation.js";
 
 class ValidateGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -30,17 +34,56 @@ const putVerifyForm = async (response) => {
 
   const verifyForm = document.getElementById("validation-form");
   verifyForm.addEventListener("submit", submitVerifyForm);
+
+  const resendCodeButton = document.getElementById("resend-btn");
+  resendCodeButton.addEventListener("click", resendCode)
 };
+
+const resendCode = (e) => {
+  const verifyForm = document.getElementById("validation-form");
+  const formData = new FormData(verifyForm);
+
+  const data = {
+    user_receiver_ids: [formData.get("user")],
+    user_requester_id: gameService.user.id,
+    game_id: match,
+    game_type: VerificationType.GAME,
+  };
+  wrapperLoadingService.execute(
+    authService,
+    authService.sendGame2Factor,
+    data
+  );
+}
+
+const invalidToken = () => {
+  const errors = document.getElementsByClassName("form-error");
+  if (errors.length > 0) {
+    [...errors].forEach(errorElement => {
+      errorElement.remove();
+    });
+  }
+  
+  const tokenField = document.getElementById("token");
+  var errorElement = document.createElement('div');
+  errorElement.classList.add("form-error");
+  errorElement.classList.add("p-sm");
+  errorElement.setAttribute("data-i18n-key", "invalid-access-token");
+  errorElement.innerText = "Invalid Access Token";
+  tokenField.appendChild(errorElement);
+}
 
 const submitVerifyForm = async (e) => {
   e.preventDefault();
   const verifyForm = document.getElementById("validation-form");
   const formData = new FormData(verifyForm);
+  const token = formData.get("token");
+  if (!isValidToken(token)) return invalidToken();
 
-  await gameService.validateGame(match, formData).then(verifyPlayerResult);
+  await gameService.validateGame(match, formData).then(handleValidateResponse);
 };
 
-const verifyPlayerResult = async (response) => {
+const handleValidateResponse = async (response) => {
   if (typeof response === "string") {
     putVerifyForm(response);
   } else {
@@ -59,6 +102,7 @@ const start = async (user) => {
     return;
   }
 
+  gameService.user = user;
   await gameService.validateGameForm(match).then(putVerifyForm);
 };
 

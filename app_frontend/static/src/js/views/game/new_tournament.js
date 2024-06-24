@@ -51,8 +51,13 @@ const addTournamentResult = async (response) => {
       if (
         response.hasOwnProperty("data") &&
         response.data.hasOwnProperty("tournament") &&
-        response.data.tournament !== null
+        response.data.hasOwnProperty("invite") &&
+        response.data.tournament !== null &&
+        response.data.invite != null
       ) {
+        try {
+          authService.sendGame2Factor(response.data.invite);
+        } catch (error) {}
         window.location.href =
           "?t=" + response.data.tournament + "#verify-players";
         return;

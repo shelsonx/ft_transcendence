@@ -19,6 +19,12 @@ migrations:
 migrate:
 	docker exec -t game-api bash -c "python manage.py migrate"
 
+messages:
+	docker exec -t game-api bash -c "django-admin makemessages --all"
+
+compilemessages:
+	docker exec -t game-api bash -c "django-admin compilemessages"
+
 logs:
 	docker logs -f game-api
 
@@ -30,6 +36,9 @@ runscript:
 
 db:
 	docker exec -it game-api bash -c "python manage.py shell < utils/seed_base_data.py"
+
+delete-db:
+	docker exec -it game-api bash -c "python manage.py shell < utils/delete_objects.py"
 
 shell:
 	docker exec -it game-api bash -c "python manage.py shell"
@@ -46,7 +55,6 @@ dump:
 exec-api:
 	docker exec -it game-api bash
 
-# change this
 # exec-db:
 # 	docker exec -it game-db psql -d game_db -U pong_user
 

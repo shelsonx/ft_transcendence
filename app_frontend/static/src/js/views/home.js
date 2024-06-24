@@ -1,3 +1,4 @@
+import { AuthConstants } from '../constants/auth-constants.js';
 import languageHandler from '../locale/languageHandler.js';
 import gameService from '../services/gameService.js';
 import {
@@ -18,7 +19,7 @@ class HomeView extends BaseLoggedView {
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
-    <h2 id="hello-user"></h2>
+    <h3 id="hello-user" class="px-3"></h3>
     <div>
       <button id="btn-my-games" type="button" class="btn btn-info"
         onclick="window.location='#my-games';"
@@ -52,26 +53,26 @@ const swap = (response) => {
 };
 
 const changeLanguageWhenLogin = async (userId) => {
-  // TODO
-  let userChoosenLanguage = 'en';
+  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE) || 'en';
   try {
     const userInfoService = new UserInformationService(userId);
     const { user: userManagement } = await userInfoService.getUserData();
     const { chosen_language } = userManagement;
     userChoosenLanguage = chosen_language;
+    languageHandler.setDefaultLocale(userChoosenLanguage);
   } catch (err) {
     console.error(err);
-  }
-  languageHandler.changeLanguage(userChoosenLanguage);
+  } finally {
+    languageHandler.changeLanguage(userChoosenLanguage);
+   }
 };
 
 const start = async (user) => {
   if (user) {
     changeLanguageWhenLogin(user.id);
+    const helloUser = document.getElementById("hello-user");
+    helloUser.innerHTML = `Hello, ${user.userName}!`;
   }
-
-  const helloUser = document.getElementById("hello-user");
-  helloUser.innerHTML = `Hello, ${user.userName}!`;
 
   await gameService.allGames().then(swap);
 };

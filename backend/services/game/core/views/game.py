@@ -17,7 +17,17 @@ from django.views.decorators.csrf import csrf_exempt
 # First Party
 from common.models import json_response
 from user.decorators import JWTAuthentication
-from core.models import Game, GameStatus, GameRules, Tournament, TournamentStatus
+from core.models import (
+    Game,
+    GameStatus,
+    GameRules,
+    GameRuleType,
+    Round,
+    RoundStatus,
+    Tournament,
+    TournamentStatus,
+    VerificationType,
+)
 from core.forms import GameForm, GameRulesForm, UpdateGameForm, UpdateGamePlayerForm
 from user.forms import UserSearchForm
 from user.models import User
@@ -38,20 +48,33 @@ class AddGameView(generic.View):
     @JWTAuthentication()
     def post(self, request: HttpRequest) -> HttpResponse:
         post_data = request.POST
+
+        is_valid = True
         self.set_forms(post_data)
         context = self.get_context_data()
         forms = [self.rules_form, self.user_form]
+        if not all(form.is_valid() for form in forms):
+            if not self.rules_form.is_valid():
+                context["rules_expanded"] = True
+            is_valid = False
+
         if not self.opponent:
             [form.is_valid() for form in forms]
             msg = _("User does not exist")
             self.user_form.add_error("username", ValidationError(message=msg))
-            return render(request, self.template_name, context)
+            is_valid = False
+
         if self.opponent == request.user:
             [form.is_valid() for form in forms]
             msg = _("You can't play against yourself")
             self.user_form.add_error("username", ValidationError(message=msg))
-            return render(request, self.template_name, context)
-        if not all(form.is_valid() for form in forms):
+            is_valid = False
+
+        rule_type = post_data.get("rule_type")
+        if rule_type and rule_type != str(GameRuleType.PLAYER_POINTS.value):
+            context["rules_expanded"] = True
+
+        if not is_valid:
             return render(request, self.template_name, context)
 
         rules = GameRules.objects.filter(
@@ -78,9 +101,17 @@ class AddGameView(generic.View):
         game.add_player(request.user)
         game.add_player(self.opponent)
         game.set_players_position()
-        # TODO: pedido para gerar o token para o oponente
 
-        return json_response.success(data={"game": game.pk}, status=HTTPStatus.CREATED)
+        data = {
+            "game": game.pk,
+            "invite": {
+                "user_receiver_ids": [self.opponent.id],
+                "user_requester_id": request.user.id,
+                "game_id": game.pk,
+                "game_type": VerificationType.GAME.value,
+            },
+        }
+        return json_response.success(data, status=HTTPStatus.CREATED)
 
     def get_opponent(self, post_data: QueryDict | None) -> User | None:
         opponent = post_data.get("username") if post_data else None
@@ -90,7 +121,7 @@ class AddGameView(generic.View):
 
     def get_context_data(self, **kwargs) -> dict:
         return {
-            "invalid": False,
+            "rules_expanded": False,
             "rules_form": self.rules_form,
             "user_form": self.user_form,
         }
@@ -120,7 +151,6 @@ class GameView(generic.View):
         if not game:
             return json_response.not_found()
         if game.owner != request.user:
-            print(game.owner, request.user)
             return json_response.forbidden()
 
         data = json.loads(request.body)
@@ -153,13 +183,43 @@ class GameView(generic.View):
                 t.status = TournamentStatus.ON_GOING
                 t.save()
 
+        data = {}
         if game.status == GameStatus.ENDED.value:
-            round = game.round.all().first()
+            round: Round = game.round.all().first()
             if round is not None:
+                if t != round.tournament:
+                    return json_response.bad_request("mismatch data")
                 game.update_tournament()
+                next_game = round.get_next_or_current_game()
+                if not next_game:
+                    round.status = RoundStatus.ENDED
+                    round.save()
+                    next_round = t.get_next_or_current_round()
+                    if next_round:
+                        next_game = next_round.get_next_or_current_game()
+                        next_round.status = RoundStatus.ON_GOING
+                        next_round.save()
+                    else:
+                        t.status = TournamentStatus.ENDED
+                        t.save()
+                        t.update_users()
+                if next_game:
+                    next_game.status = GameStatus.SCHEDULED
+                    next_game.save()
             else:
                 game.update_users()
-        return json_response.success(msg="Game updated")
+
+            # esure to get data updated
+            users_pk = [player_left.user.pk, player_right.user.pk]
+            users = User.objects.filter(pk__in=users_pk)
+            game = Game.objects.get(pk=game.pk)
+            data = {
+                "game": game.to_json(),
+                "stats": [u.to_stats() for u in users],
+            }
+
+        # print("game status: ", GameStatus(game.status).label)
+        return json_response.success(data, msg="Game updated")
 
     @JWTAuthentication()
     def put(self, request: HttpRequest, pk: uuid) -> HttpResponse:

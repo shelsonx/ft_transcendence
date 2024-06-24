@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 import json
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
+import uuid
 
 from .models import UserInfo
 
@@ -82,16 +82,41 @@ def update_scores_user(request: HttpRequest) -> HttpResponse:
         payload = json.loads(request.body)
         id_msc = payload.get('id_msc')
         score = payload.get('score')
-        match_result = payload.get('match_result')
+        winnings = payload.get('winnings')
+        losses = payload.get('losses')
         user = get_object_or_404(UserInfo, id_msc=id_msc)
-        user.scores += score
-        if match_result == 'win':
-            user.winnings += 1
-        elif match_result == 'loss':
-            user.losses += 1
-        else:
-            return HttpResponse("Error: Invalid match result", status=400)
+        if score:
+            user.scores = score
+        if winnings:
+            user.winnings = winnings
+        if losses:
+            user.losses = losses
         user.save()
         return HttpResponse("OK", status=200)
     except Http404:
         return HttpResponse("Error: Failed to update scores", status=400)
+
+@csrf_exempt
+def update_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.nickname = payload.get('nickname')
+        user.full_name = user.nickname
+        user.photo = payload.get('avatar')
+        user.save()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to update user", status=400)
+
+@csrf_exempt
+def delete_user(request: HttpRequest) -> HttpResponse:
+    try:
+        payload = json.loads(request.body)
+        id_msc = payload.get('id_msc')
+        user = get_object_or_404(UserInfo, id_msc=id_msc)
+        user.delete()
+        return HttpResponse("OK", status=200)
+    except Http404:
+        return HttpResponse("Error: Failed to delete user", status=400)

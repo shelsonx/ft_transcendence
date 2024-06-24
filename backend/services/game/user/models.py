@@ -32,11 +32,17 @@ class User(models.Model):
         return {
             "id": None,
             "username": _("anonymous"),
+            "avatar": f"{USER_API}{DEFAULT_AVATAR}",
         }
 
     @property
     def total_games(self) -> int:
         return self.winnings + self.losses + self.ties
+
+    @property
+    def average_points(self) -> int:
+        total = self.total_games
+        return self.score / total if total else 0
 
     @property
     def total_tournaments(self) -> int:
@@ -70,8 +76,18 @@ class User(models.Model):
         return {
             "id": self.pk,
             "username": self.username,
+            "avatar": self.avatarUrl,
             "score": self.score,
             "rating": self.rating,
+            "winnings": self.winnings,
+            "losses": self.losses,
+            "ties": self.ties,
+        }
+
+    def to_stats(self) -> dict:
+        return {
+            "id_msc": self.pk,
+            "score": self.rating,
             "winnings": self.winnings,
             "losses": self.losses,
             "ties": self.ties,

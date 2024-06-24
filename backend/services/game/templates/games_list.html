@@ -1,23 +1,18 @@
 {% load i18n %}
 {% load timedelta_tags %}
+{% load player_tags %}
+
+{% if user %}
+  {% include "game/user_info.html" %}
+{% endif %}
 
 {% if not is_public_view and user %}
   <div class="main-game"><h3>{% translate "Your matches" %}</h3></div>
 {% endif %}
 
-{% if is_public_view %}
-  <div class="d-flex mb-3 align-items-center">
-    {% comment %} TODO: avatar {% endcomment %}
-    <h3>
-        <img class="profile-avatar" src="{{ user.avatarUrl }}" alt="user avatar">
-        {% blocktrans %} {{ user }} matches {% endblocktrans %}
-    </h3>
-  </div>
-{% endif %}
-
 <div
   id="games-table"
-  class="main-game static-user-list scroll-on table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
+  class="table-responsive border border-white border-opacity-10 rounded-3 align-content-center"
 >
   <table
     class="table table-dark align-middle"
@@ -44,7 +39,9 @@
         <tr class="match-row">
           <td>{% include "game/result.html" %}</td>
 
-          <td>
+          <td {% if game.status == GameStatus.ONGOING %}class="live"{% endif %}
+            {% if game.status == GameStatus.PAUSED %}class="paused"{% endif %}
+          >
             {% if game.status == GameStatus.ENDED %}
               {{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}
             {% else %}
@@ -74,7 +71,7 @@
             {% comment %} column to indicate that the user won or make actions {% endcomment %}
             <td>
               {% if game.is_winner %}
-                <span class="winner">{% translate "Winner" %}</span>
+                <span class="winner action">{% translate "Winner" %}</span>
               {% elif not is_public_view and game.is_owner %}
 
                 {% if game.status == GameStatus.SCHEDULED %}

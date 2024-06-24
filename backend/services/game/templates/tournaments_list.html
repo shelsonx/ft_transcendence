@@ -59,7 +59,7 @@
               {% if user %}
                 <td>
                   {% if t.is_winner %}
-                    <span class="winner">{% translate "Winner" %}</span>
+                    <span class="winner action">{% translate "Winner" %}</span>
                   {% elif t.is_owner %}
 
                     {% if t.status == TournamentStatus.SCHEDULED %}

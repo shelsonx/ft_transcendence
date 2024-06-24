@@ -1,13 +1,12 @@
 # python std library
-from http import HTTPStatus
+import json
 import uuid
 
 # Django
-from django.forms import ValidationError
-from django.http import HttpRequest, HttpResponse, QueryDict
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
@@ -24,7 +23,7 @@ from core.models import (
     TournamentStatus,
     TournamentType,
 )
-from core.forms import TournamentValidationForm
+from core.forms import PlayerValidationForm
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -44,7 +43,7 @@ class ValidateTournamentView(generic.View):
         players = t.players
         for p in players:
             initial = {"user": p.user.id if p.user else None}
-            p.form = TournamentValidationForm(initial=initial)
+            p.form = PlayerValidationForm(initial=initial)
 
         context = {
             "t": t,
@@ -64,7 +63,7 @@ class ValidateTournamentView(generic.View):
         if t.status != TournamentStatus.INVITATION:
             return json_response.bad_request()
 
-        data = QueryDict(request.body)
+        data = json.loads(request.body)
         player = data.get("player")
         user_id = data.get("user")
         if not player or not user_id:
@@ -79,19 +78,25 @@ class ValidateTournamentView(generic.View):
         if player.user.id != user_id:
             return json_response.bad_request()
 
-        data = {
-            "user": player.user.id,
-            "token": data["token"],
-        }
-        form = TournamentValidationForm(data)
-        if not form.is_valid():
+        auth_data = data.get("auth_data")
+        if not auth_data:
+            return json_response.bad_request("missing auth data")
+
+        is_valid = auth_data.get("is_success")
+        status = auth_data.get("status")
+        if not is_valid and status == 400:
+            form = PlayerValidationForm(data)
+            form.is_valid()
+            form.add_error("token", auth_data.get("error"))
+
             players = t.players
             for p in players:
                 if p != player:
                     initial = {"user": p.user.id if p.user else None}
-                    p.form = TournamentValidationForm(initial=initial)
+                    p.form = PlayerValidationForm(initial=initial)
                 else:
                     p.form = form
+
             context = {
                 "t": t,
                 "players": players,
@@ -99,15 +104,14 @@ class ValidateTournamentView(generic.View):
             }
             return render(request, self.template_name, context)
 
-        # TODO: verificação do token - Bruno
         player.verified = True
         player.save()
 
         if not all(p.verified for p in t.players):
-            print("entrou")
             return self.get(request, pk)
 
         t.status = TournamentStatus.SCHEDULED
+        t.tournament_date = timezone.now().date()
         t.save()
         t.generate_rounds()
         first_round: Round = t.get_rounds().first()

@@ -313,12 +313,15 @@ function setDetailsStatus(data) {
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
 
-function AddUserInList(data) {
+function AddUserInList(data, users_blocks) {
     let containers = document.getElementById('containers');
+
+    if (users_blocks.includes(data.id_msc) === true) {
+        return ;
+    }
 
     const container = createMainContainer();
     containers.appendChild(container);
-
     const row = createRow(container);
     const col1 = createCol1();
     row.appendChild(col1);
@@ -347,11 +350,23 @@ function AddUserInList(data) {
 
 }
 
-const start = () => {
+async function getUsersBlocks(user) {
+    var users_blocks = [];
+    const res = await gameInfoService.getUsersBlocks(user.id);
+    for (let i = 0; i < res.blocked_users.length; i++) {
+        users_blocks.push(res.blocked_users[i].id);
+    }
+    return users_blocks;
+}
+
+const start = async (user) => {
+
+    const users_blocks = await getUsersBlocks(user);
+
     gameInfoService.gameInfo().then(
       res => {
         res.forEach(data => {
-            AddUserInList(data);
+            AddUserInList(data, users_blocks);
         });
     });
 

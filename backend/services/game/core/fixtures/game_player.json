@@ -1,0 +1,2102 @@
+[
+  {
+    "model": "core.gameplayer",
+    "pk": 1401,
+    "fields": {
+      "game": 701,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1402,
+    "fields": {
+      "game": 701,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1403,
+    "fields": {
+      "game": 702,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1404,
+    "fields": {
+      "game": 702,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 8,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1405,
+    "fields": {
+      "game": 703,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1406,
+    "fields": {
+      "game": 703,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1407,
+    "fields": {
+      "game": 704,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1408,
+    "fields": {
+      "game": 704,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1409,
+    "fields": {
+      "game": 705,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1410,
+    "fields": {
+      "game": 705,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1411,
+    "fields": {
+      "game": 706,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1412,
+    "fields": {
+      "game": 706,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1413,
+    "fields": {
+      "game": 707,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 7,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1414,
+    "fields": {
+      "game": 707,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1415,
+    "fields": {
+      "game": 708,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1416,
+    "fields": {
+      "game": 708,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 2,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1417,
+    "fields": {
+      "game": 709,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1418,
+    "fields": {
+      "game": 709,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1419,
+    "fields": {
+      "game": 710,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1420,
+    "fields": {
+      "game": 710,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1421,
+    "fields": {
+      "game": 711,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1422,
+    "fields": {
+      "game": 711,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1423,
+    "fields": {
+      "game": 712,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1424,
+    "fields": {
+      "game": 712,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1425,
+    "fields": {
+      "game": 713,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1426,
+    "fields": {
+      "game": 713,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1427,
+    "fields": {
+      "game": 714,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 8,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1428,
+    "fields": {
+      "game": 714,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1429,
+    "fields": {
+      "game": 715,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 6,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1430,
+    "fields": {
+      "game": 715,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1431,
+    "fields": {
+      "game": 716,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1432,
+    "fields": {
+      "game": 716,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1433,
+    "fields": {
+      "game": 717,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1434,
+    "fields": {
+      "game": 717,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1435,
+    "fields": {
+      "game": 718,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1436,
+    "fields": {
+      "game": 718,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1437,
+    "fields": {
+      "game": 719,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1438,
+    "fields": {
+      "game": 719,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1439,
+    "fields": {
+      "game": 720,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 2,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1440,
+    "fields": {
+      "game": 720,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1441,
+    "fields": {
+      "game": 721,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1442,
+    "fields": {
+      "game": 721,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1443,
+    "fields": {
+      "game": 722,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1444,
+    "fields": {
+      "game": 722,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 4,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1445,
+    "fields": {
+      "game": 723,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1446,
+    "fields": {
+      "game": 723,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1447,
+    "fields": {
+      "game": 724,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1448,
+    "fields": {
+      "game": 724,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1449,
+    "fields": {
+      "game": 725,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 9,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1450,
+    "fields": {
+      "game": 725,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1451,
+    "fields": {
+      "game": 726,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1452,
+    "fields": {
+      "game": 726,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1453,
+    "fields": {
+      "game": 727,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1454,
+    "fields": {
+      "game": 727,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1455,
+    "fields": {
+      "game": 728,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1456,
+    "fields": {
+      "game": 728,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1457,
+    "fields": {
+      "game": 729,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1458,
+    "fields": {
+      "game": 729,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1459,
+    "fields": {
+      "game": 730,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1460,
+    "fields": {
+      "game": 730,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1461,
+    "fields": {
+      "game": 731,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 6,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1462,
+    "fields": {
+      "game": 731,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1463,
+    "fields": {
+      "game": 732,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1464,
+    "fields": {
+      "game": 732,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1465,
+    "fields": {
+      "game": 733,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1466,
+    "fields": {
+      "game": 733,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 1,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1467,
+    "fields": {
+      "game": 734,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 7,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1468,
+    "fields": {
+      "game": 734,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1469,
+    "fields": {
+      "game": 735,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1470,
+    "fields": {
+      "game": 735,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1471,
+    "fields": {
+      "game": 736,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1472,
+    "fields": {
+      "game": 736,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1473,
+    "fields": {
+      "game": 737,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1474,
+    "fields": {
+      "game": 737,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1475,
+    "fields": {
+      "game": 738,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1476,
+    "fields": {
+      "game": 738,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1477,
+    "fields": {
+      "game": 739,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1478,
+    "fields": {
+      "game": 739,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1479,
+    "fields": {
+      "game": 740,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 8,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1480,
+    "fields": {
+      "game": 740,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1481,
+    "fields": {
+      "game": 741,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1482,
+    "fields": {
+      "game": 741,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1483,
+    "fields": {
+      "game": 742,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 4,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1484,
+    "fields": {
+      "game": 742,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 7,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1485,
+    "fields": {
+      "game": 743,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1486,
+    "fields": {
+      "game": 743,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1487,
+    "fields": {
+      "game": 744,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1488,
+    "fields": {
+      "game": 744,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1489,
+    "fields": {
+      "game": 745,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1490,
+    "fields": {
+      "game": 745,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1491,
+    "fields": {
+      "game": 746,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 10,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1492,
+    "fields": {
+      "game": 746,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 1,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1493,
+    "fields": {
+      "game": 747,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1494,
+    "fields": {
+      "game": 747,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1495,
+    "fields": {
+      "game": 748,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1496,
+    "fields": {
+      "game": 748,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1497,
+    "fields": {
+      "game": 749,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1498,
+    "fields": {
+      "game": 749,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1499,
+    "fields": {
+      "game": 750,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1500,
+    "fields": {
+      "game": 750,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1501,
+    "fields": {
+      "game": 751,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1502,
+    "fields": {
+      "game": 751,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1503,
+    "fields": {
+      "game": 752,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1504,
+    "fields": {
+      "game": 752,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1505,
+    "fields": {
+      "game": 753,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1506,
+    "fields": {
+      "game": 753,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1507,
+    "fields": {
+      "game": 754,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1508,
+    "fields": {
+      "game": 754,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1509,
+    "fields": {
+      "game": 755,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1510,
+    "fields": {
+      "game": 755,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1511,
+    "fields": {
+      "game": 756,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1512,
+    "fields": {
+      "game": 756,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1513,
+    "fields": {
+      "game": 757,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1514,
+    "fields": {
+      "game": 757,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1515,
+    "fields": {
+      "game": 758,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1516,
+    "fields": {
+      "game": 758,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 2,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1517,
+    "fields": {
+      "game": 759,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1518,
+    "fields": {
+      "game": 759,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1519,
+    "fields": {
+      "game": 760,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1520,
+    "fields": {
+      "game": 760,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 2,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1521,
+    "fields": {
+      "game": 761,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 21,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1522,
+    "fields": {
+      "game": 761,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 21,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1523,
+    "fields": {
+      "game": 762,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 34,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1524,
+    "fields": {
+      "game": 762,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1525,
+    "fields": {
+      "game": 763,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 37,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1526,
+    "fields": {
+      "game": 763,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 5,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1527,
+    "fields": {
+      "game": 764,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 27,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1528,
+    "fields": {
+      "game": 764,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 15,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1529,
+    "fields": {
+      "game": 765,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 37,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1530,
+    "fields": {
+      "game": 765,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 5,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1531,
+    "fields": {
+      "game": 766,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 32,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1532,
+    "fields": {
+      "game": 766,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1533,
+    "fields": {
+      "game": 767,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 20,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1534,
+    "fields": {
+      "game": 767,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 22,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1535,
+    "fields": {
+      "game": 768,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1536,
+    "fields": {
+      "game": 768,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 31,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1537,
+    "fields": {
+      "game": 769,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 41,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1538,
+    "fields": {
+      "game": 769,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 1,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1539,
+    "fields": {
+      "game": 770,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 23,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1540,
+    "fields": {
+      "game": 770,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 19,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1541,
+    "fields": {
+      "game": 771,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1542,
+    "fields": {
+      "game": 771,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1543,
+    "fields": {
+      "game": 772,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1544,
+    "fields": {
+      "game": 772,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 8,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1545,
+    "fields": {
+      "game": 773,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1546,
+    "fields": {
+      "game": 773,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1547,
+    "fields": {
+      "game": 774,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1548,
+    "fields": {
+      "game": 774,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1549,
+    "fields": {
+      "game": 775,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1550,
+    "fields": {
+      "game": 775,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1551,
+    "fields": {
+      "game": 776,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1552,
+    "fields": {
+      "game": 776,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 8,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1553,
+    "fields": {
+      "game": 777,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1554,
+    "fields": {
+      "game": 777,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1555,
+    "fields": {
+      "game": 778,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1556,
+    "fields": {
+      "game": 778,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1557,
+    "fields": {
+      "game": 779,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1558,
+    "fields": {
+      "game": 779,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1559,
+    "fields": {
+      "game": 780,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1560,
+    "fields": {
+      "game": 780,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1561,
+    "fields": {
+      "game": 781,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 6,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1562,
+    "fields": {
+      "game": 781,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1563,
+    "fields": {
+      "game": 782,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 10,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1564,
+    "fields": {
+      "game": 782,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1565,
+    "fields": {
+      "game": 783,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 6,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1566,
+    "fields": {
+      "game": 783,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1567,
+    "fields": {
+      "game": 784,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1568,
+    "fields": {
+      "game": 784,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 5,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1569,
+    "fields": {
+      "game": 785,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 2,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1570,
+    "fields": {
+      "game": 785,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 9,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1571,
+    "fields": {
+      "game": 786,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 7,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1572,
+    "fields": {
+      "game": 786,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 4,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1573,
+    "fields": {
+      "game": 787,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "score": 5,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1574,
+    "fields": {
+      "game": 787,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1575,
+    "fields": {
+      "game": 788,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1576,
+    "fields": {
+      "game": 788,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1577,
+    "fields": {
+      "game": 789,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1578,
+    "fields": {
+      "game": 789,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1579,
+    "fields": {
+      "game": 790,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 2,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1580,
+    "fields": {
+      "game": 790,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1581,
+    "fields": {
+      "game": 791,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1582,
+    "fields": {
+      "game": 791,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1583,
+    "fields": {
+      "game": 792,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1584,
+    "fields": {
+      "game": 792,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "score": 0,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1585,
+    "fields": {
+      "game": 793,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 31,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1586,
+    "fields": {
+      "game": 793,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1587,
+    "fields": {
+      "game": 794,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 23,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1588,
+    "fields": {
+      "game": 794,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 19,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1589,
+    "fields": {
+      "game": 795,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 3,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1590,
+    "fields": {
+      "game": 795,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 39,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1591,
+    "fields": {
+      "game": 796,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 23,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1592,
+    "fields": {
+      "game": 796,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 19,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1593,
+    "fields": {
+      "game": 797,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 6,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1594,
+    "fields": {
+      "game": 797,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 36,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1595,
+    "fields": {
+      "game": 798,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "score": 8,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1596,
+    "fields": {
+      "game": 798,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 34,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1597,
+    "fields": {
+      "game": 799,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 7,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1598,
+    "fields": {
+      "game": 799,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1599,
+    "fields": {
+      "game": 800,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1600,
+    "fields": {
+      "game": 800,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1601,
+    "fields": {
+      "game": 801,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 3,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1602,
+    "fields": {
+      "game": 801,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1603,
+    "fields": {
+      "game": 802,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1604,
+    "fields": {
+      "game": 802,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 1,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1605,
+    "fields": {
+      "game": 803,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1606,
+    "fields": {
+      "game": 803,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1607,
+    "fields": {
+      "game": 804,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 11,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1608,
+    "fields": {
+      "game": 804,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 0,
+      "position": 1
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1609,
+    "fields": {
+      "game": 805,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "score": 10,
+      "position": 0
+    }
+  },
+  {
+    "model": "core.gameplayer",
+    "pk": 1610,
+    "fields": {
+      "game": 805,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "score": 11,
+      "position": 1
+    }
+  }
+]

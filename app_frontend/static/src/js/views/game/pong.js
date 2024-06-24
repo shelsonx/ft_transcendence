@@ -1,10 +1,12 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
+import gameInfoService from "../../services/gameInfoService.js";
 import PongManager from "../../models/pongManager.js";
 import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
 import { PLAYER_VELOCITY } from "../../constants/game.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
+import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -35,9 +37,14 @@ const html = /*html*/ `
     <div class="d-flex justify-content-center">
       <canvas id="canvas"></canvas>
     </div>
-    <div class="d-flex justify-content-center py-5" id="game-buttons">
-      <button id="pause" class="btn btn-primary d-none">Pause</button>
-      <button id="continue" class="btn btn-primary d-none">Continue</button>
+    <div class="py-5">
+      <div class="d-flex justify-content-center pb-3" id="game-buttons">
+        <button id="pause" class="btn btn-primary d-none">Pause</button>
+        <button id="continue" class="btn btn-primary d-none">Continue</button>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button id="back-tournament" class="btn btn-secondary d-none">Back to tournament</button>
+      </div>
     </div>
   </div>
 
@@ -90,7 +97,7 @@ function loadEndMessage(pong) {
   const messageHtml = document.getElementById("message");
   const winner = pong.winner();
   let msg =
-    winner !== null ? `${winner.user.username} won!` : "Game ended in a draw";
+    winner !== null ? `${winner.user.name} won!` : "Game ended in a draw";
 
   if (pong.game.status.value === GameStatus.CANCELED)
     msg = "This game was cancelled";
@@ -102,6 +109,27 @@ function loadEndMessage(pong) {
   `;
 }
 
+const updateUserStats = async (users) => {
+  users.forEach((user) => {
+    try {
+      gameInfoService.updateScoresUser(user);
+    } catch (error) {}
+  });
+};
+
+const updateUsersPlaying = (pong, playing) => {
+  const users = [pong.player_left.user.id, pong.player_right.user.id];
+  users.forEach((user) => {
+    try {
+      const data = {
+        id_msc: user,
+        playing: playing,
+      };
+      gameInfoService.updateUserPlaying(data);
+    } catch (error) {}
+  });
+};
+
 const saveGame = async (pong, update = false) => {
   if (update) pong.updateToSave();
   pong.save().then((response) => {
@@ -110,6 +138,17 @@ const saveGame = async (pong, update = false) => {
       window.cancelAnimationFrame(animationFrame);
       const gameData = document.getElementById("game-data");
       gameData.classList.add("d-none");
+    } else if (
+      pong.game.status.value === GameStatus.ENDED &&
+      response.hasOwnProperty("is_success") &&
+      response.is_success === true
+    ) {
+      if (
+        response.hasOwnProperty("data") &&
+        response.data.hasOwnProperty("stats") &&
+        response.data.stats !== null
+      )
+        updateUserStats(response.data.stats);
     }
   });
 };
@@ -142,18 +181,81 @@ const settleGame = (response) => {
   if ([GameStatus.ENDED, GameStatus.CANCELED].includes(pong.game.status.value))
     return loadEndMessage(pong);
 
+  const keyDownHandler = (e) => {
+    e.preventDefault();
+    switch (e.code) {
+      case "ArrowUp":
+        pong.player_right.velocity.y = -PLAYER_VELOCITY;
+        break;
+      case "ArrowDown":
+        pong.player_right.velocity.y = PLAYER_VELOCITY;
+        break;
+      case "KeyW":
+        pong.player_left.velocity.y = -PLAYER_VELOCITY;
+        break;
+      case "KeyS":
+        pong.player_left.velocity.y = PLAYER_VELOCITY;
+        break;
+    }
+  };
+
+  const keyUpHandler = (e) => {
+    switch (e.code) {
+      case "ArrowUp":
+      case "ArrowDown":
+        pong.player_right.velocity.y = 0;
+        break;
+      case "KeyW":
+      case "KeyS":
+        pong.player_left.velocity.y = 0;
+        break;
+    }
+  };
+
+  const resizeHandler = (e) => {
+    canvas.width = canvasWidth();
+    canvas.height = canvasHeight();
+    pong.resize(canvas.width, canvas.height);
+    pong.draw(ctx);
+  };
+
+  const beforeUnloadHandler = (event) => {
+    event.preventDefault();
+
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+  };
+
+  const stopGlobalEvents = () => {
+    window.cancelAnimationFrame(animationFrame);
+    window.removeEventListener("keydown", keyDownHandler);
+    window.removeEventListener("keyup", keyUpHandler);
+    window.removeEventListener("resize", resizeHandler);
+    window.removeEventListener("beforeunload", beforeUnloadHandler);
+  };
+
+  const initGlobalEvents = () => {
+    window.addEventListener("keydown", keyDownHandler);
+    window.addEventListener("keyup", keyUpHandler);
+    window.addEventListener("resize", resizeHandler);
+    window.addEventListener("beforeunload", beforeUnloadHandler);
+  };
+
   function animate() {
     const scored_point = pong.update();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     pong.draw(ctx);
 
     if (pong.checkGameEnded() === true) {
-      loadEndMessage(pong);
       pong.end();
-      window.cancelAnimationFrame(animationFrame);
+      stopGlobalEvents();
+      loadEndMessage(pong);
       const gameButtons = document.getElementById("game-buttons");
       gameButtons.classList.add("d-none");
+      updateTournamentBtn();
       saveGame(pong);
+      updateUsersPlaying(pong, false);
     } else {
       if (scored_point === true) saveGame(pong, true);
       animationFrame = requestAnimationFrame(animate);
@@ -163,70 +265,74 @@ const settleGame = (response) => {
   const startButton = document.getElementById("start");
   const pauseButton = document.getElementById("pause");
   const continueButton = document.getElementById("continue");
-  startButton.addEventListener("click", (e) => {
+  const tournamentButton = document.getElementById("back-tournament");
+
+  const updateTournamentBtn = () => {
+    if (pong.game.tournament !== null) {
+      tournamentButton.classList.remove("d-none");
+    }
+  }
+  updateTournamentBtn();
+
+  const startGame = (e) => {
     loadStartMessages();
+
     setTimeout(() => {
       if (pong.game.status.value === GameStatus.SCHEDULED) pong.begin();
       else pong.continue();
       animate();
       pauseButton.classList.remove("d-none");
+      tournamentButton.classList.add("d-none");
       saveGame(pong);
+      updateUsersPlaying(pong, true);
     }, startMessages[4].showMsgDelay);
 
-    window.addEventListener("keydown", (e) => {
-      e.preventDefault();
-      switch (e.code) {
-        case "ArrowUp":
-          pong.player_right.velocity.y = -PLAYER_VELOCITY;
-          break;
-        case "ArrowDown":
-          pong.player_right.velocity.y = PLAYER_VELOCITY;
-          break;
-        case "KeyW":
-          pong.player_left.velocity.y = -PLAYER_VELOCITY;
-          break;
-        case "KeyS":
-          pong.player_left.velocity.y = PLAYER_VELOCITY;
-          break;
-      }
-    });
-    window.addEventListener("keyup", (e) => {
-      switch (e.code) {
-        case "ArrowUp":
-        case "ArrowDown":
-          pong.player_right.velocity.y = 0;
-          break;
-        case "KeyW":
-        case "KeyS":
-          pong.player_left.velocity.y = 0;
-          break;
-      }
-    });
-  });
+    initGlobalEvents();
+  };
 
-  pauseButton.addEventListener("click", (e) => {
-    window.cancelAnimationFrame(animationFrame);
+  const pauseGame = () => {
+    pong.pause();
+    stopGlobalEvents();
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
-    pong.pause();
+    updateTournamentBtn();
     saveGame(pong);
-  });
+    updateUsersPlaying(pong, false);
+  };
 
-  continueButton.addEventListener("click", (e) => {
+  const continueGame = () => {
     window.cancelAnimationFrame(animationFrame);
     continueButton.classList.add("d-none");
     pauseButton.classList.remove("d-none");
+    tournamentButton.classList.add("d-none");
     pong.continue();
     animate();
+    initGlobalEvents();
     saveGame(pong);
-  });
+    updateUsersPlaying(pong, true);
+  };
 
-  window.addEventListener("resize", (e) => {
-    canvas.width = canvasWidth();
-    canvas.height = canvasHeight();
-    pong.resize(canvas.width, canvas.height);
-    pong.draw(ctx);
-  });
+  const goToTournament = () => {
+    window.location.href = "?t=" + pong.game.tournament + "#tournament";
+  }
+
+  startButton.addEventListener("click", startGame);
+  pauseButton.addEventListener("click", pauseGame);
+  continueButton.addEventListener("click", continueGame);
+  tournamentButton.addEventListener("click", goToTournament);
+
+  const pongHashChangeHandler = (e) => {
+    hashChangeHandler();
+    if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+  };
+  window.addEventListener("hashchange", pongHashChangeHandler);
+
+  const visibilityChangeHandler = (e) => {
+    if (document.hidden) {
+      if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
+    }
+  };
+  document.addEventListener("visibilitychange", visibilityChangeHandler);
 };
 
 const start = async (user) => {

@@ -469,7 +469,7 @@ body {
     border: 2px solid var(--primary-light);
 }
 
-.winner {
+.winner, td.live {
     color: var(--green-dark)
 }
 .loser {
@@ -542,6 +542,25 @@ ol li::marker {
     -moz-border-radius: 10px;
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
+}
+
+tr.tournament-winner td {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+    color: var(--green-dark)
+}
+
+td.paused {
+    color: var(--secondary-light)
+}
+
+.vl {
+    border-left: 1px solid;
+    height: 200px;
+}
+
+.user-game-info {
+    font-family: "Press Start 2P", sans-serif;
 }
 
 /* End game views */

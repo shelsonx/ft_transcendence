@@ -3,8 +3,9 @@
         "model": "dashboard.userinfo",
         "pk": 1,
         "fields": {
+            "id_msc": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
             "full_name": "Shelson Jhony Xavier Alves",
-            "nickname": "sjhony-x",
+            "nickname": "salves",
             "scores": 300,
             "winnings": 2,
             "losses": 1,
@@ -18,8 +19,9 @@
         "model": "dashboard.userinfo",
         "pk": 2,
         "fields": {
+            "id_msc": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
             "full_name": "Sheela Guilhermino Khusal",
-            "nickname": "sguilher",
+            "nickname": "sheela",
             "scores": 7000,
             "winnings": 6,
             "losses": 1,
@@ -33,8 +35,9 @@
         "model": "dashboard.userinfo",
         "pk": 3,
         "fields": {
+            "id_msc": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
             "full_name": "Eliaris Raíra De Godoy Alvares",
-            "nickname": "elraira-",
+            "nickname": "elia-",
             "scores": 3500,
             "winnings": 11,
             "losses": 2,
@@ -48,8 +51,9 @@
         "model": "dashboard.userinfo",
         "pk": 4,
         "fields": {
+            "id_msc": "355aaf65-0300-47b6-8748-c8d0c1aed702",
             "full_name": "Bruno Bonaldi Ramos Silva",
-            "nickname": "bbonaldi",
+            "nickname": "brunob",
             "scores": 4000,
             "winnings": 1,
             "losses": 1,
@@ -63,8 +67,9 @@
         "model": "dashboard.userinfo",
         "pk": 5,
         "fields": {
+            "id_msc": "e054f322-7733-48be-b1b1-7a66357efecd",
             "full_name": "Humberto Arndt",
-            "nickname": "harndt",
+            "nickname": "humbt",
             "scores": 300,
             "winnings": 1,
             "losses": 4,
@@ -72,36 +77,6 @@
             "status": false,
             "playing": true,
             "photo": "static/images/2024/05/01/humberto.jpeg"
-        }
-    },
-    {
-        "model": "dashboard.userinfo",
-        "pk": 6,
-        "fields": {
-            "full_name": "Davi Lucca Viana Alves",
-            "nickname": "davi-lc",
-            "scores": 3000,
-            "winnings": 1,
-            "losses": 1,
-            "position": 2,
-            "status": true,
-            "playing": false,
-            "photo": "static/images/astronaut3.jpeg"
-        }
-    },
-    {
-        "model": "dashboard.userinfo",
-        "pk": 7,
-        "fields": {
-            "full_name": "Doriane  Viana Alves",
-            "nickname": "dory-vi",
-            "scores": 3000,
-            "winnings": 15,
-            "losses": 1,
-            "position": 1,
-            "status": true,
-            "playing": false,
-            "photo": "static/images/astronaut3.jpeg"
         }
     }
 ]
