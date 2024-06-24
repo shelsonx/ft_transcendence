@@ -1,0 +1,562 @@
+[
+  {
+    "model": "core.tournamentplayer",
+    "pk": 256,
+    "fields": {
+      "tournament": 91,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 26,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 257,
+    "fields": {
+      "tournament": 91,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 33,
+      "rating": 0,
+      "winnings": 0,
+      "losses": 5,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 258,
+    "fields": {
+      "tournament": 91,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 36,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 259,
+    "fields": {
+      "tournament": 91,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 44,
+      "rating": 12,
+      "winnings": 4,
+      "losses": 0,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 260,
+    "fields": {
+      "tournament": 91,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 30,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 261,
+    "fields": {
+      "tournament": 92,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 11,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 262,
+    "fields": {
+      "tournament": 92,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 28,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 263,
+    "fields": {
+      "tournament": 92,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 19,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 264,
+    "fields": {
+      "tournament": 92,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 34,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 265,
+    "fields": {
+      "tournament": 92,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 18,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 266,
+    "fields": {
+      "tournament": 93,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 9,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 267,
+    "fields": {
+      "tournament": 93,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 10,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 268,
+    "fields": {
+      "tournament": 93,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 9,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 269,
+    "fields": {
+      "tournament": 93,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 3,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 270,
+    "fields": {
+      "tournament": 93,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 7,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 271,
+    "fields": {
+      "tournament": 94,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 119,
+      "rating": 10,
+      "winnings": 3,
+      "losses": 1,
+      "ties": 1,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 272,
+    "fields": {
+      "tournament": 94,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 40,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 273,
+    "fields": {
+      "tournament": 94,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 79,
+      "rating": 4,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 1,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 274,
+    "fields": {
+      "tournament": 94,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 153,
+      "rating": 12,
+      "winnings": 4,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 275,
+    "fields": {
+      "tournament": 94,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 29,
+      "rating": 0,
+      "winnings": 0,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 276,
+    "fields": {
+      "tournament": 95,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 33,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 0,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 277,
+    "fields": {
+      "tournament": 95,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 41,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 278,
+    "fields": {
+      "tournament": 95,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 21,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 279,
+    "fields": {
+      "tournament": 95,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 27,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 280,
+    "fields": {
+      "tournament": 95,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 32,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 281,
+    "fields": {
+      "tournament": 96,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 22,
+      "rating": 0,
+      "winnings": 0,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 282,
+    "fields": {
+      "tournament": 96,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 33,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 0,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 283,
+    "fields": {
+      "tournament": 97,
+      "user": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "alias_name": "",
+      "score": 20,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 284,
+    "fields": {
+      "tournament": 97,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 24,
+      "rating": 6,
+      "winnings": 2,
+      "losses": 2,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 285,
+    "fields": {
+      "tournament": 98,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 14,
+      "rating": 12,
+      "winnings": 4,
+      "losses": 1,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 286,
+    "fields": {
+      "tournament": 98,
+      "user": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "alias_name": "",
+      "score": 3,
+      "rating": 3,
+      "winnings": 1,
+      "losses": 4,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 287,
+    "fields": {
+      "tournament": 99,
+      "user": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "alias_name": "",
+      "score": 94,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 288,
+    "fields": {
+      "tournament": 99,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 158,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 289,
+    "fields": {
+      "tournament": 100,
+      "user": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "alias_name": "",
+      "score": 45,
+      "rating": 12,
+      "winnings": 4,
+      "losses": 3,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  },
+  {
+    "model": "core.tournamentplayer",
+    "pk": 290,
+    "fields": {
+      "tournament": 100,
+      "user": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "alias_name": "",
+      "score": 63,
+      "rating": 9,
+      "winnings": 3,
+      "losses": 4,
+      "ties": 0,
+      "_updated_players": true,
+      "verified": true
+    }
+  }
+]

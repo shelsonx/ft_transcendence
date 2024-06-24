@@ -51,6 +51,12 @@ class TournamentPlayer(models.Model):
         return User.anonymous()["username"]
 
     @property
+    def avatar(self):
+        if self.user:
+            return self.user.avatarUrl
+        return User.anonymous()["avatar"]
+
+    @property
     def status(self) -> str:
         if self.verified:
             return PlayerStatus.ACCEPTED.label

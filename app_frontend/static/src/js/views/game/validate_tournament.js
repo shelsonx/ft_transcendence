@@ -4,6 +4,7 @@ import gameService from "../../services/gameService.js";
 import wrapperLoadingService from '../../services/wrapperService.js';
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
+import { isValidToken } from "../../contracts/validation/tokenValidation.js";
 
 class ValidateTournamentView extends BaseLoggedView {
   constructor(html, start) {
@@ -62,11 +63,30 @@ const resendCode = (e) => {
   );
 }
 
+const invalidToken = (player) => {
+  const errors = document.getElementsByClassName("form-error");
+  if (errors.length > 0) {
+    [...errors].forEach(errorElement => {
+      errorElement.remove();
+    });
+  }
+
+  const tokenField = document.getElementById(`token-${player}`);
+  var errorElement = document.createElement('div');
+  errorElement.classList.add("form-error");
+  errorElement.classList.add("p-sm");
+  errorElement.setAttribute("data-i18n-key", "invalid-access-token");
+  errorElement.innerText = "Invalid Access Token";
+  tokenField.appendChild(errorElement);
+}
+
 const submitVerifyForm = async (e) => {
   e.preventDefault();
   const form = e.srcElement;
   const player = form.id.split("-").pop();
   const formData = new FormData(form);
+  const token = formData.get("token");
+  if (!isValidToken(token)) return invalidToken(player);
 
   await gameService
     .validateTournament(tournament, player, formData)

@@ -1,0 +1,1262 @@
+[
+  {
+    "model": "core.game",
+    "pk": 701,
+    "fields": {
+      "game_datetime": "2024-06-23T13:09:25.273Z",
+      "status": 5,
+      "duration": "00:00:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 702,
+    "fields": {
+      "game_datetime": "2024-06-19T13:06:11.273Z",
+      "status": 5,
+      "duration": "00:06:29",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 703,
+    "fields": {
+      "game_datetime": "2024-06-19T12:50:51.273Z",
+      "status": 5,
+      "duration": "00:04:50",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 704,
+    "fields": {
+      "game_datetime": "2024-06-17T13:31:01.273Z",
+      "status": 5,
+      "duration": "00:04:00",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 705,
+    "fields": {
+      "game_datetime": "2024-06-24T12:48:18.273Z",
+      "status": 6,
+      "duration": "00:00:00",
+      "rules": 1,
+      "_updated_players": false,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 706,
+    "fields": {
+      "game_datetime": "2024-06-23T12:48:18.273Z",
+      "status": 5,
+      "duration": "00:11:28",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 707,
+    "fields": {
+      "game_datetime": "2024-06-18T13:34:29.273Z",
+      "status": 5,
+      "duration": "00:01:34",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 708,
+    "fields": {
+      "game_datetime": "2024-06-21T12:53:38.273Z",
+      "status": 5,
+      "duration": "00:07:47",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 709,
+    "fields": {
+      "game_datetime": "2024-06-17T13:03:24.273Z",
+      "status": 5,
+      "duration": "00:09:01",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 710,
+    "fields": {
+      "game_datetime": "2024-06-22T13:15:25.273Z",
+      "status": 5,
+      "duration": "00:03:07",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 711,
+    "fields": {
+      "game_datetime": "2024-06-24T12:48:18.273Z",
+      "status": 6,
+      "duration": "00:00:00",
+      "rules": 1,
+      "_updated_players": false,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 712,
+    "fields": {
+      "game_datetime": "2024-06-23T12:48:18.273Z",
+      "status": 5,
+      "duration": "00:11:30",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 713,
+    "fields": {
+      "game_datetime": "2024-06-21T13:34:45.273Z",
+      "status": 5,
+      "duration": "00:02:29",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 714,
+    "fields": {
+      "game_datetime": "2024-06-21T13:20:24.273Z",
+      "status": 5,
+      "duration": "00:00:18",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 715,
+    "fields": {
+      "game_datetime": "2024-06-17T13:01:43.273Z",
+      "status": 5,
+      "duration": "00:04:29",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 716,
+    "fields": {
+      "game_datetime": "2024-06-17T13:17:34.273Z",
+      "status": 5,
+      "duration": "00:04:06",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 717,
+    "fields": {
+      "game_datetime": "2024-06-24T12:48:18.273Z",
+      "status": 6,
+      "duration": "00:00:00",
+      "rules": 1,
+      "_updated_players": false,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 718,
+    "fields": {
+      "game_datetime": "2024-06-23T12:48:18.273Z",
+      "status": 5,
+      "duration": "00:12:45",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 719,
+    "fields": {
+      "game_datetime": "2024-06-17T13:46:23.273Z",
+      "status": 5,
+      "duration": "00:09:24",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 720,
+    "fields": {
+      "game_datetime": "2024-06-18T13:45:57.273Z",
+      "status": 5,
+      "duration": "00:03:55",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 721,
+    "fields": {
+      "game_datetime": "2024-06-18T12:48:21.273Z",
+      "status": 5,
+      "duration": "00:02:43",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 722,
+    "fields": {
+      "game_datetime": "2024-06-21T13:36:42.273Z",
+      "status": 5,
+      "duration": "00:00:17",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 723,
+    "fields": {
+      "game_datetime": "2024-06-24T12:48:18.273Z",
+      "status": 6,
+      "duration": "00:00:00",
+      "rules": 1,
+      "_updated_players": false,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 724,
+    "fields": {
+      "game_datetime": "2024-06-23T12:48:18.273Z",
+      "status": 5,
+      "duration": "00:10:42",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 725,
+    "fields": {
+      "game_datetime": "2024-06-19T12:58:55.273Z",
+      "status": 5,
+      "duration": "00:00:17",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 726,
+    "fields": {
+      "game_datetime": "2024-06-22T13:34:26.273Z",
+      "status": 5,
+      "duration": "00:00:47",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 727,
+    "fields": {
+      "game_datetime": "2024-06-19T13:21:55.273Z",
+      "status": 5,
+      "duration": "00:01:01",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 728,
+    "fields": {
+      "game_datetime": "2024-06-20T13:26:01.273Z",
+      "status": 5,
+      "duration": "00:02:06",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 729,
+    "fields": {
+      "game_datetime": "2024-06-24T12:48:18.273Z",
+      "status": 6,
+      "duration": "00:00:00",
+      "rules": 1,
+      "_updated_players": false,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 730,
+    "fields": {
+      "game_datetime": "2024-06-23T12:48:18.273Z",
+      "status": 5,
+      "duration": "00:11:46",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 731,
+    "fields": {
+      "game_datetime": "2024-06-17T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 732,
+    "fields": {
+      "game_datetime": "2024-06-17T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 733,
+    "fields": {
+      "game_datetime": "2024-06-17T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 734,
+    "fields": {
+      "game_datetime": "2024-06-17T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 735,
+    "fields": {
+      "game_datetime": "2024-06-17T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 736,
+    "fields": {
+      "game_datetime": "2024-06-17T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 737,
+    "fields": {
+      "game_datetime": "2024-06-17T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 738,
+    "fields": {
+      "game_datetime": "2024-06-17T14:08:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 739,
+    "fields": {
+      "game_datetime": "2024-06-17T14:18:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 740,
+    "fields": {
+      "game_datetime": "2024-06-17T14:28:18.273Z",
+      "status": 5,
+      "duration": "00:01:37",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 741,
+    "fields": {
+      "game_datetime": "2024-06-16T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 742,
+    "fields": {
+      "game_datetime": "2024-06-16T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 743,
+    "fields": {
+      "game_datetime": "2024-06-16T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 744,
+    "fields": {
+      "game_datetime": "2024-06-16T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 745,
+    "fields": {
+      "game_datetime": "2024-06-16T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 746,
+    "fields": {
+      "game_datetime": "2024-06-16T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 747,
+    "fields": {
+      "game_datetime": "2024-06-16T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 748,
+    "fields": {
+      "game_datetime": "2024-06-16T14:08:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 749,
+    "fields": {
+      "game_datetime": "2024-06-16T14:18:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 750,
+    "fields": {
+      "game_datetime": "2024-06-16T14:28:18.273Z",
+      "status": 5,
+      "duration": "00:08:26",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 751,
+    "fields": {
+      "game_datetime": "2024-06-15T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 752,
+    "fields": {
+      "game_datetime": "2024-06-15T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 753,
+    "fields": {
+      "game_datetime": "2024-06-15T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 754,
+    "fields": {
+      "game_datetime": "2024-06-15T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 755,
+    "fields": {
+      "game_datetime": "2024-06-15T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 756,
+    "fields": {
+      "game_datetime": "2024-06-15T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 757,
+    "fields": {
+      "game_datetime": "2024-06-15T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 758,
+    "fields": {
+      "game_datetime": "2024-06-15T14:08:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 759,
+    "fields": {
+      "game_datetime": "2024-06-15T14:18:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 760,
+    "fields": {
+      "game_datetime": "2024-06-15T14:28:18.273Z",
+      "status": 5,
+      "duration": "00:01:46",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 761,
+    "fields": {
+      "game_datetime": "2024-06-14T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 762,
+    "fields": {
+      "game_datetime": "2024-06-14T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 763,
+    "fields": {
+      "game_datetime": "2024-06-14T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 764,
+    "fields": {
+      "game_datetime": "2024-06-14T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 765,
+    "fields": {
+      "game_datetime": "2024-06-14T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 766,
+    "fields": {
+      "game_datetime": "2024-06-14T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 767,
+    "fields": {
+      "game_datetime": "2024-06-14T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 768,
+    "fields": {
+      "game_datetime": "2024-06-14T14:08:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 769,
+    "fields": {
+      "game_datetime": "2024-06-14T14:18:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 770,
+    "fields": {
+      "game_datetime": "2024-06-14T14:28:18.273Z",
+      "status": 5,
+      "duration": "00:10:20",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 771,
+    "fields": {
+      "game_datetime": "2024-06-13T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 772,
+    "fields": {
+      "game_datetime": "2024-06-13T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 773,
+    "fields": {
+      "game_datetime": "2024-06-13T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 774,
+    "fields": {
+      "game_datetime": "2024-06-13T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 775,
+    "fields": {
+      "game_datetime": "2024-06-13T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 776,
+    "fields": {
+      "game_datetime": "2024-06-13T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 777,
+    "fields": {
+      "game_datetime": "2024-06-13T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 778,
+    "fields": {
+      "game_datetime": "2024-06-13T14:08:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 779,
+    "fields": {
+      "game_datetime": "2024-06-13T14:18:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 780,
+    "fields": {
+      "game_datetime": "2024-06-13T14:28:18.273Z",
+      "status": 5,
+      "duration": "00:05:48",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 781,
+    "fields": {
+      "game_datetime": "2024-06-17T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:06:45",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 782,
+    "fields": {
+      "game_datetime": "2024-06-17T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:06:45",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 783,
+    "fields": {
+      "game_datetime": "2024-06-17T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:06:45",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 784,
+    "fields": {
+      "game_datetime": "2024-06-18T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:01:05",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 785,
+    "fields": {
+      "game_datetime": "2024-06-18T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:01:05",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 786,
+    "fields": {
+      "game_datetime": "2024-06-18T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:01:05",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 787,
+    "fields": {
+      "game_datetime": "2024-06-18T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:01:05",
+      "rules": 2,
+      "_updated_players": true,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 788,
+    "fields": {
+      "game_datetime": "2024-06-19T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:04:44",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 789,
+    "fields": {
+      "game_datetime": "2024-06-19T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:04:44",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 790,
+    "fields": {
+      "game_datetime": "2024-06-19T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:04:44",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 791,
+    "fields": {
+      "game_datetime": "2024-06-19T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:04:44",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 792,
+    "fields": {
+      "game_datetime": "2024-06-19T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:04:44",
+      "rules": 3,
+      "_updated_players": true,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 793,
+    "fields": {
+      "game_datetime": "2024-06-20T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 794,
+    "fields": {
+      "game_datetime": "2024-06-20T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 795,
+    "fields": {
+      "game_datetime": "2024-06-20T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 796,
+    "fields": {
+      "game_datetime": "2024-06-20T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 797,
+    "fields": {
+      "game_datetime": "2024-06-20T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 798,
+    "fields": {
+      "game_datetime": "2024-06-20T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:02:31",
+      "rules": 4,
+      "_updated_players": true,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 799,
+    "fields": {
+      "game_datetime": "2024-06-21T12:58:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 800,
+    "fields": {
+      "game_datetime": "2024-06-21T13:08:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 801,
+    "fields": {
+      "game_datetime": "2024-06-21T13:18:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 802,
+    "fields": {
+      "game_datetime": "2024-06-21T13:28:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 803,
+    "fields": {
+      "game_datetime": "2024-06-21T13:38:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 804,
+    "fields": {
+      "game_datetime": "2024-06-21T13:48:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  },
+  {
+    "model": "core.game",
+    "pk": 805,
+    "fields": {
+      "game_datetime": "2024-06-21T13:58:18.273Z",
+      "status": 5,
+      "duration": "00:08:41",
+      "rules": 1,
+      "_updated_players": true,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"
+    }
+  }
+]

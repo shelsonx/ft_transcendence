@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-	# 'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -70,7 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://0.0.0.0:3000",
     "http://0.0.0.0:3000",
 ]
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
 ROOT_URLCONF = 'game.urls'
 
@@ -144,13 +143,13 @@ USE_TZ = True
 
 LANGUAGES = [
     ('en', _('English')),
-    # ('fr', _('French')),
-    # ('pt-br', _('Brazilian Portuguese')),
+    ('fr', _('French')),
+    ('pt-br', _('Brazilian Portuguese')),
 ]
 
-# LOCALE_PATHS = [
-#   BASE_DIR / 'locale',
-# ]
+LOCALE_PATHS = [
+  BASE_DIR / 'locale',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

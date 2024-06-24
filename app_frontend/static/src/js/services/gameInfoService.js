@@ -24,6 +24,22 @@ class GameInfoService {
     const blockingService = new BlockingService();
 		return await blockingService.getBlockedUsers();
 	}
+
+	async updateScoresUser(data){
+    const total_infos = new HttpClientRequestData(
+      'POST', '/dash/update_scores_user/', data
+    );
+		const response = await this.httpClient.makeRequest(total_infos);
+		return response;
+	}
+
+	async updateUserPlaying(data){
+    const total_infos = new HttpClientRequestData(
+      'POST', '/dash/set_playing_user/', data
+    );
+		const response = await this.httpClient.makeRequest(total_infos);
+		return response;
+	}
 }
 
 export default new GameInfoService();

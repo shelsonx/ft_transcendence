@@ -239,7 +239,7 @@ class Game(models.Model):
 
         t = self.get_tournament()
 
-        return {
+        data = {
             "id": self.pk,
             "game_datetime": self.game_datetime.isoformat(),
             "status": self.status,
@@ -248,8 +248,23 @@ class Game(models.Model):
                 "seconds": seconds,
             },
             "rules": self.rules.to_json(),
-            "player_left": player_left.to_json() if player_left else User.anonymous(),
-            "player_right": player_right.to_json() if player_left else User.anonymous(),
+            "player_left": player_left.to_json(),
+            "player_right": player_right.to_json(),
             "owner": self.owner.resume_to_json() if self.owner else User.anonymous(),
             "tournament": t.pk if t else None,
         }
+
+        data["player_left"]["user"]["name"] = data["player_left"]["user"]["username"]
+        data["player_right"]["user"]["name"] = data["player_right"]["user"]["username"]
+        if t is not None:
+            t_players = t.players
+            if player_left.user:
+                tp_left = t_players.filter(user__pk=player_left.user.pk).first()
+                if tp_left:
+                    data["player_left"]["user"]["name"] = tp_left.name
+            if player_right.user:
+                tp_right = t_players.filter(user__pk=player_right.user.pk).first()
+                if tp_right:
+                    data["player_right"]["user"]["name"] = tp_right.name
+
+        return data

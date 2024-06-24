@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <fieldset class="fieldset-game-rules py-2">
-  <div id="form-game-rules" class="d-none">
+  <div id="form-game-rules" {% if not rules_expanded %}class="d-none"{% endif %}>
 
     <legend class="d-flex justify-content-between">
       <u>

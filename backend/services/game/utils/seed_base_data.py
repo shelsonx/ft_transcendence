@@ -17,7 +17,7 @@ def set_scores(
     if a.score != max_points and not is_total_points:
         b.score = max_points
     elif is_total_points:
-        b.score = is_total_points - a.score
+        b.score = max_points - a.score
     b.save()
 
 
@@ -53,7 +53,8 @@ if not all([u.games.all().exists() for u in users]):
             control = not control
             g.update_users()
 
-        empty_status = [GameStatus.PENDING, GameStatus.SCHEDULED, GameStatus.CANCELED]
+        # empty_status = [GameStatus.PENDING, GameStatus.SCHEDULED, GameStatus.CANCELED]
+        empty_status = [GameStatus.CANCELED]
         shuffle(opponents)
         i = 0
         for s in empty_status:
@@ -66,10 +67,11 @@ if not all([u.games.all().exists() for u in users]):
             )
             i += 1
 
-        not_fineshed_status = [GameStatus.ONGOING, GameStatus.PAUSED]
+        # not_fineshed_status = [GameStatus.PAUSED, GameStatus.ONGOING]
+        not_fineshed_status = []
         for s in not_fineshed_status:
             g = gen.seedGame(
-                game_datetime=(today - timedelta(days=i)),
+                game_datetime=(today - timedelta(hours=i)),
                 status=s,
                 duration=timedelta(minutes=randrange(10), seconds=randrange(60)),
                 players=[user, opponents[i]],
@@ -117,7 +119,7 @@ if not all([u.tournaments.all().exists() for u in users]):
             players=users,
             tournament_type=TournamentType.ROUND_ROBIN,
             status=TournamentStatus.SCHEDULED,
-            tournament_date=(datebase + timedelta(days=i)),
+            tournament_date=(datebase - timedelta(days=i)),
             rules=rules,
             number_of_players=len(users),
             owner=user,
@@ -135,12 +137,15 @@ if not all([u.tournaments.all().exists() for u in users]):
             or randrange(int(duration.seconds / 15))
         )
         is_total_points = rules.rule_type == GameRuleType.GAME_TOTAL_POINTS
+        count = 1
         for r in t.rounds.all():
             r: Round
-            for g in r.games.all():
+            for g in r.games.all().order_by("game_datetime"):
                 g: Game
                 g.status = GameStatus.ENDED
                 g.duration = duration
+                g.game_datetime = t.tournament_date + timedelta(minutes=count * 10)
+                count += 1
                 g.save()
 
                 player_left, player_right = g.players
@@ -160,7 +165,62 @@ if not all([u.tournaments.all().exists() for u in users]):
     for i, user in enumerate(users):
         rules = GameRules.objects.filter(pk=i + 1).first()
         opponent_index = i + 1 if i < max_index else 0
-        for s in [TournamentStatus.INVITATION, TournamentStatus.SCHEDULED]:
+        t = gen.seedTournament(
+            players=[users[i], users[opponent_index]],
+            tournament_type=TournamentType.CHALLENGE,
+            status=TournamentStatus.SCHEDULED,
+            tournament_date=(datebase + timedelta(days=i)),
+            rules=rules,
+            number_of_players=2,
+            number_of_rounds=i + 3,
+            owner=user,
+        )
+        for tp in t.tournament_players.all():
+            tp: TournamentPlayer
+            tp.verified = True
+            tp.save()
+
+        rules = t.rules
+        duration = timedelta(minutes=(1 + randrange(10)), seconds=randrange(60))
+        max_points = (
+            rules.points_to_win
+            or rules.game_total_points
+            or randrange(int(duration.seconds / 15))
+        )
+        is_total_points = rules.rule_type == GameRuleType.GAME_TOTAL_POINTS
+        count = 1
+        for r in t.rounds.all():
+            r: Round
+            for g in r.games.all().order_by("game_datetime"):
+                g: Game
+                g.status = GameStatus.ENDED
+                g.duration = duration
+                g.game_datetime = t.tournament_date + timedelta(minutes=count * 10)
+                count += 1
+                g.save()
+
+                player_left, player_right = g.players
+                if control:
+                    set_scores(player_left, player_right, max_points, is_total_points)
+                else:
+                    set_scores(player_right, player_left, max_points, is_total_points)
+                control = not control
+                g.update_tournament()
+            r.status = RoundStatus.ENDED
+            r.save()
+        t.status = TournamentStatus.ENDED
+        t.save()
+        t.update_users()
+
+    for i, user in enumerate(users):
+        rules = GameRules.objects.filter(pk=i + 1).first()
+        opponent_index = i + 1 if i < max_index else 0
+        tnbr = 1
+        for s in [
+            # TournamentStatus.INVITATION,
+            # TournamentStatus.SCHEDULED,
+            # TournamentStatus.SCHEDULED,
+        ]:
             t = gen.seedTournament(
                 players=[users[i], users[opponent_index]],
                 tournament_type=TournamentType.CHALLENGE,
@@ -176,3 +236,20 @@ if not all([u.tournaments.all().exists() for u in users]):
                     tp: TournamentPlayer
                     tp.verified = True
                     tp.save()
+
+                first_round = t.get_next_or_current_round()
+                first_game = first_round.get_next_or_current_game()
+                first_round.status = RoundStatus.ON_GOING
+                first_round.save()
+                first_game.status = GameStatus.SCHEDULED
+                if tnbr == 3:
+                    t.status = TournamentStatus.ON_GOING
+                    t.save()
+                    first_game.status = GameStatus.PAUSED
+                    left, right = first_game.players
+                    left.score = 1
+                    left.save()
+                    right.score = 2
+                    right.save()
+                first_game.save()
+            tnbr += 1

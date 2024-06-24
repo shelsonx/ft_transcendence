@@ -3,7 +3,7 @@
 {% endfor %}
 
 {% for field in form.visible_fields %}
-    <div class="fieldWrapper {% if no_mb %}{% else %} mb-3 {% endif %} {% if css_class %}{{ css_class }}{% endif %}" id="{{ field.name }}">
+    <div class="fieldWrapper {% if no_mb %}{% else %} mb-3 {% endif %} {% if css_class %}{{ css_class }}{% endif %}" id="{{ field.name }}{% if field_id_diff %}-{{ field_id_diff }}{% endif %}">
 
       {% if field.label %}
         {{ field.label_tag }}

@@ -72,5 +72,7 @@
   "search--search-users": "Rechercher des utilisateurs",
   "search--currently-online": "Actuellement en ligne",
   "search--no-results": "Aucun résultat trouvé",
-  "search--no-currently-online": "Aucun utilisateur en ligne :("
+  "search--no-currently-online": "Aucun utilisateur en ligne :(",
+
+  "invalid-access-token": "Jeton d'accès invalide"
 }

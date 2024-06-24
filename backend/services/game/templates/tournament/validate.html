@@ -87,7 +87,7 @@
                     <form id="validate-{{ p.pk }}" class="d-flex justify-content-between align-items-center">
                       {% csrf_token %}
 
-                      {% include "form.html" with form=p.form css_class="col-sm" no_mb=True %}
+                      {% include "form.html" with form=p.form css_class="col-sm" no_mb=True field_id_diff=p.pk %}
 
                       <div class="d-flex justify-content-center px-3">
                         <button class="btn btn-primary action " id="verify-{{ p.pk }}" type="submit">

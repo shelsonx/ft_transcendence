@@ -6,7 +6,7 @@ import logging
 import uuid
 
 # Third Party
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.urls import resolve
@@ -15,7 +15,7 @@ from django.urls import resolve
 from django.views import generic
 
 from common.models import json_response
-from core.models import Game, GameStatus
+from core.models import Game, GamePlayer, GameStatus, TournamentPlayer, TournamentStatus
 from user.decorators import JWTAuthentication
 from user.models import User
 
@@ -24,7 +24,7 @@ logger = logging.getLogger("eqlog")
 
 class GamesView(generic.ListView):
     model = Game
-    ordering = ["status", "-game_datetime"]
+    ordering = ["-game_datetime", "status"]
     template_name = "games_list.html"
     is_public_view = False
     # paginate_by = 20
@@ -55,9 +55,11 @@ class GamesView(generic.ListView):
 
     def get_queryset(self) -> QuerySet[Game]:
         if self.user and not self.is_public_view:
-            return self.user.games.all().exclude(
-                Q(status__in=self.excluded_status) & ~Q(owner=self.user)
-            ).exclude(status=GameStatus.TOURNAMENT)
+            return (
+                self.user.games.all()
+                .exclude(Q(status__in=self.excluded_status) & ~Q(owner=self.user))
+                .exclude(status=GameStatus.TOURNAMENT)
+            )
         elif self.user:
             return self.user.games.all().exclude(status__in=self.excluded_status)
 
@@ -77,6 +79,30 @@ class GamesView(generic.ListView):
             count += 1
         context["game_list"] = game_list
         context["total_games"] = count
+
+        if self.user:
+            all_users = User.objects.all().order_by("rating")
+            for i, u in enumerate(all_users):
+                if u == self.user:
+                    self.user.rank = i + 1
+                    break
+
+            tps = TournamentPlayer.objects.filter(
+                user=self.user, tournament__status=TournamentStatus.ENDED
+            )
+            self.user.tournaments_count = tps.count()
+            self.user.tournaments_points = tps.aggregate(total=Sum("score"))["total"]
+
+            gps = GamePlayer.objects.filter(
+                user=self.user, game__status=GameStatus.ENDED
+            ).order_by("-score")
+            self.user.max_points = gps.first().score if gps.exists() else "-"
+
+            games = self.user.games.filter(status=GameStatus.ENDED).order_by(
+                "-duration"
+            )
+            self.user.longest_game = games.first().duration if games.exists() else "-"
+            self.user.fastest_game = games.last().duration if games.exists() else "-"
 
         return context
 

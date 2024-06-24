@@ -40,6 +40,12 @@ class GamePlayer(models.Model):
             return self.user.username
         return User.anonymous()["username"]
 
+    @property
+    def avatar(self):
+        if self.user:
+            return self.user.avatarUrl
+        return User.anonymous()["avatar"]
+
     def to_json(self) -> dict:
         user = self.user
         return {
