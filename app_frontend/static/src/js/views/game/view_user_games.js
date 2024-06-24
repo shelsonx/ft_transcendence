@@ -13,7 +13,7 @@ class SeeUserGamesView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div id="game-table-container" class="container-fluid"></div>
+  <div id="user-games-container" class="container-fluid main-game static scroll-on "></div>
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
   </div>
 `;
@@ -24,7 +24,7 @@ const swap = (response) => {
     return;
   }
 
-  const swapContainer = document.getElementById("game-table-container");
+  const swapContainer = document.getElementById("user-games-container");
   swapContainer.innerHTML = response;
   window.addEventListener("hashchange", hashChangeHandler);
 };

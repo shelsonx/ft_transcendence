@@ -554,4 +554,13 @@ td.paused {
     color: var(--secondary-light)
 }
 
+.vl {
+    border-left: 1px solid;
+    height: 200px;
+}
+
+.user-game-info {
+    font-family: "Press Start 2P", sans-serif;
+}
+
 /* End game views */

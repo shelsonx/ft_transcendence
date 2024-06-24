@@ -19,7 +19,7 @@ class HomeView extends BaseLoggedView {
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
-    <h2 id="hello-user"></h2>
+    <h3 id="hello-user" class="px-3"></h3>
     <div>
       <button id="btn-my-games" type="button" class="btn btn-info"
         onclick="window.location='#my-games';"
