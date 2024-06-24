@@ -106,6 +106,14 @@ services:
       - ./backend/services/user_management:/user_management
     ports:
       - "8006:8000"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRES_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_USER_MANAGEMENT_HOST}
     depends_on:
       - user-management-db
 
@@ -114,10 +122,14 @@ services:
     container_name: user-management-db
     volumes:
       - user-management-db:/var/lib/postgresql/data
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: users_db
-      POSTGRES_USER: 'admin'
-      POSTGRES_PASSWORD: '1234'
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRES_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_USER_MANAGEMENT_HOST}
     ports:
       - "5435:5432"
 
