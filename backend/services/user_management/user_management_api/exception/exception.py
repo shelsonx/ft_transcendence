@@ -49,3 +49,8 @@ class FriendshipAlreadyExistsException(UserManagementException):
     friendship_already_exists_message = _('Friendship already exists')
     def __init__(self, message=friendship_already_exists_message, status_code=400):
         super().__init__(message, status_code)
+
+class UnauthorizedException(UserManagementException):
+    unauthorized_message = _('Unauthorized')
+    def __init__(self, message=unauthorized_message, status_code=401):
+        super().__init__(message, status_code)

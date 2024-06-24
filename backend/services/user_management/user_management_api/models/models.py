@@ -16,6 +16,7 @@ class User(AbstractBaseUser):
     user_uuid = models.CharField(max_length=255, unique=True, null=True, blank=True)
     name = models.CharField(max_length=255)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.jpeg')
+    avatar_name = models.CharField(max_length=255, null=True, blank=True)
     nickname = models.CharField(max_length=50, unique=True)
     two_factor_enabled = models.BooleanField(default=False)
     email = models.EmailField(unique=True)
@@ -30,6 +31,12 @@ class User(AbstractBaseUser):
 
     objects = CustomUserManager()
 
+    @classmethod
+    def get_object(cls, **fields):
+        user = User.objects.filter(**fields)
+
+        return user.first()
+    
     def __str__(self):
         return self.email
 
@@ -49,6 +56,7 @@ class User(AbstractBaseUser):
             'id': self.id,
             'name': self.name,
             'avatar': avatar_url,
+            'avatar_name': self.avatar_name if self.avatar_name else '',
             'nickname': self.nickname,
             'two_factor_enabled': self.two_factor_enabled,
             'email': self.email,
@@ -69,8 +77,8 @@ class FriendshipRequest(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
-    """     class Meta:
-        unique_together = ['sender', 'receiver'] """
+    class Meta:
+        unique_together = ['sender', 'receiver'] 
 
     def __str__(self):
         return f'{self.sender} has sent a friend request to {self.receiver}'
@@ -83,8 +91,8 @@ class Friendship(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    """ class Meta:
-        unique_together = ['user', 'friend'] """
+    class Meta:
+        unique_together = ['user', 'friend'] 
 
     def __str__(self):
         return f'{self.user} is friends with {self.friend}'
@@ -97,8 +105,8 @@ class BlockedUser(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    """ class Meta:
-        unique_together = ['user', 'blocked_user'] """
+    class Meta:
+        unique_together = ['user', 'blocked_user'] 
 
     def __str__(self):
         return f'{self.user} has blocked {self.blocked_user}'

@@ -9,6 +9,7 @@ from django.http.multipartparser import MultiPartParser, MultiPartParserError
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
+from user_management_api.jwt.decorator import JWTAuthentication
 from user_management_api.exception.exception import (
     UserDoesNotExistException,
     InvalidUUIDException,
@@ -45,6 +46,7 @@ class UserInfoView(View):
         except User.DoesNotExist:
             raise UserDoesNotExistException
 
+    @JWTAuthentication()
     def delete(self, request, user_id):
         user_deleted_message = _('User deleted successfully')
         user = self.get_user(user_id)
@@ -60,6 +62,7 @@ class UserInfoView(View):
         else:
             raise InvalidFormDataException
 
+    @JWTAuthentication()
     def get(self, request, user_id=None):
         if user_id:
             user = self.get_user(user_id)
@@ -84,6 +87,7 @@ class UserInfoView(View):
             users_json = [user.as_json() for user in users]
             return JsonResponse({'status': 'success', 'users': users_json}, status=200, safe=False)
 
+    @JWTAuthentication()
     def patch(self, request, user_id):
         user_updated_message = _('User updated successfully')
         invalid_form_data_message = _('Invalid form data')
@@ -103,7 +107,7 @@ class UserInfoView(View):
 
                     if 'avatar' in files:
                         avatar = files['avatar']
-                        avatar_name = f'{user_id}{os.path.splitext(avatar.name)[1]}'                        
+                        avatar_name = f'{data["avatar_name"]}{os.path.splitext(avatar.name)[1]}'                        
                         user.avatar.save(avatar_name, avatar)
 
                     user.save()
