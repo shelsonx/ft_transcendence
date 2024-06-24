@@ -6,6 +6,7 @@ import { GameStatus } from "../../contracts/game/game.js";
 import { canvasHeight, canvasWidth } from "../../utils/size.js";
 import { PLAYER_VELOCITY } from "../../constants/game.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
+import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
 
 class PongGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -320,11 +321,11 @@ const settleGame = (response) => {
   continueButton.addEventListener("click", continueGame);
   tournamentButton.addEventListener("click", goToTournament);
 
-  const hashChangeHandler = (e) => {
-    window.location.href = window.location.origin + window.location.hash;
+  const pongHashChangeHandler = (e) => {
+    hashChangeHandler();
     if (pong.game.status.value === GameStatus.ONGOING) pauseGame();
   };
-  window.addEventListener("hashchange", hashChangeHandler);
+  window.addEventListener("hashchange", pongHashChangeHandler);
 
   const visibilityChangeHandler = (e) => {
     if (document.hidden) {
