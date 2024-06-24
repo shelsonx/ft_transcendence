@@ -469,7 +469,7 @@ body {
     border: 2px solid var(--primary-light);
 }
 
-.winner {
+.winner, td.live {
     color: var(--green-dark)
 }
 .loser {
@@ -548,6 +548,10 @@ tr.tournament-winner td {
     font-family: "Press Start 2P", sans-serif;
     font-size: 14px;
     color: var(--green-dark)
+}
+
+td.paused {
+    color: var(--secondary-light)
 }
 
 /* End game views */
