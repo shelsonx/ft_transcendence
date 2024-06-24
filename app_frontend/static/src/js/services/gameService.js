@@ -198,12 +198,12 @@ class GameService {
   }
 
   async updateUserDetails(id, formData) {
-    const data = {
-      username: formData.get("username"),
-      avatar: formData.get("avatar")
-    };
-    const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, data);
-    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const path = "/media/avatars/";
+    const jsonData = {
+      username: formData.get("nickname"),
+      avatar: `${path}${formData.get("avatar_name")}`,
+    }
+    const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, jsonData);
     const response = await this.handleResponse(requestData);
     return response;
   }

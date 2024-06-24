@@ -1,5 +1,7 @@
 import { UserInformationService } from '../../services/userManagementService.js';
-import UserManagementView from './baseUserManagementView.js';
+import { getUserId } from '../../utils/getUserId.js';
+import UserManagementView from '../baseLoggedView.js';
+import gameService from '../../services/gameService.js';
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -86,13 +88,25 @@ const updateUserData = async (userInformationService, formData) => {
 }
 
 const initFormSubmission = (userInformationService) => {
+    const userId = getUserId();
+
     const form = document.getElementById('user-settings-form');
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const formData = new FormData(form);
-        formData.append('avatar', document.getElementById('avatar-input').files[0]);
-        await updateUserData(userInformationService, formData);
+        const avatarInput = document.getElementById('avatar-input');
+        const avatarFile = avatarInput.files[0];
+
+        if (avatarFile) {
+            const uniqueIdentifier = `${userId}_${Date.now()}`;
+            formData.append('avatar', avatarFile);
+            formData.append('avatar_name', uniqueIdentifier);
+        }
+
+        await updateUserData(userInformationService, formData).then(async () => {
+            await gameService.updateUserDetails(userId, formData);
+        });
     });
 };
 
@@ -121,7 +135,7 @@ const initAvatarChange = () => {
 /**
  * The action to run when the view is started.
  */
-const action = async () => {
+const action = async (user) => {
     const userInformationService = new UserInformationService();
 
     await loadUserData(userInformationService);

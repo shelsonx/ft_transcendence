@@ -4,7 +4,7 @@ import {
   FriendshipService,
   UserInformationService
 } from '../../services/userManagementService.js';
-import UserManagementView from './baseUserManagementView.js';
+import UserManagementView from '../baseLoggedView.js';
 
 class UserProfileView extends UserManagementView {
   constructor(html, start) {

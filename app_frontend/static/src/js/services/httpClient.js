@@ -207,10 +207,14 @@ export class HttpClient {
         formData.append(key, httpClientRequestData.data[key]);
       }
     }
+    
     try {
       const response = await fetch(this.baseUrl + httpClientRequestData.endpoint, {
         method: 'PATCH',
-        body: formData
+        body: formData,
+        headers: new Headers({
+          'Authorization': 'Bearer ' + localStorage.getItem(AuthConstants.AUTH_TOKEN),
+        }),
       });
 
       return await this.#toResponse(response);

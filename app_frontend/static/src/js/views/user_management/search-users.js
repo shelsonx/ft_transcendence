@@ -1,5 +1,5 @@
 import { BlockingService, FriendshipRequestService, SearchUsersService } from '../../services/userManagementService.js';
-import UserManagementView from './baseUserManagementView.js';
+import UserManagementView from '../baseLoggedView.js';
 import { getUserId } from '../../utils/getUserId.js';
 
 class searchUsersView extends UserManagementView {
