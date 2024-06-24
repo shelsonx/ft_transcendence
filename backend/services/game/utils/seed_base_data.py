@@ -66,7 +66,7 @@ if not all([u.games.all().exists() for u in users]):
             )
             i += 1
 
-        not_fineshed_status = [GameStatus.ONGOING, GameStatus.PAUSED]
+        not_fineshed_status = [GameStatus.PAUSED, GameStatus.ONGOING]
         # not_fineshed_status = [GameStatus.PAUSED]
         for s in not_fineshed_status:
             g = gen.seedGame(
