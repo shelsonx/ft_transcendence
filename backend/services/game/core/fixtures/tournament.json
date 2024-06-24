@@ -1,0 +1,152 @@
+[
+  {
+    "model": "core.tournament",
+    "pk": 91,
+    "fields": {
+      "name": "libft",
+      "tournament_type": 1,
+      "status": 3,
+      "tournament_date": "2024-06-17T12:48:18.273Z",
+      "rules": 1,
+      "number_of_players": 5,
+      "_updated_players": false,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 92,
+    "fields": {
+      "name": "Push Swap",
+      "tournament_type": 1,
+      "status": 3,
+      "tournament_date": "2024-06-16T12:48:18.273Z",
+      "rules": 2,
+      "number_of_players": 5,
+      "_updated_players": false,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 93,
+    "fields": {
+      "name": "Minihell",
+      "tournament_type": 1,
+      "status": 3,
+      "tournament_date": "2024-06-15T12:48:18.273Z",
+      "rules": 3,
+      "number_of_players": 5,
+      "_updated_players": false,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 94,
+    "fields": {
+      "name": "miniRT",
+      "tournament_type": 1,
+      "status": 3,
+      "tournament_date": "2024-06-14T12:48:18.273Z",
+      "rules": 4,
+      "number_of_players": 5,
+      "_updated_players": false,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 95,
+    "fields": {
+      "name": "The Transcendence Journey",
+      "tournament_type": 1,
+      "status": 3,
+      "tournament_date": "2024-06-13T12:48:18.273Z",
+      "rules": 1,
+      "number_of_players": 5,
+      "_updated_players": false,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 96,
+    "fields": {
+      "name": "Best of 3",
+      "tournament_type": 0,
+      "status": 3,
+      "tournament_date": "2024-06-17T12:48:18.273Z",
+      "rules": 1,
+      "number_of_players": 2,
+      "_updated_players": false,
+      "owner": "355aaf65-0300-47b6-8748-c8d0c1aed702",
+      "number_of_rounds": 3
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 97,
+    "fields": {
+      "name": "Best of 4",
+      "tournament_type": 0,
+      "status": 3,
+      "tournament_date": "2024-06-18T12:48:18.273Z",
+      "rules": 2,
+      "number_of_players": 2,
+      "_updated_players": false,
+      "owner": "e054f322-7733-48be-b1b1-7a66357efecd",
+      "number_of_rounds": 4
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 98,
+    "fields": {
+      "name": "Best of 5",
+      "tournament_type": 0,
+      "status": 3,
+      "tournament_date": "2024-06-19T12:48:18.273Z",
+      "rules": 3,
+      "number_of_players": 2,
+      "_updated_players": false,
+      "owner": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+      "number_of_rounds": 5
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 99,
+    "fields": {
+      "name": "Best of 6",
+      "tournament_type": 0,
+      "status": 3,
+      "tournament_date": "2024-06-20T12:48:18.273Z",
+      "rules": 4,
+      "number_of_players": 2,
+      "_updated_players": false,
+      "owner": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
+      "number_of_rounds": 6
+    }
+  },
+  {
+    "model": "core.tournament",
+    "pk": 100,
+    "fields": {
+      "name": "Best of 7",
+      "tournament_type": 0,
+      "status": 3,
+      "tournament_date": "2024-06-21T12:48:18.273Z",
+      "rules": 1,
+      "number_of_players": 2,
+      "_updated_players": false,
+      "owner": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
+      "number_of_rounds": 7
+    }
+  }
+]
