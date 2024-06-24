@@ -544,4 +544,10 @@ ol li::marker {
     -o-border-radius: 10px;
 }
 
+tr.tournament-winner td {
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 14px;
+    color: var(--green-dark)
+}
+
 /* End game views */

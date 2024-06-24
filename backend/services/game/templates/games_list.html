@@ -74,7 +74,7 @@
             {% comment %} column to indicate that the user won or make actions {% endcomment %}
             <td>
               {% if game.is_winner %}
-                <span class="winner">{% translate "Winner" %}</span>
+                <span class="winner action">{% translate "Winner" %}</span>
               {% elif not is_public_view and game.is_owner %}
 
                 {% if game.status == GameStatus.SCHEDULED %}
