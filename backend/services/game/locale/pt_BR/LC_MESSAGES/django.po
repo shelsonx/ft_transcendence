@@ -1,0 +1,751 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-24 14:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: core/forms/tournament.py:51
+msgid "Challenge tournament can have only 2 players"
+msgstr ""
+
+#: core/forms/tournament.py:54
+msgid "Challenge tournament must have at least 3 rounds"
+msgstr ""
+
+#: core/forms/validation.py:24
+msgid "The code was sent to the email registered by the user"
+msgstr ""
+
+#: core/models/game.py:28 core/models/round.py:19
+msgid "Games"
+msgstr ""
+
+#: core/models/game.py:32
+msgid "Game date"
+msgstr ""
+
+#: core/models/game.py:37
+msgid "Game status"
+msgstr ""
+
+#: core/models/game.py:42 core/models/game_rules.py:62
+msgid "Game Rules"
+msgstr ""
+
+#: core/models/game_player.py:17 core/models/validation.py:6
+msgid "Game"
+msgstr ""
+
+#: core/models/game_player.py:24
+msgid "Player' score in the game"
+msgstr ""
+
+#: core/models/game_player_position.py:6
+msgid "Left"
+msgstr ""
+
+#: core/models/game_player_position.py:7
+msgid "Right"
+msgstr ""
+
+#: core/models/game_rules.py:13
+msgid "Player winner points"
+msgstr ""
+
+#: core/models/game_rules.py:14 core/models/game_rules.py:46
+msgid "Game total points"
+msgstr ""
+
+#: core/models/game_rules.py:15
+msgid "Game duration"
+msgstr ""
+
+#: core/models/game_rules.py:26
+msgid "Game rule type"
+msgstr ""
+
+#: core/models/game_rules.py:36
+msgid "Points to win"
+msgstr ""
+
+#: core/models/game_rules.py:54
+msgid "Game maximum duration"
+msgstr ""
+
+#: core/models/round.py:25 core/models/tournament.py:40
+msgid "Tournament Status"
+msgstr ""
+
+#: core/models/round.py:74
+#, python-brace-format
+msgid "Round {self.round_number}"
+msgstr ""
+
+#: core/models/status.py:7
+msgid "Pending confirmation"
+msgstr ""
+
+#: core/models/status.py:8 core/models/status.py:9 core/models/status.py:18
+msgid "Scheduled"
+msgstr ""
+
+#: core/models/status.py:10
+msgid "Ongoing"
+msgstr ""
+
+#: core/models/status.py:11
+msgid "Paused"
+msgstr ""
+
+#: core/models/status.py:12 core/models/status.py:20 core/models/status.py:27
+msgid "Ended"
+msgstr ""
+
+#: core/models/status.py:13 core/models/status.py:21
+msgid "Canceled"
+msgstr ""
+
+#: core/models/status.py:17
+msgid "Waiting all players confirmation"
+msgstr ""
+
+#: core/models/status.py:19 core/models/status.py:26
+msgid "On going"
+msgstr ""
+
+#: core/models/status.py:25
+msgid "Didn't started"
+msgstr ""
+
+#: core/models/status.py:30
+msgid "Pending"
+msgstr ""
+
+#: core/models/status.py:31 core/models/validation.py:7
+msgid "Accepted"
+msgstr ""
+
+#: core/models/tournament.py:35
+msgid "Tournament Type"
+msgstr ""
+
+#: core/models/tournament.py:42
+msgid "Tournament date"
+msgstr ""
+
+#: core/models/tournament.py:48 templates/tournament.html:13
+#: templates/tournament/general_rules.html:7
+msgid "Tournament Rules"
+msgstr ""
+
+#: core/models/tournament.py:56
+msgid "Tournament Players"
+msgstr ""
+
+#: core/models/tournament_player.py:21 templates/games_list.html:25
+msgid "Tournament"
+msgstr ""
+
+#: core/models/tournament_player.py:27
+msgid "Alias name"
+msgstr ""
+
+#: core/models/tournament_player.py:30
+msgid "Score"
+msgstr ""
+
+#: core/models/tournament_player.py:33
+#: templates/tournament/rating_table.html:25
+msgid "Rating"
+msgstr ""
+
+#: core/models/tournament_type.py:6
+msgid "Challenge"
+msgstr ""
+
+#: core/models/tournament_type.py:7
+msgid "Round-robin"
+msgstr ""
+
+#: core/validators/numbers.py:8
+#, python-format
+msgid "%(value)s is not an odd number"
+msgstr ""
+
+#: core/views/game.py:63 core/views/tournament.py:72
+msgid "User does not exist"
+msgstr ""
+
+#: core/views/game.py:69 core/views/tournament.py:77
+msgid "You can't play against yourself"
+msgstr ""
+
+#: core/views/game.py:95
+msgid "An internal error occured while creating the game"
+msgstr ""
+
+#: game/settings.py:145
+msgid "English"
+msgstr ""
+
+#: game/settings.py:146
+msgid "French"
+msgstr ""
+
+#: game/settings.py:147
+msgid "Brazilian Portuguese"
+msgstr ""
+
+#: templates/add_game.html:8 templates/add_game.html:20
+msgid "Customize Game Rules"
+msgstr ""
+
+#: templates/add_game.html:30
+msgid "Use Default Rules"
+msgstr ""
+
+#: templates/add_game.html:37
+msgid "Choose an oponent:"
+msgstr ""
+
+#: templates/add_game.html:43
+msgid "Invite"
+msgstr ""
+
+#: templates/add_tournament.html:8
+msgid "Customize Tournament's Games Rules"
+msgstr ""
+
+#: templates/add_tournament.html:27
+msgid "Add another player"
+msgstr ""
+
+#: templates/add_tournament.html:33
+msgid "Create tournament"
+msgstr ""
+
+#: templates/game/rules.html:6
+msgid "The Transcendence Journey's Pong Game Rules"
+msgstr ""
+
+#: templates/game/rules.html:12 templates/game/validate.html:16
+#: templates/tournament/general_rules.html:91
+#: templates/tournament/validate.html:25
+msgid "To move your paddle up and down, use respectively the keyboard keys:"
+msgstr ""
+
+#: templates/game/rules.html:16 templates/tournament/general_rules.html:95
+msgid ""
+"\n"
+"            <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"            and\n"
+"            <span class=\"text-emphasis\"><strong>S</strong></span> for left "
+"player\n"
+"          "
+msgstr ""
+
+#: templates/game/rules.html:23 templates/tournament/general_rules.html:102
+msgid ""
+"\n"
+"            <span class=\"text-emphasis\"><strong>ArrowUp</strong></span> "
+"and\n"
+"            <span class=\"text-emphasis\"><strong>ArrowDown</strong></span> "
+"for right player\n"
+"          "
+msgstr ""
+
+#: templates/game/rules.html:30
+msgid ""
+"\n"
+"          Game ends when a player riches\n"
+"          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
+"        "
+msgstr ""
+
+#: templates/game/rules.html:34
+msgid "You may customize this value or change how the game ends, considering:"
+msgstr ""
+
+#: templates/game/rules.html:36 templates/tournament/general_rules.html:81
+msgid "game total points"
+msgstr ""
+
+#: templates/game/rules.html:37 templates/tournament/general_rules.html:82
+msgid "game duration"
+msgstr ""
+
+#: templates/game/user_info.html:12
+msgid "Ranking:"
+msgstr ""
+
+#: templates/game/user_info.html:13
+msgid "Score:"
+msgstr ""
+
+#: templates/game/user_info.html:22
+msgid "Winnings:"
+msgstr ""
+
+#: templates/game/user_info.html:25
+msgid "Losses:"
+msgstr ""
+
+#: templates/game/user_info.html:28
+msgid "Ties:"
+msgstr ""
+
+#: templates/game/user_info.html:32
+msgid "Matches:"
+msgstr ""
+
+#: templates/game/user_info.html:42
+msgid "Total points in games:"
+msgstr ""
+
+#: templates/game/user_info.html:45
+msgid "Average points per game:"
+msgstr ""
+
+#: templates/game/user_info.html:49
+msgid "Tournaments:"
+msgstr ""
+
+#: templates/game/user_info.html:52
+msgid "Points in tournaments:"
+msgstr ""
+
+#: templates/game/user_info.html:63
+msgid "Other statistics"
+msgstr ""
+
+#: templates/game/user_info.html:67
+msgid "Maximum points in a game:"
+msgstr ""
+
+#: templates/game/user_info.html:70
+msgid "Longest game:"
+msgstr ""
+
+#: templates/game/user_info.html:80
+msgid "Fastest game:"
+msgstr ""
+
+#: templates/game/validate.html:10
+msgid "Your Transcendence Journey's Pong Game Rules"
+msgstr ""
+
+#: templates/game/validate.html:20
+msgid ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"              and\n"
+"              <span class=\"text-emphasis\"><strong>S</strong></span> for "
+"left player\n"
+"              "
+msgstr ""
+
+#: templates/game/validate.html:27
+msgid ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>ArrowUp</strong></span> "
+"and <span class=\"text-emphasis\"><strong>ArrowDown</strong></span> for "
+"right player\n"
+"              "
+msgstr ""
+
+#: templates/game/validate.html:35
+#, python-format
+msgid ""
+"\n"
+"                Each game ends when a player riches\n"
+"                <span class=\"text-emphasis\">\n"
+"                  <strong>%(points)s points</strong>\n"
+"                </span>\n"
+"              "
+msgstr ""
+
+#: templates/game/validate.html:46
+#, python-format
+msgid ""
+"\n"
+"                Each game ends when the match total points riches\n"
+"                <span class=\"text-emphasis\">\n"
+"                  <strong>%(points)s points</strong>\n"
+"                </span>\n"
+"              "
+msgstr ""
+
+#: templates/game/validate.html:57 templates/tournament/rules.html:68
+msgid "Each game ends within"
+msgstr ""
+
+#: templates/game/validate.html:73
+msgid "Enter the verification code for"
+msgstr ""
+
+#: templates/game/validate.html:81 templates/tournament/validate.html:94
+msgid "Verify"
+msgstr ""
+
+#: templates/game/validate.html:87 templates/tournament/validate.html:104
+msgid "Resend code to email"
+msgstr ""
+
+#: templates/game/validate.html:96
+msgid "Game already validated"
+msgstr ""
+
+#: templates/games_list.html:10
+msgid "Your matches"
+msgstr ""
+
+#: templates/games_list.html:22 templates/tournament/round_table.html:18
+msgid "Result"
+msgstr ""
+
+#: templates/games_list.html:23 templates/tournament/round_table.html:19
+#: templates/tournaments_list.html:14
+msgid "Date / Status"
+msgstr ""
+
+#: templates/games_list.html:24 templates/tournament/round_table.html:20
+msgid "Duration"
+msgstr ""
+
+#: templates/games_list.html:77 templates/tournaments_list.html:17
+#: templates/tournaments_list.html:63
+msgid "Winner"
+msgstr ""
+
+#: templates/games_list.html:85 templates/tournament/round_table.html:58
+msgid "Play"
+msgstr ""
+
+#: templates/games_list.html:93 templates/tournament/round_table.html:56
+#: templates/tournaments_list.html:73
+msgid "Continue"
+msgstr ""
+
+#: templates/games_list.html:101 templates/tournaments_list.html:78
+msgid "Validate"
+msgstr ""
+
+#: templates/games_list.html:114 templates/tournament.html:21
+msgid "Delete"
+msgstr ""
+
+#: templates/games_list.html:121 templates/tournament.html:27
+msgid "Cancel"
+msgstr ""
+
+#: templates/games_list.html:138
+msgid "This user has no matches"
+msgstr ""
+
+#: templates/games_list.html:140
+msgid "No matches yet..."
+msgstr ""
+
+#: templates/toast.html:9
+msgid "Success"
+msgstr ""
+
+#: templates/toast.html:11
+msgid "Failed"
+msgstr ""
+
+#: templates/tournament.html:6
+#, python-format
+msgid "%(name)s Tournament"
+msgstr ""
+
+#: templates/tournament.html:37
+#, python-format
+msgid "status: %(status)s"
+msgstr ""
+
+#: templates/tournament.html:61
+msgid "Validate Players"
+msgstr ""
+
+#: templates/tournament/general_rules.html:10
+#: templates/tournament/validate.html:15
+msgid "Instructions to play"
+msgstr ""
+
+#: templates/tournament/general_rules.html:18
+msgid ""
+"\n"
+"          A win gives the player <span class=\"text-emphasis\"><strong>3 "
+"rating points</strong></span>.\n"
+"          A tie, <span class=\"text-emphasis\"><strong>1 rating point</"
+"strong></span>.\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:25
+#: templates/tournament/rules.html:13
+msgid "The tournament winner is the player with highest rating."
+msgstr ""
+
+#: templates/tournament/general_rules.html:29
+#: templates/tournament/rules.html:17
+msgid "In case of tie, the winner is determined by the one with more wins."
+msgstr ""
+
+#: templates/tournament/general_rules.html:33
+#: templates/tournament/rules.html:21
+msgid ""
+"If there is still a tie, the winner is the one with more total points during "
+"tournament."
+msgstr ""
+
+#: templates/tournament/general_rules.html:37
+msgid ""
+"\n"
+"          The default tournament type is <span class=\"text-emphasis"
+"\"><strong>Round Robin</strong></span>.\n"
+"          To played, it is necessary at least <span class=\"text-emphasis"
+"\"><strong>3 players</strong></span>.\n"
+"          <p class=\"small mb-0\">In a Round Robin tournament all players "
+"play against each other</p>\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:45
+msgid ""
+"\n"
+"          For <span class=\"text-emphasis\"><strong>Round Robin</strong></"
+"span> tournament the\n"
+"          <span class=\"text-emphasis\"><strong>maximum number of players is "
+"42</strong></span>.\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:52
+msgid ""
+"\n"
+"          Optionally you can change the tournament type to <span class="
+"\"text-emphasis\"><strong>Challenge</strong></span>,\n"
+"          which is played with only <span class=\"text-emphasis\"><strong>2 "
+"players</strong></span>.\n"
+"          <p class=\"small mb-0\">A Challenge tournament is the type \"Best "
+"of x\", x being the total games.</p>\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:60
+msgid ""
+"\n"
+"          The <span class=\"text-emphasis\"><strong>Round Robin</strong></"
+"span> tournament has an\n"
+"          <span class=\"text-emphasis\"><strong>auto calculated number of "
+"rounds</strong></span> accordind to the number of players.\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:67
+msgid ""
+"\n"
+"          For a <span class=\"text-emphasis\"><strong>Challenge</strong></"
+"span> tournament the\n"
+"          <span class=\"text-emphasis\"><strong>minimum number of rounds is "
+"3</strong></span>.\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:74
+msgid ""
+"\n"
+"          Each game ends when a player riches\n"
+"          <span class=\"text-emphasis\"><strong>11 points</strong></span>.\n"
+"        "
+msgstr ""
+
+#: templates/tournament/general_rules.html:79
+msgid "You may customize this value or change how each game ends, considering:"
+msgstr ""
+
+#: templates/tournament/players_forms.html:3
+msgid "Include players:"
+msgstr ""
+
+#: templates/tournament/rating_table.html:6
+msgid "Rating Table"
+msgstr ""
+
+#: templates/tournament/rating_table.html:18
+msgid "Rank"
+msgstr ""
+
+#: templates/tournament/rating_table.html:19
+#: templates/tournament/validate.html:56
+msgid "Player"
+msgstr ""
+
+#: templates/tournament/rating_table.html:20
+msgid "Total points"
+msgstr ""
+
+#: templates/tournament/rating_table.html:21
+msgid "Points/game"
+msgstr ""
+
+#: templates/tournament/rating_table.html:22
+msgid "Winnings"
+msgstr ""
+
+#: templates/tournament/rating_table.html:23
+msgid "Losses"
+msgstr ""
+
+#: templates/tournament/rating_table.html:24
+msgid "Ties"
+msgstr ""
+
+#: templates/tournament/rules.html:6
+msgid ""
+"\n"
+"      A win gives the player <span class=\"text-emphasis\"><strong>3 rating "
+"points</strong></span>.\n"
+"      A tie, <span class=\"text-emphasis\"><strong>1 rating point</strong></"
+"span>.\n"
+"    "
+msgstr ""
+
+#: templates/tournament/rules.html:27
+msgid ""
+"\n"
+"        This is a <span class=\"text-emphasis\"><strong>Round Robin</"
+"strong></span> tournament\n"
+"        which means all players play against each other\n"
+"      "
+msgstr ""
+
+#: templates/tournament/rules.html:36
+#, python-format
+msgid ""
+"\n"
+"        This is a <span class=\"text-emphasis\"><strong>Challenge</strong></"
+"span> tournament\n"
+"        with %(rounds)s matches\n"
+"      "
+msgstr ""
+
+#: templates/tournament/rules.html:46
+#, python-format
+msgid ""
+"\n"
+"        Each game ends when a player riches\n"
+"        <span class=\"text-emphasis\">\n"
+"          <strong>%(points)s points</strong>\n"
+"        </span>\n"
+"      "
+msgstr ""
+
+#: templates/tournament/rules.html:57
+#, python-format
+msgid ""
+"\n"
+"        Each game ends when the match total points riches\n"
+"        <span class=\"text-emphasis\">\n"
+"          <strong>%(points)s points</strong>\n"
+"        </span>\n"
+"      "
+msgstr ""
+
+#: templates/tournament/rules_form.html:8
+msgid "Customize Tournament's Rules"
+msgstr ""
+
+#: templates/tournament/rules_form.html:19
+msgid "Use Default Game Rules"
+msgstr ""
+
+#: templates/tournament/validate.html:5
+#, python-format
+msgid "Validate participants of %(name)s Tournament"
+msgstr ""
+
+#: templates/tournament/validate.html:12
+#, python-format
+msgid "%(name)s Tournament Rules"
+msgstr ""
+
+#: templates/tournament/validate.html:29
+msgid ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>W</strong></span>\n"
+"              and\n"
+"              <span class=\"text-emphasis\"><strong>S</strong></span> for "
+"left player\n"
+"            "
+msgstr ""
+
+#: templates/tournament/validate.html:36
+msgid ""
+"\n"
+"              <span class=\"text-emphasis\"><strong>ArrowUp</strong></span> "
+"and\n"
+"              <span class=\"text-emphasis\"><strong>ArrowDown</strong></"
+"span> for right player\n"
+"            "
+msgstr ""
+
+#: templates/tournament/validate.html:57
+msgid "Status"
+msgstr ""
+
+#: templates/tournament/validate.html:58
+msgid "Verification code"
+msgstr ""
+
+#: templates/tournament/validate.html:80
+msgid "Owner"
+msgstr ""
+
+#: templates/tournaments_list.html:12
+msgid "Name"
+msgstr ""
+
+#: templates/tournaments_list.html:13
+msgid "Type"
+msgstr ""
+
+#: templates/tournaments_list.html:15
+msgid "Players"
+msgstr ""
+
+#: templates/tournaments_list.html:16
+msgid "Total Games"
+msgstr ""
+
+#: templates/tournaments_list.html:68
+msgid "Start"
+msgstr ""
+
+#: templates/tournaments_list.html:95
+msgid "No tournaments registered"
+msgstr ""
+
+#: user/forms.py:22
+msgid "insert username"
+msgstr ""
+
+#: user/models.py:34
+msgid "anonymous"
+msgstr ""
