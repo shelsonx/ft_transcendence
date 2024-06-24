@@ -2,7 +2,7 @@ import languageHandler from "../../locale/languageHandler.js";
 import authService from "../../services/authService.js";
 import { UserInformationService } from "../../services/userManagementService.js";
 import wrapperLoadingService from "../../services/wrapperService.js";
-import UserManagementView from "./baseUserManagementView.js";
+import UserManagementView from "../baseLoggedView.js";
 
 class UserProfileView extends UserManagementView {
   constructor(html, start) {
