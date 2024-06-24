@@ -44,7 +44,9 @@
         <tr class="match-row">
           <td>{% include "game/result.html" %}</td>
 
-          <td>
+          <td {% if game.status == GameStatus.ONGOING %}class="live"{% endif %}
+            {% if game.status == GameStatus.PAUSED %}class="paused"{% endif %}
+          >
             {% if game.status == GameStatus.ENDED %}
               {{ game.game_datetime.date }} - {{ game.game_datetime.time|time:"H:i" }}
             {% else %}
