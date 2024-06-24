@@ -269,7 +269,7 @@ class Challenge(Tournament):
             game.add_players(users)
             game.set_players_position()
             round.games.add(game)
-            # round.save()
+            round.save()
 
     def validate_number_of_players(self, current_number_of_players: int) -> None:
         if current_number_of_players != 2:
@@ -309,6 +309,7 @@ class RoundRobin(Tournament):
                         game.add_players(players_match)
                         game.set_players_position()
                         round.games.add(game)
+                round.save()
 
     def generate_matches_scheduling(self) -> list[list[User | str]]:
         """
