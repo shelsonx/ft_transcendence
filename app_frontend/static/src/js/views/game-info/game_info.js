@@ -316,7 +316,6 @@ function setDetailsStatus(data) {
 function AddUserInList(data, users_blocks) {
     let containers = document.getElementById('containers');
 
-    console.log(`Users Blocks: ${users_blocks}`);
     if (users_blocks.includes(data.id_msc) === true) {
         return ;
     }
@@ -351,12 +350,18 @@ function AddUserInList(data, users_blocks) {
 
 }
 
-const start = (user) => {
-    let users_blocks = [];
-    gameInfoService.getUsersBlocks(user.id).then(
-        res => {
-            users_blocks = res.blocked_users;
-    });
+async function getUsersBlocks(user) {
+    var users_blocks = [];
+    const res = await gameInfoService.getUsersBlocks(user.id);
+    for (let i = 0; i < res.blocked_users.length; i++) {
+        users_blocks.push(res.blocked_users[i].id);
+    }
+    return users_blocks;
+}
+
+const start = async (user) => {
+
+    const users_blocks = await getUsersBlocks(user);
 
     gameInfoService.gameInfo().then(
       res => {
