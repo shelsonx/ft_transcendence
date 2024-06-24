@@ -36,9 +36,14 @@ const html = /*html*/ `
     <div class="d-flex justify-content-center">
       <canvas id="canvas"></canvas>
     </div>
-    <div class="d-flex justify-content-center py-5" id="game-buttons">
-      <button id="pause" class="btn btn-primary d-none">Pause</button>
-      <button id="continue" class="btn btn-primary d-none">Continue</button>
+    <div class="py-5">
+      <div class="d-flex justify-content-center pb-3" id="game-buttons">
+        <button id="pause" class="btn btn-primary d-none">Pause</button>
+        <button id="continue" class="btn btn-primary d-none">Continue</button>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button id="back-tournament" class="btn btn-secondary d-none">Back to tournament</button>
+      </div>
     </div>
   </div>
 
@@ -108,21 +113,21 @@ const updateUserStats = async (users) => {
     try {
       gameInfoService.updateScoresUser(user);
     } catch (error) {}
-  })
-}
+  });
+};
 
 const updateUsersPlaying = (pong, playing) => {
-  const users = [pong.player_left.user.id, pong.player_right.user.id]
+  const users = [pong.player_left.user.id, pong.player_right.user.id];
   users.forEach((user) => {
     try {
       const data = {
-        "id_msc": user,
+        id_msc: user,
         playing: playing,
-      }
+      };
       gameInfoService.updateUserPlaying(data);
     } catch (error) {}
-  })
-}
+  });
+};
 
 const saveGame = async (pong, update = false) => {
   if (update) pong.updateToSave();
@@ -141,7 +146,8 @@ const saveGame = async (pong, update = false) => {
         response.hasOwnProperty("data") &&
         response.data.hasOwnProperty("stats") &&
         response.data.stats !== null
-      ) updateUserStats(response.data.stats);
+      )
+        updateUserStats(response.data.stats);
     }
   });
 };
@@ -246,6 +252,7 @@ const settleGame = (response) => {
       loadEndMessage(pong);
       const gameButtons = document.getElementById("game-buttons");
       gameButtons.classList.add("d-none");
+      updateTournamentBtn();
       saveGame(pong);
       updateUsersPlaying(pong, false);
     } else {
@@ -257,6 +264,14 @@ const settleGame = (response) => {
   const startButton = document.getElementById("start");
   const pauseButton = document.getElementById("pause");
   const continueButton = document.getElementById("continue");
+  const tournamentButton = document.getElementById("back-tournament");
+
+  const updateTournamentBtn = () => {
+    if (pong.game.tournament !== null) {
+      tournamentButton.classList.remove("d-none");
+    }
+  }
+  updateTournamentBtn();
 
   const startGame = (e) => {
     loadStartMessages();
@@ -266,6 +281,7 @@ const settleGame = (response) => {
       else pong.continue();
       animate();
       pauseButton.classList.remove("d-none");
+      tournamentButton.classList.add("d-none");
       saveGame(pong);
       updateUsersPlaying(pong, true);
     }, startMessages[4].showMsgDelay);
@@ -278,6 +294,7 @@ const settleGame = (response) => {
     stopGlobalEvents();
     pauseButton.classList.add("d-none");
     continueButton.classList.remove("d-none");
+    updateTournamentBtn();
     saveGame(pong);
     updateUsersPlaying(pong, false);
   };
@@ -286,6 +303,7 @@ const settleGame = (response) => {
     window.cancelAnimationFrame(animationFrame);
     continueButton.classList.add("d-none");
     pauseButton.classList.remove("d-none");
+    tournamentButton.classList.add("d-none");
     pong.continue();
     animate();
     initGlobalEvents();
@@ -293,9 +311,14 @@ const settleGame = (response) => {
     updateUsersPlaying(pong, true);
   };
 
+  const goToTournament = () => {
+    window.location.href = "?t=" + pong.game.tournament + "#tournament";
+  }
+
   startButton.addEventListener("click", startGame);
   pauseButton.addEventListener("click", pauseGame);
   continueButton.addEventListener("click", continueGame);
+  tournamentButton.addEventListener("click", goToTournament);
 
   const hashChangeHandler = (e) => {
     window.location.href = window.location.origin + window.location.hash;
