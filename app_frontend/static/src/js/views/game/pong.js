@@ -91,7 +91,7 @@ function loadEndMessage(pong) {
   const messageHtml = document.getElementById("message");
   const winner = pong.winner();
   let msg =
-    winner !== null ? `${winner.user.username} won!` : "Game ended in a draw";
+    winner !== null ? `${winner.user.name} won!` : "Game ended in a draw";
 
   if (pong.game.status.value === GameStatus.CANCELED)
     msg = "This game was cancelled";

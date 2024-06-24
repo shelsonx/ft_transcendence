@@ -236,7 +236,7 @@ class TournamentView(generic.View):
         rounds = self.t.get_rounds()
         for r in rounds:
             r: Round
-            r.ordered_games = r.games.all().order_by("game_datetime", "-status")
+            r.ordered_games = r.games.all().order_by("-status", "game_datetime")
             current_game = r.get_next_or_current_game()
             for g in r.ordered_games:
                 g: Game

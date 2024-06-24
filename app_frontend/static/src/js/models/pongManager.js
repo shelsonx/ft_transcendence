@@ -253,8 +253,8 @@ class PongManager {
     const left_name = document.getElementById("name-left");
     const right_name = document.getElementById("name-right");
 
-    left_name.innerText = this.player_left.user.username;
-    right_name.innerText = this.player_right.user.username;
+    left_name.innerText = this.player_left.user.name;
+    right_name.innerText = this.player_right.user.name;
     this.timeHtml.innerText = `
       ${getTimeValue(this.game.duration.minutes)}:${getTimeValue(
       this.game.duration.seconds

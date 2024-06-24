@@ -72,7 +72,6 @@ const invalidToken = (player) => {
   }
 
   const tokenField = document.getElementById(`token-${player}`);
-  console.log(tokenField)
   var errorElement = document.createElement('div');
   errorElement.classList.add("form-error");
   errorElement.classList.add("p-sm");
