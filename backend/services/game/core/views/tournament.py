@@ -1,4 +1,5 @@
 # python std library
+from datetime import timedelta
 import uuid
 from http import HTTPStatus
 
@@ -243,6 +244,7 @@ class TournamentView(generic.View):
                 g.status_label = GameStatus(g.status).label
                 if g.status == GameStatus.TOURNAMENT:
                     g.status_label = GameStatus.SCHEDULED.label
+                g.game_datetime -= timedelta(hours=3)
 
                 player_left, player_right = g.players
                 player_left.is_winner = False
