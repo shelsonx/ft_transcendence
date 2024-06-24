@@ -23,5 +23,5 @@ class UserSearchForm(UserForm):
             ),
         }
         labels = {
-            "username": _(""),
+            "username": "",
         }

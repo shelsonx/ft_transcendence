@@ -7,7 +7,7 @@ class PlayerValidationForm(forms.Form):
     token = forms.CharField(
         max_length=10,
         required=True,
-        label=_(""),
+        label="",
     )
 
     def __init__(self, *args, **kwargs):
