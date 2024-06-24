@@ -12,8 +12,7 @@ class MyGamesView extends BaseLoggedView {
 }
 
 const html = /*html*/ `
-  <div class="d-flex justify-content-between">
-    <h2 id="hello-user"></h2>
+  <div class="d-flex justify-content-end pe-1">
     <div>
       <button id="btn-all-games" type="button" class="btn btn-info"
         onclick="window.location='/';"
@@ -27,8 +26,7 @@ const html = /*html*/ `
       </button>
     </div>
   </div>
-  <div class="container-fluid main-game scroll-on mt-3">
-    <div id="my-games-container" class="static-list"></div>
+  <div id="my-games-container" class="container-fluid main-game static-list scroll-on mt-3">
   </div>
 
   <div id="error-message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
@@ -88,9 +86,6 @@ const swap = (response) => {
 };
 
 const start = async (user) => {
-  const helloUser = document.getElementById("hello-user");
-  helloUser.innerHTML = `Hello, ${user.userName}!`;
-
   await gameService.userGames(user.id).then(swap);
   u = user;
 };

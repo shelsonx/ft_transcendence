@@ -39,6 +39,11 @@ class User(models.Model):
         return self.winnings + self.losses + self.ties
 
     @property
+    def average_points(self) -> int:
+        total = self.total_games
+        return self.score / total if total else 0
+
+    @property
     def total_tournaments(self) -> int:
         return self.tournaments.all().count()
 
