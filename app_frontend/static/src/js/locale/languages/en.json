@@ -74,5 +74,21 @@
   "search--no-results": "No results found",
   "search--no-currently-online": "There are no active users at the moment :(",
 
+  "hello-user": "Hello",
+  "my-games-button": "My Games",
+  "all-games-button": "All Games",
+
+  "play-button": "Play",
+  "start-button": "Start",
+  "pause-button": "Pause",
+  "continue-button": "Continue",
+  "back-tournament-button": "Back to tournament",
+
+  "tournaments-title": "Tournaments",
+  "my-tournaments-button": "My tournaments",
+  "create-tournament-button": "Create tournament",
+  "your-tournaments-title": "Your tournaments",
+  "all-tournaments-button": "All tournaments",
+
   "invalid-access-token": "Invalid Access Token"
 }

@@ -19,15 +19,17 @@ class HomeView extends BaseLoggedView {
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
-    <h3 id="hello-user" class="px-3"></h3>
+    <h3 class="px-3" class="d-inline-flex">
+      <span class="h3" id="hello-user"></span><span class="h3" id="user-name"></span>
+    </h3>
     <div>
       <button id="btn-my-games" type="button" class="btn btn-info"
-        onclick="window.location='#my-games';"
+        onclick="window.location='#my-games';" data-i18n-key="my-games-button"
       >
-        My games
+        My Games
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
-        onclick="window.location='#play';"
+        onclick="window.location='#play';" data-i18n-key="play-button"
       >
         Play
       </button>
@@ -71,7 +73,11 @@ const start = async (user) => {
   if (user) {
     changeLanguageWhenLogin(user.id);
     const helloUser = document.getElementById("hello-user");
-    helloUser.innerHTML = `Hello, ${user.userName}!`;
+    helloUser.setAttribute("data-i18n-key", "hello-user");
+    helloUser.innerHTML = "Hello, ";
+    const userName = document.getElementById("user-name");
+    userName.innerHTML = `, ${user.userName}!`;
+
   }
 
   await gameService.allGames().then(swap);
