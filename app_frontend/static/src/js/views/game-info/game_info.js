@@ -313,7 +313,7 @@ function setDetailsStatus(data) {
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
 
-function AddUserInList(data, users_blocks) {
+function AddUserInList(data, users_blocks, userActive) {
     let containers = document.getElementById('containers');
 
     if (users_blocks.includes(data.id_msc) === true) {
@@ -340,6 +340,19 @@ function AddUserInList(data, users_blocks) {
     const userGameStatus = createUserGameStatus();
     col4.appendChild(userGameStatus);
     setData(container, data);
+    if (userActive) {
+        const detailsInfosUser = document.getElementById('details-infos-user');
+        const detailsMedalUser = document.getElementById('details-medal-user');
+        gameInfoService.get_user(data.id).then(
+            res => {
+                setDetailsStatus(res);
+                drawChart(detailsInfosUser, res);
+                drawChartMedalRaking(detailsMedalUser, res);
+                container.style.backgroundColor = '#381718';
+                container.style.cursor = 'pointer';
+            }
+        ); 
+    }
     container.addEventListener('click', function() {
         gameInfoService.get_user(data.id).then(
             res => {
@@ -360,13 +373,26 @@ async function getUsersBlocks(user) {
 }
 
 const start = async (user) => {
-
     const users_blocks = await getUsersBlocks(user);
-
+    const userId = localStorage.getItem('userId');
+    if (userId !== '') {
+        gameInfoService.gameInfo().then(
+            res => {
+              res.forEach(data => {
+                  if (data.id_msc === userId) {
+                    AddUserInList(data, users_blocks, true);
+                    return ;
+                  }
+              });
+          });
+        localStorage.setItem('userId', '');
+        return ;
+    }
     gameInfoService.gameInfo().then(
       res => {
         res.forEach(data => {
-            AddUserInList(data, users_blocks);
+            console.log('Data: ', data);
+            AddUserInList(data, users_blocks, false);
         });
     });
 

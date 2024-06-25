@@ -150,6 +150,7 @@ const start = async () => {
   };
 
   window.viewUserStats = async function (userId) {
+    localStorage.setItem('userId', userId);
     window.location.href = '#game-info';
   };
 
