@@ -171,17 +171,34 @@ const start = async () => {
     users.forEach(user => {
       const userItem = document.createElement('div');
       userItem.classList.add('list-group-item', 'd-flex', 'align-items-center', 'justify-content-between');
+      const avatar = "https://localhost:8006" + user.avatar;
       userItem.innerHTML = `
         <div class="d-flex align-items-center">
-          <img src="https://localhost:8006${user.avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
+          <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
           <div class="ms-3">
             <h5>${user.name} (@${user.nickname})</h5>
           </div>
         </div>
+        <div>
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend">
+            <i class="bi bi-person-plus"></i>
+          </button>
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User">
+            <i class="bi bi-person-x"></i>
+          </button>
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats">
+            <i class="bi bi-bar-chart"></i>
+          </button>
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches">
+            <i class="bi bi-controller"></i>
+          </button>
+        </div>
       `;
       activeUsers.appendChild(userItem);
     });
+    initializeTooltips(); // Initialize tooltips after adding elements
   };
+  
 
   const initializeTooltips = () => {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

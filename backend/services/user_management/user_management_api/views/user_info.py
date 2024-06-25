@@ -107,7 +107,7 @@ class UserInfoView(View):
 
                     if 'avatar' in files:
                         avatar = files['avatar']
-                        avatar_name = f'{data["avatar_name"]}{os.path.splitext(avatar.name)[1]}'                        
+                        avatar_name = f'{data["avatar_name"]}'
                         user.avatar.save(avatar_name, avatar)
 
                     user.save()
