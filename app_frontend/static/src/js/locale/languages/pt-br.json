@@ -76,7 +76,7 @@
   "my-games-button": "Meus Jogos",
   "all-games-button": "Todos Jogos",
   "play-button": "Jogar",
-  
+
   "start-button": "Iniciar",
   "pause-button": "Pausar",
   "continue-button": "Continuar",
@@ -88,5 +88,9 @@
   "your-tournaments-title": "Seus torneios",
   "all-tournaments-button": "Todos torneios",
 
-  "invalid-access-token": "Token de acesso inválido"
+  "invalid-access-token": "Token de acesso inválido",
+
+  "game-info-menu": "Classificação",
+  "play-pong-menu": "Jogar",
+  "tournaments-menu": "Torneios"
 }

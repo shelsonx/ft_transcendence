@@ -90,5 +90,9 @@
   "your-tournaments-title": "Your tournaments",
   "all-tournaments-button": "All tournaments",
 
-  "invalid-access-token": "Invalid Access Token"
+  "invalid-access-token": "Invalid Access Token",
+
+  "game-info-menu": "Ranking",
+  "play-pong-menu": "Play",
+  "tournaments-menu": "Tournaments"
 }

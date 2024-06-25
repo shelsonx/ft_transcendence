@@ -91,5 +91,9 @@
   "your-tournaments-title": "Vos Tournois",
   "all-tournaments-button": "Tous les Tournois",
 
-  "invalid-access-token": "Jeton d'accès invalide"
+  "invalid-access-token": "Jeton d'accès invalide",
+
+  "game-info-menu": "Classement",
+  "play-pong-menu": "Jouer",
+  "tournaments-menu": "Tournois"
 }
