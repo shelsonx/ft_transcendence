@@ -39,17 +39,25 @@ const html = /*html*/ `
     </div>
     <div class="py-5">
       <div class="d-flex justify-content-center pb-3" id="game-buttons">
-        <button id="pause" class="btn btn-primary d-none">Pause</button>
-        <button id="continue" class="btn btn-primary d-none">Continue</button>
+        <button id="pause" class="btn btn-primary d-none" data-i18n-key="pause-button">
+          Pause
+        </button>
+        <button id="continue" class="btn btn-primary d-none" data-i18n-key="continue-button">
+          Continue
+        </button>
       </div>
       <div class="d-flex justify-content-center">
-        <button id="back-tournament" class="btn btn-secondary d-none">Back to tournament</button>
+        <button id="back-tournament" class="btn btn-secondary d-none" data-i18n-key="back-tournament-button">
+          Back to tournament
+        </button>
       </div>
     </div>
   </div>
 
   <div id="message" class="container-fluid d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
-    <button id="start" class="btn btn-primary">Start</button>
+    <button id="start" class="btn btn-primary" data-i18n-key="start-button">
+      Start
+    </button>
   </div>
 `;
 
