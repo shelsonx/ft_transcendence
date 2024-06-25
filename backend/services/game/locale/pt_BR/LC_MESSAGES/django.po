@@ -240,7 +240,7 @@ msgstr "Criar torneio"
 
 #: templates/game/rules.html:6
 msgid "The Transcendence Journey's Pong Game Rules"
-msgstr "Regras do Pong do The Transcendence Journey"
+msgstr "Regras do Transcendence Journey Pong"
 
 #: templates/game/rules.html:12 templates/game/validate.html:16
 #: templates/tournament/general_rules.html:91
@@ -350,7 +350,7 @@ msgstr "Outras estatísticas"
 
 #: templates/game/user_info.html:67
 msgid "Maximum points in a game:"
-msgstr ""
+msgstr "Máximo de pontos em um jogo:"
 
 #: templates/game/user_info.html:70
 msgid "Longest game:"
@@ -867,7 +867,7 @@ msgstr "Nenhum torneio registrado"
 
 #: user/forms.py:22
 msgid "insert username"
-msgstr "insera o username do usuário"
+msgstr "insira o nickname"
 
 #: user/models.py:34
 msgid "anonymous"
