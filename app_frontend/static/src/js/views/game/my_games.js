@@ -15,12 +15,12 @@ const html = /*html*/ `
   <div class="d-flex justify-content-end pe-1">
     <div>
       <button id="btn-all-games" type="button" class="btn btn-info"
-        onclick="window.location='/';"
+        onclick="window.location='/';" data-i18n-key="all-games-button"
       >
         All games
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
-        onclick="window.location='#play';"
+        onclick="window.location='#play';" data-i18n-key="play-button"
       >
         Play
       </button>

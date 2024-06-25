@@ -6,7 +6,7 @@ import { HttpClient, HttpClientRequestData } from "./httpClient.js";
 class GameService {
   constructor() {
     this.baseUrl = "https://localhost:8020";
-    this.httpClient = new HttpClient(this.baseUrl, false);
+    this.httpClient = new HttpClient(this.baseUrl);
     this.user = null;
   }
 
@@ -265,12 +265,20 @@ class GameService {
   }
 
   async updateUserDetails(id, formData) {
-    const data = {
-      username: formData.get("username"),
-      avatar: formData.get("avatar"),
-    };
+    let data = {};
+    if (formData.get("avatar_name")) {
+      data = {
+        username: formData.get("nickname"),
+        avatar: `/media/avatars/${formData.get("avatar_name")}`,
+      };
+    } else {
+      data = {
+        username: formData.get("nickname"),
+      };
+    }
+    
     const requestData = new HttpClientRequestData("PATCH", `/user/${id}`, data);
-    requestData.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    requestData.headers["Content-Type"] = "default";
     const response = await this.handleResponse(requestData);
     return response;
   }

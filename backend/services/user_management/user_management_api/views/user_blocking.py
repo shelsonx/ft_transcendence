@@ -3,8 +3,9 @@ from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from user_management_api.models.models import User
 from user_management_api.views.user_info import UserInfoView
+from user_management_api.jwt.decorator import JWTAuthentication
+
 
 from django.utils.translation import gettext as _
 
@@ -18,6 +19,7 @@ class UserBlockingView(View):
     - `delete`: Unblocks a previously blocked user for the specified user.
     """
 
+    @JWTAuthentication()
     def get(self, request, user_id, blocked_id=None):
         if not blocked_id:
             user = UserInfoView().get_user(user_id)
@@ -29,6 +31,7 @@ class UserBlockingView(View):
             is_blocked = user.blocked_users.filter(user_uuid=blocked_id).exists()
             return JsonResponse({'status': 'success', 'is_blocked': is_blocked, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def post(self, request, user_id, blocked_id):
         blocked_user_message = _('Blocked user added successfully')
         user = UserInfoView().get_user(user_id)
@@ -36,6 +39,7 @@ class UserBlockingView(View):
         user.blocked_users.add(blocked)
         return JsonResponse({'status': 'success', 'message': blocked_user_message, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def delete(self, request, user_id, blocked_id):
         blocked_user_removed_message = _('Blocked user removed successfully')
         user = UserInfoView().get_user(user_id)

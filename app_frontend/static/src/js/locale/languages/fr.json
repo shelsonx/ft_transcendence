@@ -73,6 +73,27 @@
   "search--currently-online": "Actuellement en ligne",
   "search--no-results": "Aucun résultat trouvé",
   "search--no-currently-online": "Aucun utilisateur en ligne :(",
+  "search--search-results": "Résultats de la recherche",
 
-  "invalid-access-token": "Jeton d'accès invalide"
+  "hello-user": "Salut",
+  "my-games-button": "Mes Jeux",
+  "all-games-button": "Tous les Jeux",
+
+  "play-button": "Jouer",
+  "start-button": "Commencer",
+  "pause-button": "Pause",
+  "continue-button": "Continuer",
+  "back-tournament-button": "Retour au tournoi",
+
+  "tournaments-title": "Tournois",
+  "my-tournaments-button": "Mes Tournois",
+  "create-tournament-button": "Créer un tournoi",
+  "your-tournaments-title": "Vos Tournois",
+  "all-tournaments-button": "Tous les Tournois",
+
+  "invalid-access-token": "Jeton d'accès invalide",
+
+  "game-info-menu": "Classement",
+  "play-pong-menu": "Jouer",
+  "tournaments-menu": "Tournois"
 }

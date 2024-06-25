@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from user_management_api.views.user_info import UserInfoView
 from user_management_api.models.models import FriendshipRequest, Friendship
 from user_management_api.exception.exception import MissingParameterException
+from user_management_api.jwt.decorator import JWTAuthentication
 
 from django.utils.translation import gettext as _
 
@@ -15,6 +16,7 @@ class FriendshipRequestView(View):
     Handles sending, accepting, and rejecting friend requests.
     """
 
+    @JWTAuthentication()
     def get(self, request, user_id):
         friend_requests = FriendshipRequest.objects.filter(receiver_uuid=user_id, is_active=True)
         friend_requests_list = []
@@ -27,6 +29,7 @@ class FriendshipRequestView(View):
             })
         return JsonResponse({'status': 'success', 'friend_requests': friend_requests_list, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def post(self, request, user_id, friend_id=None):
         sent_friend_request_message = _('Friend request sent successfully')
         friend_request_already_sent_message = _('Friend request already sent')
@@ -35,10 +38,11 @@ class FriendshipRequestView(View):
         sender = UserInfoView().get_user(user_id)
         receiver = UserInfoView().get_user(friend_id)
         if FriendshipRequest.objects.filter(sender=sender, receiver=receiver, is_active=True).exists():
-            return JsonResponse({'status': 'error', 'message': friend_request_already_sent_message, 'status_code': 400}, status=400)
+            return JsonResponse({'status': 'error', 'message': friend_request_already_sent_message, 'status_code': 201}, status=201)
         FriendshipRequest.objects.create(sender=sender, receiver=receiver, sender_uuid=sender.user_uuid, receiver_uuid=receiver.user_uuid)
         return JsonResponse({'status': 'success', 'message': sent_friend_request_message, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def put(self, request, user_id, request_id=None):
         friend_request_accepted_message = _('Friend request accepted')
         friend_request_already_accepted_message = _('Friend request already accepted')
@@ -50,10 +54,11 @@ class FriendshipRequestView(View):
             Friendship.objects.create(user=friend_request.sender, friend=friend_request.receiver, user_uuid=friend_request.sender_uuid, friend_uuid=friend_request.receiver_uuid)
             Friendship.objects.create(user=friend_request.receiver, friend=friend_request.sender, user_uuid=friend_request.receiver_uuid, friend_uuid=friend_request.sender_uuid)
         except:
-            return JsonResponse({'status': 'error', 'message': friend_request_already_accepted_message, 'status_code': 400}, status=400)
+            return JsonResponse({'status': 'error', 'message': friend_request_already_accepted_message, 'status_code': 201}, status=201)
         friend_request.save()
         return JsonResponse({'status': 'success', 'message': friend_request_accepted_message, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def delete(self, request, user_id, friend_id=None):
         friend_request_rejected_message = _('Friend request rejected')
         if friend_id is None:

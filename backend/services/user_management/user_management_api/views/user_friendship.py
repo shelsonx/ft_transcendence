@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from user_management_api.views.user_info import UserInfoView
-
+from user_management_api.jwt.decorator import JWTAuthentication
 from user_management_api.exception.exception \
     import MissingParameterException
 
@@ -19,6 +19,7 @@ class UserFriendshipView(View):
     `delete`: Removes a previously added friend for the specified user.
     """
 
+    @JWTAuthentication()
     def get(self, request, user_id):
         user = UserInfoView().get_user(user_id)
         blocked_users = user.blocked_users.all()
@@ -27,6 +28,7 @@ class UserFriendshipView(View):
         friends_json = [friend for friend in friends_json if friend not in blocked_users]
         return JsonResponse({'status': 'success', 'friends': friends_json, 'status_code': 200}, status=200)
 
+    @JWTAuthentication()
     def delete(self, request, user_id, friend_id=None):
         print("user_id: ", user_id)
         friend_removed_message = _('Friend removed successfully')

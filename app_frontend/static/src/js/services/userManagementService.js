@@ -123,6 +123,7 @@ class UserInformationService {
       chosen_language: formData.get('language'),
       user_uuid: getUserId(),
       email: email,
+      avatar_name: formData.get('avatar_name')
       };
 
     const requestData = new HttpClientRequestData('PATCH', `/user/${this.userId}/`, data);

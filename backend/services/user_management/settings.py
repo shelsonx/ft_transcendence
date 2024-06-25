@@ -44,10 +44,10 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'users_db',
-        'USER': 'admin',
-        'PASSWORD': '1234',
-        'HOST': 'user-management-db',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': '5432',
     }
 }

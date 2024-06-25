@@ -3,14 +3,14 @@
 {% load player_tags %}
 
 <div class="user-game-info d-flex justify-content-between mb-3 align-items-start border border-white border-opacity-10 rounded-3 p-3">
-  <div class="d-flex justify-content-start">
-    <img class="profile-avatar" src="{{ user.avatarUrl }}" alt="user avatar">
-    <div class="p-3">
-      <h3 class="d-flex-column pb-2">
-          {{ user }}
-      </h3>
-      <p class="">{% translate "Ranking:" %} {{ user.rank }}º</p>
-      <p class="small">{% translate "Score:" %} {{ user.rating }}</p>
+  <div class="d-flex-column justify-content-start">
+    <div class="d-flex justify-content-between align-items-center p-3">
+      <img class="profile-avatar" src="{{ user.avatarUrl }}" alt="user avatar">
+      <h4 class="ps-3">{{ user }}</h4>
+    </div>
+    <div class="px-3">
+      <p class="">{% translate "Ranking:" %} <span class="stats">{{ user.rank }}º</span></p>
+      <p class="small">{% translate "Score:" %} <span class="stats">{{ user.rating }}</span></p>
     </div>
   </div>
 
@@ -19,17 +19,17 @@
   <div class="main d-flex justify-content-start">
     <div class="p-3">
       <p class="d-flex justify-content-between">
-        <span>{% translate "Winnings:" %}</span> <span class="ms-3">{{ user.winnings }}</span>
+        <span>{% translate "Winnings:" %}</span> <span class="ms-3 stats">{{ user.winnings }}</span>
       </p>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Losses:" %}</span> <span class="ms-3">{{ user.losses }}</span>
+        <span>{% translate "Losses:" %}</span> <span class="ms-3 stats">{{ user.losses }}</span>
       </p>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Ties:" %}</span> <span class="ms-3">{{ user.ties }}</span>
+        <span>{% translate "Ties:" %}</span> <span class="ms-3 stats">{{ user.ties }}</span>
       </p>
       <hr>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Matches:" %}</span> <span class="ms-3">{{ user.total_games }}</span>
+        <span>{% translate "Matches:" %}</span> <span class="ms-3 stats">{{ user.total_games }}</span>
       </p>
     </div>
   </div>
@@ -39,17 +39,17 @@
   <div class="main d-flex justify-content-start">
     <div class="p-3">
       <p class="d-flex justify-content-between">
-        <span>{% translate "Total points in games:" %}</span> <span class="ms-3">{{ user.score }}</span>
+        <span>{% translate "Total points in games:" %}</span> <span class="ms-3 stats">{{ user.score }}</span>
       </p>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Average points per game:" %}</span> <span class="ms-3">{{ user|points_per_game }}</span>
+        <span>{% translate "Average points per game:" %}</span> <span class="ms-3 stats">{{ user|points_per_game }}</span>
       </p>
       <hr>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Tournaments:" %}</span> <span class="ms-3">{{ user.tournaments_count }}</span>
+        <span>{% translate "Tournaments:" %}</span> <span class="ms-3 stats">{{ user.tournaments_count }}</span>
       </p>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Points in tournaments:" %}</span> <span class="ms-3">{{ user.tournaments_points }}</span>
+        <span>{% translate "Points in tournaments:" %}</span> <span class="ms-3 stats">{{ user.tournaments_points }}</span>
       </p>
     </div>
   </div>
@@ -64,11 +64,11 @@
       </p>
       <hr>
       <p class="d-flex justify-content-between">
-        <span>{% translate "Maximum points in a game:" %}</span> <span class="ms-3">{{ user.max_points }}</span>
+        <span>{% translate "Maximum points in a game:" %}</span> <span class="ms-3 stats">{{ user.max_points }}</span>
       </p>
       <p class="d-flex justify-content-between">
         <span>{% translate "Longest game:" %}</span>
-        <span class="ms-3">
+        <span class="ms-3 stats">
           {% if user.longest_game != "-" %}
             {{ user.longest_game|format_timedelta }}
           {% else %}
@@ -78,7 +78,7 @@
       </p>
       <p class="d-flex justify-content-between">
         <span>{% translate "Fastest game:" %}</span>
-        <span class="ms-3">
+        <span class="ms-3 stats">
           {% if user.fastest_game != "-" %}
             {{ user.fastest_game|format_timedelta }}
           {% else %}

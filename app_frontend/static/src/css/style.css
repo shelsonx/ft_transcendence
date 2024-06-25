@@ -550,7 +550,7 @@ tr.tournament-winner td {
     color: var(--green-dark)
 }
 
-td.paused {
+td.paused, .stats {
     color: var(--secondary-light)
 }
 

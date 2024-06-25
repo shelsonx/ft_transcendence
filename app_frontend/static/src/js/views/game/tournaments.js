@@ -14,15 +14,17 @@ class TournamentsView extends BaseLoggedView {
 
 const html = /*html*/`
   <div class="d-flex justify-content-between">
-    <h3 id="tournament-title">Tournaments</h3>
+    <h3 id="tournament-title" data-i18n-key="tournaments-title">
+      Tournaments
+    </h3>
     <div >
       <button id="btn-data-switch" type="button" class="btn btn-info"
-        onclick="window.location='#my-tournaments';"
+        onclick="window.location='#my-tournaments';" data-i18n-key="my-tournaments-button"
       >
         My tournaments
       </button>
       <button id="btn-play" type="button" class="btn btn-primary"
-        onclick="window.location='#add-tournament';"
+        onclick="window.location='#add-tournament';" data-i18n-key="create-tournament-button"
       >
         Create tournament
       </button>

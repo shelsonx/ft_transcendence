@@ -1,5 +1,6 @@
 # Create your views here.
 # Standard Library
+from datetime import timedelta
 import logging
 
 # import pprint
@@ -135,5 +136,7 @@ class GamesView(generic.ListView):
         round = game.round.all().first()
         if round:
             game.tournament = round.tournament
+
+        game.game_datetime -= timedelta(hours=3)
 
         return game

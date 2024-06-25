@@ -52,7 +52,6 @@ const cancelTournament = async (e) => {
       return;
     }
     await gameService.tournament(tournament).then(tournamentDetail);
-    // TODO: toast sucesso?
   });
 };
 
@@ -69,7 +68,6 @@ const deleteTournament = async (e) => {
       return;
     }
     window.location.replace("#my-tournaments");
-    // TODO: toast sucesso?
     return;
   });
 };

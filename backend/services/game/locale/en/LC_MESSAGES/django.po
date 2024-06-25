@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-24 04:26+0000\n"
+"POT-Creation-Date: 2024-06-24 14:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: core/forms/tournament.py:51
 msgid "Challenge tournament can have only 2 players"
 msgstr ""
@@ -155,7 +156,7 @@ msgstr ""
 msgid "Tournament Players"
 msgstr ""
 
-#: core/models/tournament_player.py:21 templates/games_list.html:31
+#: core/models/tournament_player.py:21 templates/games_list.html:25
 msgid "Tournament"
 msgstr ""
 
@@ -185,11 +186,11 @@ msgstr ""
 msgid "%(value)s is not an odd number"
 msgstr ""
 
-#: core/views/game.py:63 core/views/tournament.py:71
+#: core/views/game.py:63 core/views/tournament.py:72
 msgid "User does not exist"
 msgstr ""
 
-#: core/views/game.py:69 core/views/tournament.py:76
+#: core/views/game.py:69 core/views/tournament.py:77
 msgid "You can't play against yourself"
 msgstr ""
 
@@ -287,6 +288,62 @@ msgstr ""
 msgid "game duration"
 msgstr ""
 
+#: templates/game/user_info.html:12
+msgid "Ranking:"
+msgstr ""
+
+#: templates/game/user_info.html:13
+msgid "Score:"
+msgstr ""
+
+#: templates/game/user_info.html:22
+msgid "Winnings:"
+msgstr ""
+
+#: templates/game/user_info.html:25
+msgid "Losses:"
+msgstr ""
+
+#: templates/game/user_info.html:28
+msgid "Ties:"
+msgstr ""
+
+#: templates/game/user_info.html:32
+msgid "Matches:"
+msgstr ""
+
+#: templates/game/user_info.html:42
+msgid "Total points in games:"
+msgstr ""
+
+#: templates/game/user_info.html:45
+msgid "Average points per game:"
+msgstr ""
+
+#: templates/game/user_info.html:49
+msgid "Tournaments:"
+msgstr ""
+
+#: templates/game/user_info.html:52
+msgid "Points in tournaments:"
+msgstr ""
+
+#: templates/game/user_info.html:63
+msgid "Other statistics"
+msgstr ""
+
+#: templates/game/user_info.html:67
+msgid "Maximum points in a game:"
+msgstr ""
+
+#: templates/game/user_info.html:70
+msgid "Longest game:"
+msgstr ""
+
+#: templates/game/user_info.html:80
+msgid "Fastest game:"
+msgstr ""
+
 #: templates/game/validate.html:10
 msgid "Your Transcendence Journey's Pong Game Rules"
 msgstr ""
@@ -352,59 +409,54 @@ msgstr ""
 msgid "Game already validated"
 msgstr ""
 
-#: templates/games_list.html:5
+#: templates/games_list.html:10
 msgid "Your matches"
 msgstr ""
 
-#: templates/games_list.html:14
-#, python-format
-msgid " %(user)s matches "
-msgstr ""
-
-#: templates/games_list.html:28 templates/tournament/round_table.html:18
+#: templates/games_list.html:22 templates/tournament/round_table.html:18
 msgid "Result"
 msgstr ""
 
-#: templates/games_list.html:29 templates/tournament/round_table.html:19
+#: templates/games_list.html:23 templates/tournament/round_table.html:19
 #: templates/tournaments_list.html:14
 msgid "Date / Status"
 msgstr ""
 
-#: templates/games_list.html:30 templates/tournament/round_table.html:20
+#: templates/games_list.html:24 templates/tournament/round_table.html:20
 msgid "Duration"
 msgstr ""
 
-#: templates/games_list.html:83 templates/tournaments_list.html:17
+#: templates/games_list.html:77 templates/tournaments_list.html:17
 #: templates/tournaments_list.html:63
 msgid "Winner"
 msgstr ""
 
-#: templates/games_list.html:91 templates/tournament/round_table.html:58
+#: templates/games_list.html:85 templates/tournament/round_table.html:58
 msgid "Play"
 msgstr ""
 
-#: templates/games_list.html:99 templates/tournament/round_table.html:56
+#: templates/games_list.html:93 templates/tournament/round_table.html:56
 #: templates/tournaments_list.html:73
 msgid "Continue"
 msgstr ""
 
-#: templates/games_list.html:107 templates/tournaments_list.html:78
+#: templates/games_list.html:101 templates/tournaments_list.html:78
 msgid "Validate"
 msgstr ""
 
-#: templates/games_list.html:120 templates/tournament.html:21
+#: templates/games_list.html:114 templates/tournament.html:21
 msgid "Delete"
 msgstr ""
 
-#: templates/games_list.html:127 templates/tournament.html:27
+#: templates/games_list.html:121 templates/tournament.html:27
 msgid "Cancel"
 msgstr ""
 
-#: templates/games_list.html:144
+#: templates/games_list.html:138
 msgid "This user has no matches"
 msgstr ""
 
-#: templates/games_list.html:146
+#: templates/games_list.html:140
 msgid "No matches yet..."
 msgstr ""
 
