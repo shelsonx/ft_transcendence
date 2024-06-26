@@ -9,7 +9,7 @@
             "scores": 300,
             "winnings": 2,
             "losses": 1,
-            "position": 7,
+            "position": 0,
             "status": true,
             "playing": true,
             "photo": "media/avatars/shelson.jpeg"
@@ -25,7 +25,7 @@
             "scores": 7000,
             "winnings": 6,
             "losses": 1,
-            "position": 5,
+            "position": 0,
             "status": true,
             "playing": true,
             "photo": "media/avatars/sheela.png"
@@ -41,7 +41,7 @@
             "scores": 3500,
             "winnings": 11,
             "losses": 2,
-            "position": 2,
+            "position": 0,
             "status": false,
             "playing": false,
             "photo": "media/avatars/elraira-.jpeg"
@@ -57,7 +57,7 @@
             "scores": 4000,
             "winnings": 1,
             "losses": 1,
-            "position": 6,
+            "position": 0,
             "status": true,
             "playing": false,
             "photo": "media/avatars/brunobonaldi.jpeg"
@@ -73,7 +73,7 @@
             "scores": 300,
             "winnings": 1,
             "losses": 4,
-            "position": 4,
+            "position": 0,
             "status": false,
             "playing": true,
             "photo": "media/avatars/humberto.jpeg"
