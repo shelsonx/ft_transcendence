@@ -1,5 +1,7 @@
 import { AuthConstants } from "../constants/auth-constants.js";
 import { CustomEvents } from "../constants/custom-events.js";
+import { UserInformationService } from "../services/userManagementService.js";
+import { getUserId } from "../utils/getUserId.js";
 
 class LanguageHandler {
   #locale;
@@ -68,7 +70,7 @@ class LanguageHandler {
         button.classList.add('active');
       }
       button.textContent = language;
-      button.addEventListener('click', (e) => this.onLanguageChange(e));
+      button.addEventListener('click', async (e) => await this.onLanguageChange(e));
       this.buttonsRef.push(button);
       li.appendChild(button);
       this.dropDownMenu.appendChild(li);
@@ -191,12 +193,30 @@ class LanguageHandler {
     target.classList.add('active');
   }
 
-  onLanguageChange(e) {
+  async onLanguageChange(e) {
     const language = e.target.textContent;
     this.setActive(e.target);
     const newLanguageSelected = this.supportedLanguages[language] || this.supportedLanguages['English'];
     this.handleLocation(newLanguageSelected.code);
     window.dispatchEvent(new CustomEvent(CustomEvents.LANGUAGE_CHANGE_EVENT, { detail: {lang: newLanguageSelected.code} }));
+    try {
+      const userInfoService = new UserInformationService();
+      const { user: {
+        name,
+        nickname,
+        user_uuid,
+        email
+      } } = await userInfoService.getUserData();
+      await userInfoService.updateUserData({
+        name,
+        nickname,
+        user_uuid,
+        email,
+        chosen_language: newLanguageSelected.code
+       });
+    } catch  {
+
+    }
   }
 
   changeLanguage(locale) {
