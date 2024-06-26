@@ -15,3 +15,6 @@ class UserInfo(models.Model):
     photo = models.ImageField(upload_to='media/avatars/',
                         blank=True, null=True, 
                         default='media/avatars/astronaut3.jpeg')
+    
+    class Meta:
+        ordering = ['-scores']

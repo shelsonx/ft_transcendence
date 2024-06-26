@@ -20,7 +20,7 @@ const html = /*html*/`
                     <div class="container_details text-center">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4" id="details-medal-user">
-                                <img src="static/src/img/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
+                                <img src="https://localhost:8006/media/avatars/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
                                 <p class="mb-1" id="details-fullname">FT_TRANSCENDENCE 42 SP</p>
                                 <p id="details-status">
                                      <i class="fa-solid fa-circle me-2" id="details-status-icon" style="color: #4B0082"></i>

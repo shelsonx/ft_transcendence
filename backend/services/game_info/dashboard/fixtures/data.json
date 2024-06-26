@@ -5,7 +5,7 @@
         "fields": {
             "id_msc": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
             "full_name": "Shelson Jhony Xavier Alves",
-            "nickname": "salves",
+            "nickname": "shelson",
             "scores": 300,
             "winnings": 2,
             "losses": 1,
@@ -37,7 +37,7 @@
         "fields": {
             "id_msc": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
             "full_name": "Eliaris Raíra De Godoy Alvares",
-            "nickname": "elia-",
+            "nickname": "eliaris",
             "scores": 3500,
             "winnings": 11,
             "losses": 2,
@@ -53,7 +53,7 @@
         "fields": {
             "id_msc": "355aaf65-0300-47b6-8748-c8d0c1aed702",
             "full_name": "Bruno Bonaldi Ramos Silva",
-            "nickname": "brunob",
+            "nickname": "brunobonaldi",
             "scores": 4000,
             "winnings": 1,
             "losses": 1,
@@ -69,7 +69,7 @@
         "fields": {
             "id_msc": "e054f322-7733-48be-b1b1-7a66357efecd",
             "full_name": "Humberto Arndt",
-            "nickname": "humbt",
+            "nickname": "humberto",
             "scores": 300,
             "winnings": 1,
             "losses": 4,
