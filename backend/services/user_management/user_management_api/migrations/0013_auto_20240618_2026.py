@@ -17,7 +17,7 @@ def create_initial_data(apps, schema_editor):
             "status": "inactive",
             "user_uuid": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
             "name": "Sheela",
-            "avatar": "avatars/sheela.jpeg"
+            "avatar": "avatars/sheela.png"
         },
         {
             "id": uuid.UUID("355aaf65-0300-47b6-8748-c8d0c1aed702"),
@@ -26,7 +26,7 @@ def create_initial_data(apps, schema_editor):
             "status": "inactive",
             "user_uuid": "355aaf65-0300-47b6-8748-c8d0c1aed702",
             "name": "Bruno",
-            "avatar": "avatars/brunpbonaldi.jpeg"
+            "avatar": "avatars/brunobonaldi.jpeg"
         },
         {
             "id": uuid.UUID("38b8cb4d-34d8-4530-80f3-b4f10cf87b51"),
