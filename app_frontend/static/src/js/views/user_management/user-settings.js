@@ -106,7 +106,7 @@ const changeLanguage = (selectedLanguage) => {
 const rollBackChanges = async (user) => {
   await authService.updateUserData(user.id, {
     user_name: user.name,
-    enable_2fa: user.two_factor_enabled,
+    enable_2fa: user.enable_2fa,
   });
 };
 
@@ -154,7 +154,6 @@ const initFormSubmission = (userInformationService, user) => {
       email: email,
       avatar_name: formData.get('avatar_name')
       };
-
     const userDataResponse = await updateUserData(userInformationService, data);
     if (!userDataResponse.is_success) return await rollBackChanges(user);
 
@@ -167,7 +166,7 @@ const initFormSubmission = (userInformationService, user) => {
       avatar: `/media/avatars/${formData.get("avatar_name")}`,
     });
 
-    if (!gameInfoResponse.is_success) return await rollBackChanges(user);
+    if (gameInfoResponse !== "OK") return await rollBackChanges(user);
 
     changeLanguage(formData.get("language"));
   });
