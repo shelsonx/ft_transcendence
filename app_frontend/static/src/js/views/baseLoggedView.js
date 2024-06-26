@@ -40,7 +40,7 @@ class BaseLoggedView extends View {
       }
     };
 
-    const throttleTime = 3000; // 10 seconds
+    const throttleTime = 3000;
     let lastUpdate = 0;
     
     const updateUserStatus = async () => {

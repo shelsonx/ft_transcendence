@@ -13,7 +13,7 @@ class User(AbstractBaseUser):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_uuid = models.CharField(max_length=255, unique=True, null=True, blank=True)
+    user_uuid = models.CharField(max_length=255, unique=True, null=False, blank=False)
     name = models.CharField(max_length=255)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, default='avatars/default_avatar.jpeg')
     avatar_name = models.CharField(max_length=255, null=True, blank=True)
@@ -65,7 +65,7 @@ class User(AbstractBaseUser):
             'friends': friends_json,
             'friend_requests': friend_requests_json,
             'blocked_users': blocked_users_json,
-            'user_uuid': self.user_uuid if self.user_uuid else '',
+            'user_uuid': self.user_uuid
         }
 
 class FriendshipRequest(models.Model):
