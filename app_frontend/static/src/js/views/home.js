@@ -55,24 +55,9 @@ const swap = (response) => {
   swapContainer.innerHTML = response;
 };
 
-const changeLanguageWhenLogin = async (userId) => {
-  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE) || 'en';
-  try {
-    const userInfoService = new UserInformationService(userId);
-    const { user: userManagement } = await userInfoService.getUserData();
-    const { chosen_language } = userManagement;
-    userChoosenLanguage = chosen_language;
-    languageHandler.setDefaultLocale(userChoosenLanguage);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    languageHandler.changeLanguage(userChoosenLanguage);
-   }
-};
 
 const start = async (user) => {
   if (user) {
-    changeLanguageWhenLogin(user.id);
     const helloUser = document.getElementById("hello-user");
     helloUser.setAttribute("data-i18n-key", "hello-user");
     helloUser.innerHTML = "Hello, ";
@@ -80,7 +65,6 @@ const start = async (user) => {
     userName.innerHTML = `, ${user.userName}!`;
 
   }
-
   await gameService.allGames().then(swap);
   window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
     await gameService.allGames().then(swap);
