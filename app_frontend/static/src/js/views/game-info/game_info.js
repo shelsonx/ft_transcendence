@@ -20,7 +20,7 @@ const html = /*html*/`
                     <div class="container_details text-center">
                         <div class="row align-items-center justify-content-center">
                             <div class="col-md-4" id="details-medal-user">
-                                <img src="static/src/img/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
+                                <img src="https://localhost:8006/media/avatars/gold_medal_star_icon.png" alt="medalha do usuário" class="details-pictures details-medal-picture">
                                 <p class="mb-1" id="details-fullname">FT_TRANSCENDENCE 42 SP</p>
                                 <p id="details-status">
                                      <i class="fa-solid fa-circle me-2" id="details-status-icon" style="color: #4B0082"></i>
@@ -185,7 +185,7 @@ function setData(container, data) {
     nickname.textContent = data.nickname;
 
     const userPhoto = container.querySelector('.list-user-photo');
-    userPhoto.src = `https://localhost:8003/${data.photo}`;
+    userPhoto.src = `https://localhost:8006/${data.photo}`;
 
     const scores = container.querySelector('.list-scores');
     scores.textContent = data.scores;
@@ -308,7 +308,7 @@ function setDetailsStatus(data) {
     document.getElementById('details-winnings').textContent = data.user.winnings;
     document.getElementById('details-losses').textContent = data.user.losses;
     document.getElementById('details-position').textContent = `${data.user.position}º`;
-    document.getElementById('details-photo').src = `https://localhost:8003/${data.user.photo}`;
+    document.getElementById('details-photo').src = `https://localhost:8006/${data.user.photo}`;
     document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'white';
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
