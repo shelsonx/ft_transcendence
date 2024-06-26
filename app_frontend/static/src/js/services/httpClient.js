@@ -97,10 +97,10 @@ export class HttpClient {
     try {
       const error = await response.json()
       apiError = new ApiError(error?.message ?? JSON.stringify(error) , response.status);
-      if (response.status === 401) {
-        localStorage.removeItem(AuthConstants.AUTH_TOKEN);
-        window.location.href = '/#login';
-      }
+      // if (response.status === 401) {
+      //   localStorage.removeItem(AuthConstants.AUTH_TOKEN);
+      //   window.location.href = '/#login';
+      // }
     } catch(err) {
       apiError = new ApiError(
         'An error occurred while processing your request',
@@ -139,7 +139,7 @@ export class HttpClient {
   async #get(httpClientRequestData) {
     const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
       method: 'GET',
-      headers: httpClientRequestData.headers
+      headers: httpClientRequestData.headers,
     });
     return await this.#toResponse(response);
   }
@@ -212,7 +212,7 @@ export class HttpClient {
         formData.append(key, httpClientRequestData.data[key]);
       }
     }
-    
+
     try {
       const response = await fetch(this.baseUrlWithLanguage + httpClientRequestData.endpoint, {
         method: 'PATCH',
