@@ -194,6 +194,10 @@ class LanguageHandler {
     this.setActive(e.target);
     const newLanguageSelected = this.supportedLanguages[language] || this.supportedLanguages['English'];
     this.handleLocation(newLanguageSelected.code);
+    // dispatchEvent(new CustomEvent('language-changed', { detail: newLanguageSelected.code }));
+    // document.addEventListener('language-changed', (e) => {
+    //   this.changeLanguage(e.detail);
+    // });
   }
 
   changeLanguage(locale) {

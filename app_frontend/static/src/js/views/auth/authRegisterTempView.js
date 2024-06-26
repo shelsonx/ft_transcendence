@@ -23,6 +23,13 @@ function start() {
         authService,
         authService.register42,
     );
+    try {
+      const { data } = await authService.getTempMe();
+      if (data.enable_2fa) {
+
+        window.location.href = '?email=' + data.email + '#two-factor-auth';
+      }
+    } catch {}
     window.location.href = '/#';
   });
 }

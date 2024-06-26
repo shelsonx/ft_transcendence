@@ -73,6 +73,12 @@ class AuthService extends LanguageService {
     return response;
   }
 
+  async getTempMe() {
+    const requestData = new HttpClientRequestData('GET', 'user-temp/');
+    const response = await this.makeRequest(requestData);
+    return response;
+  }
+
   /**
    * Asynchronously updates user data.
    *

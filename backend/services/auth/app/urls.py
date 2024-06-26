@@ -42,6 +42,7 @@ from .views import SignInView
 from .views import SignUpView
 from .views import UserView
 from .views import GetUserView
+from .views import GetUserTempView
 from .views import RedirectOAuth42View
 from .views import SignInOAuth42View
 from .views import Validate2FactorCodeView
@@ -150,6 +151,7 @@ urlpatterns = [
     path("redirect-42/", RedirectOAuth42View.as_view()),
     path("sign-up/", SignUpView.as_view(sign_up_controller=sign_up_controller)),
     path("user/", GetUserView.as_view(user_controller=user_controller)),
+    path("user-temp/", GetUserTempView.as_view(user_controller=user_controller)),
     path("user/<uuid:user_id>/", UserView.as_view(user_controller=user_controller)),
     path(
         "sign-in-42/",

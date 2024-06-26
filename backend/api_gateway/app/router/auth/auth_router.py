@@ -1,6 +1,6 @@
 from abc import ABCMeta
 
-from django.http import HttpRequest, JsonResponse
+from django.http import HttpRequest, JsonResponse, HttpResponseRedirect
 from django.http.request import HttpHeaders
 import json
 
@@ -18,7 +18,7 @@ from ...interfaces.router.router import IRouter, Route
 from ...services.http_client import HttpClient
 from ...interfaces.services.http_client import IHttpClient, HttpClientData
 from ..api_urls import ApiUrls
-
+from ..oauth_urls import OAuthUrls
 
 
 class AuthRouter(IRouter):
@@ -30,6 +30,7 @@ class AuthRouter(IRouter):
       Route("/sign-in/", ['POST']),
       Route("/sign-up/", ['POST']),
       Route("/user/", ['GET']),
+      Route("/user-temp/", ['GET']),
       Route("/user/<uuid:user_id>/", ['PUT', 'DELETE']),
       Route("/sign-in-42/", ['POST']),
       Route("/validate-2factor-code/", allowed_verbs=['POST', 'PUT'], handler_function=self.register),
@@ -49,6 +50,9 @@ class AuthRouter(IRouter):
       headers=headers_dict
     )
     auth_data = self.http_client.get(http_client_data_user_me)
+    if auth_data.status_code == 401:
+        http_client_data_user_me.url = "/user-temp/"
+        auth_data = self.http_client.get(http_client_data_user_me)
     data_json = self.convert_to_json_response(auth_data)
     return data_json
 
@@ -119,16 +123,14 @@ class AuthRouter(IRouter):
 
   def register_ms(self, default_response, headers_dict):
 
-        resp_me_data = self.get_me(headers_dict)
-        if resp_me_data.status_code >= 400:
-            return default_response
-        self.me_data = resp_me_data
+        self.me_data  = self.get_me(headers_dict)
         auth_data_json = json.loads(self.me_data.content)['data']
 
         if auth_data_json['enable_2fa']:
             return default_response
 
         if auth_data_json['is_first_login']:
+
             for index, register_function in enumerate(self.register_functions):
                 response = register_function(auth_data_json, headers_dict)
                 if response.status_code >= 400:
