@@ -204,14 +204,22 @@ class LanguageHandler {
       const { user: {
         name,
         nickname,
+        two_factor_enabled,
+        avatar,
+        chosen_language,
         user_uuid,
-        email
+        email,
+        avatar_name,
       } } = await userInfoService.getUserData();
+
       await userInfoService.updateUserData({
         name,
         nickname,
+        two_factor_enabled,
+        avatar,
         user_uuid,
         email,
+        avatar_name,
         chosen_language: newLanguageSelected.code
        });
     } catch  {
