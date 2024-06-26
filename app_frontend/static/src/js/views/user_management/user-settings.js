@@ -6,6 +6,7 @@ import UserManagementView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
 import wrapperLoadingService from "../../services/wrapperService.js";
 import authService from "../../services/authService.js";
+import gameInfoService from '../../services/gameInfoService.js';
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -109,53 +110,67 @@ const rollBackChanges = async (user) => {
   });
 };
 
-
 const initFormSubmission = (userInformationService, user) => {
-    const userId = getUserId();
-    var extension = ""
+  const userId = getUserId();
+  const form = document.getElementById('user-settings-form');
 
-    const form = document.getElementById('user-settings-form');
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-        const formData = new FormData(form);
-        const avatarInput = document.getElementById('avatar-input');
-        const avatarFile = avatarInput.files[0];
+    const formData = new FormData(form);
+    const avatarInput = document.getElementById('avatar-input');
+    const avatarFile = avatarInput.files[0];
 
-        if (avatarFile) {
-            extension = avatarFile.name.split('.').pop();
-            const uniqueIdentifier = `${userId}_${Date.now()}.${extension}`;
-            formData.append('avatar', avatarFile);
-            formData.append('avatar_name', uniqueIdentifier);
-        }
+    if (avatarFile) {
+      const extension = avatarFile.name.split('.').pop();
+      const uniqueIdentifier = `${userId}_${Date.now()}.${extension}`;
+      formData.append('avatar', avatarFile);
+      formData.append('avatar_name', uniqueIdentifier);
+    }
 
-        const authData = {
-          user_name: formData.get("nickname"),
-          enable_2fa: formData.get("two-factor-enabled") ? true : false,
-        };
+    const authData = {
+      user_name: formData.get("nickname"),
+      enable_2fa: !!formData.get("two-factor-enabled"),
+    };
 
-        const response = await wrapperLoadingService.execute(
-          authService,
-          authService.updateUserData,
-          user.id,
-          authData
-        );
+    const response = await wrapperLoadingService.execute(
+      authService,
+      authService.updateUserData,
+      user.id,
+      authData
+    );
 
-        if (!response.is_success) {
-          return ;
-        }
+    if (!response.is_success) return;
 
-        const userDataResponse = await updateUserData(
-          userInformationService,
-          formData
-        );
+    const userData = await userInformationService.getUserData();
+    const email = userData.user.email;
+    const data = {
+      name: formData.get('name'),
+      nickname: formData.get('nickname'),
+      two_factor_enabled: formData.get('two-factor-enabled') === 'on' ? true : false,
+      avatar: formData.get('avatar'),
+      chosen_language: formData.get('language'),
+      user_uuid: getUserId(),
+      email: email,
+      avatar_name: formData.get('avatar_name')
+      };
 
-        if (!userDataResponse.is_success) {
-          await rollBackChanges(user);
-          return ;
-        }
-        changeLanguage(formData.get("language"));
+    const userDataResponse = await updateUserData(userInformationService, data);
+    if (!userDataResponse.is_success) return await rollBackChanges(user);
+
+    const gameDataResponse = await gameService.updateUserDetails(user.id, formData);
+    if (!gameDataResponse.is_success) return await rollBackChanges(user);
+
+    const gameInfoResponse = await gameInfoService.updateUserInformation({
+      id_msc: userId,
+      nickname: formData.get("nickname"),
+      avatar: `/media/avatars/${formData.get("avatar_name")}`,
     });
+
+    if (!gameInfoResponse.is_success) return await rollBackChanges(user);
+
+    changeLanguage(formData.get("language"));
+  });
 };
 
 const initAvatarChange = () => {

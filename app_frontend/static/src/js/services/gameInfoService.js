@@ -40,6 +40,15 @@ class GameInfoService {
 		const response = await this.httpClient.makeRequest(total_infos);
 		return response;
 	}
+
+	async updateUserInformation(data) {
+		console.log(data);
+		const user_info = new HttpClientRequestData(
+			'POST', '/dash/update_user/', data
+		);
+		const response = await this.httpClient.makeRequest(user_info);
+		return response;
+	}
 }
 
 export default new GameInfoService();
