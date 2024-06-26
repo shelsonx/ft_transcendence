@@ -301,16 +301,16 @@ function createUserGameStatus() {
     return userGameStatus;
 }
 
-function setDetailsStatus(data) {
-    document.getElementById('details-fullname').textContent = data.user.full_name;
-    document.getElementById('details-nickname').textContent = data.user.nickname;
-    document.getElementById('details-scores').textContent = data.user.scores;
-    document.getElementById('details-winnings').textContent = data.user.winnings;
-    document.getElementById('details-losses').textContent = data.user.losses;
-    document.getElementById('details-position').textContent = `${data.user.position}º`;
-    document.getElementById('details-photo').src = `https://localhost:8006/${data.user.photo}`;
-    document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'white';
-    document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
+function setDetailsStatus(data, initial) {
+    document.getElementById('details-fullname').textContent = initial ? data.full_name : data.user.full_name;
+    document.getElementById('details-nickname').textContent = initial ? data.nickname : data.user.nickname;
+    document.getElementById('details-scores').textContent = initial ? data.scores : data.user.scores;
+    document.getElementById('details-winnings').textContent = initial ? data.winnings : data.user.winnings;
+    document.getElementById('details-losses').textContent = initial ? data.losses : data.user.losses;
+    document.getElementById('details-position').textContent = `${initial ? data.position : data.user.position}º`;
+    document.getElementById('details-photo').src = `https://localhost:8006/${initial ? data.photo : data.user.photo}`;
+    document.getElementById('details-status-icon').style.color = initial ? (data.status ? 'green' : 'white') : data.user.status ? 'green' : 'white';
+    document.getElementById('details-status-label').textContent = initial ? (data.status ? 'Online' : 'Offline') : data.user.status ? 'Online' : 'Offline';
 }
 
 function AddUserInList(data, users_blocks, userActive) {
@@ -345,7 +345,7 @@ function AddUserInList(data, users_blocks, userActive) {
         const detailsMedalUser = document.getElementById('details-medal-user');
         gameInfoService.get_user(data.id).then(
             res => {
-                setDetailsStatus(res);
+                setDetailsStatus(res, false);
                 drawChart(detailsInfosUser, res);
                 drawChartMedalRaking(detailsMedalUser, res);
                 container.style.backgroundColor = '#381718';
@@ -356,7 +356,7 @@ function AddUserInList(data, users_blocks, userActive) {
     container.addEventListener('click', function() {
         gameInfoService.get_user(data.id).then(
             res => {
-                setDetailsStatus(res);
+                setDetailsStatus(res, false);
             }
         );
     });
@@ -373,6 +373,17 @@ async function getUsersBlocks(user) {
 }
 
 const start = async (user) => {
+    console.log('User: ', user);
+    gameInfoService.gameInfo().then(
+        res => {
+          res.forEach(data => {
+              if (data.id_msc === user.id) {
+                setDetailsStatus(data, true);
+                return ;
+              }
+          });
+          return;
+      });
     const users_blocks = await getUsersBlocks(user);
     const userId = localStorage.getItem('userId');
     if (userId !== '') {
@@ -391,7 +402,6 @@ const start = async (user) => {
     gameInfoService.gameInfo().then(
       res => {
         res.forEach(data => {
-            console.log('Data: ', data);
             AddUserInList(data, users_blocks, false);
         });
     });
