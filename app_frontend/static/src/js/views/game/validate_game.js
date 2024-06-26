@@ -5,6 +5,7 @@ import wrapperLoadingService from '../../services/wrapperService.js';
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
 import { isValidToken } from "../../contracts/validation/tokenValidation.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class ValidateGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -63,7 +64,7 @@ const invalidToken = () => {
       errorElement.remove();
     });
   }
-  
+
   const tokenField = document.getElementById("token");
   var errorElement = document.createElement('div');
   errorElement.classList.add("form-error");
@@ -104,6 +105,10 @@ const start = async (user) => {
 
   gameService.user = user;
   await gameService.validateGameForm(match).then(putVerifyForm);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.validateGameForm(match).then(putVerifyForm);
+  });
 };
 
 export default new ValidateGameView(html, start);

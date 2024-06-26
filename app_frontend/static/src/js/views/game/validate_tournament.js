@@ -5,6 +5,7 @@ import wrapperLoadingService from '../../services/wrapperService.js';
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
 import { isValidToken } from "../../contracts/validation/tokenValidation.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class ValidateTournamentView extends BaseLoggedView {
   constructor(html, start) {
@@ -114,6 +115,10 @@ const start = async (user) => {
 
   gameService.user = user;
   await gameService.validateTournamentForm(tournament).then(putVerifyTable);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.validateTournamentForm(tournament).then(putVerifyTable);
+  });
 };
 
 export default new ValidateTournamentView(html, start);

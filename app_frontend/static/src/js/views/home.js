@@ -6,6 +6,7 @@ import {
 } from '../services/userManagementService.js';
 import { loadErrorMessage } from '../utils/errors.js';
 import BaseLoggedView from './baseLoggedView.js';
+import { CustomEvents } from "../constants/custom-events.js";
 
 class HomeView extends BaseLoggedView {
   constructor(html, start) {
@@ -81,6 +82,9 @@ const start = async (user) => {
   }
 
   await gameService.allGames().then(swap);
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.allGames().then(swap);
+  });
 };
 
 export default new HomeView(html, start);

@@ -37,10 +37,11 @@ const start = async (user) => {
     pageNotFoundMessage("message");
     return;
   }
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, (e) => {
-    console.log(e.detail.lang);
-  });
   await gameService.viewUserGames(userId).then(swap);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.viewUserGames(userId).then(swap);
+  });
 };
 
 export default new SeeUserGamesView(html, start);
