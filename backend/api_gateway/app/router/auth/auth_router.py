@@ -119,7 +119,10 @@ class AuthRouter(IRouter):
 
   def register_ms(self, default_response, headers_dict):
 
-        self.me_data = self.get_me(headers_dict)
+        resp_me_data = self.get_me(headers_dict)
+        if resp_me_data.status_code >= 400:
+            return default_response
+        self.me_data = resp_me_data
         auth_data_json = json.loads(self.me_data.content)['data']
 
         if auth_data_json['enable_2fa']:

@@ -37,6 +37,7 @@ class SignInOAuth42Service(BaseService):
         self, sign_in_up_OAuth42_dto: SignInUpOAuth42Dto
     ) -> SignInResultDto:
         change_first_login = True
+        token_user = None
         try:
             if not sign_in_up_OAuth42_dto.is_valid():
                 raise TokenExpiredException()
@@ -52,10 +53,18 @@ class SignInOAuth42Service(BaseService):
                 return await self.base_sign_in_usecase.execute(token_user, True)
 
         except ObjectDoesNotExist:
-            base_signup_dto = BaseSignUpDto(
-                email=sign_in_up_OAuth42_dto.email,
-                user_name=sign_in_up_OAuth42_dto.user_name,
-            )
+            base_signup_dto = None
+            if token_user is not None:
+                base_signup_dto = BaseSignUpDto(
+                    email=token_user.email,
+                    user_name=token_user.user_name,
+                )
+            else:
+                base_signup_dto = BaseSignUpDto(
+                    email=sign_in_up_OAuth42_dto.email,
+                    user_name=sign_in_up_OAuth42_dto.user_name,
+                )
+
             token_user = await self.base_sign_up_usecase.execute(
                 sign_up_dto=base_signup_dto,
                 password=None,

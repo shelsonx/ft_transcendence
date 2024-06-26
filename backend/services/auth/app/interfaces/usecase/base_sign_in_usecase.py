@@ -66,6 +66,7 @@ class BaseSignInUseCase(BaseUseCase):
             token = await self._send_code_and_return_token(
                 user, is_temporary_token, expires_in_hours
             )
+            print(token)
             await self.change_is_first_login(user, change_fist_login)
             return token
 
