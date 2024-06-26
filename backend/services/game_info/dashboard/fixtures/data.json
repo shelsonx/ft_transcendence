@@ -3,7 +3,7 @@
         "model": "dashboard.userinfo",
         "pk": 1,
         "fields": {
-            "id_msc": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
+            "id_msc": "d64149b0-bcea-4344-9fd9-14e71bdf05cd",
             "full_name": "Shelson Jhony Xavier Alves",
             "nickname": "shelson",
             "scores": 300,
@@ -12,7 +12,7 @@
             "position": 7,
             "status": true,
             "playing": true,
-            "photo": "static/images/2024/05/01/photo3.jpeg"
+            "photo": "media/avatars/shelson.jpeg"
         }
     },
     {
@@ -28,7 +28,7 @@
             "position": 5,
             "status": true,
             "playing": true,
-            "photo": "static/images/2024/05/01/sheela.png"
+            "photo": "media/avatars/sheela.png"
         }
     },
     {
@@ -44,7 +44,7 @@
             "position": 2,
             "status": false,
             "playing": false,
-            "photo": "static/images/2024/05/01/elraira-.jpeg"
+            "photo": "media/avatars/elraira-.jpeg"
         }
     },
     {
@@ -60,7 +60,7 @@
             "position": 6,
             "status": true,
             "playing": false,
-            "photo": "static/images/2024/05/01/brunobonaldi.jpeg"
+            "photo": "media/avatars/brunobonaldi.jpeg"
         }
     },
     {
@@ -76,7 +76,7 @@
             "position": 4,
             "status": false,
             "playing": true,
-            "photo": "static/images/2024/05/01/humberto.jpeg"
+            "photo": "media/avatars/humberto.jpeg"
         }
     }
 ]
