@@ -1,6 +1,7 @@
 import { BlockingService, FriendshipRequestService, SearchUsersService } from '../../services/userManagementService.js';
 import UserManagementView from '../baseLoggedView.js';
 import { getUserId } from '../../utils/getUserId.js';
+import languageHandler from '../../locale/languageHandler.js';
 
 class searchUsersView extends UserManagementView {
   constructor(html, start) {
@@ -117,16 +118,16 @@ const start = async () => {
           </div>
         </div>
         <div>
-          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend">
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-key="search--icon-add" title="Add Friend">
             <i class="bi bi-person-plus"></i>
           </button>
-          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User">
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-key="search--icon-block" title="Block User">
             <i class="bi bi-person-x"></i>
           </button>
-          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats">
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-key="search--icon-stats" title="View Stats">
             <i class="bi bi-bar-chart"></i>
           </button>
-          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches">
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-key="search--icon-matches" title="View Matches">
             <i class="bi bi-controller"></i>
           </button>
         </div>
@@ -181,16 +182,16 @@ const start = async () => {
           </div>
         </div>
         <div>
-          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend">
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend" data-i18n-key="search--icon-add">
             <i class="bi bi-person-plus"></i>
           </button>
-          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User">
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User" data-i18n-key="search--icon-block">
             <i class="bi bi-person-x"></i>
           </button>
-          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats">
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats" data-i18n-key="search--icon-stats">
             <i class="bi bi-bar-chart"></i>
           </button>
-          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches">
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches" data-i18n-key="search--icon-matches">
             <i class="bi bi-controller"></i>
           </button>
         </div>
@@ -203,6 +204,10 @@ const start = async () => {
 
   const initializeTooltips = () => {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach((tooltip) => {
+      const key = tooltip.getAttribute('data-i18n-key');
+      tooltip.setAttribute('title', languageHandler.translate(key));
+    })
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
