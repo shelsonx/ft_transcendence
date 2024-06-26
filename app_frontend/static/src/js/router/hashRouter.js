@@ -7,6 +7,7 @@ import { replaceCookieTokenToStorage } from "../utils/replaceLocalStorageByCooki
 import {
   hashRoutes as routes
 } from "./routes.js";
+import { changeLanguageWhenLogin } from "../utils/changeLanguage.js";
 /**
 * Class representing a router.
 */
@@ -73,6 +74,7 @@ class HashRouter extends Router {
       this.checkIsAuthenticated().then((isAuthenticated) => {
         if (isAuthenticated) {
           this.render(route);
+          changeLanguageWhenLogin(this.user.id);
         }
       });
     } else {
