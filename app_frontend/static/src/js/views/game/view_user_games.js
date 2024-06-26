@@ -2,6 +2,7 @@ import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class SeeUserGamesView extends BaseLoggedView {
   constructor(html, start) {
@@ -36,7 +37,9 @@ const start = async (user) => {
     pageNotFoundMessage("message");
     return;
   }
-
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, (e) => {
+    console.log(e.detail.lang);
+  });
   await gameService.viewUserGames(userId).then(swap);
 };
 
