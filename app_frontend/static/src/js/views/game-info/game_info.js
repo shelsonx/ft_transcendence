@@ -185,7 +185,7 @@ function setData(container, data) {
     nickname.textContent = data.nickname;
 
     const userPhoto = container.querySelector('.list-user-photo');
-    userPhoto.src = `https://localhost:8003/${data.photo}`;
+    userPhoto.src = `https://localhost:8006/${data.photo}`;
 
     const scores = container.querySelector('.list-scores');
     scores.textContent = data.scores;
@@ -308,7 +308,7 @@ function setDetailsStatus(data) {
     document.getElementById('details-winnings').textContent = data.user.winnings;
     document.getElementById('details-losses').textContent = data.user.losses;
     document.getElementById('details-position').textContent = `${data.user.position}º`;
-    document.getElementById('details-photo').src = `https://localhost:8003/${data.user.photo}`;
+    document.getElementById('details-photo').src = `https://localhost:8006/${data.user.photo}`;
     document.getElementById('details-status-icon').style.color = data.user.status ? 'green' : 'white';
     document.getElementById('details-status-label').textContent = data.user.status ? 'Online' : 'Offline';
 }
