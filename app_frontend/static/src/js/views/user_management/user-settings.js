@@ -1,7 +1,11 @@
 import { UserInformationService } from '../../services/userManagementService.js';
+import languageHandler from "../../locale/languageHandler.js";
+
 import { getUserId } from '../../utils/getUserId.js';
 import UserManagementView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
+import wrapperLoadingService from "../../services/wrapperService.js";
+import authService from "../../services/authService.js";
 
 class UserProfileView extends UserManagementView {
     constructor(html, start) {
@@ -84,10 +88,29 @@ const loadUserData = async (userInformationService) => {
  * updated.
  */
 const updateUserData = async (userInformationService, formData) => {
-    await userInformationService.updateUserData(formData);
+    return await wrapperLoadingService.execute(
+      userInformationService,
+      userInformationService.updateUserData,
+      formData
+    );
 }
 
-const initFormSubmission = (userInformationService) => {
+const changeLanguage = (selectedLanguage) => {
+  if (selectedLanguage) {
+    languageHandler.setDefaultLocale(selectedLanguage);
+    languageHandler.changeLanguage(selectedLanguage);
+  }
+}
+
+const rollBackChanges = async (user) => {
+  await authService.updateUserData(user.id, {
+    user_name: user.name,
+    enable_2fa: user.two_factor_enabled,
+  });
+};
+
+
+const initFormSubmission = (userInformationService, user) => {
     const userId = getUserId();
     var extension = ""
 
@@ -106,9 +129,32 @@ const initFormSubmission = (userInformationService) => {
             formData.append('avatar_name', uniqueIdentifier);
         }
 
-        await updateUserData(userInformationService, formData).then(async () => {
-            await gameService.updateUserDetails(userId, formData);
-        });
+        const authData = {
+          user_name: formData.get("nickname"),
+          enable_2fa: formData.get("two-factor-enabled") ? true : false,
+        };
+
+        const response = await wrapperLoadingService.execute(
+          authService,
+          authService.updateUserData,
+          user.id,
+          authData
+        );
+
+        if (!response.is_success) {
+          return ;
+        }
+
+        const userDataResponse = await updateUserData(
+          userInformationService,
+          formData
+        );
+
+        if (!userDataResponse.is_success) {
+          await rollBackChanges(user);
+          return ;
+        }
+        changeLanguage(formData.get("language"));
     });
 };
 
@@ -141,8 +187,8 @@ const action = async (user) => {
     const userInformationService = new UserInformationService();
 
     await loadUserData(userInformationService);
-    initAvatarChange(); 
-    initFormSubmission(userInformationService);
-};
+    initAvatarChange();
+    initFormSubmission(userInformationService, user);
+  };
 
 export default new UserProfileView({ html, start: action });

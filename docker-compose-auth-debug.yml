@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.web
+      - .env
     depends_on:
       - auth-api
 
@@ -62,7 +62,7 @@ services:
     volumes:
       - game-info-db-data:/var/lib/postgresql/data
     env_file:
-      - ./.env.db
+      - .env
     ports:
       - "5434:5432"
 
@@ -74,7 +74,7 @@ services:
     ports:
       - "8003:80"
     env_file:
-      - .env.web
+      - .env
     environment:
       - JWT_SECRET=${JWT_SECRET}
     depends_on:
@@ -105,6 +105,13 @@ services:
     container_name: user-management-api
     volumes:
       - ./backend/services/user_management:/user_management
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${POSTGRESS_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRESS_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD${POSTGRESS_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRESS_USER_MANAGEMENT_HOST}
     ports:
       - "8006:8000"
     depends_on:
@@ -115,10 +122,13 @@ services:
     container_name: user-management-db
     volumes:
       - user-management-db:/var/lib/postgresql/data
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: users_db
-      POSTGRES_USER: 'admin'
-      POSTGRES_PASSWORD: '1234'
+      - POSTGRES_DB=${POSTGRESS_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRESS_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD${POSTGRESS_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRESS_USER_MANAGEMENT_HOST}
     ports:
       - "5435:5432"
 

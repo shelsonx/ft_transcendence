@@ -17,7 +17,7 @@ class SignInUpOAuth42Dto(models.Model):
     user_name = models.CharField(max_length=100, null=False, blank=False)
 
     def __str__(self) -> str:
-        return f"email: {self.email}, acess_token: {self.acess_token}, expires_in: {self.expires_in}"
+        return f"{self.email} - {self.access_token} - {self.expires_in} - {self.user_name}"
 
     def _expire_in_datetime(self) -> datetime:
         return now() + timedelta(seconds=self.expires_in)
