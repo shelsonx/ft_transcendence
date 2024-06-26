@@ -14,47 +14,47 @@ def create_initial_data(apps, schema_editor):
             "id": uuid.UUID("9a72c344-62c3-49c3-9bca-188f6f7b3cbe"),
             "email": "sheela.khusal.08@gmail.com",
             "nickname": "sheela",
-            "status": "active",
+            "status": "inactive",
             "user_uuid": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
             "name": "Sheela",
-            "avatar": "avatars/default_avatar.jpeg"
+            "avatar": "avatars/sheela.jpeg"
         },
         {
             "id": uuid.UUID("355aaf65-0300-47b6-8748-c8d0c1aed702"),
             "email": "brunobonaldi1994@gmail.com",
             "nickname": "brunobonaldi",
-            "status": "active",
+            "status": "inactive",
             "user_uuid": "355aaf65-0300-47b6-8748-c8d0c1aed702",
             "name": "Bruno",
-            "avatar": "avatars/default_avatar.jpeg"
+            "avatar": "avatars/brunpbonaldi.jpeg"
         },
         {
             "id": uuid.UUID("38b8cb4d-34d8-4530-80f3-b4f10cf87b51"),
             "email": "shelsonx@gmail.com",
             "nickname": "shelson",
-            "status": "active",
+            "status": "inactive",
             "user_uuid": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
             "name": "Shelson",
-            "avatar": "avatars/default_avatar.jpeg"
+            "avatar": "avatars/shelson.jpeg"
         },
         {
             "id": uuid.UUID("9c001ba9-14d5-45ff-a4a4-4f43234dcdd7"),
             "email": "eliarisalvares@gmail.com",
             "nickname": "eliaris",
-            "status": "active",
+            "status": "inactive",
             "user_uuid": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
             "name": "Eliaris",
-            "avatar": "avatars/default_avatar.jpeg"
+            "avatar": "avatars/elraira-.jpeg"
         },
         {
             "id": uuid.UUID("e054f322-7733-48be-b1b1-7a66357efecd"),
             "email": "humberto.arndt@gmail.com",
             "nickname": "humberto",
             "avatar": "avatars/default_avatar.jpeg",
-            "status": "active",
+            "status": "inactive",
             "user_uuid": "e054f322-7733-48be-b1b1-7a66357efecd",
             "name": "Humberto",
-            "avatar": "avatars/default_avatar.jpeg"
+            "avatar": "avatars/humberto.jpeg"
         },
     ]
 
