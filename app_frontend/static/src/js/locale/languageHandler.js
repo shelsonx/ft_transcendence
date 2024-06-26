@@ -1,4 +1,6 @@
 import { AuthConstants } from "../constants/auth-constants.js";
+import { CustomEvents } from "../constants/custom-events.js";
+
 class LanguageHandler {
   #locale;
   #defaultLocale;
@@ -194,10 +196,7 @@ class LanguageHandler {
     this.setActive(e.target);
     const newLanguageSelected = this.supportedLanguages[language] || this.supportedLanguages['English'];
     this.handleLocation(newLanguageSelected.code);
-    // dispatchEvent(new CustomEvent('language-changed', { detail: newLanguageSelected.code }));
-    // document.addEventListener('language-changed', (e) => {
-    //   this.changeLanguage(e.detail);
-    // });
+    window.dispatchEvent(new CustomEvent(CustomEvents.LANGUAGE_CHANGE_EVENT, { detail: {lang: newLanguageSelected.code} }));
   }
 
   changeLanguage(locale) {
