@@ -2,6 +2,7 @@ import BaseLoggedView from "../baseLoggedView.js";
 import gameService from "../../services/gameService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { hashChangeHandler } from "../../utils/hashChangeHandler.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class TournamentDetailView extends BaseLoggedView {
   constructor(html, start) {
@@ -80,6 +81,10 @@ const start = async (user) => {
   }
 
   await gameService.tournament(tournament).then(tournamentDetail);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.tournament(tournament).then(tournamentDetail);
+  });
 };
 
 export default new TournamentDetailView(html, start);

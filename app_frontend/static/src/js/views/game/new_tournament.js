@@ -3,6 +3,7 @@ import gameService from "../../services/gameService.js";
 import { setGameRulesDynamicBehavior } from "./rules.js";
 import { setTournamentFormDynamicBehavior } from "./tournament_dynamic.js";
 import { loadErrorMessage } from "../../utils/errors.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class NewTournamentView extends BaseLoggedView {
   constructor(html, start) {
@@ -69,7 +70,11 @@ const addTournamentResult = async (response) => {
 };
 
 const start = async (user) => {
-  gameService.getFormTournament().then(putTournamentForm);
+  await gameService.getFormTournament().then(putTournamentForm);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.getFormTournament().then(putTournamentForm);
+  });
 };
 
 export default new NewTournamentView(html, start);

@@ -3,6 +3,7 @@ import gameService from "../../services/gameService.js";
 import authService from "../../services/authService.js";
 import { setGameRulesDynamicBehavior } from "./rules.js";
 import { loadErrorMessage } from "../../utils/errors.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class NewGameView extends BaseLoggedView {
   constructor(html, start) {
@@ -69,6 +70,10 @@ const addGameResult = async (response) => {
 
 const start = async (user) => {
   await gameService.getFormGame().then(putGameForm);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.getFormGame().then(putGameForm);
+  });
 };
 
 export default new NewGameView(html, start);

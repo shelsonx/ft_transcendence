@@ -1,5 +1,6 @@
 import BaseLoggedView from '../baseLoggedView.js';
 import gameService from '../../services/gameService.js';
+import { CustomEvents } from "../../constants/custom-events.js";
 
 
 class TournamentsView extends BaseLoggedView {
@@ -47,6 +48,10 @@ const swap = (response) => {
 
 const start = async (user) => {
   await gameService.allTournaments().then(swap);
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.allTournaments().then(swap);
+  });
 }
 
 export default new TournamentsView(html, start);

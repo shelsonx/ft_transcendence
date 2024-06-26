@@ -1,6 +1,7 @@
 import gameService from "../../services/gameService.js";
 import BaseLoggedView from "../baseLoggedView.js";
 import { loadErrorMessage } from "../../utils/errors.js";
+import { CustomEvents } from "../../constants/custom-events.js";
 
 class MyGamesView extends BaseLoggedView {
   constructor(html, start) {
@@ -42,11 +43,9 @@ const cancelGame = async (e) => {
   await gameService.cancelGame(match).then(async (response) => {
     if (response.status !== undefined) {
       loadErrorMessage(response, "error-message");
-      // TODO: toast erro
       return;
     }
     await gameService.userGames(u.id).then(swap);
-    // TODO: toast sucesso
   });
 };
 
@@ -57,11 +56,9 @@ const deleteGame = async (e) => {
   await gameService.deleteGame(match).then(async (response) => {
     if (response.status !== undefined) {
       loadErrorMessage(response, "error-message");
-      // TODO: toast erro
       return;
     }
     await gameService.userGames(u.id).then(swap);
-    // TODO: toast sucesso
   });
 };
 
@@ -88,6 +85,10 @@ const swap = (response) => {
 const start = async (user) => {
   await gameService.userGames(user.id).then(swap);
   u = user;
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
+    await gameService.userGames(user.id).then(swap);
+  });
 };
 
 export default new MyGamesView(html, start);
