@@ -112,7 +112,7 @@ const start = async () => {
       userItem.innerHTML = `
         <div class="d-flex align-items-center">
           <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
-          <div class="ms-3">
+          <div class="ms-3" style="font-family: 'Turret Road', sans-serif !important;">
             <h5>${user.name} (@${user.nickname})</h5>
           </div>
         </div>
@@ -176,7 +176,7 @@ const start = async () => {
       userItem.innerHTML = `
         <div class="d-flex align-items-center">
           <img src="${avatar}" alt="Avatar" class="rounded-circle" width="80" height="80">
-          <div class="ms-3">
+          <div class="ms-3" style="font-family: 'Turret Road', sans-serif !important;">
             <h5>${user.name} (@${user.nickname})</h5>
           </div>
         </div>
