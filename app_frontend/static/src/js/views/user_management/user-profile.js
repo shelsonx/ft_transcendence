@@ -6,7 +6,8 @@ import {
 } from '../../services/userManagementService.js';
 import UserManagementView from '../baseLoggedView.js';
 import languageHandler from '../../locale/languageHandler.js';
-
+import { changeLanguageWhenLogin } from '../../utils/changeLanguage.js'
+import wrapperService from '../../services/wrapperService.js';
 class UserProfileView extends UserManagementView {
   constructor(html, start) {
     super(html, start);
@@ -52,7 +53,7 @@ const html = /*html*/`
  * Start the user profile view.
  * @returns {Promise<void>} - A promise that resolves when the view is started.
  */
-const start = async () => {
+const start = async (user) => {
 
   const userInformationService = new UserInformationService();
   const friendshipService = new FriendshipService();
@@ -64,6 +65,9 @@ const start = async () => {
   await loadBlockedUsers(blockingService);
   await loadFriendRequests(friendshipRequestService);
   initializeTooltips();
+  if (user) {
+    await changeLanguageWhenLogin(user.id);
+  }
 };
 
 const initializeTooltips = () => {
@@ -249,7 +253,11 @@ async function loadFriendRequests(friendshipRequestService) {
  */
 async function acceptFriendRequest(requestId) {
   const friendshipRequestService = new FriendshipRequestService();
-  await friendshipRequestService.acceptFriendRequest(requestId);
+  await wrapperService.execute(
+    friendshipRequestService,
+    friendshipRequestService.acceptFriendRequest,
+    requestId
+  )
 }
 
 /**
@@ -260,7 +268,11 @@ async function acceptFriendRequest(requestId) {
  */
 async function rejectFriendRequest(requestId) {
   const friendshipRequestService = new FriendshipRequestService();
-  await friendshipRequestService.rejectFriendRequest(requestId);
+  await wrapperService.execute(
+    friendshipRequestService,
+    friendshipRequestService.rejectFriendRequest,
+    requestId
+  )
 }
 
 /**
@@ -270,7 +282,11 @@ async function rejectFriendRequest(requestId) {
  */
 async function unfriendUser(friendId) {
   const friendshipService = new FriendshipService();
-  await friendshipService.deleteFriend(friendId);
+  await wrapperService.execute(
+    friendshipService,
+    friendshipService.deleteFriend,
+    friendId
+  )
 }
 
 /**
@@ -280,7 +296,11 @@ async function unfriendUser(friendId) {
  */
 async function unblockUser(blockedUserId) {
   const blockingService = new BlockingService();
-  await blockingService.unblockUser(blockedUserId);
+  await wrapperService.execute(
+    blockingService,
+    blockingService.unblockUser,
+    blockedUserId
+  )
 }
 
 export default new UserProfileView({ html, start });
