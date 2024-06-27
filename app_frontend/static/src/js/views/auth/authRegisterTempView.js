@@ -25,7 +25,7 @@ function start() {
     );
     try {
       const { data } = await authService.getTempMe();
-      if (data.enable_2fa) {
+      if (data && data?.enable_2fa) {
 
         window.location.href = '?email=' + data.email + '#two-factor-auth';
       }

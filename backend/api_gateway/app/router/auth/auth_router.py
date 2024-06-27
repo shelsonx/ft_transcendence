@@ -30,7 +30,7 @@ class AuthRouter(IRouter):
       Route("/sign-in/", ['POST']),
       Route("/sign-up/", ['POST']),
       Route("/user/", ['GET']),
-      Route("/user-temp/", ['GET']),
+      Route("/user-temp/", allowed_verbs=['GET'], handler_function=self.get_me_temp),
       Route("/user/<uuid:user_id>/", ['PUT', 'DELETE']),
       Route("/sign-in-42/", ['POST']),
       Route("/validate-2factor-code/", allowed_verbs=['POST', 'PUT'], handler_function=self.register),
@@ -43,6 +43,19 @@ class AuthRouter(IRouter):
     self.rollback_register = False
     self.me_data = None
 
+  def get_me_temp(self, http_client_data: HttpClientData, request: HttpRequest, *args, **kwargs):
+    try:
+        response = self.http_client.get(http_client_data)
+        if response.status_code >= 400:
+            return to_json_response(
+                data=ApiDataResponse(message="", is_success=True), status=200
+            )
+        return self.convert_to_json_response(response)
+    except Exception as exception:
+        return to_json_response(
+            data=ApiDataResponse(message=str(exception), is_success=False), status=500
+        )
+        
   def get_me(self, headers_dict: dict):
     http_client_data_user_me = HttpClientData(
       url="/user/",
