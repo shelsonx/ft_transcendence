@@ -90,11 +90,14 @@ class Game(models.Model):
         if self.__winner:
             return self.__winner
 
-        players = self.game_players.all().select_related("user").order_by("-score")
-        if not players.exists():
+        player_left, player_right = self.players
+        if not player_left or not player_right:
             return None
 
-        self.__winner = players.first()
+        if player_left.score > player_right.score:
+            self.__winner = player_left
+        elif player_right.score > player_left.score:
+            self.__winner = player_right
         return self.__winner
 
     @property
