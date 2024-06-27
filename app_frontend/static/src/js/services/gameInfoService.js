@@ -41,6 +41,14 @@ class GameInfoService {
 		return response;
 	}
 
+	async updateUserStatus(data){
+    const total_infos = new HttpClientRequestData(
+      'POST', '/dash/set_status_user/', data
+    );
+		const response = await this.httpClient.makeRequest(total_infos);
+		return response;
+	}
+
 	async updateUserInformation(data) {
 		console.log(data);
 		const user_info = new HttpClientRequestData(
