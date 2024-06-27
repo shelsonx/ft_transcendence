@@ -90,7 +90,7 @@ async function loadUserData(userInformationService) {
   avatar.src = `https://localhost:8006${user.avatar}`;
   document.getElementById('userNickname').innerText = `@${user.nickname.toLowerCase()}`;
   document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
-  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Active' : 'Status: Inactive';
+  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Online' : 'Status: Offline';
   document.getElementById('userStatus').classList.add(`status-${user.status}`);
 
   const user2fa = document.getElementById('user2fa');

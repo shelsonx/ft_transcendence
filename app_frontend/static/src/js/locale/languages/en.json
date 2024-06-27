@@ -63,8 +63,8 @@
   "profile--language-pt": "Language: Brazilian Portuguese",
   "profile--2fa-enabled": "Two Factor Authentication: Enabled",
   "profile--2fa-disabled": "Two Factor Authentication: Disabled",
-  "profile--active": "Status: Active",
-  "profile--inactive": "Status: Inactive",
+  "profile--active": "Status: Online",
+  "profile--inactive": "Status: Offline",
 
   "search--title": "Search",
   "search--search-users": "Search Users",
