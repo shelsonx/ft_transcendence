@@ -7,7 +7,7 @@ users = [
         "pk": "355aaf65-0300-47b6-8748-c8d0c1aed702",
         "fields": {
             "username": "brunobonaldi",
-            "avatar": "/media/avatars/default_avatar.jpeg",
+            "avatar": "/media/avatars/brunobonaldi.jpeg",
             "score": 350,
             "rating": 50,
             "winnings": 17,
@@ -19,7 +19,7 @@ users = [
         "pk": "38b8cb4d-34d8-4530-80f3-b4f10cf87b51",
         "fields": {
             "username": "shelson",
-            "avatar": "/media/avatars/default_avatar.jpeg",
+            "avatar": "/media/avatars/shelson.jpeg",
             "score": 319,
             "rating": 48,
             "winnings": 16,
@@ -31,7 +31,7 @@ users = [
         "pk": "9a72c344-62c3-49c3-9bca-188f6f7b3cbe",
         "fields": {
             "username": "sheela",
-            "avatar": "/media/avatars/default_avatar.jpeg",
+            "avatar": "/media/avatars/sheela.png",
             "score": 383,
             "rating": 64,
             "winnings": 22,
@@ -43,7 +43,7 @@ users = [
         "pk": "9c001ba9-14d5-45ff-a4a4-4f43234dcdd7",
         "fields": {
             "username": "eliaris",
-            "avatar": "/media/avatars/default_avatar.jpeg",
+            "avatar": "/media/avatars/elraira-.jpeg",
             "score": 458,
             "rating": 55,
             "winnings": 19,
@@ -55,7 +55,7 @@ users = [
         "pk": "e054f322-7733-48be-b1b1-7a66357efecd",
         "fields": {
             "username": "humberto",
-            "avatar": "/media/avatars/default_avatar.jpeg",
+            "avatar": "/media/avatars/humberto.jpeg",
             "score": 392,
             "rating": 57,
             "winnings": 20,
