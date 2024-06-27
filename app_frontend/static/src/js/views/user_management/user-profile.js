@@ -5,6 +5,7 @@ import {
   UserInformationService
 } from '../../services/userManagementService.js';
 import UserManagementView from '../baseLoggedView.js';
+import languageHandler from '../../locale/languageHandler.js';
 
 class UserProfileView extends UserManagementView {
   constructor(html, start) {
@@ -24,7 +25,6 @@ const html = /*html*/`
       </div>
       <h2 id="userNickname"></h2>
       <h2 id="userStatus"></h2>
-      <p id="userLanguage"></p>
       <p id="user2fa"></p>
       <div class="lists-container d-flex flex-column align-items-center mt-4">
         <div class="friends-list col mb-4">
@@ -62,6 +62,10 @@ const start = async () => {
 
 const initializeTooltips = () => {
   const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+  tooltipTriggerList.forEach((tooltip) => {
+    const key = tooltip.getAttribute('data-i18n-tooltip');
+    tooltip.setAttribute('title', languageHandler.translate(key));
+  })
   const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
   });
@@ -83,8 +87,6 @@ async function loadUserData(userInformationService) {
   document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
   document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Active' : 'Status: Inactive';
   document.getElementById('userStatus').classList.add(`status-${user.status}`);
-  document.getElementById('userLanguage').setAttribute('data-i18n-key', `profile--language-${user.chosen_language.toLowerCase()}`);
-  document.getElementById('userLanguage').innerText = `${user.chosen_language}` == 'en' ? 'Language: English' : `${user.chosen_language}` == 'pt-br' ? 'Language: Portuguese' : 'Language: French';
   document.getElementById('user2fa').setAttribute('data-i18n-key', user.two_factor_enabled ? 'profile--2fa-enabled' : 'profile--2fa-disabled');
   document.getElementById('user2fa').innerText = user.two_factor_enabled ? 'Two Factor Authentication: Enabled' : 'Two Factor Authentication: Disabled';
 }
@@ -117,6 +119,7 @@ async function loadFriendsList(friendshipService) {
       unfriendBtn.setAttribute('data-bs-toggle', 'tooltip');
       unfriendBtn.setAttribute('title', 'Unfriend User');
       unfriendBtn.setAttribute('data-i18n-key', 'profile--unfriend');
+      unfriendBtn.setAttribute('data-i18n-tooltip', 'profile--unfriend');
       unfriendBtn.addEventListener('click', function () {
         unfriendUser(friend.user_uuid);
       });
@@ -124,7 +127,7 @@ async function loadFriendsList(friendshipService) {
       li.appendChild(unfriendBtn);
       friendsList.appendChild(li);
     });
-    initializeTooltips(); // Initialize tooltips after adding elements
+    initializeTooltips();
   }
 }
 
@@ -155,6 +158,7 @@ async function loadBlockedUsers(blockingService) {
       unblockBtn.classList.add('btn', 'btn-success', 'btn-sm', 'ml-2');
       unblockBtn.setAttribute('data-bs-toggle', 'tooltip');
       unblockBtn.setAttribute('title', 'Unblock User');
+      unblockBtn.setAttribute('data-i18n-tooltip', 'profile--unblock');
       unblockBtn.setAttribute('data-i18n-key', 'profile--unblock');
       unblockBtn.addEventListener('click', function () {
         unblockUser(blockedUser.user_uuid);
@@ -177,7 +181,6 @@ async function loadFriendRequests(friendshipRequestService) {
   const friendshipRequestDataResponse = await friendshipRequestService.getFriendRequests();
   const friendRequests = friendshipRequestDataResponse.friend_requests;
   const activeFriendRequests = friendRequests.filter(request => request.is_active == true);
-  console.log(activeFriendRequests);
 
   const friendRequestsList = document.getElementById('friendRequests');
 
@@ -200,6 +203,7 @@ async function loadFriendRequests(friendshipRequestService) {
       acceptBtn.setAttribute('data-bs-toggle', 'tooltip');
       acceptBtn.setAttribute('title', 'Accept Friend Request');
       acceptBtn.setAttribute('data-i18n-key', 'profile--accept');
+      acceptBtn.setAttribute('data-i18n-tooltip', 'profile--accept');
       acceptBtn.addEventListener('click', function () {
         acceptFriendRequest(request.id);
       });
@@ -219,7 +223,7 @@ async function loadFriendRequests(friendshipRequestService) {
       li.appendChild(buttonsContainer);
       friendRequestsList.appendChild(li);
     });
-    initializeTooltips(); // Initialize tooltips after adding elements
+    initializeTooltips();
   }
 }
 

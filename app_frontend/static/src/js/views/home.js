@@ -52,7 +52,7 @@ const swap = (response) => {
   }
 
   const swapContainer = document.getElementById("home-container");
-  swapContainer.innerHTML = response;
+  if (swapContainer !== null) swapContainer.innerHTML = response;
 };
 
 

@@ -71,6 +71,10 @@
   "search--no-results": "Nenhum resultado encontrado",
   "search--no-currently-online": "Nenhum usuário online no momento :( ",
   "search--search-results": "Resultados da pesquisa",
+  "search--icon-add": "Adicionar amigo",
+  "search--icon-block": "Bloquear usuário",
+  "search--icon-stats": "Ver estatísticas",
+  "search--icon-matches": "Ver partidas",
 
   "hello-user": "Olá",
   "my-games-button": "Meus Jogos",

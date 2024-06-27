@@ -30,7 +30,7 @@ class UserFriendshipView(View):
 
     @JWTAuthentication()
     def delete(self, request, user_id, friend_id=None):
-        print("user_id: ", user_id)
+        # print("user_id: ", user_id)
         friend_removed_message = _('Friend removed successfully')
         if friend_id is None:
             raise MissingParameterException("friend_id")

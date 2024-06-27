@@ -90,7 +90,6 @@ function start() {
           authService.forgotPassword,
           formData
       );
-      console.log(response);
       authService.addTokenToLocalStorage(response)
       authService.redirectIfAuthenticated(response, formData.get('email'));
   });
@@ -108,7 +107,6 @@ function start() {
         authService.resendTwoFactorCode,
         email
     );
-    console.log(response);
     if (response.is_success) {
       const getDisplayNoneElements = document.querySelectorAll('.d-none');
       getDisplayNoneElements.forEach(element => {

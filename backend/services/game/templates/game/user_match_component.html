@@ -1,7 +1,7 @@
 <div class="player">
 
   {% if position == "R" %}
-    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %} loser {% else %}tie{% endif %}">
       <strong>{{ player.score}}</strong>
     </span>
   {% else %}
@@ -12,7 +12,7 @@
   <span class="username">{{ player.name}}</span>
 
   {% if position == "L" %}
-    <span class="{% if player.is_winner %} winner {% elif game.has_winner %}loser{% endif %}">
+    <span class="{% if player.is_winner %} winner {% elif game.has_winner %} loser {% else %}tie{% endif %}">
       <strong>{{ player.score}}</strong>
     </span>
   {% else %}

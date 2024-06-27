@@ -61,7 +61,13 @@ services:
     volumes:
       - game-info-db-data:/var/lib/postgresql/data
     env_file:
-      - ./.env
+      - .env
+    environment:
+    - POSTGRES_USER=${POSTGRES_GAME_INFO_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_GAME_INFO_PASSWORD}
+    - POSTGRES_DB=${POSTGRES_GAME_INFO_DB}
+    - POSTGRES_HOST=${POSTGRES_GAME_INFO_HOST}
+
     ports:
       - "5434:5432"
 
@@ -76,6 +82,10 @@ services:
       - .env
     environment:
       - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_GAME_INFO_DB}
+      - POSTGRES_USER=${POSTGRES_GAME_INFO_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_INFO_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_GAME_INFO_HOST}
     depends_on:
       - game-info-db
 

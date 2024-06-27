@@ -351,7 +351,7 @@ function AddUserInList(data, users_blocks, userActive) {
                 container.style.backgroundColor = '#381718';
                 container.style.cursor = 'pointer';
             }
-        ); 
+        );
     }
     container.addEventListener('click', function() {
         gameInfoService.get_user(data.id).then(
@@ -373,7 +373,6 @@ async function getUsersBlocks(user) {
 }
 
 const start = async (user) => {
-    console.log('User: ', user);
     gameInfoService.gameInfo().then(
         res => {
           res.forEach(data => {

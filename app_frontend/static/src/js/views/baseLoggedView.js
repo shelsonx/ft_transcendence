@@ -2,6 +2,7 @@ import View, { ViewOptions } from "../contracts/view.js";
 import NavHandler from "../router/navigation/navHandler.js";
 import { NavItems } from "../router/navigation/navItem.js";
 import { UserInformationService } from "../services/userManagementService.js";
+import GameInfoService from "../services/gameInfoService.js";
 
 class BaseLoggedView extends View {
   constructor({ html, start }) {
@@ -42,34 +43,34 @@ class BaseLoggedView extends View {
 
     const throttleTime = 3000;
     let lastUpdate = 0;
-    
+
     const updateUserStatus = async () => {
       const currentTime = Date.now();
       if (currentTime - lastUpdate >= throttleTime) {
         lastUpdate = currentTime;
-    
+
         const userId = getUserId();
         if (!userId) return;
-    
+
         const userInformationService = new UserInformationService();
         const data = {
           status: 'active'
         };
-    
-        await userInformationService.updateUserStatus(data)
-          .then((response) => {
-            console.log(`User status updated for ${userId}:`, response);
-          })
-          .catch((error) => {
-            console.error('Error updating status:', error);
-          });
+
+        await userInformationService.updateUserStatus(data);
+
+        const gameInfoData = {
+          id_msc: userId,
+          status: true
+        }
+        await GameInfoService.updateUserStatus(gameInfoData);
       }
     };
-    
+
     const updateUserToOffline = async () => {
       const userId = getUserId();
       if (!userId) return;
-    
+
       const userInformationService = new UserInformationService();
       const data = {
         status: 'inactive'
@@ -81,14 +82,20 @@ class BaseLoggedView extends View {
         .catch((error) => {
           console.error('Error updating status to offline:', error);
         });
+
+        const gameInfoData = {
+        id_msc: userId,
+        status: false
+      }
+      await GameInfoService.updateUserStatus(gameInfoData);
     };
-    
-    document.addEventListener('mousemove', updateUserStatus);    
+
+    document.addEventListener('mousemove', updateUserStatus);
     window.addEventListener('beforeunload', updateUserToOffline);
     window.addEventListener('unload', updateUserToOffline);
     window.addEventListener('pagehide', updateUserToOffline);
     document.getElementById('logout-button').addEventListener('click', updateUserToOffline);
-    
+
     const navHandler = new NavHandler(navItems);
     super(new ViewOptions(html, start, navHandler));
 

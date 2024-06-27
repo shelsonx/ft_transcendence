@@ -475,6 +475,9 @@ body {
 .loser {
     color: var(--red-dark)
 }
+.tie {
+    color: var(--secondary-light);
+}
 
 .action {
     font-family: "Press Start 2P", sans-serif;

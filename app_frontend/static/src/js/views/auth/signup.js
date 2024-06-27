@@ -101,7 +101,6 @@ function start() {
             authService.register,
             formData
         );
-        console.log(response);
         authService.addTokenToLocalStorage(response)
         authService.redirectIfAuthenticated(response, formData.get('email'));
     });

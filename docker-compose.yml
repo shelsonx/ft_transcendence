@@ -1,28 +1,21 @@
 version: '3.8'
 
 services:
-  web:
-    build: ./app
-    command: python3 manage.py runserver 0.0.0.0:8000
+  frontend:
+    build: ./app_frontend
+    container_name: frontend
     volumes:
-      - ./app/:/usr/src/app
+      - ./app_frontend:/code
     ports:
-      - 8000:8000
+      - "3000:3000"
     env_file:
-      - ./.env.web
+      - .env
     depends_on:
-      - db
-  db:
-    image: postgres:15
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - ./.env.db
+      - auth-api
 
   auth-db:
-    image: postgres
+    image: postgres:bullseye
+    container_name: auth-db
     volumes:
       - auth-db-data:/var/lib/postgresql/data
     env_file:
@@ -35,10 +28,10 @@ services:
       - "5433:5432"
 
   auth-api:
-    build: ./services/auth
-    command: python manage.py runserver 0.0.0.0:80
+    build: ./backend/services/auth
+    container_name: auth-api
     volumes:
-      - ./services/auth:/code
+      - ./backend/services/auth:/code
     ports:
       - "8002:80"
     env_file:
@@ -46,45 +39,155 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # add in the .env the name of the db
       - POSTGRES_NAME=${POSTGRES_AUTH_DB}
+      # this must be the name of the db service
       - POSTGRES_HOST=auth-db
       - JWT_SECRET=${JWT_SECRET}
+      - TEMPORARY_JWT_SECRET=${TEMPORARY_JWT_SECRET}
+      - OAUTH42_CLIENT_ID=${OAUTH42_CLIENT_ID}
+      - OAUTH42_SECRET_KEY=${OAUTH42_SECRET_KEY}
+      - OAUTH42_REDIRECT_URI=${OAUTH42_REDIRECT_URI}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
     depends_on:
       - auth-db
 
-  user-management-api:
-    container_name: user-management-api
+  game-info-db:
+    image: postgres:bullseye
+    container_name: game-info-db
+    volumes:
+      - game-info-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+    - POSTGRES_USER=${POSTGRES_GAME_INFO_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_GAME_INFO_PASSWORD}
+    - POSTGRES_DB=${POSTGRES_GAME_INFO_DB}
+    - POSTGRES_HOST=${POSTGRES_GAME_INFO_HOST}
+
+    ports:
+      - "5434:5432"
+
+  game-info:
+    build: ./backend/services/game_info
+    container_name: game-info
+    volumes:
+      - ./backend/services/game_info:/usr/src/app
+    ports:
+      - "8003:80"
+    env_file:
+      - .env
     environment:
       - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_GAME_INFO_DB}
+      - POSTGRES_USER=${POSTGRES_GAME_INFO_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_INFO_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_GAME_INFO_HOST}
+    depends_on:
+      - game-info-db
+
+  api-gateway:
+    build: ./backend/api_gateway
+    container_name: api-gateway
+    volumes:
+      - ./backend/api_gateway:/code
     ports:
-      - 8003:443
+      - "8010:80"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - TEMPORARY_JWT_SECRET=${TEMPORARY_JWT_SECRET}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+    depends_on:
+      - auth-api
+
+
+  user-management-api:
+    build: ./backend/services/user_management
+    container_name: user-management-api
+    volumes:
+      - ./backend/services/user_management:/user_management
+    ports:
+      - "8006:8000"
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRES_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_USER_MANAGEMENT_HOST}
+    depends_on:
+      - user-management-db
+
+  user-management-db:
+    image: postgres:bullseye
+    container_name: user-management-db
+    volumes:
+      - user-management-db:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_DB=${POSTGRES_USER_MANAGEMENT_DB}
+      - POSTGRES_USER=${POSTGRES_USER_MANAGEMENT_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER_MANAGEMENT_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_USER_MANAGEMENT_HOST}
+    ports:
+      - "5435:5432"
+
+  game-db:
+    container_name: game-db
+    image: postgres:bullseye
+    volumes:
+      - game-db-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
+    restart: unless-stopped
+    ports:
+      - "5436:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 4s
+      timeout: 2s
+      retries: 5
 
   game-api:
     container_name: game-api
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
+    image: game-api
+    build: ./backend/services/game
+    volumes:
+      - ./backend/services/game:/api
+    restart: unless-stopped
     ports:
-      - 8004:443
-    
-  user-stats-api:
-    container_name: user-stats-api
+      - 8020:8000
+    env_file:
+    - .env
     environment:
-      - JWT_SECRET=${JWT_SECRET}
-    ports:
-      - 8005:443
-
-  gateway-api:
-    container_name: gateway-api
-    ports:
-      - 8001:443
-    environment:
-      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_USER=${POSTGRES_GAME_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_GAME_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_GAME_DB}
+      - POSTGRES_HOST=${POSTGRES_GAME_HOST}
     depends_on:
-      - auth-api 
-      - user-management-api
-      - game-api
-      - user-stats-api
+      game-db:
+        condition: service_healthy
 
 volumes:
-  postgres_data:
+  #change the volume name
   auth-db-data:
+  game-info-db-data:
+  user-management-db:
+  game-db-data:
+
