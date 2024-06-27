@@ -13,8 +13,8 @@ class UserInfo(models.Model):
     status = models.BooleanField(default=False)
     playing = models.BooleanField(default=False)
     photo = models.ImageField(upload_to='media/avatars/',
-                        blank=True, null=True, 
-                        default='media/avatars/astronaut3.jpeg')
-    
+                        blank=True, null=True,
+                        default='/media/avatars/default_avatar.jpeg')
+
     class Meta:
         ordering = ['-scores']
