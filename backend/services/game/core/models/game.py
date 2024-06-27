@@ -36,17 +36,21 @@ class Game(models.Model):
         default=GameStatus.SCHEDULED,
         verbose_name=_("Game status"),
     )
-    duration = models.DurationField(default=timedelta(seconds=0), blank=True)
+    duration = models.DurationField(
+        default=timedelta(seconds=0), blank=True, verbose_name=_("Duration")
+    )
 
     rules = models.ForeignKey(
         to=GameRules, on_delete=models.RESTRICT, verbose_name=_("Game Rules")
     )
 
     _players = models.ManyToManyField(
-        to=User, through="GamePlayer", related_name="games"
+        to=User, through="GamePlayer", related_name="games", verbose_name=_("Players")
     )
     _updated_players = models.BooleanField(default=False)
-    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(
+        to=User, on_delete=models.SET_NULL, null=True, verbose_name=_("Creator")
+    )
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)

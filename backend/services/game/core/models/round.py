@@ -10,7 +10,10 @@ from .tournament_type import TournamentType
 
 class Round(models.Model):
     tournament = models.ForeignKey(
-        to="core.Tournament", on_delete=models.CASCADE, related_name="rounds"
+        to="core.Tournament",
+        on_delete=models.CASCADE,
+        related_name="rounds",
+        verbose_name=_("Tournament"),
     )
     number_of_games = models.PositiveSmallIntegerField(default=0)
     games = models.ManyToManyField(
@@ -22,7 +25,7 @@ class Round(models.Model):
     status = models.IntegerField(
         choices=RoundStatus.choices,
         default=RoundStatus.WAITING,
-        verbose_name=_("Tournament Status"),
+        verbose_name=_("Status"),
     )
 
     @property

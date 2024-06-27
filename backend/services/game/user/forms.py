@@ -19,7 +19,7 @@ class UserSearchForm(UserForm):
         fields = ["username"]
         widgets = {
             "username": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": _("insert username")}
+                attrs={"class": "form-control", "placeholder": _("insert nickname")}
             ),
         }
         labels = {

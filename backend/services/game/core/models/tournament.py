@@ -28,40 +28,46 @@ class Tournament(models.Model):
     - The winner wins a bonus of 10 points in platform score
     """
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name=_("Name"))
     tournament_type = models.SmallIntegerField(
         choices=TournamentType.choices,
         default=TournamentType.CHALLENGE,
-        verbose_name=_("Tournament Type"),
+        verbose_name=_("Type"),
     )
     status = models.IntegerField(
         choices=TournamentStatus.choices,
         default=TournamentStatus.INVITATION,
-        verbose_name=_("Tournament Status"),
+        verbose_name=_("Status"),
     )
-    tournament_date = models.DateTimeField(verbose_name=_("Tournament date"))
+    tournament_date = models.DateTimeField(verbose_name=_("Date"))
 
     # All players and games must adhere to the same game rules
     rules = models.ForeignKey(
         to=GameRules,
         on_delete=models.RESTRICT,
-        verbose_name=_("Tournament Rules"),
+        verbose_name=_("Rules"),
     )
 
-    number_of_players = models.PositiveSmallIntegerField(default=2)
+    number_of_players = models.PositiveSmallIntegerField(
+        default=2, verbose_name=_("Number of players")
+    )
     _players = models.ManyToManyField(
         to=User,
         through="core.TournamentPlayer",
         related_name="tournaments",
-        verbose_name=_("Tournament Players"),
+        verbose_name=_("Players"),
     )
     _updated_players = models.BooleanField(default=False)
-    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(
+        to=User, on_delete=models.SET_NULL, null=True, verbose_name=_("Creator")
+    )
 
     # value inputed for CHALLENGE (is the same as total games for each player)
     # value calculated for ROUND_ROBIN based on number_of_players
     # value calculated for ELIMINATION based on number_of_players
-    number_of_rounds = models.PositiveSmallIntegerField(default=2)
+    number_of_rounds = models.PositiveSmallIntegerField(
+        default=2, verbose_name=_("Number of rounds")
+    )
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
