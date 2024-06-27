@@ -5,16 +5,14 @@ import {
 } from '../services/userManagementService.js';
 
 export const changeLanguageWhenLogin = async (userId) => {
-  let userChoosenLanguage = localStorage.getItem(AuthConstants.AUTH_LOCALE) || 'en';
   try {
     const userInfoService = new UserInformationService(userId);
     const { user: userManagement } = await userInfoService.getUserData();
     const { chosen_language } = userManagement;
-    userChoosenLanguage = chosen_language;
+    const userChoosenLanguage = chosen_language || localStorage.getItem(AuthConstants.AUTH_LOCALE);
     languageHandler.setDefaultLocale(userChoosenLanguage);
+    languageHandler.changeLanguage(userChoosenLanguage);
   } catch (err) {
     console.error(err);
-  } finally {
-    languageHandler.changeLanguage(userChoosenLanguage);
-   }
+  }
 };

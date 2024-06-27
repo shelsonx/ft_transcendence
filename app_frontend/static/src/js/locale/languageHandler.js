@@ -37,7 +37,12 @@ class LanguageHandler {
   }
 
   setLocale(locale) {
+    const langSelected = Object.values(this.supportedLanguages).find(lg => lg.code === locale);
+    if (!langSelected) {
+      locale = 'en';
+    }
     this.#locale = locale;
+    localStorage.setItem(AuthConstants.AUTH_LOCALE, locale);
   }
 
   getLocale() {

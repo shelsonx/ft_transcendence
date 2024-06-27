@@ -74,7 +74,6 @@ class HashRouter extends Router {
       this.checkIsAuthenticated().then((isAuthenticated) => {
         if (isAuthenticated) {
           this.render(route);
-          changeLanguageWhenLogin(this.user.id);
         }
       });
     } else {

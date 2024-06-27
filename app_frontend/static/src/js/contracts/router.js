@@ -1,3 +1,4 @@
+import { changeLanguageWhenLogin } from "../utils/changeLanguage.js";
 class Router {
   /**
    * Create a router.
@@ -11,9 +12,12 @@ class Router {
    * Render a view.
    * @param {{title: string, render: function, start: function, description: string}} view - The view to render.
    */
-  render(view) {
+  async render(view) {
     const app = document.getElementById("app");
     document.title = view.title;
+    if (this.user) {
+      await changeLanguageWhenLogin(this.user.id);
+    }
     app.innerHTML = view.render.renderHtml();
     view.render.start(this.user);
   }
