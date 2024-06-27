@@ -21,22 +21,22 @@ class TournamentPlayer(models.Model):
         verbose_name=_("Tournament"),
     )
     user = models.ForeignKey(
-        to=User, on_delete=models.SET_NULL, related_name="tournaments_player", null=True
+        to=User,
+        on_delete=models.SET_NULL,
+        related_name="tournaments_player",
+        null=True,
+        verbose_name=_("User"),
     )
     alias_name = models.CharField(
         max_length=20, verbose_name=_("Alias name"), blank=True
     )
-    score = models.IntegerField(
-        default=0, verbose_name=_("Score")
-    )
-    rating = models.IntegerField(
-        default=0, verbose_name=_("Rating")
-    )
-    winnings = models.PositiveIntegerField(default=0)
-    losses = models.PositiveIntegerField(default=0)
-    ties = models.PositiveIntegerField(default=0)
+    score = models.IntegerField(default=0, verbose_name=_("Score"))
+    rating = models.IntegerField(default=0, verbose_name=_("Rating"))
+    winnings = models.PositiveIntegerField(default=0, verbose_name=_("Winnings"))
+    losses = models.PositiveIntegerField(default=0, verbose_name=_("Losses"))
+    ties = models.PositiveIntegerField(default=0, verbose_name=_("Ties"))
     _updated_players = models.BooleanField(default=False)
-    verified = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False, verbose_name=_("Verified"))
 
     class Meta:
         db_table = "tournament_player"

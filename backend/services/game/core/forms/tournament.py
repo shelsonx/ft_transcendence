@@ -69,7 +69,7 @@ class TournamentPlayerForm(forms.ModelForm):
         model = TournamentPlayer
         fields = ["alias_name"]
 
-    username = forms.CharField(max_length=50)
+    username = forms.CharField(max_length=50, label=_("Nickname"))
 
     field_order = ["username", "alias_name"]
 
