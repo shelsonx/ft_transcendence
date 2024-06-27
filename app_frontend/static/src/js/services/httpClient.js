@@ -19,6 +19,8 @@ export class HttpClientRequestData {
    * @param {Object} headers - The headers for the request.
    */
   constructor(method, endpoint, data, headers) {
+    // add keep alive
+    this.keepAlive = true;
     this.method = method;
     this.endpoint = endpoint;
     this.data = data;

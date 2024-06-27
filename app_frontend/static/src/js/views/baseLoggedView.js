@@ -41,7 +41,7 @@ class BaseLoggedView extends View {
       }
     };
 
-    const throttleTime = 3000;
+    const throttleTime = 5000;
     let lastUpdate = 0;
 
     const updateUserStatus = async () => {
@@ -90,10 +90,14 @@ class BaseLoggedView extends View {
       await GameInfoService.updateUserStatus(gameInfoData);
     };
 
-    document.addEventListener('mousemove', updateUserStatus);
-    window.addEventListener('beforeunload', updateUserToOffline);
-    window.addEventListener('unload', updateUserToOffline);
-    window.addEventListener('pagehide', updateUserToOffline);
+    window.addEventListener('load', updateUserStatus);
+    window.addEventListener('focus', updateUserStatus);
+
+    window.addEventListener('beforeunload', function (e) {
+      this.navigator.sendBeacon(`https://localhost:8006/user/${getUserId()}/status/`, JSON.stringify({ status: 'inactive' }));
+      this.navigator.sendBeacon(`https://localhost:8003/dash/set_status_user/`, JSON.stringify({ status: false, id_msc: getUserId() }));
+    });
+
     document.getElementById('logout-button').addEventListener('click', updateUserToOffline);
 
     const navHandler = new NavHandler(navItems);

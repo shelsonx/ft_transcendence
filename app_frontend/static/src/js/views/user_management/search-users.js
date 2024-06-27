@@ -14,39 +14,41 @@ class searchUsersView extends UserManagementView {
  * @type {string}
  */
 const html = /*html*/`
-<div class="row justify-content-center text-center mt-5">
-  <div class="col-md-8">
-    <h2 data-i18n-key="search--search-users">Search Users</h2>
-    <div class="search-bar mb-4">
-      <input type="text" id="searchInput" class="form-control">
-      <button id="searchButton" class="btn btn-primary mt-2" data-i18n-key="search--title">Search</button>
-    </div>
-  </div>
-</div>
-<div class="row justify-content-center mt-4 hidden" id="searchResultsContainer">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-        <h3 data-i18n-key="search--search-results">Search Results</h3>
-      </div>
-      <div class="card-body">
-        <div id="searchResults" class="list-group"></div>
+<div class="container-fluid static-list scroll-on">
+    <div class="row justify-content-center text-center mt-5">
+      <div class="col-md-8">
+        <h2 data-i18n-key="search--search-users">Search Users</h2>
+        <div class="search-bar mb-4">
+          <input type="text" id="searchInput" class="form-control">
+          <button id="searchButton" class="btn btn-primary mt-2" data-i18n-key="search--title">Search</button>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="row justify-content-center mt-5">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-        <h3 data-i18n-key="search--currently-online">Currently Online Users</h3>
+    <div class="row justify-content-center mt-4 hidden" id="searchResultsContainer">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 data-i18n-key="search--search-results">Search Results</h3>
+          </div>
+          <div class="card-body">
+            <div id="searchResults" class="list-group"></div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        <div id="activeUsers" class="list-group"></div>
+    </div>
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h3 data-i18n-key="search--currently-online">Currently Online Users</h3>
+          </div>
+          <div class="card-body">
+            <div id="activeUsers" class="list-group"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 `;
 
 const start = async () => {
@@ -162,9 +164,11 @@ const start = async () => {
   const fetchActiveUsers = async () => {
     const response = await searchUsersService.viewOnlineUsers();
     if (response.users.length === 0) {
-      activeUsers.innerHTML = '<p data-i18n-key="search--no-currently-online">There are no active users at the moment :(</p>';
+      activeUsers.setAttribute('data-i18n-key', 'search--no-currently-online');
+      activeUsers.innerHTML = '<p>There are no active users at the moment :(</p>';
       return;
     }
+    response.users = response.users.filter(user => user.user_uuid !== getUserId());
     displayActiveUsers(response.users);
   };
 

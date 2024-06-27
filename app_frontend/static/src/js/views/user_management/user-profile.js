@@ -18,6 +18,7 @@ class UserProfileView extends UserManagementView {
  * @type {string}
  */
 const html = /*html*/`
+<div class="container-fluid static-list scroll-on">
   <div class="row justify-content-center text-center">
     <div class="col-md-8">
       <div class="avatar">
@@ -40,6 +41,7 @@ const html = /*html*/`
       </div>
     </div>
   </div>
+</div>
 `;
 
 /**
