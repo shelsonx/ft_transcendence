@@ -66,13 +66,16 @@
   "profile--active": "Status: Active",
   "profile--inactive": "Status: Inactive",
 
-
   "search--title": "Search",
   "search--search-users": "Search Users",
   "search--search-results": "Search Results",
   "search--currently-online": "Currently Online Users",
   "search--no-results": "No results found",
   "search--no-currently-online": "There are no active users at the moment :(",
+  "search--icon-add": "Add Friend",
+  "search--icon-block": "Block User",
+  "search--icon-stats": "View Stats",
+  "search--icon-matches": "View Matches",
 
   "hello-user": "Hello",
   "my-games-button": "My Games",

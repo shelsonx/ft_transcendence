@@ -56,13 +56,7 @@ class BaseLoggedView extends View {
           status: 'active'
         };
     
-        await userInformationService.updateUserStatus(data)
-          .then((response) => {
-            console.log(`User status updated for ${userId}:`, response);
-          })
-          .catch((error) => {
-            console.error('Error updating status:', error);
-          });
+        await userInformationService.updateUserStatus(data);
       }
     };
     
@@ -82,13 +76,13 @@ class BaseLoggedView extends View {
           console.error('Error updating status to offline:', error);
         });
     };
-    
-    document.addEventListener('mousemove', updateUserStatus);    
+
+    document.addEventListener('mousemove', updateUserStatus);
     window.addEventListener('beforeunload', updateUserToOffline);
     window.addEventListener('unload', updateUserToOffline);
     window.addEventListener('pagehide', updateUserToOffline);
     document.getElementById('logout-button').addEventListener('click', updateUserToOffline);
-    
+
     const navHandler = new NavHandler(navItems);
     super(new ViewOptions(html, start, navHandler));
 

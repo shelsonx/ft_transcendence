@@ -118,30 +118,30 @@ const start = async () => {
           </div>
         </div>
         <div>
-          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-key="search--icon-add" title="Add Friend">
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-tooltip="search--icon-add" title="Add Friend">
             <i class="bi bi-person-plus"></i>
           </button>
-          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-key="search--icon-block" title="Block User">
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" data-i18n-tooltip="search--icon-block" title="Block User">
             <i class="bi bi-person-x"></i>
           </button>
-          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-key="search--icon-stats" title="View Stats">
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-tooltip="search--icon-stats" title="View Stats">
             <i class="bi bi-bar-chart"></i>
           </button>
-          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-key="search--icon-matches" title="View Matches">
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" data-i18n-tooltip="search--icon-matches" title="View Matches">
             <i class="bi bi-controller"></i>
           </button>
         </div>
       `;
       searchResults.appendChild(userItem);
     });
-    initializeTooltips(); // Initialize tooltips after adding elements
+    initializeTooltips();
   };
 
   window.addFriend = async function (friendId, button) {
     const response = await friendshipRequestService.sendFriendRequest(friendId);
     alert(response.message);
     button.innerHTML = '<i class="bi bi-person-check"></i>';
-    initializeTooltips(); // Initialize tooltips after adding elements
+    initializeTooltips();
   };
 
   window.blockUser = async function (blockId, button) {
@@ -182,30 +182,30 @@ const start = async () => {
           </div>
         </div>
         <div>
-          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend" data-i18n-key="search--icon-add">
+          <button class="btn btn-success btn-sm me-2" onclick="addFriend('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Add Friend" data-i18n-tooltip="search--icon-add">
             <i class="bi bi-person-plus"></i>
           </button>
-          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User" data-i18n-key="search--icon-block">
+          <button class="btn btn-danger btn-sm me-2" onclick="blockUser('${user.user_uuid}', this)" data-bs-toggle="tooltip" title="Block User" data-i18n-tooltip="search--icon-block">
             <i class="bi bi-person-x"></i>
           </button>
-          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats" data-i18n-key="search--icon-stats">
+          <button class="btn btn-info btn-sm me-2" onclick="viewUserStats('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Stats" data-i18n-tooltip="search--icon-stats">
             <i class="bi bi-bar-chart"></i>
           </button>
-          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches" data-i18n-key="search--icon-matches">
+          <button class="btn btn-warning btn-sm" onclick="viewUserMatches('${user.user_uuid}')" data-bs-toggle="tooltip" title="View Matches" data-i18n-tooltip="search--icon-matches">
             <i class="bi bi-controller"></i>
           </button>
         </div>
       `;
       activeUsers.appendChild(userItem);
     });
-    initializeTooltips(); // Initialize tooltips after adding elements
+    initializeTooltips(); 
   };
   
 
   const initializeTooltips = () => {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.forEach((tooltip) => {
-      const key = tooltip.getAttribute('data-i18n-key');
+      const key = tooltip.getAttribute('data-i18n-tooltip');
       tooltip.setAttribute('title', languageHandler.translate(key));
     })
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {

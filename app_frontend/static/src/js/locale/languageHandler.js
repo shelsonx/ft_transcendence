@@ -156,10 +156,15 @@ class LanguageHandler {
   translateElement(element) {
     const key = element.getAttribute("data-i18n-key");
 
+    const tooltip = element.getAttribute("data-i18n-tooltip");
+
     const options =
       JSON.parse(element.getAttribute("data-i18n-opt")) || {};
 
     element.innerText = this.translate(key, options);
+    if (tooltip) {
+      element.setAttribute("title", this.translate(tooltip, options));
+    }
   }
 
   translatePage() {
