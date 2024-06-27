@@ -31,6 +31,7 @@ const html = /*html*/`
             <h3 data-i18n-key="search--search-results">Search Results</h3>
           </div>
           <div class="card-body">
+            <p id="noSearchResultsMessage" hidden data-i18n-key="search--no-results">No users found</p>
             <div id="searchResults" class="list-group"></div>
           </div>
         </div>
@@ -43,6 +44,7 @@ const html = /*html*/`
             <h3 data-i18n-key="search--currently-online">Currently Online Users</h3>
           </div>
           <div class="card-body">
+            <p id="noActiveUsersMessage" hidden data-i18n-key="search--no-currently-online">There are no active users at the moment :(</p>
             <div id="activeUsers" class="list-group"></div>
           </div>
         </div>
@@ -58,6 +60,8 @@ const start = async () => {
   const searchResultsContainer = document.getElementById('searchResultsContainer');
   const searchResults = document.getElementById('searchResults');
   const activeUsers = document.getElementById('activeUsers');
+  const noSearchResultsMessage = document.getElementById('noSearchResultsMessage');
+  const noActiveUsersMessage = document.getElementById('noActiveUsersMessage');
 
   const searchUsersService = new SearchUsersService();
   const friendshipRequestService = new FriendshipRequestService();
@@ -104,8 +108,10 @@ const start = async () => {
   const displaySearchResults = (users) => {
     if (users.length > 0) {
       searchResultsContainer.classList.remove('hidden');
+      noSearchResultsMessage.hidden = true;
     } else {
       searchResultsContainer.classList.add('hidden');
+      noSearchResultsMessage.hidden = false;
     }
     searchResults.innerHTML = '';
     users.forEach(user => {
@@ -164,11 +170,11 @@ const start = async () => {
   const fetchActiveUsers = async () => {
     const response = await searchUsersService.viewOnlineUsers();
     if (response.users.length === 0) {
-      activeUsers.setAttribute('data-i18n-key', 'search--no-currently-online');
-      activeUsers.innerHTML = '<p>There are no active users at the moment :(</p>';
+      noActiveUsersMessage.hidden = false;
       return;
     }
     response.users = response.users.filter(user => user.user_uuid !== getUserId());
+    noActiveUsersMessage.hidden = true;
     displayActiveUsers(response.users);
   };
 
