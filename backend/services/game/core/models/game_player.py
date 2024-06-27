@@ -20,9 +20,12 @@ class GamePlayer(models.Model):
         to=User,
         on_delete=models.SET_NULL,
         null=True,
+        verbose_name=_("User")
     )
     score = models.IntegerField(default=0, verbose_name=_("Player' score in the game"))
-    position = models.IntegerField(choices=GamePlayerPosition, default=0)
+    position = models.IntegerField(
+        choices=GamePlayerPosition, default=0, verbose_name=_("Position")
+    )
 
     class Meta:
         db_table = "game_player"

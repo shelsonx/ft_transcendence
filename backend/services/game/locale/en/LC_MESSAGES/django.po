@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-24 14:19+0000\n"
+"POT-Creation-Date: 2024-06-27 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,11 +26,15 @@ msgstr ""
 msgid "Challenge tournament must have at least 3 rounds"
 msgstr ""
 
+#: core/forms/tournament.py:72
+msgid "Nickname"
+msgstr ""
+
 #: core/forms/validation.py:24
 msgid "The code was sent to the email registered by the user"
 msgstr ""
 
-#: core/models/game.py:28 core/models/round.py:19
+#: core/models/game.py:28 core/models/round.py:22
 msgid "Games"
 msgstr ""
 
@@ -42,16 +46,38 @@ msgstr ""
 msgid "Game status"
 msgstr ""
 
-#: core/models/game.py:42 core/models/game_rules.py:62
+#: core/models/game.py:40 templates/games_list.html:24
+#: templates/tournament/round_table.html:20
+msgid "Duration"
+msgstr ""
+
+#: core/models/game.py:44 core/models/game_rules.py:62
 msgid "Game Rules"
+msgstr ""
+
+#: core/models/game.py:48 core/models/tournament.py:58
+#: templates/tournaments_list.html:15
+msgid "Players"
+msgstr ""
+
+#: core/models/game.py:52 core/models/tournament.py:62
+msgid "Creator"
 msgstr ""
 
 #: core/models/game_player.py:17 core/models/validation.py:6
 msgid "Game"
 msgstr ""
 
-#: core/models/game_player.py:24
+#: core/models/game_player.py:23 core/models/tournament_player.py:28
+msgid "User"
+msgstr ""
+
+#: core/models/game_player.py:25
 msgid "Player' score in the game"
+msgstr ""
+
+#: core/models/game_player.py:27
+msgid "Position"
 msgstr ""
 
 #: core/models/game_player_position.py:6
@@ -86,11 +112,17 @@ msgstr ""
 msgid "Game maximum duration"
 msgstr ""
 
-#: core/models/round.py:25 core/models/tournament.py:40
-msgid "Tournament Status"
+#: core/models/round.py:16 core/models/tournament_player.py:21
+#: templates/games_list.html:25
+msgid "Tournament"
 msgstr ""
 
-#: core/models/round.py:74
+#: core/models/round.py:28 core/models/tournament.py:40
+#: templates/tournament/validate.html:57
+msgid "Status"
+msgstr ""
+
+#: core/models/round.py:77
 #, python-brace-format
 msgid "Round {self.round_number}"
 msgstr ""
@@ -139,38 +171,60 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
-#: core/models/tournament.py:35
-msgid "Tournament Type"
+#: core/models/tournament.py:31 templates/tournaments_list.html:12
+msgid "Name"
+msgstr ""
+
+#: core/models/tournament.py:35 templates/tournaments_list.html:13
+msgid "Type"
 msgstr ""
 
 #: core/models/tournament.py:42
-msgid "Tournament date"
+msgid "Date"
 msgstr ""
 
-#: core/models/tournament.py:48 templates/tournament.html:13
-#: templates/tournament/general_rules.html:7
-msgid "Tournament Rules"
+#: core/models/tournament.py:48
+msgid "Rules"
 msgstr ""
 
-#: core/models/tournament.py:56
-msgid "Tournament Players"
+#: core/models/tournament.py:52
+msgid "Number of players"
 msgstr ""
 
-#: core/models/tournament_player.py:21 templates/games_list.html:25
-msgid "Tournament"
+#: core/models/tournament.py:69
+msgid "Number of rounds"
 msgstr ""
 
-#: core/models/tournament_player.py:27
+#: core/models/tournament_player.py:31
 msgid "Alias name"
 msgstr ""
 
-#: core/models/tournament_player.py:30
+#: core/models/tournament_player.py:33
 msgid "Score"
 msgstr ""
 
-#: core/models/tournament_player.py:33
+#: core/models/tournament_player.py:34
 #: templates/tournament/rating_table.html:25
 msgid "Rating"
+msgstr ""
+
+#: core/models/tournament_player.py:35
+#: templates/tournament/rating_table.html:22
+msgid "Winnings"
+msgstr ""
+
+#: core/models/tournament_player.py:36
+#: templates/tournament/rating_table.html:23
+msgid "Losses"
+msgstr ""
+
+#: core/models/tournament_player.py:37
+#: templates/tournament/rating_table.html:24
+msgid "Ties"
+msgstr ""
+
+#: core/models/tournament_player.py:39
+msgid "Verified"
 msgstr ""
 
 #: core/models/tournament_type.py:6
@@ -422,10 +476,6 @@ msgstr ""
 msgid "Date / Status"
 msgstr ""
 
-#: templates/games_list.html:24 templates/tournament/round_table.html:20
-msgid "Duration"
-msgstr ""
-
 #: templates/games_list.html:77 templates/tournaments_list.html:17
 #: templates/tournaments_list.html:63
 msgid "Winner"
@@ -471,6 +521,10 @@ msgstr ""
 #: templates/tournament.html:6
 #, python-format
 msgid "%(name)s Tournament"
+msgstr ""
+
+#: templates/tournament.html:13 templates/tournament/general_rules.html:7
+msgid "Tournament Rules"
 msgstr ""
 
 #: templates/tournament.html:37
@@ -605,18 +659,6 @@ msgstr ""
 msgid "Points/game"
 msgstr ""
 
-#: templates/tournament/rating_table.html:22
-msgid "Winnings"
-msgstr ""
-
-#: templates/tournament/rating_table.html:23
-msgid "Losses"
-msgstr ""
-
-#: templates/tournament/rating_table.html:24
-msgid "Ties"
-msgstr ""
-
 #: templates/tournament/rules.html:6
 msgid ""
 "\n"
@@ -706,28 +748,12 @@ msgid ""
 "            "
 msgstr ""
 
-#: templates/tournament/validate.html:57
-msgid "Status"
-msgstr ""
-
 #: templates/tournament/validate.html:58
 msgid "Verification code"
 msgstr ""
 
 #: templates/tournament/validate.html:80
 msgid "Owner"
-msgstr ""
-
-#: templates/tournaments_list.html:12
-msgid "Name"
-msgstr ""
-
-#: templates/tournaments_list.html:13
-msgid "Type"
-msgstr ""
-
-#: templates/tournaments_list.html:15
-msgid "Players"
 msgstr ""
 
 #: templates/tournaments_list.html:16
@@ -743,7 +769,7 @@ msgid "No tournaments registered"
 msgstr ""
 
 #: user/forms.py:22
-msgid "insert username"
+msgid "insert nickname"
 msgstr ""
 
 #: user/models.py:34
