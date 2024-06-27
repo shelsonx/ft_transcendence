@@ -48,9 +48,9 @@ class JWTAuthentication:
 
                     jwt_service = JWTService()
                     data = jwt_service.verify_token(token, secret)
-                    print(data.sub)
+                    # print(data.sub)
                     request.user = User.get_object(user_uuid=data.sub)
-                    print(request.user)
+                    # print(request.user)
                     if not request.user and self.validate_user:
                         return self.unauthorized("user not registered")
                     if not self.validate_user:

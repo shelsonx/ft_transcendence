@@ -181,7 +181,6 @@ async function loadFriendRequests(friendshipRequestService) {
   const friendshipRequestDataResponse = await friendshipRequestService.getFriendRequests();
   const friendRequests = friendshipRequestDataResponse.friend_requests;
   const activeFriendRequests = friendRequests.filter(request => request.is_active == true);
-  console.log(activeFriendRequests);
 
   const friendRequestsList = document.getElementById('friendRequests');
 

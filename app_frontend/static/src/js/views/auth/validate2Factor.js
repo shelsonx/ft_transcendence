@@ -67,7 +67,6 @@ function start() {
           authService.validateTwoFactorCode,
           formData
       );
-      console.log(response);
       authService.addTokenToLocalStorage(response)
       authService.redirectIfAuthenticated(response, formData.get('email'));
   });
@@ -80,7 +79,6 @@ function start() {
         authService.resendTwoFactorCode,
         email
     );
-    console.log(response);
   })
 
 }

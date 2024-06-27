@@ -36,7 +36,7 @@ def get_user(request, id):
 def register_user(request: HttpRequest) -> HttpResponse:
     try:
         payload = json.loads(request.body)
-        print(payload)
+        # print(payload)
         id_msc = payload.get('id_msc')
         full_name = payload.get('full_name')
         nickname = payload.get('nickname')
@@ -54,7 +54,7 @@ def set_status_user(request: HttpRequest) -> HttpResponse:
         id_msc = payload.get('id_msc')
         status = payload.get('status')
         user = get_object_or_404(UserInfo, id_msc=id_msc)
-        print(f'user: {user}')
+        # print(f'user: {user}')
         user.status = status
         user.save()
         return HttpResponse("OK", status=200)

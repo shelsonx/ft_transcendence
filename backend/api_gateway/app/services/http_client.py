@@ -26,7 +26,7 @@ class HttpClient(IHttpClient):
     def _make_request(self, method: str, request_data: HttpClientData
     ) -> http.client.HTTPResponse:
         url_with_base = urljoin(self.base_url.container, request_data.url.lstrip('/'))
-        print("url_with_base", url_with_base)
+        # print("url_with_base", url_with_base)
         domain = self._get_domain(url_with_base)
         path = self._get_path(url_with_base)
         if url_with_base.startswith("https"):

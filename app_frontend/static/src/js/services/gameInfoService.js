@@ -50,7 +50,6 @@ class GameInfoService {
 	}
 
 	async updateUserInformation(data) {
-		console.log(data);
 		const user_info = new HttpClientRequestData(
 			'POST', '/dash/update_user/', data
 		);

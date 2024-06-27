@@ -391,7 +391,7 @@ class Elimination(Tournament):
                     rules=self.rules,
                 )
                 if i == 0:
-                    pprint(map(lambda p: game.add_player(p), players_pairs[j]))
+                    # pprint(map(lambda p: game.add_player(p), players_pairs[j]))
                     game.set_players_position()
                 round.games.add(game)
 

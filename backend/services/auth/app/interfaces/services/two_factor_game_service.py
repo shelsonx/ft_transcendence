@@ -46,7 +46,7 @@ class ITwoGameFactorService(ABC):
             two_factor_code = (
                 await self.two_factor_game_repository.find_two_factor_by_game_details(two_factor_game)
             )
-            print("two_factor_code",two_factor_code)
+            # print("two_factor_code",two_factor_code)
         except TwoFactorGame.DoesNotExist:
             pass
         if two_factor_code is not None:
