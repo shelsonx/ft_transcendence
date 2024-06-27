@@ -63,18 +63,6 @@ users = [
             "ties": 1,
         },
     },
-    {
-        "pk": "eb11303a-49d0-4e75-adb5-eb22ec646c27",
-        "fields": {
-            "username": "sguilher",
-            "avatar": "/media/avatars/default_avatar.jpeg",
-            "score": 0,
-            "rating": 0,
-            "winnings": 0,
-            "losses": 0,
-            "ties": 0,
-        },
-    },
 ]
 
 
