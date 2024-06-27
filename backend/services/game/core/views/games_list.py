@@ -92,7 +92,9 @@ class GamesView(generic.ListView):
                 user=self.user, tournament__status=TournamentStatus.ENDED
             )
             self.user.tournaments_count = tps.count()
-            self.user.tournaments_points = tps.aggregate(total=Sum("score"))["total"]
+            self.user.tournaments_points = (
+                tps.aggregate(total=Sum("score"))["total"] or 0
+            )
 
             gps = GamePlayer.objects.filter(
                 user=self.user, game__status=GameStatus.ENDED
