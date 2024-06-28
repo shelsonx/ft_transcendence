@@ -45,25 +45,29 @@ class BaseLoggedView extends View {
     let lastUpdate = 0;
 
     const updateUserStatus = async () => {
+      const userId = getUserId();
+        if (!userId) return;
+
+      const userInformationService = new UserInformationService();
+      const data = {
+        status: 'active'
+      };
+
+      await userInformationService.updateUserStatus(data);
+
+      const gameInfoData = {
+        id_msc: userId,
+        status: true
+      }
+      await GameInfoService.updateUserStatus(gameInfoData);
+    }
+
+    const updateUserStatusWithTimer = async () => {
       const currentTime = Date.now();
       if (currentTime - lastUpdate >= throttleTime) {
         lastUpdate = currentTime;
 
-        const userId = getUserId();
-        if (!userId) return;
-
-        const userInformationService = new UserInformationService();
-        const data = {
-          status: 'active'
-        };
-
-        await userInformationService.updateUserStatus(data);
-
-        const gameInfoData = {
-          id_msc: userId,
-          status: true
-        }
-        await GameInfoService.updateUserStatus(gameInfoData);
+       await updateUserStatus();
       }
     };
 
@@ -91,7 +95,7 @@ class BaseLoggedView extends View {
     };
 
     window.addEventListener('load', updateUserStatus);
-    window.addEventListener('focus', updateUserStatus);
+    window.addEventListener('focus', updateUserStatusWithTimer);
 
     window.addEventListener('beforeunload', function (e) {
       this.navigator.sendBeacon(`https://localhost:8006/user/${getUserId()}/status/`, JSON.stringify({ status: 'inactive' }));
