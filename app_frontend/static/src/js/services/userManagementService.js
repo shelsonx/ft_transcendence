@@ -121,8 +121,11 @@ class UserInformationService {
 
   async updateUserStatus(data) {
     const requestData = new HttpClientRequestData('POST', `/user/${this.userId}/status/`, data);
+  try {
     const response = await this.httpClient.makeRequest(requestData);
     return response;
+  }
+  catch {}
   }
 
   async deleteUser() {

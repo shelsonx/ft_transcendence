@@ -1,6 +1,25 @@
 import { AuthConstants } from '../constants/auth-constants.js';
+import gameInfoService from './gameInfoService.js';
 import { HttpClientRequestData } from './httpClient.js';
 import { LanguageService } from './languageService.js';
+import { UserInformationService } from './userManagementService.js';
+
+
+const getUserId = () => {
+  try {
+    const jwt = localStorage.getItem('transcendence-auth_token');
+    if (!jwt) {
+      return null;
+    }
+
+    const payloadBase64 = jwt.split('.')[1];
+    const decodedPayload = JSON.parse(atob(payloadBase64));
+    return decodedPayload.sub;
+  } catch (error) {
+    console.error('Error getting user ID:', error);
+    return null;
+  }
+};
 
 class AuthService extends LanguageService {
 
@@ -137,7 +156,22 @@ class AuthService extends LanguageService {
     return response;
   }
 
-  logout() {
+  async logout() {
+    const userId = getUserId();
+    // if (!userId) return;
+
+    const userManagementService = new UserInformationService();
+    const data = {
+      status: 'inactive'
+    };
+    await userManagementService.updateUserStatus(data);
+
+    const gameInfoData = {
+      id_msc: userId,
+      status: false
+    }
+    await gameInfoService.updateUserStatus(gameInfoData);
+
     localStorage.removeItem(AuthConstants.AUTH_TOKEN);
     window.location.href = '/#login';
   }

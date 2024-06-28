@@ -3,7 +3,7 @@ import { UserInformationService } from "./services/userManagementService.js";
 import GameInfoService from "./services/gameInfoService.js";
 
 const mainStart = () => {
-    
+
   const getUserId = () => {
     try {
       const jwt = localStorage.getItem('transcendence-auth_token');
@@ -63,13 +63,7 @@ const mainStart = () => {
     const data = {
       status: 'inactive'
     };
-    await userInformationService.updateUserStatus(data)
-      .then((response) => {
-        console.log(`User status updated to offline for ${userId}:`, response);
-      })
-      .catch((error) => {
-        console.error('Error updating status to offline:', error);
-      });
+    await userInformationService.updateUserStatus(data);
 
       const gameInfoData = {
       id_msc: userId,
@@ -79,7 +73,7 @@ const mainStart = () => {
   };
 
   window.addEventListener('load', updateUserStatus);
-  window.addEventListener('focus', updateUserStatusWithTimer);
+  window.addEventListener('mousemove', updateUserStatusWithTimer);
 
   window.addEventListener('beforeunload', function (e) {
     this.navigator.sendBeacon(`https://localhost:8006/user/${getUserId()}/status/`, JSON.stringify({ status: 'inactive' }));

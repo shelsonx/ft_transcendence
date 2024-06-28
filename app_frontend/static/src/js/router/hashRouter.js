@@ -92,8 +92,8 @@ class HashRouter extends Router {
     });
     const logout = document.getElementById('logout-button');
     if (logout) {
-      logout.addEventListener('click', () => {
-        authService.logout();
+      logout.addEventListener('click', async () => {
+        await authService.logout();
       });
     }
   }
