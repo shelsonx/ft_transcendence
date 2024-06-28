@@ -1,6 +1,9 @@
 from django.db import models
 import uuid
 
+DEFAULT_AVATAR = "/media/avatars/default_avatar.jpeg"
+USER_API = "https://localhost:8006"
+
 # Create your models here.
 class UserInfo(models.Model):
     id_msc = models.UUIDField(default=uuid.uuid4, unique=True)
@@ -12,9 +15,14 @@ class UserInfo(models.Model):
     position = models.PositiveIntegerField(default=0)
     status = models.BooleanField(default=False)
     playing = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='media/avatars/',
-                        blank=True, null=True,
-                        default='/media/avatars/default_avatar.jpeg')
-
+    photo = models.CharField(max_length=255, default=DEFAULT_AVATAR, blank=True)
+    
+    @property
+    def avatarUrl(self):
+        if not self.avatar:
+            self.avatar = DEFAULT_AVATAR
+            self.save()
+        return f"{USER_API}{self.avatar}"
+    
     class Meta:
         ordering = ['-scores']

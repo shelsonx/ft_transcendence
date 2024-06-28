@@ -301,16 +301,50 @@ function createUserGameStatus() {
     return userGameStatus;
 }
 
+// function setDetailsStatus(data, initial) {
+//     const detailsFullName = document.getElementById('details-fullname');
+//     if (detailsFullName) {
+//         detailsFullName.textContent = initial ? data.full_name : data.user.full_name;
+//     }
+//     document.getElementById('details-fullname').textContent = initial ? data.full_name : data.user.full_name;
+//     document.getElementById('details-nickname').textContent = initial ? data.nickname : data.user.nickname;
+//     document.getElementById('details-scores').textContent = initial ? data.scores : data.user.scores;
+//     document.getElementById('details-winnings').textContent = initial ? data.winnings : data.user.winnings;
+//     document.getElementById('details-losses').textContent = initial ? data.losses : data.user.losses;
+//     document.getElementById('details-position').textContent = `${initial ? data.position : data.user.position}º`;
+//     document.getElementById('details-photo').src = `https://localhost:8006/${initial ? data.photo : data.user.photo}`;
+//     document.getElementById('details-status-icon').style.color = initial ? (data.status ? 'green' : 'white') : data.user.status ? 'green' : 'white';
+//     document.getElementById('details-status-label').textContent = initial ? (data.status ? 'Online' : 'Offline') : data.user.status ? 'Online' : 'Offline';
+// }
+
 function setDetailsStatus(data, initial) {
-    document.getElementById('details-fullname').textContent = initial ? data.full_name : data.user.full_name;
-    document.getElementById('details-nickname').textContent = initial ? data.nickname : data.user.nickname;
-    document.getElementById('details-scores').textContent = initial ? data.scores : data.user.scores;
-    document.getElementById('details-winnings').textContent = initial ? data.winnings : data.user.winnings;
-    document.getElementById('details-losses').textContent = initial ? data.losses : data.user.losses;
-    document.getElementById('details-position').textContent = `${initial ? data.position : data.user.position}º`;
-    document.getElementById('details-photo').src = `https://localhost:8006/${initial ? data.photo : data.user.photo}`;
-    document.getElementById('details-status-icon').style.color = initial ? (data.status ? 'green' : 'white') : data.user.status ? 'green' : 'white';
-    document.getElementById('details-status-label').textContent = initial ? (data.status ? 'Online' : 'Offline') : data.user.status ? 'Online' : 'Offline';
+    const fieldsToUpdate = [
+        { id: 'details-fullname', property: 'full_name', isTextContent: true },
+        { id: 'details-nickname', property: 'nickname', isTextContent: true },
+        { id: 'details-scores', property: 'scores', isTextContent: true },
+        { id: 'details-winnings', property: 'winnings', isTextContent: true },
+        { id: 'details-losses', property: 'losses', isTextContent: true },
+        { id: 'details-position', property: 'position', isTextContent: true, format: value => `${value}º` },
+        { id: 'details-photo', property: 'photo', isTextContent: false, format: value => `https://localhost:8006/${value}` },
+        { id: 'details-status-icon', property: 'status', isTextContent: false, styleProperty: 'color', format: value => value ? 'green' : 'white' },
+        { id: 'details-status-label', property: 'status', isTextContent: true, format: value => value ? 'Online' : 'Offline' }
+    ];
+
+    fieldsToUpdate.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (!element) return;
+
+        const value = initial ? data[field.property] : data.user[field.property];
+        const formattedValue = field.format ? field.format(value) : value;
+
+        if (field.isTextContent) {
+            element.textContent = formattedValue;
+        } else if (field.styleProperty) {
+            element.style[field.styleProperty] = formattedValue;
+        } else {
+            element.src = formattedValue;
+        }
+    });
 }
 
 function AddUserInList(data, users_blocks, userActive) {

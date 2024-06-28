@@ -6,7 +6,8 @@ import {
 } from '../../services/userManagementService.js';
 import UserManagementView from '../baseLoggedView.js';
 import languageHandler from '../../locale/languageHandler.js';
-
+import { changeLanguageWhenLogin } from '../../utils/changeLanguage.js'
+import wrapperService from '../../services/wrapperService.js';
 class UserProfileView extends UserManagementView {
   constructor(html, start) {
     super(html, start);
@@ -25,7 +26,6 @@ const html = /*html*/`
         <img src="" alt="Avatar" class="img-fluid rounded-circle border border-warning mb-4">
       </div>
       <h2 id="userNickname"></h2>
-      <h2 id="userStatus"></h2>
       <p id="user2fa"></p>
       <div class="lists-container d-flex flex-column align-items-center mt-4">
         <div class="friends-list col mb-4">
@@ -52,18 +52,22 @@ const html = /*html*/`
  * Start the user profile view.
  * @returns {Promise<void>} - A promise that resolves when the view is started.
  */
-const start = async () => {
+const start = async (user) => {
 
   const userInformationService = new UserInformationService();
   const friendshipService = new FriendshipService();
   const blockingService = new BlockingService();
   const friendshipRequestService = new FriendshipRequestService();
-
+  // await userInformationService.updateUserStatus({ status: 'active' });
   await loadUserData(userInformationService);
   await loadFriendsList(friendshipService);
   await loadBlockedUsers(blockingService);
   await loadFriendRequests(friendshipRequestService);
   initializeTooltips();
+  if (user) {
+    await changeLanguageWhenLogin(user.id);
+  }
+  
 };
 
 const initializeTooltips = () => {
@@ -89,9 +93,7 @@ async function loadUserData(userInformationService) {
   const avatar = document.querySelector('.avatar img');
   avatar.src = `https://localhost:8006${user.avatar}`;
   document.getElementById('userNickname').innerText = `@${user.nickname.toLowerCase()}`;
-  document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
-  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Online' : 'Status: Offline';
-  document.getElementById('userStatus').classList.add(`status-${user.status}`);
+
 
   const user2fa = document.getElementById('user2fa');
   user2fa.setAttribute('data-i18n-key', user.two_factor_enabled ? 'profile--2fa-enabled' : 'profile--2fa-disabled');
@@ -249,7 +251,12 @@ async function loadFriendRequests(friendshipRequestService) {
  */
 async function acceptFriendRequest(requestId) {
   const friendshipRequestService = new FriendshipRequestService();
-  await friendshipRequestService.acceptFriendRequest(requestId);
+  await wrapperService.execute(
+    friendshipRequestService,
+    friendshipRequestService.acceptFriendRequest,
+    requestId
+  )
+  window.location.reload();
 }
 
 /**
@@ -260,7 +267,12 @@ async function acceptFriendRequest(requestId) {
  */
 async function rejectFriendRequest(requestId) {
   const friendshipRequestService = new FriendshipRequestService();
-  await friendshipRequestService.rejectFriendRequest(requestId);
+  await wrapperService.execute(
+    friendshipRequestService,
+    friendshipRequestService.rejectFriendRequest,
+    requestId
+  )
+  window.location.reload();
 }
 
 /**
@@ -270,7 +282,12 @@ async function rejectFriendRequest(requestId) {
  */
 async function unfriendUser(friendId) {
   const friendshipService = new FriendshipService();
-  await friendshipService.deleteFriend(friendId);
+  await wrapperService.execute(
+    friendshipService,
+    friendshipService.deleteFriend,
+    friendId
+  )
+  window.location.reload();
 }
 
 /**
@@ -280,7 +297,12 @@ async function unfriendUser(friendId) {
  */
 async function unblockUser(blockedUserId) {
   const blockingService = new BlockingService();
-  await blockingService.unblockUser(blockedUserId);
+  await wrapperService.execute(
+    blockingService,
+    blockingService.unblockUser,
+    blockedUserId
+  )
+  window.location.reload();
 }
 
 export default new UserProfileView({ html, start });

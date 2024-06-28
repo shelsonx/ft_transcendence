@@ -16,7 +16,7 @@ users = [
             "position": 0,
             "status": False,
             "playing": False,
-            "photo": "media/avatars/shelson.jpeg",
+            "photo": "/media/avatars/shelson.jpeg",
         },
     },
     {
@@ -31,7 +31,7 @@ users = [
             "position": 0,
             "status": False,
             "playing": False,
-            "photo": "media/avatars/sheela.png",
+            "photo": "/media/avatars/sheela.png",
         },
     },
     {
@@ -46,7 +46,7 @@ users = [
             "position": 0,
             "status": False,
             "playing": False,
-            "photo": "media/avatars/elraira-.jpeg",
+            "photo": "/media/avatars/elraira-.jpeg",
         },
     },
     {
@@ -61,7 +61,7 @@ users = [
             "position": 0,
             "status": False,
             "playing": False,
-            "photo": "media/avatars/brunobonaldi.jpeg",
+            "photo": "/media/avatars/brunobonaldi.jpeg",
         },
     },
     {
@@ -76,7 +76,7 @@ users = [
             "position": 0,
             "status": False,
             "playing": False,
-            "photo": "media/avatars/humberto.jpeg",
+            "photo": "/media/avatars/humberto.jpeg",
         },
     },
 ]
@@ -96,7 +96,7 @@ def backwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("dashboard", "0008_alter_userinfo_nickname"),
+        ("dashboard", "0009_alter_userinfo_photo"),
     ]
 
     operations = [

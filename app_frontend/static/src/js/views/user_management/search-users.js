@@ -2,7 +2,9 @@ import { BlockingService, FriendshipRequestService, SearchUsersService } from '.
 import UserManagementView from '../baseLoggedView.js';
 import { getUserId } from '../../utils/getUserId.js';
 import languageHandler from '../../locale/languageHandler.js';
-
+import { changeLanguageWhenLogin } from '../../utils/changeLanguage.js';
+import wrapperService from '../../services/wrapperService.js';
+import { CustomEvents } from '../../constants/custom-events.js';
 class searchUsersView extends UserManagementView {
   constructor(html, start) {
     super(html, start);
@@ -52,9 +54,13 @@ const html = /*html*/`
     </div>
   </div>
 `;
+const start = async (user) => {
+    begin(user);
 
-const start = async () => {
+};
 
+
+function begin(user) {
   const searchButton = document.getElementById('searchButton');
   const searchInput = document.getElementById('searchInput');
   const searchResultsContainer = document.getElementById('searchResultsContainer');
@@ -146,16 +152,24 @@ const start = async () => {
   };
 
   window.addFriend = async function (friendId, button) {
-    const response = await friendshipRequestService.sendFriendRequest(friendId);
-    alert(response.message);
+    await wrapperService.execute(
+      friendshipRequestService,
+      friendshipRequestService.sendFriendRequest,
+      friendId
+    )
     button.innerHTML = '<i class="bi bi-person-check"></i>';
     initializeTooltips();
+    window.location.reload();
   };
 
   window.blockUser = async function (blockId, button) {
-    const response = await blockingService.blockUser(blockId);
-    alert(response.message);
+    await wrapperService.execute(
+      blockingService,
+      blockingService.blockUser,
+      blockId
+    )
     button.closest('.list-group-item').remove();
+    window.location.reload();
   };
 
   window.viewUserStats = async function (userId) {
@@ -222,8 +236,9 @@ const start = async () => {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
   }
-
   fetchActiveUsers();
-};
+}
+
+
 
 export default new searchUsersView({ html, start });
