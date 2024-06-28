@@ -55,10 +55,8 @@ const html = /*html*/`
   </div>
 `;
 const start = async (user) => {
-    begin();
-    // window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    //   begin(user)
-    // });
+    begin(user);
+
 };
 
 
@@ -161,6 +159,7 @@ function begin(user) {
     )
     button.innerHTML = '<i class="bi bi-person-check"></i>';
     initializeTooltips();
+    window.location.reload();
   };
 
   window.blockUser = async function (blockId, button) {
@@ -170,6 +169,7 @@ function begin(user) {
       blockId
     )
     button.closest('.list-group-item').remove();
+    window.location.reload();
   };
 
   window.viewUserStats = async function (userId) {

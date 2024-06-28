@@ -2,7 +2,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from ..models.models import FriendshipRequest
 from user_management_api.views.user_info import UserInfoView
 from user_management_api.jwt.decorator import JWTAuthentication
 from user_management_api.exception.exception \
@@ -36,5 +36,16 @@ class UserFriendshipView(View):
             raise MissingParameterException("friend_id")
         user = UserInfoView().get_user(user_id)
         friend = UserInfoView().get_user(friend_id)
-        user.friends.remove(friend)
+        
+        userRequest = FriendshipRequest.objects.filter(sender=user, receiver=friend)
+        if userRequest.exists():
+            userRequest.delete()
+        friendRequest = FriendshipRequest.objects.filter(sender=friend, receiver=user)
+        if friendRequest.exists():
+            friendRequest.delete()
+        
+        if user.friends.filter(id=friend.id).exists():  
+            user.friends.remove(friend)
+            friend.friends.remove(user)
+
         return JsonResponse({'status': 'success', 'message': friend_removed_message, 'status_code': 200}, status=200)

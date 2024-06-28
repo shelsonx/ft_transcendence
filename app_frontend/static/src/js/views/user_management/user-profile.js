@@ -26,7 +26,6 @@ const html = /*html*/`
         <img src="" alt="Avatar" class="img-fluid rounded-circle border border-warning mb-4">
       </div>
       <h2 id="userNickname"></h2>
-      <h2 id="userStatus"></h2>
       <p id="user2fa"></p>
       <div class="lists-container d-flex flex-column align-items-center mt-4">
         <div class="friends-list col mb-4">
@@ -59,7 +58,7 @@ const start = async (user) => {
   const friendshipService = new FriendshipService();
   const blockingService = new BlockingService();
   const friendshipRequestService = new FriendshipRequestService();
-
+  // await userInformationService.updateUserStatus({ status: 'active' });
   await loadUserData(userInformationService);
   await loadFriendsList(friendshipService);
   await loadBlockedUsers(blockingService);
@@ -68,6 +67,7 @@ const start = async (user) => {
   if (user) {
     await changeLanguageWhenLogin(user.id);
   }
+  
 };
 
 const initializeTooltips = () => {
@@ -93,9 +93,7 @@ async function loadUserData(userInformationService) {
   const avatar = document.querySelector('.avatar img');
   avatar.src = `https://localhost:8006${user.avatar}`;
   document.getElementById('userNickname').innerText = `@${user.nickname.toLowerCase()}`;
-  document.getElementById('userStatus').setAttribute('data-i18n-key', user.status == 'active' ? 'profile--active' : 'profile--inactive');
-  document.getElementById('userStatus').innerText = user.status == 'active' ? 'Status: Online' : 'Status: Offline';
-  document.getElementById('userStatus').classList.add(`status-${user.status}`);
+
 
   const user2fa = document.getElementById('user2fa');
   user2fa.setAttribute('data-i18n-key', user.two_factor_enabled ? 'profile--2fa-enabled' : 'profile--2fa-disabled');
@@ -258,6 +256,7 @@ async function acceptFriendRequest(requestId) {
     friendshipRequestService.acceptFriendRequest,
     requestId
   )
+  window.location.reload();
 }
 
 /**
@@ -273,6 +272,7 @@ async function rejectFriendRequest(requestId) {
     friendshipRequestService.rejectFriendRequest,
     requestId
   )
+  window.location.reload();
 }
 
 /**
@@ -287,6 +287,7 @@ async function unfriendUser(friendId) {
     friendshipService.deleteFriend,
     friendId
   )
+  window.location.reload();
 }
 
 /**
@@ -301,6 +302,7 @@ async function unblockUser(blockedUserId) {
     blockingService.unblockUser,
     blockedUserId
   )
+  window.location.reload();
 }
 
 export default new UserProfileView({ html, start });
