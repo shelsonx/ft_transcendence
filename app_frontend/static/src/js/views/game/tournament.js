@@ -73,6 +73,18 @@ const deleteTournament = async (e) => {
   });
 };
 
+const getTournament = async () => {
+  await gameService.tournament(tournament).then(tournamentDetail);
+};
+
+const tournamentsHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getTournament
+  );
+  window.removeEventListener("hashchange", tournamentsHashChangeHandler);
+};
+
 const start = async (user) => {
   tournament = new URLSearchParams(window.location.search).get("t");
   if (tournament === null) {
@@ -80,11 +92,14 @@ const start = async (user) => {
     return;
   }
 
-  await gameService.tournament(tournament).then(tournamentDetail);
+  getTournament();
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.tournament(tournament).then(tournamentDetail);
-  });
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getTournament
+  );
+
+  window.addEventListener("hashchange", tournamentsHashChangeHandler);
 };
 
 export default new TournamentDetailView(html, start);

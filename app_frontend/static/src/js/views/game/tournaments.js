@@ -1,19 +1,17 @@
-import BaseLoggedView from '../baseLoggedView.js';
-import gameService from '../../services/gameService.js';
+import BaseLoggedView from "../baseLoggedView.js";
+import gameService from "../../services/gameService.js";
 import { CustomEvents } from "../../constants/custom-events.js";
-
 
 class TournamentsView extends BaseLoggedView {
   constructor(html, start) {
     super({
       html,
-      start
-    },
-  );
+      start,
+    });
   }
 }
 
-const html = /*html*/`
+const html = /*html*/ `
   <div class="d-flex justify-content-between">
     <h3 id="tournament-title" data-i18n-key="tournaments-title">
       Tournaments
@@ -34,7 +32,7 @@ const html = /*html*/`
   <div class="container-fluid main-game scroll-on mt-3">
     <div id="tournament-table-container" class="static-list"></div>
   </div>
-`
+`;
 
 const swap = (response) => {
   if (response.status !== undefined) {
@@ -44,14 +42,29 @@ const swap = (response) => {
 
   const swapContainer = document.getElementById("tournament-table-container");
   swapContainer.innerHTML = response;
-}
+};
+
+const getAllTournaments = async () => {
+  await gameService.allTournaments().then(swap);
+};
+
+const allTournamentsHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getAllTournaments
+  );
+  window.removeEventListener("hashchange", allTournamentsHashChangeHandler);
+};
 
 const start = async (user) => {
-  await gameService.allTournaments().then(swap);
+  getAllTournaments();
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.allTournaments().then(swap);
-  });
-}
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getAllTournaments
+  );
+
+  window.addEventListener("hashchange", allTournamentsHashChangeHandler);
+};
 
 export default new TournamentsView(html, start);

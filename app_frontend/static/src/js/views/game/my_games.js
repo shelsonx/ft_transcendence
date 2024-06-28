@@ -82,13 +82,28 @@ const swap = (response) => {
   });
 };
 
-const start = async (user) => {
-  await gameService.userGames(user.id).then(swap);
-  u = user;
+const getMyGames = async () => {
+  await gameService.userGames(u.id).then(swap);
+};
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.userGames(user.id).then(swap);
-  });
+const myGamesHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getMyGames
+  );
+  window.removeEventListener("hashchange", myGamesHashChangeHandler);
+};
+
+const start = async (user) => {
+  u = user;
+  getMyGames();
+
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getMyGames
+  );
+
+  window.addEventListener("hashchange", myGamesHashChangeHandler);
 };
 
 export default new MyGamesView(html, start);

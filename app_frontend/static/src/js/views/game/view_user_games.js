@@ -19,6 +19,8 @@ const html = /*html*/ `
   </div>
 `;
 
+let userId;
+
 const swap = (response) => {
   if (response.status !== undefined) {
     loadErrorMessage(response, "message");
@@ -30,18 +32,33 @@ const swap = (response) => {
   window.addEventListener("hashchange", hashChangeHandler);
 };
 
+const getViewUserGames = async () => {
+  await gameService.viewUserGames(userId).then(swap);
+};
+
+const viewUserGamesHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getViewUserGames
+  );
+  window.removeEventListener("hashchange", viewUserGamesHashChangeHandler);
+};
+
 const start = async (user) => {
-  const userId = new URLSearchParams(window.location.search).get("user");
+  userId = new URLSearchParams(window.location.search).get("user");
 
   if (userId === null) {
     pageNotFoundMessage("message");
     return;
   }
-  await gameService.viewUserGames(userId).then(swap);
+  getViewUserGames();
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.viewUserGames(userId).then(swap);
-  });
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getViewUserGames
+  );
+
+  window.addEventListener("hashchange", viewUserGamesHashChangeHandler);
 };
 
 export default new SeeUserGamesView(html, start);

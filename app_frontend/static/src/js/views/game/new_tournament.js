@@ -4,6 +4,7 @@ import { setGameRulesDynamicBehavior } from "./rules.js";
 import { setTournamentFormDynamicBehavior } from "./tournament_dynamic.js";
 import { loadErrorMessage } from "../../utils/errors.js";
 import { CustomEvents } from "../../constants/custom-events.js";
+import authService from "../../services/authService.js";
 
 class NewTournamentView extends BaseLoggedView {
   constructor(html, start) {
@@ -19,6 +20,10 @@ const html = /*html*/ `
     <div id="add-tournament-container"></div>
   </div>
 `;
+
+const getTournamentForm = async () => {
+  await gameService.getFormTournament().then(putTournamentForm);
+};
 
 const putTournamentForm = (response) => {
   if (response.status !== undefined) {
@@ -47,6 +52,7 @@ const submitTournamentForm = async (e) => {
 const addTournamentResult = async (response) => {
   if (typeof response === "string") {
     putTournamentForm(response);
+    return;
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       if (
@@ -57,7 +63,7 @@ const addTournamentResult = async (response) => {
         response.data.invite != null
       ) {
         try {
-          authService.sendGame2Factor(response.data.invite);
+          await authService.sendGame2Factor(response.data.invite);
         } catch (error) {}
         window.location.href =
           "?t=" + response.data.tournament + "#verify-players";
@@ -69,12 +75,22 @@ const addTournamentResult = async (response) => {
   loadErrorMessage(response, "add-tournament-container");
 };
 
-const start = async (user) => {
-  await gameService.getFormTournament().then(putTournamentForm);
+const newTournamentsHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getTournamentForm
+  );
+  window.removeEventListener("hashchange", newTournamentsHashChangeHandler);
+};
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.getFormTournament().then(putTournamentForm);
-  });
+const start = async (user) => {
+  await getTournamentForm();
+
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getTournamentForm
+  );
+  window.addEventListener("hashchange", newTournamentsHashChangeHandler);
 };
 
 export default new NewTournamentView(html, start);

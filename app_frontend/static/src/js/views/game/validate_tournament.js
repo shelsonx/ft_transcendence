@@ -1,7 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import authService from "../../services/authService.js";
 import gameService from "../../services/gameService.js";
-import wrapperLoadingService from '../../services/wrapperService.js';
+import wrapperLoadingService from "../../services/wrapperService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
 import { isValidToken } from "../../contracts/validation/tokenValidation.js";
@@ -23,6 +23,10 @@ const html = /*html*/ `
 `;
 
 let tournament = null;
+
+const getValidateTournamentForm = async () => {
+  await gameService.validateTournamentForm(tournament).then(putVerifyTable);
+};
 
 const putVerifyTable = async (response) => {
   if (response.status !== undefined) {
@@ -57,29 +61,25 @@ const resendCode = (e) => {
     game_id: tournament,
     game_type: VerificationType.TOURNAMENT,
   };
-  wrapperLoadingService.execute(
-    authService,
-    authService.sendGame2Factor,
-    data
-  );
-}
+  wrapperLoadingService.execute(authService, authService.sendGame2Factor, data);
+};
 
 const invalidToken = (player) => {
   const errors = document.getElementsByClassName("form-error");
   if (errors.length > 0) {
-    [...errors].forEach(errorElement => {
+    [...errors].forEach((errorElement) => {
       errorElement.remove();
     });
   }
 
   const tokenField = document.getElementById(`token-${player}`);
-  var errorElement = document.createElement('div');
+  var errorElement = document.createElement("div");
   errorElement.classList.add("form-error");
   errorElement.classList.add("p-sm");
   errorElement.setAttribute("data-i18n-key", "invalid-access-token");
   errorElement.innerText = "Invalid Access Token";
   tokenField.appendChild(errorElement);
-}
+};
 
 const submitVerifyForm = async (e) => {
   e.preventDefault();
@@ -97,6 +97,7 @@ const submitVerifyForm = async (e) => {
 const verifyPlayerResult = async (response) => {
   if (typeof response === "string") {
     putVerifyTable(response);
+    return;
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       window.location.href = "?t=" + tournament + "#tournament";
@@ -104,6 +105,17 @@ const verifyPlayerResult = async (response) => {
     }
   }
   loadErrorMessage(response, "verify-tournament-container");
+};
+
+const validateTournamentsHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getValidateTournamentForm
+  );
+  window.removeEventListener(
+    "hashchange",
+    validateTournamentsHashChangeHandler
+  );
 };
 
 const start = async (user) => {
@@ -114,11 +126,13 @@ const start = async (user) => {
   }
 
   gameService.user = user;
-  await gameService.validateTournamentForm(tournament).then(putVerifyTable);
+  getValidateTournamentForm();
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.validateTournamentForm(tournament).then(putVerifyTable);
-  });
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getValidateTournamentForm
+  );
+  window.addEventListener("hashchange", validateTournamentsHashChangeHandler);
 };
 
 export default new ValidateTournamentView(html, start);

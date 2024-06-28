@@ -20,6 +20,10 @@ const html = /*html*/ `
   </div>
 `;
 
+const getGameForm = async () => {
+  await gameService.getFormGame().then(putGameForm);
+};
+
 const putGameForm = async (response) => {
   if (response.status !== undefined) {
     loadErrorMessage(response, "add-game-container");
@@ -46,6 +50,7 @@ const submitGameForm = async (e) => {
 const addGameResult = async (response) => {
   if (typeof response === "string") {
     putGameForm(response);
+    return;
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       if (
@@ -68,12 +73,19 @@ const addGameResult = async (response) => {
   loadErrorMessage(response, "add-game-container");
 };
 
-const start = async (user) => {
-  await gameService.getFormGame().then(putGameForm);
+const newGameHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getGameForm
+  );
+  window.removeEventListener("hashchange", newGameHashChangeHandler);
+};
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.getFormGame().then(putGameForm);
-  });
+const start = async (user) => {
+  await getGameForm();
+
+  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, getGameForm);
+  window.addEventListener("hashchange", newGameHashChangeHandler);
 };
 
 export default new NewGameView(html, start);

@@ -1,7 +1,7 @@
 import BaseLoggedView from "../baseLoggedView.js";
 import authService from "../../services/authService.js";
 import gameService from "../../services/gameService.js";
-import wrapperLoadingService from '../../services/wrapperService.js';
+import wrapperLoadingService from "../../services/wrapperService.js";
 import { loadErrorMessage, pageNotFoundMessage } from "../../utils/errors.js";
 import { VerificationType } from "../../contracts/game/validation.js";
 import { isValidToken } from "../../contracts/validation/tokenValidation.js";
@@ -24,6 +24,10 @@ const html = /*html*/ `
 
 let match = null;
 
+const getValidateGameForm = async () => {
+  await gameService.validateGameForm(match).then(putVerifyForm);
+};
+
 const putVerifyForm = async (response) => {
   if (response.status !== undefined) {
     loadErrorMessage(response, "verify-game-container");
@@ -37,7 +41,7 @@ const putVerifyForm = async (response) => {
   verifyForm.addEventListener("submit", submitVerifyForm);
 
   const resendCodeButton = document.getElementById("resend-btn");
-  resendCodeButton.addEventListener("click", resendCode)
+  resendCodeButton.addEventListener("click", resendCode);
 };
 
 const resendCode = (e) => {
@@ -50,29 +54,25 @@ const resendCode = (e) => {
     game_id: match,
     game_type: VerificationType.GAME,
   };
-  wrapperLoadingService.execute(
-    authService,
-    authService.sendGame2Factor,
-    data
-  );
-}
+  wrapperLoadingService.execute(authService, authService.sendGame2Factor, data);
+};
 
 const invalidToken = () => {
   const errors = document.getElementsByClassName("form-error");
   if (errors.length > 0) {
-    [...errors].forEach(errorElement => {
+    [...errors].forEach((errorElement) => {
       errorElement.remove();
     });
   }
 
   const tokenField = document.getElementById("token");
-  var errorElement = document.createElement('div');
+  var errorElement = document.createElement("div");
   errorElement.classList.add("form-error");
   errorElement.classList.add("p-sm");
   errorElement.setAttribute("data-i18n-key", "invalid-access-token");
   errorElement.innerText = "Invalid Access Token";
   tokenField.appendChild(errorElement);
-}
+};
 
 const submitVerifyForm = async (e) => {
   e.preventDefault();
@@ -87,6 +87,7 @@ const submitVerifyForm = async (e) => {
 const handleValidateResponse = async (response) => {
   if (typeof response === "string") {
     putVerifyForm(response);
+    return;
   } else {
     if (response.hasOwnProperty("is_success") && response.is_success === true) {
       window.location.href = "?match=" + match + "#pong";
@@ -94,6 +95,14 @@ const handleValidateResponse = async (response) => {
     }
   }
   loadErrorMessage(response, "verify-game-container");
+};
+
+const validateGameHashChangeHandler = async () => {
+  window.removeEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getValidateGameForm
+  );
+  window.removeEventListener("hashchange", validateGameHashChangeHandler);
 };
 
 const start = async (user) => {
@@ -104,11 +113,13 @@ const start = async (user) => {
   }
 
   gameService.user = user;
-  await gameService.validateGameForm(match).then(putVerifyForm);
+  getValidateGameForm();
 
-  window.addEventListener(CustomEvents.LANGUAGE_CHANGE_EVENT, async (e) => {
-    await gameService.validateGameForm(match).then(putVerifyForm);
-  });
+  window.addEventListener(
+    CustomEvents.LANGUAGE_CHANGE_EVENT,
+    getValidateGameForm
+  );
+  window.addEventListener("hashchange", validateGameHashChangeHandler);
 };
 
 export default new ValidateGameView(html, start);
